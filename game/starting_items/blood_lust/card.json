@@ -1,0 +1,12 @@
+{
+    "name": "Blood Lust",
+    "text": "{T}: Add +1D to a player or monster till the end of turn.\n - Eternal -",
+    "image": "image.bmp",
+    "script": "script.lua",
+    "abilities": [
+        {
+            "cost": ["{T}"],
+            "ability": "BloodLust_tap"
+        }
+    ]
+}

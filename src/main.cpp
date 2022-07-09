@@ -16,11 +16,11 @@ using std::endl;
 using std::string;
 using std::vector;
 
-int luafunc_cfunc(lua_State *L) {
-    auto f = (float)lua_tonumber(L, -1);
-    lua_pushnumber(L, f * 10);
-    return 1; // the amount of return values
-}
+// int luafunc_cfunc(lua_State *L) {
+//     auto f = (float)lua_tonumber(L, -1);
+//     lua_pushnumber(L, f * 10);
+//     return 1; // the amount of return values
+// }
 
 int main() {
     // srand(time(0));
@@ -29,9 +29,9 @@ int main() {
     auto match = game->createMatch();
     auto p1 = match->addPlayer("oichii1", match->getRandomAvailableCharacter());
     auto p2 = match->addPlayer("oichii2", match->getRandomAvailableCharacter());
+    auto p3 = match->addPlayer("oichii3", match->getRandomAvailableCharacter());
     match->start();
     delete game;
-    // return 0;
 
     // lua_State *L = luaL_newstate();
     // luaL_openlibs(L);
@@ -48,9 +48,7 @@ int main() {
     //     lua_err(L);
     //     return -1;
     // }
-
     
-
     // lua_getglobal(L, "funny");
     // if (!lua_isfunction(L, -1)) {
     //     lua_err(L);

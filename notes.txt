@@ -17,3 +17,4 @@
     -- rechargeCard(id) - recharges the card with id = <id>
     -- incEnemySlots() - increases the amount of enemy slots by 1
     -- incShopSlots() - increases the amount of shop slots by 1, then immediately places the top item in that slot
+    -- deferEOT(funcName) - pushes the function to be called at the end of turn

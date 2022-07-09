@@ -1,0 +1,18 @@
+{
+    "name": "The D6",
+    "text": "{T}: Force a player to reroll any dice roll.",
+    "image": "image.bmp",
+    "script" : "script.lua",
+    "abilities": [
+        {
+            "cost": ["{T}"],
+            "ability": "TheD6_tap"
+        }
+    ],
+    "on": {
+        "turn_start": {
+            "check": "TheD6_trigger_check",
+            "effect": "TheD6_trigger"
+        }
+    }
+}

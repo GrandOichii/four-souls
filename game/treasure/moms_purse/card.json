@@ -2,6 +2,7 @@
     "name": "Mom's Purse",
     "text": "Loot +1 at the start of your turn",
     "image": "image.bmp",
-    "onEnter": "enter.lua",
-    "onLeave": "leave.lua"
+    "script": "script.lua",
+    "onEnter": "MomsPurse_enter",
+    "onLeave": "MomsPurse_leave"
 }

@@ -8,6 +8,8 @@
 
 class Game {
 private:
+    // starting items
+    std::vector<TrinketCard*> _startingItems;
     // character cards
     std::vector<CharacterCard*> _characterCards;
     // loot cards
@@ -22,5 +24,6 @@ public:
     void loadLootCards(string dir);
     void loadTreasureCards(string dir);
     void loadCharacterCards(string dir);
+    void loadStartingItems(string dir);
     Match* createMatch();
 };

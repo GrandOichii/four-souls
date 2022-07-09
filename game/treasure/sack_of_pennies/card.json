@@ -2,17 +2,19 @@
     "name": "Sack of Pennies",
     "text": "{T}: Gain 1c.\nWhen any player rolls a 1, you may recharge this.",
     "image": "image.bmp",
+    "script": "script.lua",
     "on": {
-        "roll": [
-            "trigger.lua"
-        ]
+        "roll": {
+            "check": "SackOfPennies_trigger_check",
+            "effect": "SackOfPennies_trigger"
+        }
     },
     "abilities": [
         {
             "cost": [
                 "{T}"
             ],
-            "path": "ability.lua"
+            "ability": "SackOfPennies_tap"
         }
     ]
 }

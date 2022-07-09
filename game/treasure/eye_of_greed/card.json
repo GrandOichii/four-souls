@@ -2,9 +2,11 @@
     "name": "Eye of Greed",
     "text": "When anyone rolls a 5, gain 3c.",
     "image": "image.bmp",
+    "script": "script.lua",
     "on": {
-        "roll": [
-            "trigger.lua"
-        ]
+        "roll": {
+            "check": "EyeOfGreed_trigger_check",
+            "effect": "EyeOfGreed_trigger"
+        }
     }
 }

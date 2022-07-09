@@ -1,0 +1,12 @@
+{
+    "name": "Book of Belial",
+    "text": "{T}: Add or subtract 1 from any dice roll.",
+    "image": "image.bmp",
+    "script": "script.lua",
+    "abilities": [
+        {
+            "cost": ["{T}"],
+            "ability": "BookOfBelial_tap"
+        }
+    ]
+}

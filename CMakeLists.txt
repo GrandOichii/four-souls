@@ -23,7 +23,7 @@ target_include_directories(${PROJECT_NAME}
     PUBLIC external/SDL_ttf
 )
     
-target_link_directories(${PROJECT_NAME} 
+target_link_directories(${PROJECT_NAME}
     PRIVATE external/SDL/src
     PRIVATE external/SDL_ttf
 )

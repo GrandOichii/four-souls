@@ -2,25 +2,39 @@
 
 #include <iostream>
 
-static const string LOOT_CARDS_FILE = "loot.json";
 static const string CARD_INFO_FILE = "card.json";
 
+static const string LOOT_CARDS_FILE = "loot.json";
 static const string CHARACTER_CARDS_FILE = "characters.json";
 static const string TREASURE_CARDS_FILE = "treasures.json";
+static const string STARTING_ITEMS_FILE = "starting_items.json";
 
 Game::Game(string dir) {
     this->loadLootCards(dir);
     this->loadTreasureCards(dir);
     //  TODO load monster cards
+    this->loadStartingItems(dir);
     this->loadCharacterCards(dir);
     //  TODO load config
-    
+
     // std::cout << "Loot cards:" << std::endl;
     // for (const auto &card : _lootCards)
     //     std::cout << "\t" << card->name() << std::endl;
     // std::cout << "Loot card deck template:" << std::endl;
     // for (const auto &pair : _lootDeckTemplate)
     //     std::cout << "\t" << pair.first << ": " << pair.second << std::endl;
+}
+
+void Game::loadStartingItems(string dir) {
+    auto j = fs::readJS(fs::join(dir, STARTING_ITEMS_FILE));
+    for (const auto& jj : j.items()) {
+        string tdir = fs::join(dir, jj.value());
+        auto jjj = fs::readJS(fs::join(tdir, CARD_INFO_FILE));
+        this->_startingItems.push_back(new TrinketCard(tdir, jjj, true));
+    }
+    for (const auto& c : _startingItems)
+        c->print("");
+
 }
 
 void Game::loadLootCards(string dir) {
@@ -30,7 +44,7 @@ void Game::loadLootCards(string dir) {
         for (const auto& el : j["cards"][key].items()) {
             auto cardPath = fs::join(dir, el.value());
             auto cardJS = fs::readJS(fs::join(cardPath, CARD_INFO_FILE));
-            std::cout << cardJS["name"] << std::endl;
+            // std::cout << cardJS["name"] << std::endl;
             auto card = new LootCard(cardPath, cardJS, isTrinket);
             this->_lootCards.push_back(card);
             string name = el.key();
@@ -44,8 +58,8 @@ void Game::loadLootCards(string dir) {
     loadF("basic", false);
     loadF("trinkets", true);
 
-    // for (const auto& c : _lootCards)
-    //     c->print();
+    for (const auto& c : _lootCards)
+        c->print("");
 }
 
 void Game::loadTreasureCards(string dir) {
@@ -55,20 +69,33 @@ void Game::loadTreasureCards(string dir) {
         auto jjj = fs::readJS(fs::join(tdir, CARD_INFO_FILE));
         this->_treasureCards.push_back(new TrinketCard(tdir, jjj, false));
     }
-    // for (const auto& c : _treasureCards)
-    //     c->print("");
+    for (const auto& c : _treasureCards)
+        c->print("");
 }
 
 void Game::loadCharacterCards(string dir) {
     auto j = fs::readJS(fs::join(dir, CHARACTER_CARDS_FILE));
-    for (const auto& el : j.items())
-        _characterCards.push_back(new CharacterCard(dir, el.value()));
+    for (const auto& el : j.items()) {
+        auto character = new CharacterCard(dir, el.value());
+        _characterCards.push_back(character);
+        auto in = character->startingItemName();
+        auto siSet = false;
+        for (const auto& item : _startingItems) {
+            if (item->name() == in) {
+                siSet = true;
+                character->setStartingItem(item);
+                break;
+            }
+        }
+        if (!siSet) throw std::runtime_error("Unkown starting item: " + in);
+    }
 }
 
 Game::~Game() {
     for (const auto& c : _characterCards) delete c;
     for (const auto& c : _lootCards) delete c;
     for (const auto& c : _treasureCards) delete c;
+    for (const auto& c : _startingItems) delete c;
 }
 
 Match* Game::createMatch() {
@@ -76,5 +103,7 @@ Match* Game::createMatch() {
     for (auto& card : _characterCards)
         result->addToCharacterPool(card);
     result->createLootDeck(_lootDeckTemplate);
+    result->createTreasureDeck(_treasureCards);
+    result->setupLua();
     return result;
 }
