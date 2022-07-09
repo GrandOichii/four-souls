@@ -1,0 +1,6 @@
+{
+    "name": "Blank rune",
+    "text": "Roll: ...",
+    "image": "image.bmp",
+    "use": "use.lua"   
+}

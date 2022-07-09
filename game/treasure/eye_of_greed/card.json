@@ -1,0 +1,10 @@
+{
+    "name": "Eye of Greed",
+    "text": "When anyone rolls a 5, gain 3c.",
+    "image": "image.bmp",
+    "on": {
+        "roll": [
+            "trigger.lua"
+        ]
+    }
+}

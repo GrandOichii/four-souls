@@ -1,0 +1,16 @@
+{
+    "cards": {
+        "basic": {
+            "A penny!": "loot/one_cent",
+            "Blank rune": "loot/blank_rune"
+        },
+        "trinkets": {
+            "Blood penny": "loot/blood_penny"
+        }
+    },
+    "deck": {
+        "A penny!": 4,
+        "Blood penny": 1,
+        "Blank rune": 1
+    }
+}

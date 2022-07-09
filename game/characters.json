@@ -4,21 +4,24 @@
         "health": 2,
         "attack": 1,
         "item": "The D6",
-        "image": "images/001Isaac(1).bmp"
+        "image": "images/001Isaac(1).bmp",
+        "text": ""
     },
     {
         "name": "Judas",
         "health": 2,
         "attack": 1,
         "item": "Book of Belial", 
-        "image": "images/004Judas(1).bmp"
+        "image": "images/004Judas(1).bmp",
+        "text": ""
     },
     {
         "name": "Samson",
         "health": 2,
         "attack": 1,
         "item": "Blood Lust",
-        "image": "images/005Samson(1).bmp"
+        "image": "images/005Samson(1).bmp",
+        "text": ""
     }
 
 ]

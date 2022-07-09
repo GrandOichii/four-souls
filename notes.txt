@@ -1,0 +1,19 @@
+== lua ==
+- notes:
+    -- the first table in getPlayers has to be the owner of the ability
+
+- implement:
+    -- getPlayers() - returns all the getPlayers
+    -- getOwner() - returns the owner of the ability
+    -- addCoins(id, amount) - adds <amount> coins to player with id = <id>
+    -- lootCards(id, amount) - the player with id = <id> loots <amount> cards
+    -- dealDamage(entity, id, amount) - deals <amount> damage to entity of type = <entity> and id = <id>
+    -- getLastDeath() - returns the event of last death (player or monster death)
+    -- getLastRoll() - returns the last roll
+    -- incBeginningLoot(id, amount) - increases the amount of cards the player with id = <id> loots by <amount>
+    -- decBeginningLoot(id, amount) - --||--
+    -- requestChoice(id, text, choices) - requests the player of id = <id> a choice with <text> displayed. <choices> must be seperated by |.
+    -- this() - returns the card that triggered the ability
+    -- rechargeCard(id) - recharges the card with id = <id>
+    -- incEnemySlots() - increases the amount of enemy slots by 1
+    -- incShopSlots() - increases the amount of shop slots by 1, then immediately places the top item in that slot

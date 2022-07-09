@@ -1,0 +1,10 @@
+{
+    "name": "Blood penny",
+    "text": "Each time a player dies, loot 1",
+    "image": "image.bmp",
+    "on": {
+        "death": [
+            "trigger.lua"
+        ]
+    }
+}
