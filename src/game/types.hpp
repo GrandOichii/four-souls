@@ -3,11 +3,14 @@
 #include <string>
 #include <iostream>
 
+#include "../util.hpp"
+
 using std::string;
 
 const string ROLL_TRIGGER = "roll";
 const string DEATH_TRIGGER = "death";
 const string TURN_START_TRIGGER = "turn_start";
+const string TURN_END_TRIGGER = "turn_end";
 
 const string PASS_RESPONSE = "$PASS";
 

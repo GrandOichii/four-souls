@@ -107,3 +107,12 @@ Match* Game::createMatch() {
     result->setupLua();
     return result;
 }
+
+std::vector<Card*> Game::getAllCards() {
+    vector<Card*> result;
+    for (const auto& c : _characterCards) result.push_back(c);
+    for (const auto& c : _lootCards) result.push_back(c);
+    for (const auto& c : _treasureCards) result.push_back(c);
+    for (const auto& c : _startingItems) result.push_back(c);
+    return result;
+}

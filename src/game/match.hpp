@@ -3,6 +3,7 @@
 #include <iostream>
 #include <algorithm>
 #include <vector>
+#include <thread>
 #include <deque>
 #include <map>
 #include <stack>
@@ -19,6 +20,7 @@ extern "C" {
 
 #include "cards.hpp"
 #include "types.hpp"
+#include "util.hpp"
 
 using std::string;
 
@@ -26,20 +28,27 @@ const int MIN_PLAYER_COUNT = 2;
 const int MAX_PLAYER_COUNT = 4;
 const int SOULS_TO_WIN = 4;
 
-static void l_pushtablestring(lua_State* L, string key, string value) {
-    lua_pushstring(L, key.c_str());
-    lua_pushstring(L, value.c_str());
-    lua_settable(L, -3);
-}
+struct PlayerBoardState {
+    std::pair<string, bool> playerCard;
+    std::vector<std::pair<string, bool>> board;
+};
 
-static void l_pushtablenumber(lua_State* L, string key, float value) {
-    lua_pushstring(L, key.c_str());
-    lua_pushnumber(L, value);
-    lua_settable(L, -3);
-}
+struct StackMememberState {
+    string message;
+    string cardName;
+    bool isCard;
+};
+
+struct MatchState {
+    vector<PlayerBoardState> boards;
+    vector<StackMememberState> stack;
+    int currentI;
+    int priorityI;
+};
 
 class Player {
 private:
+    CharacterCard* _characterCard;
     std::string _name;
 
     int _baseMHealth;
@@ -48,12 +57,16 @@ private:
     int _baseAttack;
     int _id;
 
+    int _soulCount;
+
     bool _characterActive;
     std::vector<CardWrapper*> _board;
+    int _startTurnLootAmount;
 public:
     Player(std::string name, CharacterCard* card, int id) :
         _name(name),
-        _id(id) 
+        _id(id),
+        _characterCard(card) 
     {
         this->_baseMHealth = card->health();
         this->_health = this->_baseMHealth;
@@ -61,9 +74,12 @@ public:
         this->_baseAttack = card->attack();
         this->_board.push_back(new CardWrapper(card->startingItem(), _id));
         this->_characterActive = false;
+        this->_startTurnLootAmount = 1;
+
+        this->_soulCount = 0;
     }
 
-    ~Player() {
+    virtual ~Player() {
         for (const auto& w : _board) delete w;
     }
 
@@ -98,6 +114,33 @@ public:
         lua_newtable(L);
         l_pushtablestring(L, "name", this->_name);
         l_pushtablenumber(L, "id", (float)this->_id);
+        l_pushtablenumber(L, "startTurnLootAmount", (float)this->_startTurnLootAmount);
+    }
+
+    virtual string promptAction() = 0;
+
+    int id() { return _id; }
+    int soulCount() { return _soulCount; }
+    CharacterCard* characterCard() { return _characterCard; }
+};
+
+class ScriptedPlayer : public Player {
+private:
+    std::stack<string> _actions;
+public:
+    ScriptedPlayer(std::string name, CharacterCard* card, int id, string actions) :
+        Player(name, card, id)
+    {
+        auto split = str::split(actions, "\n");
+        for (int i = split.size()-1; i >= 0; i--)
+            _actions.push(split[i]);
+    }
+
+    string promptAction() {
+        if (_actions.empty()) return PASS_RESPONSE;
+        auto result = _actions.top();
+        _actions.pop();
+        return result;
     }
 };
 
@@ -105,16 +148,28 @@ struct StackEffect {
     string funcName;
     Player* player;
     CardWrapper* card;
+
     StackEffect(string funcName, Player* player, CardWrapper* card) :
         funcName(funcName),
         player(player),
         card(card) {}
+
+    StackEffect() {}
+
+    StackMememberState getState() {
+        StackMememberState result;
+        result.message = funcName;
+        result.isCard = card;
+        if (card) result.cardName = card->card()->name();
+        return result;
+    }
 };
 
 class Match {
 private:
     bool _running = false;
     lua_State *L;
+    int _turnCounter = 0;
 
     std::default_random_engine rng = std::default_random_engine {};
     std::vector<std::pair<CharacterCard*, bool>> _characterPool;
@@ -128,7 +183,9 @@ private:
     std::deque<LootCard*> _lootDeck;
     std::deque<TrinketCard*> _treasureDeck;
 
-    std::stack<StackEffect> _stack;
+    std::vector<StackEffect> _stack;
+    std::stack<string> _eotDefers;
+    std::stack<StackEffect> _eotDeferredTriggers;
 public:
     Match() {
         this->rng.seed(rand());
@@ -140,37 +197,122 @@ public:
         lua_close(this->L);
     }
 
-    static int wrap_GetOwner(lua_State *L) {
+    CardWrapper* cardWithID(int id) {
+        for (const auto& p : _players)
+            for (const auto& w : p->board())
+                if (w->id() == id)
+                    return w;
+        throw std::runtime_error("no card with id " + std::to_string(id));
+    }
+
+    Player* findOwner(CardWrapper* card) {
+        for (const auto& p : _players)
+            for (const auto& w : p->board())
+                if (w == card)
+                    return p;
+        throw std::runtime_error("can't find owner of card " + card->card()->name() + " [" + std::to_string(card->id()) + "]");
+    } 
+
+    static int wrap_getOwner(lua_State *L) {
         if (lua_gettop(L) != 1) {
             lua_err(L);
             exit(1);
         }
         auto match = static_cast<Match*>(lua_touserdata(L, 1));
-        match->_stack.top().player->pushTable(L);
+        match->_stack.back().player->pushTable(L);
         return 1;
     }
 
-    // int luafunc_cfunc(lua_State *L) {
-    //     auto f = (float)lua_tonumber(L, -1);
-    //     lua_pushnumber(L, f * 10);
-    //     return 1; // the amount of return values
-    // }
+    static int wrap_lootCards(lua_State *L) {
+        if (lua_gettop(L) != 3) {
+            lua_err(L);
+            exit(1);
+        }
+        auto match = static_cast<Match*>(lua_touserdata(L, 1));
+        if (!lua_isnumber(L, 2)) {
+            lua_err(L);
+            exit(1);
+        }
+        auto pid = (int)lua_tonumber(L, 2);
+        
+        if (!lua_isnumber(L, 3)) {
+            lua_err(L);
+            exit(1);
+        }
+        auto amount = (int)lua_tonumber(L, 3);
+        Player* player = nullptr;
+        for (const auto& p : match->_players) {
+            if (p->id() == pid) {
+                player = p;
+                break;
+            }
+        }
+        if (!player) throw std::runtime_error("no player with id " + std::to_string(pid));
+        match->log(player->name() + " loots " + std::to_string(amount) + " cards");
+        //  TODO
+        return 0;
+    }
 
-    // void foo() {
-    //     std::cout << "Player count: " << this->_players.size() << std::endl;
-    // }
+    static int wrap_deferEOT(lua_State *L) {
+        if (lua_gettop(L) != 4) {
+            lua_err(L);
+            exit(1);
+        }
+        auto match = static_cast<Match*>(lua_touserdata(L, 1));
+        if (!lua_isnumber(L, 2)) {
+            lua_err(L);
+            exit(1);
+        }
+        auto cardID = (int)lua_tonumber(L, 2);
+        std::cout << cardID << std::endl;
+        auto card = match->cardWithID(cardID);
+        auto owner = match->findOwner(card);
+        // std::cout << card->card()->name() << std::endl;
+        if (!lua_isstring(L, 3)) {
+            lua_err(L);
+            exit(1);
+        }
+        auto funcName = (string)lua_tostring(L, 3);
 
-    // static int wrap_foo(lua_State *L) {
-    //     std::cout << lua_gettop(L) << std::endl;
-    //     if (lua_gettop(L) != 1) {
-    //         lua_err(L);
-    //         exit(1);
-    //     }
-    //     // std::cout << lua_gettop(L) << std::endl;
-    //     auto match = static_cast<Match*>(lua_touserdata(L, 1));
-    //     match->foo();
-    //     return 0;
-    // }
+        if (!lua_isboolean(L, 4)) {
+            lua_err(L);
+            exit(1);
+        }
+        auto isTrigger = (bool)lua_toboolean(L, 4);
+        
+        if (isTrigger) {
+            StackEffect effect;
+            effect.funcName = funcName;
+            effect.card = card;
+            effect.player = owner;
+            match->_eotDeferredTriggers.push(effect);
+        } else match->_eotDefers.push(funcName);
+        return 0;
+    }
+
+    static int wrap_this(lua_State *L) {
+        if (lua_gettop(L) != 1) {
+            lua_err(L);
+            exit(1);
+        }
+        auto match = static_cast<Match*>(lua_touserdata(L, 1));
+        match->_stack.back().card->pushTable(match->L);
+        return 1;
+    }
+
+    void pushEOTDeferredTriggers() {
+        while (!_eotDeferredTriggers.empty()) {
+            this->pushToStack(_eotDeferredTriggers.top());
+            _eotDeferredTriggers.pop();
+        }
+    }
+
+    void execEOTDefers() {
+        while (!_eotDefers.empty()) {
+            this->execFunc(_eotDefers.top());
+            _eotDefers.pop();
+        }
+    }
 
     void setupLua() {
         this->L = luaL_newstate();
@@ -178,7 +320,10 @@ public:
         luaL_openlibs(L);
         // connect functions
         // lua_register(L, "foo", wrap_foo);
-        lua_register(L, "getOwner", wrap_GetOwner);
+        lua_register(L, "getOwner", wrap_getOwner);
+        lua_register(L, "lootCards", wrap_lootCards);
+        lua_register(L, "deferEOT", wrap_deferEOT);
+        lua_register(L, "this", wrap_this);
 
         // load card scripts
         for (const auto& card : _lootDeck) {
@@ -248,11 +393,13 @@ public:
         _characterPool.push_back(std::make_pair(card, true));
     }
 
-    Player* addPlayer(std::string name, CharacterCard* character) {
+    //  TODO remove the actions part
+    Player* addPlayer(std::string name, CharacterCard* character, string actions) {
         for (const auto& p : _players)
             if (p->name() == name)
                 return nullptr;
-        auto result = new Player(name, character, _players.size()+1);
+        //  TODO change this to a player with a port
+        auto result = new ScriptedPlayer(name, character, _players.size()+1, actions);
         _players.push_back(result);
         return result;
     }
@@ -302,8 +449,7 @@ public:
 
     void start() {
         std::cout << "\nThe game starts\n\n";
-        // this->execFunc("TestFunc");
-
+        this->execScript("function _startTurnLoot(host)\n\tlocal owner = getOwner(host)\nlootCards(host, owner[\"id\"], owner[\"startTurnLootAmount\"])\nend");
         std::cout << "Loot deck:" << std::endl;
         for (const auto& card : _lootDeck)
             std::cout << "\t" << card->name() << std::endl;
@@ -336,14 +482,46 @@ public:
         this->_nextI = (this->_currentI + 1) % _players.size();
     }
 
+    void currentPlayerLoot() {
+        this->pushToStack(StackEffect(
+            "_startTurnLoot", 
+            _activePlayer, 
+            nullptr));
+    }
+
     void turn() {
+        this->log("TURN " + std::to_string(++this->_turnCounter) + " - ");
         this->_activePlayer = this->_players[this->_currentI];
         this->log(this->_activePlayer->name() + " starts their turn");
+
         // recharge all of the items and character card of the active player
         this->_activePlayer->recharge();
-        // apply all <start of turn> triggers, then prompt actions
+
+        // apply all <start of turn> triggers, then resolve stack
         this->applyTriggers(TURN_START_TRIGGER);
         this->resolveStack();
+
+        // add loot 1 to stack, then resolve stack
+        this->currentPlayerLoot();
+        this->resolveStack();
+
+        // main step
+        this->log(_activePlayer->name() + "'s main phase");
+        string response = "";
+        while (response != PASS_RESPONSE) {
+            response = this->_activePlayer->promptAction();
+            //  TODO execute action
+        }
+        this->log("End of " + this->_activePlayer->name() + "'s turn");
+
+        // end of turn
+        //  TODO prompt the player to choose the order of triggers
+        this->applyTriggers(TURN_END_TRIGGER);
+        this->pushEOTDeferredTriggers();
+        this->resolveStack();
+
+        // all silent end of turn effects
+        this->execEOTDefers();
     }
 
     void applyTriggers(string triggerType) {
@@ -362,9 +540,13 @@ public:
                 auto checkFuncName = pair.first;
                 if (!this->execCheck(checkFuncName)) continue;
                 this->log(card->name() + " is triggered.");
-                this->_stack.push(StackEffect(pair.second, player, w));
+                this->pushToStack(StackEffect(pair.second, player, w));
             }
         }
+    }
+
+    void pushToStack(const StackEffect& effect) {
+        this->_stack.push_back(effect);
     }
 
     void resolveStack() {
@@ -375,17 +557,18 @@ public:
     }
 
     void resolveTop() {
-        auto effect = this->_stack.top();
+        auto effect = this->_stack.back();
         // pass the priority of the owner of the effect
-        this->_priorityI = -1;
-        for (int i = 0; i < _players.size(); i++) {
-            if (_players[i] == effect.player) {
-                this->_priorityI = i;
-                break;
-            }
-        }
-        const auto last = this->_priorityI;
-        if (this->_priorityI == -1) throw std::runtime_error("Unknown player " + effect.player->name());
+        // this->_priorityI = -1;
+        // for (int i = 0; i < _players.size(); i++) {
+        //     if (_players[i] == effect.player) {
+        //         this->_priorityI = i;
+        //         break;
+        //     }
+        // }
+        this->_priorityI = this->_currentI;
+        const auto last = this->_currentI;
+        // if (this->_priorityI == -1) throw std::runtime_error("Unknown player " + effect.player->name());
         do {
             // prompt action
             auto response = this->promptPlayerWithPriority();
@@ -400,16 +583,35 @@ public:
         } while (last != this->_priorityI);
         // resolve the ability
         this->execFunc(effect.funcName);
-        this->_stack.pop();
+        this->_stack.pop_back();
     }
 
     string promptPlayerWithPriority() {
         auto player = this->_players[this->_priorityI];
         this->log("Player " + player->name() + " takes priority");
-        return PASS_RESPONSE;
+        return player->promptAction();
     }
 
     void log(string message) {
         std::cout << " - " << message << std::endl;
+        // std::this_thread::sleep_for(std::chrono::seconds(1));
+        std::this_thread::sleep_for(std::chrono::milliseconds(500));
+    }
+
+    MatchState getState() {
+        MatchState result;
+        for (const auto& p : _players) {
+            PlayerBoardState space;
+            space.playerCard.first = p->characterCard()->name();
+            space.playerCard.second = p->characterActive();
+            for (const auto& w : p->board())
+                space.board.push_back(std::make_pair(w->card()->name(), w->isActive()));
+            result.boards.push_back(space);
+        }
+        for (auto& si : _stack)
+            result.stack.push_back(si.getState());
+        result.currentI = _currentI;
+        result.priorityI = _priorityI;
+        return result;
     }
 };

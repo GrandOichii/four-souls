@@ -22,6 +22,8 @@ namespace str {
         result += *begin;
         return result;
     }
+
+    vector<string> split(string s, const string delimiter);
 }
 
 namespace fs {

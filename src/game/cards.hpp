@@ -6,8 +6,17 @@
 
 #include <iostream>
 
-#include "../util.hpp"
+extern "C" {
+
+#include <lua.h>
+#include <lauxlib.h>
+#include <lualib.h>
+
+}
+
 #include "types.hpp"
+#include "util.hpp"
+#include "../util.hpp"
 
 using std::string;
 
@@ -24,6 +33,7 @@ public:
 
     string name() { return _name; }
     string text() { return _text; }
+    string imagePath() { return _imagePath; }
 
     virtual void print(string prefix) {
         std::cout << prefix << _name << std::endl;
@@ -176,5 +186,10 @@ public:
     Card* card() { return _card; }
     int id() { return _id; }
     void recharge() { _tapped = false; }
-    bool active() { return !_tapped; }
+    bool isActive() { return !_tapped; }
+
+    void pushTable(lua_State* L) {
+        lua_newtable(L);
+        l_pushtablenumber(L, "id", (float)this->_id);
+    }
 };

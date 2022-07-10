@@ -6,7 +6,7 @@ project(four-souls)
 
 # ! reconfigure when adding new cpp files
 file(GLOB srcFiles 
-    src/*.cpp 
+    src/*.cpp
     src/game/*.cpp
 )
 

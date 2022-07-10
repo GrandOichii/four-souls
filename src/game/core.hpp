@@ -26,4 +26,5 @@ public:
     void loadCharacterCards(string dir);
     void loadStartingItems(string dir);
     Match* createMatch();
+    std::vector<Card*> getAllCards();
 };

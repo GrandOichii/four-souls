@@ -1,7 +1,18 @@
 #include "util.hpp"
 
 namespace str {
-    
+    vector<string> split(string s, const string delimiter) {
+        size_t pos = 0;
+        string token;
+        vector<string> result;
+        while ((pos = s.find(delimiter)) != string::npos) {
+            token = s.substr(0, pos);
+            result.push_back(token);
+            s.erase(0, pos + delimiter.length());
+        }
+        result.push_back(s);
+        return result;
+    }
 }
 
 namespace fs {
