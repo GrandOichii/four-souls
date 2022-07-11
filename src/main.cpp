@@ -30,6 +30,7 @@ static const vector<string> P1_ACTIONS = vector<string>{
     ACTION_PLAY_LOOT + " 0",
     ACTION_PASS,
     ACTION_BUY_TREASURE + " 0",
+    ACTION_PASS,
 };
 
 static const vector<string> P2_ACTIONS = vector<string>{
@@ -38,7 +39,9 @@ static const vector<string> P2_ACTIONS = vector<string>{
     ACTION_PASS,
     ACTION_PASS,
     ACTION_PASS,
-    ACTION_PLAY_LOOT + " 0"
+    ACTION_PLAY_LOOT + " 0",
+    ACTION_PASS,
+    ACTION_BUY_TREASURE + " 0",
 };
 
 static const vector<string> P3_ACTIONS = vector<string>{
@@ -50,7 +53,9 @@ static const vector<string> P3_ACTIONS = vector<string>{
     ACTION_PASS,
     ACTION_PASS,
     ACTION_PASS,
-    ACTION_PLAY_LOOT + " 0"
+    ACTION_PLAY_LOOT + " 0",
+    ACTION_PASS,
+    ACTION_BUY_TREASURE + " 0",
 };
 
 std::pair<int, int> getSize(SDL_Texture *texture) {

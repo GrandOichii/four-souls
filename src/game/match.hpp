@@ -53,8 +53,10 @@ struct StackEffect {
     string funcName;
     Player* player;
     CardWrapper* card;
+    string type;
+    bool resolve = true;
 
-    StackEffect(string funcName, Player* player, CardWrapper* card);
+    StackEffect(string funcName, Player* player, CardWrapper* card, string effect);
     StackEffect();
     StackMememberState getState();
 };
@@ -103,7 +105,8 @@ private:
             this->pushToStack(StackEffect(
                 "_popLootStack",
                 player,
-                wrapper
+                wrapper,
+                PLAY_LOOT_CARD_TYPE
             ));
             this->_lootStack.push(std::make_pair(card, player));
         }},
@@ -112,7 +115,8 @@ private:
             this->pushToStack(StackEffect(
                 "buyItem",
                 player,
-                nullptr
+                nullptr,
+                BUY_TREASURE_TYPE
             ));
         }}
     };
@@ -142,6 +146,7 @@ public:
     static int wrap_this(lua_State *L);
     static int wrap_incBeginningLoot(lua_State* L);
     static int wrap_decBeginningLoot(lua_State* L);
+    void removeFromShop(TrinketCard* card);
     Player* playerWithID(int id);
     void pushEOTDeferredTriggers();
     void execEOTDefers();

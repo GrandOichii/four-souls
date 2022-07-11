@@ -1,0 +1,196 @@
+{
+	"loot": [
+		{
+			"name": "A PENNY!",
+			"text": "gain 1¢."
+		},
+		{
+			"name": "2 CENTS!",
+			"text": "gain 2¢."
+		},
+		{
+			"name": "3 CENTS!",
+			"text": "gain 3¢."
+		},
+		{
+			"name": "4 CENTS!",
+			"text": "gain 4¢."
+		},
+		{
+			"name": "A NICKEL!",
+			"text": "gain 5¢"
+		},
+		{
+			"name": "A DIME!!",
+			"text": "gain 10¢."
+		},
+		{
+			"name": "LIL BATTERY",
+			"text": "recharge an item."
+		},
+		{
+			"name": "MEGA BATTERY",
+			"text": "choose a player. recharge each item they control."
+		},
+		{
+			"name": "BOMB!",
+			"text": "deal 1 damage to a monster or player."
+		},
+		{
+			"name": "GOLD BOMB!!",
+			"text": "deal 3 damage to a monster or player."
+		},
+		{
+			"name": "BUTTER BEAN!",
+			"text": "cancel the ↷ or $ ability of an item or a loot being played."
+		},
+		{
+			"name": "DICE SHARD",
+			"text": "choose a dice roll. its controller rerolls it."
+		},
+		{
+			"name": "PILLS!",
+			"text": "roll-\n\n1-2: gain 4¢."
+		},
+		{
+			"name": "PILLS!",
+			"text": "roll-\n\n1-2: you gain +1 till the end of turn."
+		},
+		{
+			"name": "PILLS!",
+			"text": "roll-\n\n1-2: loot 1."
+		},
+		{
+			"name": "SOUL HEART",
+			"text": "choose a player. prevent the next 1 damage they would take this turn."
+		},
+		{
+			"name": "O. THE FOOL",
+			"text": "end the turn. cancel everything that hasn't resolved."
+		},
+		{
+			"name": "I. THE MAGICIAN",
+			"text": "change the result of a dice roll to a number of your choosing."
+		},
+		{
+			"name": "II. THE HIGH PRIESTESS",
+			"text": "choose a player or monster, then roll-\n\ndeal damage to them equal to the result."
+		},
+		{
+			"name": "III. THE EMPRESS",
+			"text": "choose a player.\nthey gain +1 and +1 to dice rolls till end of turn."
+		},
+		{
+			"name": "IV. THE EMPEROR",
+			"text": "look at the top 5 cards of the monster deck. put 1 on top and the rest on the bottom."
+		},
+		{
+			"name": "V. THE HIEROPHANT",
+			"text": "choose a player or monster. prevent the next instance of up to 2 damage they would take this turn."
+		},
+		{
+			"name": "VI. THE LOVERS",
+			"text": "choose a player.\nthey gain +2 till end of turn."
+		},
+		{
+			"name": "VII. THE CHARIOT",
+			"text": "choose a player.\nthey gain +1 and +1 till end of turn."
+		},
+		{
+			"name": "VIII. JUSTICE",
+			"text": "choose a player. loot and gain ¢ until you have the same number of each as they do."
+		},
+		{
+			"name": "IX. THE HERMIT",
+			"text": "look at the top 5 cards of the treasure deck. put 1 on top and the rest on the bottom."
+		},
+		{
+			"name": "X. WHEEL OF FORTUNE",
+			"text": "roll-\n1: gain 1¢.\n2: take 2 damage.\n3. loot 3.\n4. lose 4¢.\n5: gain 5¢.\n6: gain +1 treasure."
+		},
+		{
+			"name": "XI. STRENGTH",
+			"text": "choose a player.\nthey gain +1 till end of turn and may attack an additional time this turn."
+		},
+		{
+			"name": "XII. THE HANGED MAN",
+			"text": "look at the top card of each deck. you may put any of those cards on the bottom of their deck, then loot 2."
+		},
+		{
+			"name": "XIII. DEATH",
+			"text": "kill a player."
+		},
+		{
+			"name": "XIV. TEMPERANCE",
+			"text": "choose one-\ntake 1 damage and gain 4¢.\ntake 2 damage and gain 8¢."
+		},
+		{
+			"name": "XV. THE DEVIL",
+			"text": "destroy an item you control. if you do, steal a non-eternal item from a player or from the shop."
+		},
+		{
+			"name": "XVI. THE TOWER",
+			"text": "roll-\n\n1-2: each player takes 1 damage."
+		},
+		{
+			"name": "XVII. THE STARS",
+			"text": "gain +1 treasure."
+		},
+		{
+			"name": "XVIII. THE MOON",
+			"text": "look at the top 5 cards of the loot deck. put 1 on top and the rest on the bottom."
+		},
+		{
+			"name": "XIX. THE SUN",
+			"text": "put this on the bottom of the loot deck. if you do, take an extra turn after this one if it's your turn."
+		},
+		{
+			"name": "XX. JUDGEMENT",
+			"text": "choose the player with the most souls or tied for the most. that player destroys a soul they control."
+		},
+		{
+			"name": "XXI. THE WORLD",
+			"text": "look at each player's hand, then loot 2."
+		},
+		{
+			"name": "DAGAZ",
+			"text": "choose one-\ndestroy a curse.\nchoose a player. prevent the next 1 damage they would take this turn."
+		},
+		{
+			"name": "EHWAZ",
+			"text": "put each monster not being attacked into discard and replace each with the top card of the monster deck."
+		},
+		{
+			"name": "BLANK RUNE",
+			"text": "roll-\n1: each player gains 1¢.\n2: each player loots 2.\n3: each player takes 3 damage.\n4: each player gains 4¢.\n5: each player loots 5.\n6: each player gains 6¢."
+		},
+		{
+			"name": "BLOODY PENNY",
+			"text": "each time a player dies, before paying penalties, loot 1."
+		},
+		{
+			"name": "BROKEN ANKH",
+			"text": "when you would die, roll-"
+		},
+		{
+			"name": "CAIN'S EYE",
+			"text": "at the start of your turn, look at the top card of the loot deck. you may put it on the bottom."
+		},
+		{
+			"name": "COUNTERFEIT PENNY",
+			"text": "if you would gain any number of ¢, gain that much +1¢ instead."
+		},
+		{
+			"name": "CURVED HORN",
+			"text": "gain +1 for your first attack roll each turn."
+		},
+		{
+			"name": "GOLDEN HORSESHOE",
+			"text": "at the start of your turn, look at the top card of the treasure deck, you may put it on the bottom."
+		},
+		{
+			"name": "GUPPY'S HAIRBALL",
+			"text": "each time you would take damage, roll-\n\n6: prevent 1 of that damage."
+		}
+	]
+}

@@ -8,10 +8,11 @@ const int STARTING_LOOT_AMOUNT = 2;
 const int STARTING_SHOP_SIZE = 2;
 const int STARTING_MONSTERS_AMOUNT = 2;
 
-StackEffect::StackEffect(string funcName, Player* player, CardWrapper* card) :
+StackEffect::StackEffect(string funcName, Player* player, CardWrapper* card, string type) :
     funcName(funcName),
     player(player),
-    card(card) {}
+    card(card),
+    type(type) {}
 
 StackEffect::StackEffect() {}
 
@@ -193,21 +194,29 @@ int Match::wrap_buyItem(lua_State* L) {
     auto match = static_cast<Match*>(lua_touserdata(L, 1));
     TrinketCard* card = nullptr;
     auto top = match->getTopTreasureCard();
-    match->_treasureDeck.pop_back();
+    if (top) match->_treasureDeck.pop_back();
     if (match->_lastTreasureIndex == -1) {
         card = top;
     } else {
         card = match->_shop[match->_lastTreasureIndex];
-        match->_shop[match->_lastTreasureIndex] = top;
+        if (top) {match->_shop[match->_lastTreasureIndex] = top;}
+        else {
+            match->removeFromShop(card);
+        }
     }
     auto player = match->_stack.back().player;
     player->payPricePerTreasure();
+    // std::cout << "thresh" << std::endl;
     auto w = new CardWrapper(card, match->newCardID());
     player->addToBoard(w);
     auto efn = card->enterFuncName();
     if (!efn.size()) return 0;
-    std::cout << efn << std::endl;
     match->execFunc(efn);
+    // remove all empty objects from shop
+    match->_shop.erase(std::remove(match->_shop.begin(), match->_shop.end(), nullptr),
+            match->_shop.end());
+    std::cout << "Shop size: " << match->_shop.size() << std::endl;
+    match->log("Player " + player->name() + " bought " + card->name());
     return 0;
 }
 
@@ -277,6 +286,7 @@ int Match::wrap_deferEOT(lua_State *L) {
         effect.funcName = funcName;
         effect.card = card;
         effect.player = owner;
+        effect.type = TRIGGER_TYPE;
         match->_eotDeferredTriggers.push(effect);
     } else match->_eotDefers.push(funcName);
     return 0;
@@ -323,6 +333,16 @@ int Match::wrap_decBeginningLoot(lua_State* L) {
     auto player = match->playerWithID(pid);
     player->decBeginningLoot();
     return 0;
+}
+
+void Match::removeFromShop(TrinketCard* card) {
+    for (auto it = _shop.begin(); it != _shop.end(); it++) {
+        if (*it == card) {
+            _shop.erase(it);
+            return;
+        }
+    }
+    throw std::runtime_error("attempted to remove card " + card->name() + " from shop(it isn't there)");
 }
 
 Player* Match::playerWithID(int id) {
@@ -551,7 +571,8 @@ void Match::currentPlayerLoot() {
     this->pushToStack(StackEffect(
         "_startTurnLoot", 
         _activePlayer, 
-        nullptr
+        nullptr,
+        LOOT_TYPE
     ));
 }
 
@@ -595,11 +616,6 @@ void Match::executePlayerAction(Player* player, string action) {
     auto split = str::split(action, " ");
     if (!this->_actionMap.count(split[0])) throw std::runtime_error("don't have a handler for " + split[0] + " action in match");
     this->_actionMap[split[0]](player, split);
-    // this->pushToStack(StackEffect(
-    //     "_customAction",
-    //     player,
-    //     nullptr
-    // ));
 }
 
 void Match::applyTriggers(string triggerType) {
@@ -618,7 +634,12 @@ void Match::applyTriggers(string triggerType) {
             auto checkFuncName = pair.first;
             if (!this->execCheck(checkFuncName)) continue;
             this->log(card->name() + " is triggered.");
-            this->pushToStack(StackEffect(pair.second, player, w));
+            this->pushToStack(StackEffect(
+                pair.second, 
+                player, 
+                w,
+                TRIGGER_TYPE    
+            ));
         }
     }
 }
@@ -636,31 +657,25 @@ void Match::resolveStack() {
 
 void Match::resolveTop() {
     auto effect = this->_stack.back();
-    // pass the priority of the owner of the effect
-    // this->_priorityI = -1;
-    // for (int i = 0; i < _players.size(); i++) {
-    //     if (_players[i] == effect.player) {
-    //         this->_priorityI = i;
-    //         break;
-    //     }
-    // }
     this->_priorityI = this->_currentI;
     const auto last = this->_currentI;
-    // if (this->_priorityI == -1) throw std::runtime_error("Unknown player " + effect.player->name());
     do {
         // prompt action
         auto response = this->promptPlayerWithPriority();
+        auto player = _players[_priorityI];
         if (response == ACTION_PASS) {
             // player passes priority
             this->log(this->_players[this->_priorityI]->name() + " passes priority");
             this->_priorityI = (this->_priorityI + 1) % _players.size();
             continue;
+        } else {
+            this->executePlayerAction(player, response);
         }
         // player put something on stack
         return;
     } while (last != this->_priorityI);
     // resolve the ability
-    this->execFunc(effect.funcName);
+    if (effect.resolve) this->execFunc(effect.funcName);
     this->_stack.pop_back();
 }
 
@@ -673,7 +688,7 @@ string Match::promptPlayerWithPriority() {
 void Match::log(string message) {
     std::cout << " - " << message << std::endl;
     // std::this_thread::sleep_for(std::chrono::seconds(1));
-    std::this_thread::sleep_for(std::chrono::milliseconds(200));
+    std::this_thread::sleep_for(std::chrono::milliseconds(100));
 }
 
 MatchState Match::getState() {
@@ -692,8 +707,10 @@ MatchState Match::getState() {
     result.treasureDeckCount = _treasureDeck.size();
     for (const auto& c : _treasureDiscard)
         result.treasureDiscard.push_back(c->name());
+    // std::cout << "shop1" << std::endl;
     for (const auto& c : _shop)
         result.shop.push_back(c->name());
+    // std::cout << "shop2" << std::endl;
 
     result.monsterDeckCount = _monsterDeck.size();
     for (const auto& c : _monsterDiscard)
