@@ -2,7 +2,7 @@ from PIL import Image
 from os import listdir
 from os.path import splitext, join
 
-IN_DIR = '../../game/images/'
+IN_DIR = '.'
 OUT_DIR = 'result'
 EXT = '.bmp'
 

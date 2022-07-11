@@ -18,9 +18,16 @@ private:
     std::vector<TrinketCard*> _treasureCards;
 
     std::vector<std::pair<LootCard*, int>> _lootDeckTemplate;
+
+    //  TODO move this to client
+    // card backs
+    string _lootCardBackPath;
+    string _treasureCardBackPath;
 public:
     Game(string path);
     ~Game();
+    string lootCardBackPath();
+    string treasureCardBackPath();
     void loadLootCards(string dir);
     void loadTreasureCards(string dir);
     void loadCharacterCards(string dir);

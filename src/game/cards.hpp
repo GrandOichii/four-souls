@@ -1,3 +1,5 @@
+//  TODO add costs to loot cards
+
 #pragma once
 
 #include <string>
@@ -144,6 +146,8 @@ public:
             std::cout << "Use: " << std::endl << "\t" << _useFuncName << std::endl;;
         }
     }
+
+    bool isTrinket() { return _isTrinket; }
 };
 
 class CharacterCard : public Card {
@@ -186,6 +190,7 @@ public:
     Card* card() { return _card; }
     int id() { return _id; }
     void recharge() { _tapped = false; }
+    void tap() { _tapped = true; }
     bool isActive() { return !_tapped; }
 
     void pushTable(lua_State* L) {

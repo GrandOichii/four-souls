@@ -25,6 +25,9 @@ Game::Game(string dir) {
     //     std::cout << "\t" << pair.first << ": " << pair.second << std::endl;
 }
 
+string Game::lootCardBackPath(){ return _lootCardBackPath;}
+string Game::treasureCardBackPath(){ return _treasureCardBackPath;}
+
 void Game::loadStartingItems(string dir) {
     auto j = fs::readJS(fs::join(dir, STARTING_ITEMS_FILE));
     for (const auto& jj : j.items()) {
@@ -39,7 +42,7 @@ void Game::loadStartingItems(string dir) {
 
 void Game::loadLootCards(string dir) {
     auto j = fs::readJS(fs::join(dir, LOOT_CARDS_FILE));
-
+    this->_lootCardBackPath = fs::join(dir, j["back"]);
     auto loadF = [this, j, dir](string key, bool isTrinket) {
         for (const auto& el : j["cards"][key].items()) {
             auto cardPath = fs::join(dir, el.value());
@@ -58,19 +61,21 @@ void Game::loadLootCards(string dir) {
     loadF("basic", false);
     loadF("trinkets", true);
 
-    for (const auto& c : _lootCards)
-        c->print("");
+    // for (const auto& c : _lootCards)
+    //     c->print("");
 }
 
 void Game::loadTreasureCards(string dir) {
     auto j = fs::readJS(fs::join(dir, TREASURE_CARDS_FILE));
-    for (const auto& jj : j.items()) {
+    this->_treasureCardBackPath = fs::join(dir, j["back"]);
+    auto jcards = j["cards"];
+    for (const auto& jj : jcards.items()) {
         string tdir = fs::join(dir, jj.value());
         auto jjj = fs::readJS(fs::join(tdir, CARD_INFO_FILE));
         this->_treasureCards.push_back(new TrinketCard(tdir, jjj, false));
     }
-    for (const auto& c : _treasureCards)
-        c->print("");
+    // for (const auto& c : _treasureCards)
+    //     c->print("");
 }
 
 void Game::loadCharacterCards(string dir) {

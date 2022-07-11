@@ -4,6 +4,7 @@
 #include <stdlib.h>
 #include <time.h>  
 #include <SDL.h>
+#include <SDL_ttf.h>
 
 #include "util.hpp"
 
@@ -23,20 +24,31 @@ using std::endl;
 using std::string;
 using std::vector;
 
-// int luafunc_cfunc(lua_State *L) {
-//     auto f = (float)lua_tonumber(L, -1);
-//     lua_pushnumber(L, f * 10);
-//     return 1; // the amount of return values
-// }
-
 static const vector<string> P1_ACTIONS = vector<string>{
-    PASS_RESPONSE
+    ACTION_PASS,
+    ACTION_PASS,
+    ACTION_PLAY_LOOT + " 0",
 };
+
 static const vector<string> P2_ACTIONS = vector<string>{
-    PASS_RESPONSE
+    ACTION_PASS,
+    ACTION_PASS,
+    ACTION_PASS,
+    ACTION_PASS,
+    ACTION_PASS,
+    ACTION_PLAY_LOOT + " 0"
 };
+
 static const vector<string> P3_ACTIONS = vector<string>{
-    PASS_RESPONSE
+    ACTION_PASS,
+    ACTION_PASS,
+    ACTION_PASS,
+    ACTION_PASS,
+    ACTION_PASS,
+    ACTION_PASS,
+    ACTION_PASS,
+    ACTION_PASS,
+    ACTION_PLAY_LOOT + " 0"
 };
 
 std::pair<int, int> getSize(SDL_Texture *texture) {
@@ -45,33 +57,95 @@ std::pair<int, int> getSize(SDL_Texture *texture) {
     return std::make_pair(size.x, size.y);
 }
 
+class Font {
+private:
+    SDL_Renderer* _ren;
+    TTF_Font *_font;
+public:
+    Font(const char* path, int fontSize, SDL_Renderer* ren) : 
+        _ren(ren) 
+    {
+        if (TTF_Init() != 0){
+            std::cout << "TTF_init Error: " << SDL_GetError() << std::endl;
+            throw std::runtime_error("failed initializing font");
+        }
+        this->_font = TTF_OpenFont(path, fontSize);
+        if (_font == nullptr){
+            std::cout << "TTF_OpenFont Error: " << SDL_GetError() << std::endl;
+            throw std::runtime_error("failed opening font file " + std::string(path));
+        }       
+    }
+
+    ~Font() {
+        TTF_CloseFont(_font);
+    }
+
+    SDL_Texture * get(std::string message, SDL_Color color) {
+        SDL_Surface *surf = TTF_RenderText_Blended(_font, message.c_str(), color);
+        if (surf == nullptr){
+            TTF_CloseFont(_font);
+            std::cout << "TTF_RenderText Error: " << SDL_GetError() << std::endl;
+            throw std::runtime_error("failed rendering message " + message);
+        }
+        SDL_Texture *result = SDL_CreateTextureFromSurface(this->_ren, surf);
+        if (result == nullptr){
+            std::cout << "CreateTexture Error: " << SDL_GetError() << std::endl;
+
+            throw std::runtime_error("failed creating texture of message " + message);
+        }
+        SDL_FreeSurface(surf);
+        return result;
+    }
+
+    SDL_Texture * get(std::string message) {
+        return this->get(message, SDL_Color{255, 255, 255, 255});
+    }
+};
+
 class AssetsManager {
 private:
     SDL_Renderer* _ren = nullptr;
 
     std::map<string, SDL_Texture*> _textureMap;
+    std::map<string, SDL_Texture*> _cardBacks;
 
+    std::map<int, Font*> _fontMap;
 public:
-    AssetsManager(SDL_Renderer* ren) :
+    AssetsManager(SDL_Renderer* ren, string fontPath) :
         _ren(ren) 
     {
-
+        std::vector<int> fontSizes = {24};
+        for (auto& fs : fontSizes)
+            _fontMap[fs] = new Font(fontPath.c_str(), fs, _ren);
     }
 
     ~AssetsManager() {
         for (const auto& [key, value] : _textureMap) SDL_DestroyTexture(value);
+        for (const auto& [key, value] : _cardBacks) SDL_DestroyTexture(value);
+        for (const auto& [key, value] : _fontMap) delete value;
     }
 
     std::pair<int, int> cardSize() { return getSize(_textureMap.begin()->second); }
 
+    void addCardBack(string cardType, string path) {
+        auto tex = this->loadBMP(path);
+        this->_cardBacks[cardType] = tex;
+    }
+
     void addCard(Card* card) {
         auto tex = this->loadBMP(card->imagePath());
-        this->_textureMap[card->name()] = tex;
+        auto name = card->name();
+        this->_textureMap[name] = tex;
     }
 
     SDL_Texture* getCard(string cardName) {
         if (!_textureMap.count(cardName)) throw std::runtime_error("no image for card " + cardName);
         return _textureMap[cardName];
+    }
+
+    SDL_Texture* getCardBack(string cardType) {        
+        if (!_cardBacks.count(cardType)) throw std::runtime_error("no image for card back " + cardType);
+        return _cardBacks[cardType];
     }
 
     SDL_Texture *loadBMP(string path) {
@@ -88,6 +162,11 @@ public:
         }
         return result;
     }
+
+    SDL_Texture* getMessage(string message, SDL_Color color, int fontSize) {
+        if (!_fontMap.count(fontSize)) throw std::runtime_error("no font with size " + std::to_string(fontSize));
+        return _fontMap[fontSize]->get(message, color);
+    }
 };
 
 class GameWrapper {
@@ -103,16 +182,31 @@ private:
     SDL_Renderer *_ren = nullptr;
     SDL_Event* _event = new SDL_Event();
     bool _running = false;
+
+    int _sideBoardX;
+
     int _wWidth;
     int _wHeight;
     int _stackX;
     int _boardWidth;
     int _boardHeight;
 
+    int _lootDeckX;
+    int _lootDeckY;
+    int _lootDiscardX;
+
+    int _treasureDeckX;
+    int _treasureDeckY;
+
     std::thread _gameMatchThread;
 
     int _playerSpaces[4][2];
     std::pair<int, int> _cardSize;
+
+    int _lastLootDeckCount = 0;
+    SDL_Texture* _lastLootDeckCountTex = nullptr;
+    int _lastLootDiscardCount = 0;
+    SDL_Texture* _lastLootDiscardCountTex = nullptr;
 public:
     GameWrapper(string title, string path, bool fullscreen) :
         _title(title),
@@ -143,35 +237,51 @@ public:
         }
 
         // calculate player spaces
+        this->_sideBoardX = 200;
         auto stackWidth = 150;
         this->_stackX = this->_wWidth - stackWidth;
 
-        this->_boardWidth = this->_stackX - 1;
+        this->_boardWidth = this->_stackX - 1 - this->_sideBoardX;
         this->_boardHeight = this->_wHeight;
 
-        this->_playerSpaces[0][0] = 0;
+        this->_playerSpaces[0][0] = this->_sideBoardX;
         this->_playerSpaces[0][1] = 0;
 
-        this->_playerSpaces[1][0] = _boardWidth / 2+1;
+        this->_playerSpaces[1][0] = this->_sideBoardX + _boardWidth / 2+1;
         this->_playerSpaces[1][1] = 0;
 
-        this->_playerSpaces[2][0] = _boardWidth / 2+1;
+        this->_playerSpaces[2][0] = this->_sideBoardX + _boardWidth / 2+1;
         this->_playerSpaces[2][1] = _boardHeight / 2+1;
 
-        this->_playerSpaces[3][0] = 0;
+        this->_playerSpaces[3][0] = this->_sideBoardX;
         this->_playerSpaces[3][1] = _boardHeight / 2+1;
 
-        this->_assets = new AssetsManager(this->_ren);
+        this->_assets = new AssetsManager(this->_ren, "font/font.ttf");
         auto allCards = this->_game->getAllCards();
         for (const auto& c : allCards)
             this->_assets->addCard(c);
         this->_cardSize = this->_assets->cardSize();
+        this->_assets->addCardBack(CARD_TYPE_LOOT, _game->lootCardBackPath());
+        this->_assets->addCardBack(CARD_TYPE_TREASURE, _game->treasureCardBackPath());
+
+        const int deckCount = 3;
+        int between = 3;
+        int startY = (this->_wHeight - deckCount * _cardSize.second) / 2;
+
+        int discardX = between;
+        int mainX = discardX + _cardSize.first + between;
+
+        this->_lootDeckX = mainX;
+        this->_lootDiscardX = discardX;
+        this->_lootDeckY = startY;
     }
 
     ~GameWrapper() {
         delete _game;
         delete _match;
         delete _assets;
+
+        SDL_DestroyTexture(_lastLootDeckCountTex);
     }
 
     void start() {
@@ -221,21 +331,79 @@ public:
     }
 
     void drawCard(string cardName, bool active, int x, int y) {
-        //  TODO add rotation
-        this->drawTexture(this->_assets->getCard(cardName), x, y);
+        this->drawTexture(this->_assets->getCard(cardName), x, y, active ? 0 : 90);
+    }
+
+    void drawCardBack(string cardType, bool active, int x, int y) {
+        this->drawTexture(this->_assets->getCardBack(cardType), x, y, active ? 0 : 90);
     }
 
     void draw() {
         // draw player separators
-        this->drawLine(this->_boardWidth / 2, 0, this->_boardWidth / 2, this->_boardHeight-1, SDL_Color{255, 0, 0, 0});
-        this->drawLine(0, this->_boardHeight / 2, this->_boardWidth-1, this->_boardHeight / 2, SDL_Color{255, 0, 0, 0});
+        this->drawLine(
+            this->_sideBoardX + this->_boardWidth / 2, 
+            0, 
+            this->_sideBoardX + this->_boardWidth / 2, 
+            this->_boardHeight-1, 
+        SDL_Color{255, 0, 0, 0});
+        this->drawLine(
+            this->_sideBoardX, 
+            this->_boardHeight / 2, 
+            this->_sideBoardX + this->_boardWidth-1, 
+            this->_boardHeight / 2, 
+        SDL_Color{255, 0, 0, 0});
 
         // get game state
         auto state = this->_match->getState();
         // draw boards
         this->drawBoards(state);
+        // draw decks
+        this->drawSideBoard(state);
         // draw stack
         this->drawStack(state);
+    }
+
+    void drawSideBoard(const MatchState& state) {
+        this->drawLoot(state);
+        this->drawTreasure(state);
+        this->drawMonsters(state);
+    }
+
+    void drawMonsters(const MatchState& state) {
+        //  TODO
+        // draw monster deck
+        // draw monster discard
+        // draw monster slots
+    }
+
+    void drawTreasure(const MatchState& state) {
+        //  TODO
+        // draw treasure deck
+        // draw treasure discard
+        // draw shop
+    }
+
+    void drawLoot(const MatchState& state) {
+        // draw loot deck
+        this->drawCardBack(CARD_TYPE_LOOT, true, _lootDeckX, _lootDeckY);
+        auto count = state.lootDeckCount;
+        if (count != _lastLootDeckCount) {
+            _lastLootDeckCount = count;
+            SDL_DestroyTexture(_lastLootDeckCountTex);
+            _lastLootDeckCountTex = this->_assets->getMessage(std::to_string(_lastLootDeckCount), SDL_Color{255, 255, 255, 0}, 24);
+        }
+        this->drawTexture(_lastLootDeckCountTex, _lootDeckX + 10, _lootDeckY + 10);
+        // draw loot discard
+        count = state.lootDiscard.size();
+        if (count) {
+            this->drawCard(*(state.lootDiscard.end()-1), true, _lootDiscardX, _lootDeckY);
+        }
+        if (count != _lastLootDeckCount) {
+            _lastLootDiscardCount = count;
+            SDL_DestroyTexture(_lastLootDiscardCountTex);
+            _lastLootDiscardCountTex = this->_assets->getMessage(std::to_string(_lastLootDiscardCount), SDL_Color{255, 255, 255, 0}, 24);
+        }
+        this->drawTexture(_lastLootDiscardCountTex, _lootDiscardX + 10, _lootDeckY + 10);
     }
 
     void drawBoards(const MatchState& state) {
@@ -243,6 +411,8 @@ public:
             auto space = state.boards[i];
             int pX = _playerSpaces[i][0];
             int pY = _playerSpaces[i][1];
+            int lootX = pX + 200;
+            int looyY = pY + 10;
             if (i == state.currentI)
                 this->drawRect(pX, pY, _boardWidth/2, _boardHeight/2, SDL_Color{0, 150, 0, 0}, true);
             if (i == state.priorityI) {
@@ -251,12 +421,18 @@ public:
                 this->drawRect(pX, pY, width, height, SDL_Color{0, 255, 255, 0}, false);
                 this->drawRect(pX+1, pY+1, width-2, height-2, SDL_Color{0, 255, 255, 0}, false);
             }
+            pX += _cardSize.second - _cardSize.first;
             auto cCard = space.playerCard;
             this->drawCard(cCard.first, cCard.second, pX+10, pY+10);
             pY += 150;
+            int betweenCards = 2;
             for (const auto& card : space.board) {
                 this->drawCard(card.first, card.second, pX+10, pY);
-                pX += _cardSize.second + 2;
+                pX += _cardSize.second + betweenCards;
+            }
+            for (const auto& card : space.hand) {
+                this->drawCard(card, true, lootX, looyY);
+                lootX += _cardSize.first + betweenCards;
             }
         }
     }
@@ -285,12 +461,26 @@ public:
         SDL_SetRenderDrawColor(_ren, 0, 0, 0, 0 );
     }
 
-    void drawTexture(SDL_Texture *texture, int x, int y) {
-        SDL_Rect pos;
-        pos.x = x;
-        pos.y = y;
-        SDL_QueryTexture(texture, NULL, NULL, &pos.w, &pos.h);
-        SDL_RenderCopy(_ren, texture, NULL, &pos);
+    void drawTexture(SDL_Texture *texture, int x, int y, int angle=0) {
+        // if (!angle) {
+        //     SDL_Rect pos;
+        //     pos.x = x;
+        //     pos.y = y;
+        //     SDL_QueryTexture(texture, NULL, NULL, &pos.w, &pos.h);
+        //     SDL_RenderCopy(_ren, texture, NULL, &pos);
+        //     return;
+        // }
+        auto size = getSize(texture);
+        // SDL_Rect srcrect;
+        // srcrect.w = size.first;
+        // srcrect.h = size.second;
+        SDL_Rect dstrect;
+        dstrect.w = size.first;
+        dstrect.h = size.second;
+        dstrect.x = x;
+        dstrect.y = y;
+        // std::cout << "\t" << "(" << srcrect.x << " ; " << srcrect.y << ")" << "  (" << dstrect.x << " ; " << dstrect.y << ")" << std::endl;
+        SDL_RenderCopyEx( _ren, texture, nullptr, &dstrect, angle, NULL, SDL_FLIP_NONE );        
     }
 
     void drawRect(int x, int y, int width, int height, SDL_Color color, bool fill) {
@@ -308,8 +498,8 @@ public:
 };
 
 int main() {
-    // srand(time(0));
-    srand(0);
+    // srand(time(0)) =
+    srand(1);
     auto wrapper = new GameWrapper("four-souls", "game", false);
     wrapper->start();
     delete wrapper;

@@ -1,0 +1,7 @@
+{
+    "name": "A nickel!",
+    "text": "Gain 5c",
+    "image": "image.bmp",
+    "script": "script.lua",
+    "use": "ANickel_use"
+}

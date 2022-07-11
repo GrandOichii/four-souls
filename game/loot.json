@@ -1,7 +1,12 @@
 {
+    "back": "images/loot_card_back.bmp",
     "cards": {
         "basic": {
             "A penny!": "loot/one_cent",
+            "2 cents!": "loot/two_cents",
+            "3 cents!": "loot/three_cents",
+            "4 cents!": "loot/four_cents",
+            "A nickel!": "loot/nickel",
             "Blank rune": "loot/blank_rune"
         },
         "trinkets": {
@@ -9,7 +14,11 @@
         }
     },
     "deck": {
-        "A penny!": 4,
+        "A penny!": 2,
+        "2 cents!": 6,
+        "3 cents!": 11,
+        "4 cents!": 12,
+        "A nickel!": 5,
         "Blood penny": 1,
         "Blank rune": 1
     }

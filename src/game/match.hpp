@@ -27,10 +27,14 @@ using std::string;
 const int MIN_PLAYER_COUNT = 2;
 const int MAX_PLAYER_COUNT = 4;
 const int SOULS_TO_WIN = 4;
+const int STARTING_COIN_AMOUNT = 3;
+const int STARTING_LOOT_AMOUNT = 2;
 
 struct PlayerBoardState {
+    bool characterActive;
     std::pair<string, bool> playerCard;
     std::vector<std::pair<string, bool>> board;
+    std::vector<string> hand;
 };
 
 struct StackMememberState {
@@ -44,6 +48,14 @@ struct MatchState {
     vector<StackMememberState> stack;
     int currentI;
     int priorityI;
+
+    int lootDeckCount;
+    int treasureDeckCount;
+    int monsterDeckCount;
+
+    vector<string> lootDiscard;
+    vector<string> treasureDiscard;
+    vector<string> monsterDiscard;
 };
 
 class Player {
@@ -59,9 +71,14 @@ private:
 
     int _soulCount;
 
+    int _coinCount;
+    int _additionalCoins;
+
     bool _characterActive;
-    std::vector<CardWrapper*> _board;
     int _startTurnLootAmount;
+
+    std::vector<CardWrapper*> _board; // dont forget to delete these!
+    std::vector<LootCard*> _hand;
 public:
     Player(std::string name, CharacterCard* card, int id) :
         _name(name),
@@ -72,18 +89,22 @@ public:
         this->_health = this->_baseMHealth;
 
         this->_baseAttack = card->attack();
-        this->_board.push_back(new CardWrapper(card->startingItem(), _id));
+        auto w = new CardWrapper(card->startingItem(), _id);
+        w->tap();
+        this->_board.push_back(w);
         this->_characterActive = false;
         this->_startTurnLootAmount = 1;
 
         this->_soulCount = 0;
+
+        this->_coinCount = 0;
+        this->_additionalCoins = 0;
     }
 
     virtual ~Player() {
         for (const auto& w : _board) delete w;
     }
 
-    string name() { return _name; }
 
     void print() {
         std::cout << _name << " (" << _id << ")" << std::endl;
@@ -92,7 +113,12 @@ public:
             std::cout << w->card()->name() << " (" << w->id() << ")" << std::endl;
     }
 
+    LootCard* takeCard(int cardI) {
+        return *_hand.erase(_hand.begin()+cardI-1);
+    }
+
     std::vector<CardWrapper*> board() { return _board; }
+    std::vector<LootCard*> hand() { return _hand; }
 
     bool characterActive() { return _characterActive; }
 
@@ -119,9 +145,33 @@ public:
 
     virtual string promptAction() = 0;
 
+    string name() { return _name; }
     int id() { return _id; }
     int soulCount() { return _soulCount; }
     CharacterCard* characterCard() { return _characterCard; }
+
+    int coinCount() { return _coinCount; }
+    void addCoins(int amount) { this->_coinCount += amount + _additionalCoins; }
+    void removeCoins(int amount) { this->_coinCount -= amount; }
+
+    void incAdditionalCoins() { _additionalCoins++; }
+    void decAdditionalCoins() { _additionalCoins--; }
+
+    void addLootCards(vector<LootCard*> cards) {
+        for (const auto& c : cards)
+            this->_hand.push_back(c);
+    }
+
+    PlayerBoardState getState() {
+        PlayerBoardState result;
+        result.playerCard.first = _characterCard->name();
+        result.playerCard.second = _characterActive;
+        for (const auto& w : _board)
+            result.board.push_back(std::make_pair(w->card()->name(), w->isActive()));
+        for (const auto& c : _hand)
+            result.hand.push_back(c->name());
+        return result;
+    }    
 };
 
 class ScriptedPlayer : public Player {
@@ -137,7 +187,7 @@ public:
     }
 
     string promptAction() {
-        if (_actions.empty()) return PASS_RESPONSE;
+        if (_actions.empty()) return ACTION_PASS;
         auto result = _actions.top();
         _actions.pop();
         return result;
@@ -167,6 +217,7 @@ struct StackEffect {
 
 class Match {
 private:
+    int _lastID = 0;
     bool _running = false;
     lua_State *L;
     int _turnCounter = 0;
@@ -181,11 +232,31 @@ private:
     Player* _activePlayer;
 
     std::deque<LootCard*> _lootDeck;
+    std::deque<LootCard*> _lootDiscard;
+
     std::deque<TrinketCard*> _treasureDeck;
+    std::deque<TrinketCard*> _treasureDiscard;
 
     std::vector<StackEffect> _stack;
     std::stack<string> _eotDefers;
     std::stack<StackEffect> _eotDeferredTriggers;
+
+    std::map<string, std::function<void(Player*, std::vector<string>)>> _actionMap = {
+        {ACTION_PLAY_LOOT, [this](Player* player, std::vector<string> args){
+            auto cardI = atoi(args[1].c_str());
+            auto card = player->takeCard(cardI);
+            if (!card->isTrinket()) this->_lootDiscard.push_back(card);
+            auto wrapper = new CardWrapper(card, this->newCardID());
+            this->pushToStack(StackEffect(
+                "_popLootStack",
+                player,
+                wrapper
+            ));
+            this->_lootStack.push(std::make_pair(card, player));
+        }}
+    };
+
+    std::stack<std::pair<LootCard*, Player*>> _lootStack;
 public:
     Match() {
         this->rng.seed(rand());
@@ -212,6 +283,36 @@ public:
                     return p;
         throw std::runtime_error("can't find owner of card " + card->card()->name() + " [" + std::to_string(card->id()) + "]");
     } 
+
+    void shuffleLootDiscardIntoMain() {
+        while (!_lootDiscard.empty()) {
+            _lootDeck.push_back(_lootDiscard.back());
+            _lootDiscard.pop_back();
+        }
+        this->shuffleLootDeck();
+    }
+
+    LootCard* getTopLootCard() {
+        if (!_lootDeck.size()) this->shuffleLootDiscardIntoMain();
+        if (_lootDeck.empty()) return nullptr;
+        return _lootDeck.back();
+    }
+
+    vector<LootCard*> getTopLootCards(int amount) {
+        vector<LootCard*> cards;
+        while (amount) {
+            auto card = getTopLootCard();
+            if (!card) {
+                this->log("The loot deck is empty");
+                break;
+            }
+            cards.push_back(card);
+            // cards.push_back(_lootDeck.back());
+            _lootDeck.pop_back();
+            amount--;
+        }
+        return cards;
+    }
 
     static int wrap_getOwner(lua_State *L) {
         if (lua_gettop(L) != 1) {
@@ -249,7 +350,23 @@ public:
         }
         if (!player) throw std::runtime_error("no player with id " + std::to_string(pid));
         match->log(player->name() + " loots " + std::to_string(amount) + " cards");
-        //  TODO
+        auto cards = match->getTopLootCards(amount);
+        player->addLootCards(cards);
+        return 0;
+    }
+
+    static int wrap_popLootStack(lua_State* L) {
+        if (lua_gettop(L) != 1) {
+            lua_err(L);
+            exit(1);
+        }
+        auto match = static_cast<Match*>(lua_touserdata(L, 1));
+        // std::cout << "Popping loot stack" << std::endl;
+        auto last = match->_lootStack.top();
+        match->_lootStack.pop();
+        auto card = last.first;
+        auto player = last.second;
+        //  TODO execute the loot card
         return 0;
     }
 
@@ -264,22 +381,18 @@ public:
             exit(1);
         }
         auto cardID = (int)lua_tonumber(L, 2);
-        std::cout << cardID << std::endl;
         auto card = match->cardWithID(cardID);
         auto owner = match->findOwner(card);
-        // std::cout << card->card()->name() << std::endl;
         if (!lua_isstring(L, 3)) {
             lua_err(L);
             exit(1);
         }
         auto funcName = (string)lua_tostring(L, 3);
-
         if (!lua_isboolean(L, 4)) {
             lua_err(L);
             exit(1);
         }
         auto isTrigger = (bool)lua_toboolean(L, 4);
-        
         if (isTrigger) {
             StackEffect effect;
             effect.funcName = funcName;
@@ -323,6 +436,7 @@ public:
         lua_register(L, "getOwner", wrap_getOwner);
         lua_register(L, "lootCards", wrap_lootCards);
         lua_register(L, "deferEOT", wrap_deferEOT);
+        lua_register(L, "_popLootStack", wrap_popLootStack);
         lua_register(L, "this", wrap_this);
 
         // load card scripts
@@ -399,7 +513,8 @@ public:
             if (p->name() == name)
                 return nullptr;
         //  TODO change this to a player with a port
-        auto result = new ScriptedPlayer(name, character, _players.size()+1, actions);
+        auto result = new ScriptedPlayer(name, character, newCardID(), actions);
+        result->addCoins(STARTING_COIN_AMOUNT);
         _players.push_back(result);
         return result;
     }
@@ -449,18 +564,27 @@ public:
 
     void start() {
         std::cout << "\nThe game starts\n\n";
+        // setup script
         this->execScript("function _startTurnLoot(host)\n\tlocal owner = getOwner(host)\nlootCards(host, owner[\"id\"], owner[\"startTurnLootAmount\"])\nend");
-        std::cout << "Loot deck:" << std::endl;
-        for (const auto& card : _lootDeck)
-            std::cout << "\t" << card->name() << std::endl;
-        std::cout << "Treasure deck:" << std::endl;
-        for (const auto& card : _treasureDeck)
-            std::cout << "\t" << card->name() << std::endl;
-        std::cout << "Players:" << std::endl;
-        for (const auto& p : _players)
-            p->print();
+        // give starting hands
+        for (auto& p : _players) {
+            auto cards = this->getTopLootCards(STARTING_LOOT_AMOUNT);
+            p->addLootCards(cards);
+        }
+        // std::cout << "Gave the starting hands" << std::endl;
+        // std::cout << "Loot deck:" << std::endl;
+        // for (const auto& card : _lootDeck)
+        //     std::cout << "\t" << card->name() << std::endl;
+        // std::cout << "Treasure deck:" << std::endl;
+        // for (const auto& card : _treasureDeck)
+        //     std::cout << "\t" << card->name() << std::endl;
+        // std::cout << "Players:" << std::endl;
+        // for (const auto& p : _players)
+        //     p->print();
 
-        this->_currentI = rand() % _players.size();
+        // this->_currentI = rand() % _players.size();
+        this->_currentI = 0;
+
         this->_priorityI = this->_currentI;
         this->_running = true;
 
@@ -486,7 +610,8 @@ public:
         this->pushToStack(StackEffect(
             "_startTurnLoot", 
             _activePlayer, 
-            nullptr));
+            nullptr
+        ));
     }
 
     void turn() {
@@ -508,9 +633,10 @@ public:
         // main step
         this->log(_activePlayer->name() + "'s main phase");
         string response = "";
-        while (response != PASS_RESPONSE) {
-            response = this->_activePlayer->promptAction();
-            //  TODO execute action
+        while ((response = this->_activePlayer->promptAction()) != ACTION_PASS) {
+            std::cout << "\t" << _activePlayer->name() << ": " << response << std::endl;
+            this->executePlayerAction(_activePlayer, response);
+            this->resolveStack();
         }
         this->log("End of " + this->_activePlayer->name() + "'s turn");
 
@@ -522,6 +648,17 @@ public:
 
         // all silent end of turn effects
         this->execEOTDefers();
+    }
+
+    void executePlayerAction(Player* player, string action) {
+        auto split = str::split(action, " ");
+        if (!this->_actionMap.count(split[0])) throw std::runtime_error("don't have a handler for " + split[0] + " action in match");
+        this->_actionMap[split[0]](player, split);
+        // this->pushToStack(StackEffect(
+        //     "_customAction",
+        //     player,
+        //     nullptr
+        // ));
     }
 
     void applyTriggers(string triggerType) {
@@ -572,7 +709,7 @@ public:
         do {
             // prompt action
             auto response = this->promptPlayerWithPriority();
-            if (response == PASS_RESPONSE) {
+            if (response == ACTION_PASS) {
                 // player passes priority
                 this->log(this->_players[this->_priorityI]->name() + " passes priority");
                 this->_priorityI = (this->_priorityI + 1) % _players.size();
@@ -600,18 +737,20 @@ public:
 
     MatchState getState() {
         MatchState result;
-        for (const auto& p : _players) {
-            PlayerBoardState space;
-            space.playerCard.first = p->characterCard()->name();
-            space.playerCard.second = p->characterActive();
-            for (const auto& w : p->board())
-                space.board.push_back(std::make_pair(w->card()->name(), w->isActive()));
-            result.boards.push_back(space);
-        }
+        for (const auto& p : _players) 
+            result.boards.push_back(p->getState());
         for (auto& si : _stack)
             result.stack.push_back(si.getState());
         result.currentI = _currentI;
         result.priorityI = _priorityI;
+        result.lootDeckCount = _lootDeck.size();
+        result.treasureDeckCount = _treasureDeck.size();
+        for (const auto& c : _lootDiscard)
+            result.lootDiscard.push_back(c->name());
         return result;
+    }
+
+    int newCardID() {
+        return ++_lastID;
     }
 };

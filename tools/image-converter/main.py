@@ -3,7 +3,7 @@ from os import listdir
 from os.path import splitext, join
 
 
-IN_DIR = '../../game/images/'
+IN_DIR = '.'
 SEEK_EXT = '.png'
 TARGET_EXT = '.bmp'
 # SEEK_EXT = '.bmp'
