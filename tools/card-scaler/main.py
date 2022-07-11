@@ -14,7 +14,7 @@ for file in listdir('.'):
         continue
     img = Image.open(file)
     width, height = img.size
-    # new_size = (width * SCALE, height * SCALE)
-    new_size = (87 , 121)
+    new_size = (width * SCALE, height * SCALE)
+    # new_size = (87 , 121)
     img.thumbnail(new_size, Image.ANTIALIAS)
     img.save('scaled_' + file)

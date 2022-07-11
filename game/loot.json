@@ -7,7 +7,7 @@
             "3 cents!": "loot/three_cents",
             "4 cents!": "loot/four_cents",
             "A nickel!": "loot/nickel",
-            "Blank rune": "loot/blank_rune"
+            "A sack": "loot/a_sack"
         },
         "trinkets": {
             "Blood penny": "loot/blood_penny"
@@ -20,6 +20,6 @@
         "4 cents!": 12,
         "A nickel!": 5,
         "Blood penny": 1,
-        "Blank rune": 1
+        "A sack": 1
     }
 }

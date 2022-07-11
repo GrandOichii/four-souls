@@ -16,6 +16,8 @@ private:
     std::vector<LootCard*> _lootCards;
     // treasure cards
     std::vector<TrinketCard*> _treasureCards;
+    // monster cards
+    std::vector<MonsterCard*> _monsterCards;
 
     std::vector<std::pair<LootCard*, int>> _lootDeckTemplate;
 
@@ -23,13 +25,16 @@ private:
     // card backs
     string _lootCardBackPath;
     string _treasureCardBackPath;
+    string _monsterCardBackPath;
 public:
     Game(string path);
     ~Game();
     string lootCardBackPath();
     string treasureCardBackPath();
+    string monsterCardBackPath();
     void loadLootCards(string dir);
     void loadTreasureCards(string dir);
+    void loadMonsterCards(string dir);
     void loadCharacterCards(string dir);
     void loadStartingItems(string dir);
     Match* createMatch();

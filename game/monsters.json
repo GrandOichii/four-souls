@@ -1,0 +1,8 @@
+{
+    "back": "images/monster_card_back.bmp",
+    "cards": [
+        "monsters/dip",
+        "monsters/pooter",
+        "monsters/gurdy_jr"
+    ]
+}

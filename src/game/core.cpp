@@ -6,27 +6,35 @@ static const string CARD_INFO_FILE = "card.json";
 
 static const string LOOT_CARDS_FILE = "loot.json";
 static const string CHARACTER_CARDS_FILE = "characters.json";
+static const string MONSTER_CARDS_FILE = "monsters.json";
 static const string TREASURE_CARDS_FILE = "treasures.json";
 static const string STARTING_ITEMS_FILE = "starting_items.json";
 
 Game::Game(string dir) {
     this->loadLootCards(dir);
     this->loadTreasureCards(dir);
-    //  TODO load monster cards
+    this->loadMonsterCards(dir);
     this->loadStartingItems(dir);
     this->loadCharacterCards(dir);
     //  TODO load config
-
-    // std::cout << "Loot cards:" << std::endl;
-    // for (const auto &card : _lootCards)
-    //     std::cout << "\t" << card->name() << std::endl;
-    // std::cout << "Loot card deck template:" << std::endl;
-    // for (const auto &pair : _lootDeckTemplate)
-    //     std::cout << "\t" << pair.first << ": " << pair.second << std::endl;
 }
 
 string Game::lootCardBackPath(){ return _lootCardBackPath;}
 string Game::treasureCardBackPath(){ return _treasureCardBackPath;}
+string Game::monsterCardBackPath(){ return _monsterCardBackPath;}
+
+void Game::loadMonsterCards(string dir) {
+    auto j = fs::readJS(fs::join(dir, MONSTER_CARDS_FILE));
+    this->_monsterCardBackPath = fs::join(dir, j["back"]);
+    auto jcards = j["cards"];
+    for (const auto& jj : jcards.items()) {
+        string tdir = fs::join(dir, jj.value());
+        auto jjj = fs::readJS(fs::join(tdir, CARD_INFO_FILE));
+        this->_monsterCards.push_back(new MonsterCard(tdir, jjj));
+    }
+    // for (const auto& c : _monsterCards)
+    //     c->print("");
+}
 
 void Game::loadStartingItems(string dir) {
     auto j = fs::readJS(fs::join(dir, STARTING_ITEMS_FILE));
@@ -35,9 +43,8 @@ void Game::loadStartingItems(string dir) {
         auto jjj = fs::readJS(fs::join(tdir, CARD_INFO_FILE));
         this->_startingItems.push_back(new TrinketCard(tdir, jjj, true));
     }
-    for (const auto& c : _startingItems)
-        c->print("");
-
+    // for (const auto& c : _startingItems)
+    //     c->print("");
 }
 
 void Game::loadLootCards(string dir) {
@@ -108,6 +115,7 @@ Match* Game::createMatch() {
     for (auto& card : _characterCards)
         result->addToCharacterPool(card);
     result->createLootDeck(_lootDeckTemplate);
+    result->createMonsterDeck(_monsterCards);
     result->createTreasureDeck(_treasureCards);
     result->setupLua();
     return result;
@@ -119,5 +127,6 @@ std::vector<Card*> Game::getAllCards() {
     for (const auto& c : _lootCards) result.push_back(c);
     for (const auto& c : _treasureCards) result.push_back(c);
     for (const auto& c : _startingItems) result.push_back(c);
+    for (const auto& c : _monsterCards) result.push_back(c);
     return result;
 }

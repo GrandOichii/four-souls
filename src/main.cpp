@@ -28,6 +28,8 @@ static const vector<string> P1_ACTIONS = vector<string>{
     ACTION_PASS,
     ACTION_PASS,
     ACTION_PLAY_LOOT + " 0",
+    ACTION_PASS,
+    ACTION_BUY_TREASURE + " 0",
 };
 
 static const vector<string> P2_ACTIONS = vector<string>{
@@ -114,7 +116,7 @@ public:
     AssetsManager(SDL_Renderer* ren, string fontPath) :
         _ren(ren) 
     {
-        std::vector<int> fontSizes = {24};
+        std::vector<int> fontSizes = {24, 48};
         for (auto& fs : fontSizes)
             _fontMap[fs] = new Font(fontPath.c_str(), fs, _ren);
     }
@@ -197,6 +199,11 @@ private:
 
     int _treasureDeckX;
     int _treasureDeckY;
+    int _treasureDiscardX;
+
+    int _monsterDeckX;
+    int _monsterDeckY;
+    int _monsterDiscardX;
 
     std::thread _gameMatchThread;
 
@@ -207,6 +214,14 @@ private:
     SDL_Texture* _lastLootDeckCountTex = nullptr;
     int _lastLootDiscardCount = 0;
     SDL_Texture* _lastLootDiscardCountTex = nullptr;
+    int _lastTreasureDeckCount = 0;
+    SDL_Texture* _lastTreasureDeckCountTex = nullptr;
+    int _lastTreasureDiscardCount = 0;
+    SDL_Texture* _lastTreasureDiscardCountTex = nullptr;
+    int _lastMonsterDeckCount = 0;
+    SDL_Texture* _lastMonsterDeckCountTex = nullptr;
+    int _lastMonsterDiscardCount = 0;
+    SDL_Texture* _lastMonsterDiscardCountTex = nullptr;
 public:
     GameWrapper(string title, string path, bool fullscreen) :
         _title(title),
@@ -263,17 +278,26 @@ public:
         this->_cardSize = this->_assets->cardSize();
         this->_assets->addCardBack(CARD_TYPE_LOOT, _game->lootCardBackPath());
         this->_assets->addCardBack(CARD_TYPE_TREASURE, _game->treasureCardBackPath());
+        this->_assets->addCardBack(CARD_TYPE_MONSTER, _game->monsterCardBackPath());
 
         const int deckCount = 3;
         int between = 3;
-        int startY = (this->_wHeight - deckCount * _cardSize.second) / 2;
+        int startY = (this->_wHeight - deckCount * (_cardSize.second+between)) / 2;
 
         int discardX = between;
         int mainX = discardX + _cardSize.first + between;
 
+        this->_treasureDeckX = mainX;
+        this->_treasureDiscardX = discardX;
+        this->_treasureDeckY = startY;
+
         this->_lootDeckX = mainX;
         this->_lootDiscardX = discardX;
-        this->_lootDeckY = startY;
+        this->_lootDeckY = startY + _cardSize.second + between;
+
+        this->_monsterDeckX = mainX;
+        this->_monsterDiscardX = discardX;
+        this->_monsterDeckY = startY + (_cardSize.second + between) * 2;
     }
 
     ~GameWrapper() {
@@ -282,6 +306,11 @@ public:
         delete _assets;
 
         SDL_DestroyTexture(_lastLootDeckCountTex);
+        SDL_DestroyTexture(_lastLootDiscardCountTex);
+        SDL_DestroyTexture(_lastTreasureDeckCountTex);
+        SDL_DestroyTexture(_lastTreasureDiscardCountTex);
+        SDL_DestroyTexture(_lastMonsterDeckCountTex);
+        SDL_DestroyTexture(_lastMonsterDiscardCountTex);
     }
 
     void start() {
@@ -370,23 +399,72 @@ public:
     }
 
     void drawMonsters(const MatchState& state) {
-        //  TODO
         // draw monster deck
+        auto count = state.monsterDeckCount;
+        if (count) this->drawCardBack(CARD_TYPE_MONSTER, true, _monsterDeckX, _monsterDeckY);
+        // _lastLootDeckCount
+        if (count != _lastMonsterDeckCount) {
+            _lastMonsterDeckCount = count;
+            SDL_DestroyTexture(_lastMonsterDeckCountTex);
+            _lastMonsterDeckCountTex = this->_assets->getMessage(std::to_string(_lastMonsterDeckCount), SDL_Color{255, 255, 255, 0}, 24);
+        }
+        this->drawTexture(_lastMonsterDeckCountTex, _monsterDeckX + 10, _monsterDeckY + 10);
         // draw monster discard
+        count = state.monsterDiscard.size();
+        if (count) {
+            this->drawCard(*(state.monsterDiscard.end()-1), true, _monsterDiscardX, _monsterDeckY);
+        }
+        if (count != _lastMonsterDeckCount) {
+            _lastMonsterDiscardCount = count;
+            SDL_DestroyTexture(_lastMonsterDiscardCountTex);
+            _lastMonsterDiscardCountTex = this->_assets->getMessage(std::to_string(_lastMonsterDiscardCount), SDL_Color{255, 255, 255, 0}, 24);
+        }
+        this->drawTexture(_lastMonsterDiscardCountTex, _monsterDiscardX + 10, _monsterDeckY + 10);
         // draw monster slots
+        auto y = _monsterDeckY + _cardSize.second;
+        for (const auto& name : state.monsters) {
+            auto tex = this->_assets->getCard(name);
+            this->drawTexture(tex, _monsterDiscardX + 20, y, -90);
+            y += _cardSize.first + 3;
+        }
     }
 
     void drawTreasure(const MatchState& state) {
-        //  TODO
         // draw treasure deck
+        auto count = state.treasureDeckCount;
+        if (count) this->drawCardBack(CARD_TYPE_TREASURE, true, _treasureDeckX, _treasureDeckY);
+        // _lastLootDeckCount
+        if (count != _lastTreasureDeckCount) {
+            _lastTreasureDeckCount = count;
+            SDL_DestroyTexture(_lastTreasureDeckCountTex);
+            _lastTreasureDeckCountTex = this->_assets->getMessage(std::to_string(_lastTreasureDeckCount), SDL_Color{255, 255, 255, 0}, 24);
+        }
+        this->drawTexture(_lastTreasureDeckCountTex, _treasureDeckX + 10, _treasureDeckY + 10);
         // draw treasure discard
+        count = state.treasureDiscard.size();
+        if (count) {
+            this->drawCard(*(state.treasureDiscard.end()-1), true, _treasureDiscardX, _treasureDeckY);
+        }
+        if (count != _lastTreasureDeckCount) {
+            _lastTreasureDiscardCount = count;
+            SDL_DestroyTexture(_lastTreasureDiscardCountTex);
+            _lastTreasureDiscardCountTex = this->_assets->getMessage(std::to_string(_lastTreasureDiscardCount), SDL_Color{255, 255, 255, 0}, 24);
+        }
+        this->drawTexture(_lastTreasureDiscardCountTex, _treasureDiscardX + 10, _treasureDeckY + 10);
         // draw shop
+        auto y = _treasureDeckY - _cardSize.second;
+        for (const auto& name : state.shop) {
+            auto tex = this->_assets->getCard(name);
+            this->drawTexture(tex, _treasureDiscardX + 20, y, -90);
+            y -= _cardSize.first + 3;
+            // auto tex = this->drawCard(name, true);
+        }
     }
 
     void drawLoot(const MatchState& state) {
         // draw loot deck
-        this->drawCardBack(CARD_TYPE_LOOT, true, _lootDeckX, _lootDeckY);
         auto count = state.lootDeckCount;
+        if (count) this->drawCardBack(CARD_TYPE_LOOT, true, _lootDeckX, _lootDeckY);
         if (count != _lastLootDeckCount) {
             _lastLootDeckCount = count;
             SDL_DestroyTexture(_lastLootDeckCountTex);
@@ -421,6 +499,10 @@ public:
                 this->drawRect(pX, pY, width, height, SDL_Color{0, 255, 255, 0}, false);
                 this->drawRect(pX+1, pY+1, width-2, height-2, SDL_Color{0, 255, 255, 0}, false);
             }
+            // draw coins
+            auto tex = this->_assets->getMessage(std::to_string(space.coinCount), SDL_Color{255, 255, 51, 0}, 48);
+            drawTexture(tex, pX + 10, pY + 10);
+            SDL_DestroyTexture(tex);
             pX += _cardSize.second - _cardSize.first;
             auto cCard = space.playerCard;
             this->drawCard(cCard.first, cCard.second, pX+10, pY+10);
@@ -462,24 +544,12 @@ public:
     }
 
     void drawTexture(SDL_Texture *texture, int x, int y, int angle=0) {
-        // if (!angle) {
-        //     SDL_Rect pos;
-        //     pos.x = x;
-        //     pos.y = y;
-        //     SDL_QueryTexture(texture, NULL, NULL, &pos.w, &pos.h);
-        //     SDL_RenderCopy(_ren, texture, NULL, &pos);
-        //     return;
-        // }
         auto size = getSize(texture);
-        // SDL_Rect srcrect;
-        // srcrect.w = size.first;
-        // srcrect.h = size.second;
         SDL_Rect dstrect;
         dstrect.w = size.first;
         dstrect.h = size.second;
         dstrect.x = x;
         dstrect.y = y;
-        // std::cout << "\t" << "(" << srcrect.x << " ; " << srcrect.y << ")" << "  (" << dstrect.x << " ; " << dstrect.y << ")" << std::endl;
         SDL_RenderCopyEx( _ren, texture, nullptr, &dstrect, angle, NULL, SDL_FLIP_NONE );        
     }
 
@@ -499,47 +569,8 @@ public:
 
 int main() {
     // srand(time(0)) =
-    srand(1);
+    srand(0);
     auto wrapper = new GameWrapper("four-souls", "game", false);
     wrapper->start();
     delete wrapper;
-    
-
-    // lua_State *L = luaL_newstate();
-    // luaL_openlibs(L);
-    // lua_register(L, "cfunc", luafunc_cfunc);
-
-    // int r = luaL_dofile(L, "testscript.lua");
-    // if (r != LUA_OK) {
-    //     lua_err(L);
-    //     return -1;
-    // }
-
-    // r = luaL_dofile(L, "test.lua");
-    // if (r != LUA_OK) {
-    //     lua_err(L);
-    //     return -1;
-    // }
-    
-    // lua_getglobal(L, "funny");
-    // if (!lua_isfunction(L, -1)) {
-    //     lua_err(L);
-    //     return -1;
-    // }
-    // lua_pushnumber(L, 4.5f);
-    // lua_pushnumber(L, 23.f);
-    // r = lua_pcall(L, 2, 0, 0);
-    // if (r != LUA_OK) {
-    //     lua_err(L);
-    //     return -1;
-    // }
-    
-    // lua_getglobal(L, "a");
-    // if (!lua_isnumber(L, -1)) {
-    //     lua_err(L);
-    //     return -1;
-    // }
-    // float result = (float)lua_tonumber(L, -1);
-    // cout << "a = " << result << endl;
-    // lua_close(L);
 }

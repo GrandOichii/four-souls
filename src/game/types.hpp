@@ -14,6 +14,7 @@ const string TURN_END_TRIGGER = "turn_end";
 
 const string CARD_TYPE_LOOT = "loot";
 const string CARD_TYPE_TREASURE = "treasure";
+const string CARD_TYPE_MONSTER = "monster";
 
 const string ACTION_PLAY_LOOT = "play_loot"; // [0] - the index of the card 
 const string ACTION_ATTACK_MONSTER = "attack_monster"; // [0] - the index of the card being attacked, if -1 then the top
