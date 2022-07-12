@@ -158,8 +158,8 @@ public:
     vector<TrinketCard*> getTopTreasureCards(int amount);
     vector<MonsterCard*> getTopMonsterCards(int amount);
     bool requestPayCost(string costFuncName, Player* player);
-    static int wrap_popTarget(lua_State* L);
     static int wrap_addBlueHealth(lua_State* L);
+    static int wrap_popTarget(lua_State* L);
     static int wrap_pushTarget(lua_State* L);
     static int wrap_requestChoice(lua_State* L);
     static int wrap_getPlayers(lua_State* L);
@@ -174,6 +174,7 @@ public:
     static int wrap_decBeginningLoot(lua_State* L);
     static int wrap_plusOneTreasure(lua_State* L);
     static int wrap_incMaxLife(lua_State* L);
+    static int wrap_tempIncMaxLife(lua_State* L);
     static int wrap_decMaxLife(lua_State* L);
     static int wrap_getCardOwner(lua_State* L);
     static int wrap_getCurrentPlayer(lua_State* L);
@@ -181,7 +182,7 @@ public:
     static int wrap_setNextPlayer(lua_State* L);
     static int wrap_incTreasureCost(lua_State* L);
     static int wrap_decTreasureCost(lua_State* L);
-    void resetBlueHealth();
+    void resetEOT();
     void addCardToBoard(TrinketCard* card, Player* owner);
     void removeFromShop(TrinketCard* card);
     Player* playerWithID(int id);

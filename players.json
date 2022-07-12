@@ -3,9 +3,12 @@
         "name": "oichii1",
         "actions": [
             "$PASS",
+            "play_loot 0",
+            "$PASS",
             "play_loot 0"
         ],
         "responses": [
+            "2",
             "2"
         ]
     },

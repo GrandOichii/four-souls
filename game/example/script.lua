@@ -3,7 +3,7 @@ function TheD6_tap(host)
     print("the d6 was activated")
 end
 
-function TheD6_eot()
+function TheD6_eot(host)
     print("D6 END OF TURN")
 end
 

@@ -13,14 +13,16 @@
             "Lost Soul": "loot/lost_soul",
             "The Sun" : "loot/the_sun",
             "Two of Diamonds": "loot/two_of_diamonds",
-            "Soul Heart": "loot/soul_heart"
+            "Soul Heart": "loot/soul_heart",
+            "The Lovers": "loot/the_lovers"
         },
         "trinkets": {
             "Blood penny": "loot/blood_penny"
         }
     },
     "deck": {
-        "Soul Heart": 20,
+        "The Lovers": 20,
+        "Soul Heart": 0,
         "Two of Diamonds": 0,
         "The Sun": 0,
         "Lost Soul": 0,

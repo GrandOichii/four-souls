@@ -31,6 +31,8 @@ private:
     int _health;
     int _blueHealth;
 
+    int _tempMaxHealthBoost = 0;
+
     int _baseAttack;
     int _id;
 
@@ -60,7 +62,6 @@ public:
     void recharge();
     void pushTable(lua_State* L);
 
-    void resetBlueHealth();
     void addBlueHealth(int amount);
     int blueHealth();
 
@@ -95,9 +96,12 @@ public:
     void addToBoard(CardWrapper* w);
 
     void incMaxLife(int amount);
+    void tempIncMaxLife(int amount);
     void decMaxLife(int amount);
 
     void addSouls(int amount);
+
+    void resetEOT();
 };
 
 class ScriptedPlayer : public Player {

@@ -36,7 +36,6 @@ void Player::decBeginningLoot() { _startTurnLootAmount--; }
 void Player::incTreasureCost(int amount) { this->_treasurePrice += amount; }
 void Player::decTreasureCost(int amount) { this->_treasurePrice -= amount; }
 
-void Player::resetBlueHealth() { _blueHealth = 0; }
 void Player::addBlueHealth(int amount) { _blueHealth += amount; }
 int Player::blueHealth() { return _blueHealth; }
 
@@ -130,7 +129,7 @@ void Player::decMaxLife(int amount) {
 }
 
 int Player::health() { return _health; }
-int Player::maxHealth() { return _maxHealth; }
+int Player::maxHealth() { return _maxHealth + _tempMaxHealthBoost; }
 
 PlayerBoardState Player::getState() {
     PlayerBoardState result;
@@ -138,7 +137,7 @@ PlayerBoardState Player::getState() {
     result.playerCard.second = _characterActive;
     result.coinCount = _coinCount;
     result.health = _health;
-    result.maxHealth = _maxHealth;
+    result.maxHealth = maxHealth();
     result.blueHealth = _blueHealth;
     result.soulCount = _soulCount;
     for (const auto& w : _board)
@@ -149,6 +148,20 @@ PlayerBoardState Player::getState() {
 } 
 
 void Player::addSouls(int amount) { _soulCount += amount; }
+
+void Player::tempIncMaxLife(int amount) {
+    _tempMaxHealthBoost += amount;
+    _health += amount;
+}
+
+void Player::resetEOT() {
+    _blueHealth = 0;
+    _tempMaxHealthBoost = 0;
+    std::cout << "boost : " << _tempMaxHealthBoost << std::endl;
+    std::cout << "max health : " << _maxHealth << std::endl;
+    _health = maxHealth();
+}
+
 
 ScriptedPlayer::ScriptedPlayer(std::string name, CharacterCard* card, int id, string actions, string responses) :
     Player(name, card, id)

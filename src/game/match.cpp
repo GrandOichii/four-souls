@@ -45,7 +45,7 @@ Player* Match::findOwner(CardWrapper* card) {
             if (w == card)
                 return p;
     throw std::runtime_error("can't find owner of card " + card->card()->name() + " [" + std::to_string(card->id()) + "]");
-} 
+}
 
 void Match::shuffleLootDiscardIntoMain() {
     while (!_lootDiscard.empty()) {
@@ -170,6 +170,27 @@ int Match::wrap_getOwner(lua_State *L) {
     return 1;
 }
 
+int Match::wrap_addBlueHealth(lua_State* L) {
+    if (lua_gettop(L) != 3) {
+        lua_err(L);
+        exit(1);
+    }
+    auto match = static_cast<Match*>(lua_touserdata(L, 1));
+    if (!lua_isnumber(L, 2)) {
+        lua_err(L);
+        exit(1);
+    }
+    auto pid = (int)lua_tonumber(L, 2);
+    if (!lua_isnumber(L, 3)) {
+        lua_err(L);
+        exit(1);
+    }
+    auto amount = (int)lua_tonumber(L, 3);
+    Player* player = match->playerWithID(pid);
+    player->addBlueHealth(amount);
+    return 0;
+}
+
 int Match::wrap_pushTarget(lua_State* L) {
     // dumpstack(L);
     if (lua_gettop(L) != 3) {
@@ -189,31 +210,7 @@ int Match::wrap_pushTarget(lua_State* L) {
         exit(1);
     }
     auto targetType = (string)lua_tostring(L, 3);
-
     match->_targetStack.push_back(std::make_pair(targetType, id));
-
-    return 0;
-
-}
-
-int Match::wrap_addBlueHealth(lua_State* L) {
-    if (lua_gettop(L) != 3) {
-        lua_err(L);
-        exit(1);
-    }
-    auto match = static_cast<Match*>(lua_touserdata(L, 1));
-    if (!lua_isnumber(L, 2)) {
-        lua_err(L);
-        exit(1);
-    }
-    auto pid = (int)lua_tonumber(L, 2);
-    if (!lua_isnumber(L, 3)) {
-        lua_err(L);
-        exit(1);
-    }
-    auto amount = (int)lua_tonumber(L, 3);
-    Player* player = match->playerWithID(pid);
-    player->addBlueHealth(amount);
     return 0;
 }
 
@@ -270,7 +267,7 @@ int Match::wrap_requestChoice(lua_State* L) {
         choices.push_back((int)lua_tonumber(L, -1));
         lua_pop(L, 1);
     }
-    dumpstack(L);
+    // dumpstack(L);
     Player* player = match->playerWithID(pid);
     auto response = player->promptResponse(text, choiceType, choices);
     // clear lua stack ?
@@ -466,7 +463,7 @@ int Match::wrap_deferEOT(lua_State *L) {
         exit(1);
     }
     auto match = static_cast<Match*>(lua_touserdata(L, 1));
-    if (!lua_isnumber(L, 2)) {
+    if (!lua_isstring(L, 2)) {
         lua_err(L);
         exit(1);
     }
@@ -552,6 +549,27 @@ int Match::wrap_decBeginningLoot(lua_State* L) {
     int pid = (int)lua_tonumber(L, 2);
     auto player = match->playerWithID(pid);
     player->decBeginningLoot();
+    return 0;
+}
+
+int Match::wrap_tempIncMaxLife(lua_State* L) {
+    if (lua_gettop(L) != 3) {
+        lua_err(L);
+        exit(1);
+    }
+    auto match = static_cast<Match*>(lua_touserdata(L, 1));
+    if (!lua_isnumber(L, 2)) {
+        lua_err(L);
+        exit(1);
+    }
+    int pid = (int)lua_tonumber(L, 2);
+    auto player = match->playerWithID(pid);
+    if (!lua_isnumber(L, 3)) {
+        lua_err(L);
+        exit(1);
+    }
+    int amount = (int)lua_tonumber(L, 3);
+    player->tempIncMaxLife(amount);
     return 0;
 }
 
@@ -704,6 +722,7 @@ void Match::setupLua() {
     lua_register(L, "decBeginningLoot", wrap_decBeginningLoot);
     lua_register(L, "plusOneTreasure", wrap_plusOneTreasure);
     lua_register(L, "incMaxLife", wrap_incMaxLife);
+    lua_register(L, "tempIncMaxLife", wrap_tempIncMaxLife);
     lua_register(L, "decMaxLife", wrap_decMaxLife);
     lua_register(L, "getCurrentPlayer", wrap_getCurrentPlayer);
     lua_register(L, "getCardOwner", wrap_getCardOwner);
@@ -713,8 +732,8 @@ void Match::setupLua() {
     lua_register(L, "incTreasureCost", wrap_incTreasureCost);
     lua_register(L, "decTreasureCost", wrap_decTreasureCost);
     lua_register(L, "getPlayers", wrap_getPlayers);
-    lua_register(L, "pushTarget", wrap_pushTarget);
     lua_register(L, "addBlueHealth", wrap_addBlueHealth);
+    lua_register(L, "pushTarget", wrap_pushTarget);
     lua_register(L, "popTarget", wrap_popTarget);
     lua_register(L, "requestChoice", wrap_requestChoice);
 
@@ -958,12 +977,12 @@ void Match::turn() {
 
     // all silent end of turn effects
     this->execEOTDefers();
-    this->resetBlueHealth();
+    this->resetEOT();
 }
 
-void Match::resetBlueHealth() {
+void Match::resetEOT() {
     for (auto& p : _players)
-        p->resetBlueHealth();
+        p->resetEOT();
 }
 
 void Match::executePlayerAction(Player* player, string action) {
