@@ -111,6 +111,12 @@ private:
         {ACTION_PLAY_LOOT, [this](Player* player, std::vector<string> args){
             auto cardI = atoi(args[1].c_str());
             auto card = player->takeCard(cardI);
+            // request to pay cost
+            auto cost = card->costFuncName();
+            if (cost.size()) {
+                bool payed = this->requestPayCost(cost, player);
+                if (!payed) return;
+            }
             this->log(player->name() + " plays card " + card->name());
             auto wrapper = new CardWrapper(card, this->newCardID());
             this->pushToStack(StackEffect(
@@ -134,6 +140,7 @@ private:
     };
 
     std::stack<std::pair<LootCard*, Player*>> _lootStack;
+    std::vector<std::pair<string, int>> _targetStack;
 public:
     Match();
     ~Match();
@@ -149,6 +156,11 @@ public:
     vector<LootCard*> getTopLootCards(int amount);
     vector<TrinketCard*> getTopTreasureCards(int amount);
     vector<MonsterCard*> getTopMonsterCards(int amount);
+    bool requestPayCost(string costFuncName, Player* player);
+    static int wrap_popTarget(lua_State* L);
+    static int wrap_pushTarget(lua_State* L);
+    static int wrap_requestChoice(lua_State* L);
+    static int wrap_getPlayers(lua_State* L);
     static int wrap_getOwner(lua_State *L);
     static int wrap_lootCards(lua_State *L);
     static int wrap_buyItem(lua_State* L);

@@ -70,6 +70,7 @@ private:
     TrinketCard* _trinket = nullptr;
 
     string _useFuncName;
+    string _costFuncName;
     bool _goesToBottom;
 public:
     LootCard(string dir, json j, bool isTrinket);
@@ -77,6 +78,7 @@ public:
     void print(string prefix) override;
     bool isTrinket();
     bool goesToBottom();
+    string costFuncName();
     void use(Player* player, Match* match);
 };
 

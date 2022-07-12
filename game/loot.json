@@ -11,16 +11,18 @@
             "The Stars": "loot/the_stars",
             "Jera": "loot/jera",
             "Lost Soul": "loot/lost_soul",
-            "The Sun" : "loot/the_sun"
+            "The Sun" : "loot/the_sun",
+            "Two of Diamonds": "loot/two_of_diamonds"
         },
         "trinkets": {
             "Blood penny": "loot/blood_penny"
         }
     },
     "deck": {
+        "Two of Diamonds": 20,
         "The Sun": 0,
         "Lost Soul": 0,
-        "A penny!": 20,
+        "A penny!": 0,
         "2 cents!": 0,
         "3 cents!": 0,
         "4 cents!": 0,

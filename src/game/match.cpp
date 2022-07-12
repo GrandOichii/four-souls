@@ -135,6 +135,31 @@ vector<MonsterCard*> Match::getTopMonsterCards(int amount) {
     return cards;
 }
 
+bool Match::requestPayCost(string costFuncName, Player* player) {
+    lua_getglobal(L, costFuncName.c_str());
+    if (!lua_isfunction(L, -1)) {
+        lua_err(L);
+        exit(1);
+    }
+    lua_pushlightuserdata(L, this);
+
+    // push card info
+    lua_newtable(L);
+    l_pushtablenumber(L, "ownerID", (float)player->id());
+
+    int r = lua_pcall(L, 2, 1, 0);
+    if (r != LUA_OK) {
+        lua_err(this->L);
+        exit(1);
+    }
+    if (!lua_isboolean(L, -1)) {
+        lua_err(this->L);
+        exit(1);
+    }
+    return (bool)lua_toboolean(L, -1);
+
+}
+
 int Match::wrap_getOwner(lua_State *L) {
     if (lua_gettop(L) != 1) {
         lua_err(L);
@@ -145,9 +170,65 @@ int Match::wrap_getOwner(lua_State *L) {
     return 1;
 }
 
-// int Match::wrap_getPlayers(lua_State *L) {
-    
-// }
+int Match::wrap_pushTarget(lua_State* L) {
+    if (lua_gettop(L) != 3) {
+        lua_err(L);
+        exit(1);
+    }
+    auto match = static_cast<Match*>(lua_touserdata(L, 1));
+
+    if (!lua_isnumber(L, 2)) {
+        lua_err(L);
+        exit(1);
+    }
+    auto id = (int)lua_tonumber(L, 2);
+
+    if (!lua_isstring(L, 3)) {
+    std::cout << "lmao" << std::endl;
+        lua_err(L);
+        exit(1);
+    }
+    auto targetType = (string)lua_tostring(L, 3);
+
+    match->_targetStack.push_back(std::make_pair(targetType, id));
+
+    return 0;
+
+}
+int Match::wrap_popTarget(lua_State* L) {
+    if (lua_gettop(L) != 1) {
+        lua_err(L);
+        exit(1);
+    }
+    auto match = static_cast<Match*>(lua_touserdata(L, 1));
+    auto pair = match->_targetStack.back();
+    match->_targetStack.pop_back();
+    lua_newtable(L);
+    l_pushtablestring(L, "type", pair.first);
+    l_pushtablenumber(L, "id", pair.second);
+    return 1;
+}
+
+int Match::wrap_requestChoice(lua_State* L) {
+    //  TODO
+    return 2;
+}
+
+int Match::wrap_getPlayers(lua_State* L) {
+    if (lua_gettop(L) != 1) {
+        lua_err(L);
+        exit(1);
+    }
+    auto match = static_cast<Match*>(lua_touserdata(L, 1));
+    auto size = match->_players.size();
+    lua_createtable(L, size, 0);
+    for (int i = 0; i < size; i++) {
+        lua_pushnumber(L, i+1);
+        match->_players[i]->pushTable(L);
+        lua_settable(L, -3);
+    }
+    return 1;
+}
 
 int Match::wrap_setNextPlayer(lua_State* L) {
     if (lua_gettop(L) != 2) {
@@ -555,6 +636,10 @@ void Match::setupLua() {
     lua_register(L, "setNextPlayer", wrap_setNextPlayer);
     lua_register(L, "incTreasureCost", wrap_incTreasureCost);
     lua_register(L, "decTreasureCost", wrap_decTreasureCost);
+    lua_register(L, "getPlayers", wrap_getPlayers);
+    lua_register(L, "pushTarget", wrap_pushTarget);
+    lua_register(L, "popTarget", wrap_popTarget);
+
     //  TODO add state checking after some functions
 
     // load card scripts
@@ -702,7 +787,7 @@ void Match::createMonsterDeck(std::vector<MonsterCard*> cards) {
 void Match::start() {
     std::cout << "\nThe game starts\n\n";
     // setup script
-    this->execScript("function _startTurnLoot(host)\n\tlocal owner = getOwner(host)\nlootCards(host, owner[\"id\"], owner[\"startTurnLootAmount\"])\nend");
+    this->execScript("PLAYER = \"player\"function _startTurnLoot(host)\n\tlocal owner = getOwner(host)\nlootCards(host, owner[\"id\"], owner[\"startTurnLootAmount\"])\nend");
     // give starting hands
     for (auto& p : _players) {
         auto cards = this->getTopLootCards(STARTING_LOOT_AMOUNT);
@@ -873,7 +958,7 @@ string Match::promptPlayerWithPriority() {
 void Match::log(string message) {
     std::cout << " - " << message << std::endl;
     // std::this_thread::sleep_for(std::chrono::seconds(1));
-    std::this_thread::sleep_for(std::chrono::milliseconds(300));
+    std::this_thread::sleep_for(std::chrono::milliseconds(200));
 }
 
 MatchState Match::getState() {

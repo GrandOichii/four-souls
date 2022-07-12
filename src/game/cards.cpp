@@ -85,6 +85,8 @@ LootCard::LootCard(string dir, json j, bool isTrinket) :
         this->_useFuncName = j["use"];
         if (j.contains("goes_to_bottom"))
             this->_goesToBottom = j["goes_to_bottom"];
+        if (j.contains("cost"))
+            this->_costFuncName = j["cost"];
         return;
     }
     this->_trinket = new TrinketCard(dir, j, false);
@@ -104,6 +106,7 @@ void LootCard::print(string prefix) {
     }
 }
 
+string LootCard::costFuncName() { return _costFuncName; }
 bool LootCard::isTrinket() { return _isTrinket; }
 bool LootCard::goesToBottom() { return _goesToBottom; }
 

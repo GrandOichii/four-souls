@@ -33,10 +33,10 @@ static const vector<string> P1_ACTIONS = vector<string>{
     // ACTION_PLAY_LOOT + " 0",
     // ACTION_PASS,
 
-    ACTION_BUY_TREASURE + " 0",
-    ACTION_PASS,
-    ACTION_BUY_TREASURE + " 0",
-    ACTION_PASS,
+    // ACTION_BUY_TREASURE + " 0",
+    // ACTION_PASS,
+    // ACTION_BUY_TREASURE + " 0",
+    // ACTION_PASS,
 };
 
 static const vector<string> P2_ACTIONS = vector<string>{
