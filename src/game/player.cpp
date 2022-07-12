@@ -21,6 +21,8 @@ Player::Player(std::string name, CharacterCard* card, int id) :
     this->_coinCount = 0;
     this->_additionalCoins = 0;
 
+    this->_blueHealth = 0;
+
     this->_treasurePrice = STARTING_TREASURE_PRICE;
 }
 
@@ -33,6 +35,10 @@ void Player::decBeginningLoot() { _startTurnLootAmount--; }
 
 void Player::incTreasureCost(int amount) { this->_treasurePrice += amount; }
 void Player::decTreasureCost(int amount) { this->_treasurePrice -= amount; }
+
+void Player::resetBlueHealth() { _blueHealth = 0; }
+void Player::addBlueHealth(int amount) { _blueHealth += amount; }
+int Player::blueHealth() { return _blueHealth; }
 
 void Player::print() {
     std::cout << _name << " (" << _id << ")" << std::endl;
@@ -133,6 +139,7 @@ PlayerBoardState Player::getState() {
     result.coinCount = _coinCount;
     result.health = _health;
     result.maxHealth = _maxHealth;
+    result.blueHealth = _blueHealth;
     result.soulCount = _soulCount;
     for (const auto& w : _board)
         result.board.push_back(std::make_pair(w->card()->name(), w->isActive()));

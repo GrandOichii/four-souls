@@ -516,14 +516,26 @@ public:
             drawTexture(tex, pX + 10, pY + 10);
             SDL_DestroyTexture(tex);
             // draw health
-            tex = this->_assets->getMessage(std::to_string(space.health) + "/" + std::to_string(space.maxHealth), SDL_Color{255, 0, 0, 0}, 48);
+            // tex = this->_assets->getMessage(std::to_string(space.health) + "/" + std::to_string(space.maxHealth), SDL_Color{255, 0, 0, 0}, 48);
+            tex = this->_assets->getMessage(std::to_string(space.health), SDL_Color{255, 0, 0, 0}, 48);
             drawTexture(tex, pX + 10, pY + 10 + (48 + 2) * 1);
+            auto width = getSize(tex).first;
+            SDL_DestroyTexture(tex);
+            // draw blue health
+            if (space.blueHealth) {
+                tex = this->_assets->getMessage("+" + std::to_string(space.blueHealth), SDL_Color{0, 0, 255, 0}, 48);
+                drawTexture(tex, pX + 10 + width, pY + 10 + (48 + 2) * 1);
+                width += getSize(tex).first;
+                SDL_DestroyTexture(tex);
+            }
+            // draw max health
+            tex = this->_assets->getMessage("/" + std::to_string(space.maxHealth), SDL_Color{255, 0, 0, 0}, 48);
+            drawTexture(tex, pX + 10 + width, pY + 10 + (48 + 2) * 1);
             SDL_DestroyTexture(tex);
             // draw souls
-            tex = this->_assets->getMessage(std::to_string(space.soulCount), SDL_Color{0, 0, 255, 0}, 48);
+            tex = this->_assets->getMessage(std::to_string(space.soulCount), SDL_Color{255, 255, 255, 0}, 48);
             drawTexture(tex, pX + 10, pY + 10 + (48 + 2) * 2);
             SDL_DestroyTexture(tex);
-
         }
     }
 

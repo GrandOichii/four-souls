@@ -1,4 +1,4 @@
-function TwoOfDiamonds_cost(host, cardInfo)
+function SoulHeart_cost(host, cardInfo)
     local ownerID = cardInfo["ownerID"]
     local players = getPlayers(host)
     local ids = {}
@@ -11,13 +11,13 @@ function TwoOfDiamonds_cost(host, cardInfo)
     return true
 end
 
-function TwoOfDiamonds_use(host)
+function SoulHeart_use(host)
     local targetID = popTarget(host)["id"]
     local players = getPlayers(host)
     for _, p in pairs(players) do
         -- print("\t", targetID, "\t", p["id"])
         if p["id"] == targetID then
-            addCoins(host, targetID, p["coins"])
+            addBlueHealth(host, targetID, 1)
             return
         end
     end

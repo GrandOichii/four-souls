@@ -196,6 +196,27 @@ int Match::wrap_pushTarget(lua_State* L) {
 
 }
 
+int Match::wrap_addBlueHealth(lua_State* L) {
+    if (lua_gettop(L) != 3) {
+        lua_err(L);
+        exit(1);
+    }
+    auto match = static_cast<Match*>(lua_touserdata(L, 1));
+    if (!lua_isnumber(L, 2)) {
+        lua_err(L);
+        exit(1);
+    }
+    auto pid = (int)lua_tonumber(L, 2);
+    if (!lua_isnumber(L, 3)) {
+        lua_err(L);
+        exit(1);
+    }
+    auto amount = (int)lua_tonumber(L, 3);
+    Player* player = match->playerWithID(pid);
+    player->addBlueHealth(amount);
+    return 0;
+}
+
 int Match::wrap_popTarget(lua_State* L) {
     if (lua_gettop(L) != 1) {
         lua_err(L);
@@ -693,6 +714,7 @@ void Match::setupLua() {
     lua_register(L, "decTreasureCost", wrap_decTreasureCost);
     lua_register(L, "getPlayers", wrap_getPlayers);
     lua_register(L, "pushTarget", wrap_pushTarget);
+    lua_register(L, "addBlueHealth", wrap_addBlueHealth);
     lua_register(L, "popTarget", wrap_popTarget);
     lua_register(L, "requestChoice", wrap_requestChoice);
 
@@ -936,6 +958,12 @@ void Match::turn() {
 
     // all silent end of turn effects
     this->execEOTDefers();
+    this->resetBlueHealth();
+}
+
+void Match::resetBlueHealth() {
+    for (auto& p : _players)
+        p->resetBlueHealth();
 }
 
 void Match::executePlayerAction(Player* player, string action) {

@@ -12,14 +12,16 @@
             "Jera": "loot/jera",
             "Lost Soul": "loot/lost_soul",
             "The Sun" : "loot/the_sun",
-            "Two of Diamonds": "loot/two_of_diamonds"
+            "Two of Diamonds": "loot/two_of_diamonds",
+            "Soul Heart": "loot/soul_heart"
         },
         "trinkets": {
             "Blood penny": "loot/blood_penny"
         }
     },
     "deck": {
-        "Two of Diamonds": 20,
+        "Soul Heart": 20,
+        "Two of Diamonds": 0,
         "The Sun": 0,
         "Lost Soul": 0,
         "A penny!": 0,
