@@ -25,6 +25,16 @@ extern "C" {
 
 using std::string;
 
+
+const int MIN_PLAYER_COUNT = 2;
+const int MAX_PLAYER_COUNT = 4;
+const int SOULS_TO_WIN = 4;
+const int STARTING_COIN_AMOUNT = 9;
+const int STARTING_LOOT_AMOUNT = 2;
+const int STARTING_SHOP_SIZE = 2;
+const int STARTING_MONSTERS_AMOUNT = 2;
+const int STARTING_TREASURE_PRICE = 10;
+
 struct StackMememberState {
     string message;
     string cardName;
@@ -113,6 +123,7 @@ private:
         }},
         {ACTION_BUY_TREASURE, [this](Player* player, std::vector<string> args){
             this->_lastTreasureIndex = atoi(args[1].c_str());
+            player->payPricePerTreasure();
             this->pushToStack(StackEffect(
                 "_buyItem",
                 player,
@@ -154,6 +165,8 @@ public:
     static int wrap_getCurrentPlayer(lua_State* L);
     static int wrap_addSouls(lua_State* L);
     static int wrap_setNextPlayer(lua_State* L);
+    static int wrap_incTreasureCost(lua_State* L);
+    static int wrap_decTreasureCost(lua_State* L);
     void addCardToBoard(TrinketCard* card, Player* owner);
     void removeFromShop(TrinketCard* card);
     Player* playerWithID(int id);

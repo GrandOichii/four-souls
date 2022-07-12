@@ -1,12 +1,5 @@
 #include "match.hpp"
 
-const int MIN_PLAYER_COUNT = 2;
-const int MAX_PLAYER_COUNT = 4;
-const int SOULS_TO_WIN = 4;
-const int STARTING_COIN_AMOUNT = 9;
-const int STARTING_LOOT_AMOUNT = 2;
-const int STARTING_SHOP_SIZE = 2;
-const int STARTING_MONSTERS_AMOUNT = 2;
 
 StackEffect::StackEffect(string funcName, Player* player, CardWrapper* card, string type) :
     funcName(funcName),
@@ -261,7 +254,6 @@ int Match::wrap_buyItem(lua_State* L) {
         }
     }
     auto player = match->_stack.back().player;
-    player->payPricePerTreasure();
     match->addCardToBoard(card, player);
     match->log("Player " + player->name() + " bought " + card->name());
     return 0;
@@ -458,6 +450,48 @@ int Match::wrap_getCurrentPlayer(lua_State* L) {
     return 1;
 }
 
+int Match::wrap_incTreasureCost(lua_State* L) {
+    if (lua_gettop(L) != 3) {
+        lua_err(L);
+        exit(1);
+    }
+    auto match = static_cast<Match*>(lua_touserdata(L, 1));
+    if (!lua_isnumber(L, 2)) {
+        lua_err(L);
+        exit(1);
+    }
+    int pid = (int)lua_tonumber(L, 2);
+    auto player = match->playerWithID(pid);
+    if (!lua_isnumber(L, 3)) {
+        lua_err(L);
+        exit(1);
+    }
+    int amount = (int)lua_tonumber(L, 3);
+    player->incTreasureCost(amount);
+    return 0;
+}
+
+int Match::wrap_decTreasureCost(lua_State* L) {
+    if (lua_gettop(L) != 3) {
+        lua_err(L);
+        exit(1);
+    }
+    auto match = static_cast<Match*>(lua_touserdata(L, 1));
+    if (!lua_isnumber(L, 2)) {
+        lua_err(L);
+        exit(1);
+    }
+    int pid = (int)lua_tonumber(L, 2);
+    auto player = match->playerWithID(pid);
+    if (!lua_isnumber(L, 3)) {
+        lua_err(L);
+        exit(1);
+    }
+    int amount = (int)lua_tonumber(L, 3);
+    player->decTreasureCost(amount);
+    return 0;
+}
+
 void Match::addCardToBoard(TrinketCard* card, Player* owner) {
     auto w = new CardWrapper(card, this->newCardID());
     owner->addToBoard(w);
@@ -519,6 +553,8 @@ void Match::setupLua() {
     lua_register(L, "addSouls", wrap_addSouls);
     lua_register(L, "this", wrap_this);
     lua_register(L, "setNextPlayer", wrap_setNextPlayer);
+    lua_register(L, "incTreasureCost", wrap_incTreasureCost);
+    lua_register(L, "decTreasureCost", wrap_decTreasureCost);
     //  TODO add state checking after some functions
 
     // load card scripts

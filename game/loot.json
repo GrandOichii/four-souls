@@ -18,9 +18,9 @@
         }
     },
     "deck": {
-        "The Sun": 20,
+        "The Sun": 0,
         "Lost Soul": 0,
-        "A penny!": 0,
+        "A penny!": 20,
         "2 cents!": 0,
         "3 cents!": 0,
         "4 cents!": 0,

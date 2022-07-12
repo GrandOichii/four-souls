@@ -39,6 +39,8 @@ private:
     bool _characterActive;
     int _startTurnLootAmount;
 
+    int _treasurePrice;
+
     std::vector<CardWrapper*> _board; // dont forget to delete these!
     std::vector<LootCard*> _hand;
 public:
@@ -74,6 +76,9 @@ public:
 
     void incAdditionalCoins();
     void decAdditionalCoins();
+
+    void incTreasureCost(int amount);
+    void decTreasureCost(int amount);
 
     void addLootCards(vector<LootCard*> cards);
 

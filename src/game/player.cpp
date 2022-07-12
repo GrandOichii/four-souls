@@ -1,4 +1,5 @@
 #include "player.hpp"
+#include "match.hpp"
 
 Player::Player(std::string name, CharacterCard* card, int id) :
     _name(name),
@@ -19,6 +20,8 @@ Player::Player(std::string name, CharacterCard* card, int id) :
 
     this->_coinCount = 0;
     this->_additionalCoins = 0;
+
+    this->_treasurePrice = STARTING_TREASURE_PRICE;
 }
 
 Player::~Player()  {
@@ -27,6 +30,9 @@ Player::~Player()  {
 
 void Player::incBeginningLoot() { _startTurnLootAmount++; }
 void Player::decBeginningLoot() { _startTurnLootAmount--; }
+
+void Player::incTreasureCost(int amount) { this->_treasurePrice += amount; }
+void Player::decTreasureCost(int amount) { this->_treasurePrice -= amount; }
 
 void Player::print() {
     std::cout << _name << " (" << _id << ")" << std::endl;
@@ -87,7 +93,7 @@ void Player::removeCoins(int amount) { this->_coinCount -= amount; }
 
 void Player::payPricePerTreasure() {
     //  TODO
-    this->_coinCount -= 10;
+    this->_coinCount -= this->_treasurePrice;
 }
 
 void Player::incAdditionalCoins() { _additionalCoins++; }

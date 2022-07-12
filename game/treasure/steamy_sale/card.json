@@ -1,0 +1,8 @@
+{
+    "name": "Steamy Sale!",
+    "text": "You may buy shop items for 5c.",
+    "image": "image.bmp",
+    "script": "script.lua",
+    "enter": "SteamySale_enter",
+    "leave": "SteamySale_leave"
+}
