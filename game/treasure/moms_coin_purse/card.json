@@ -1,8 +1,8 @@
 {
-    "name": "Mom's Purse",
+    "name": "Mom's Coin Purse",
     "text": "Loot +1 at the start of your turn",
     "image": "image.bmp",
     "script": "script.lua",
-    "enter": "MomsPurse_enter",
-    "leave": "MomsPurse_leave"
+    "enter": "MomsCoinPurse_enter",
+    "leave": "MomsCoinPurse_leave"
 }

@@ -1,0 +1,7 @@
+{
+    "name": "XVII. The Stars",
+    "text": "Gain +1 treasure.",
+    "image": "image.bmp",
+    "script": "script.lua",
+    "use": "TheStars_use"
+}

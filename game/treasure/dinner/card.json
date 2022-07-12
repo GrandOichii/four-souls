@@ -1,0 +1,8 @@
+{
+    "name": "Dinner",
+    "text": "+1 H",
+    "image": "image.bmp",
+    "script": "script.lua",
+    "enter": "Dinner_enter",
+    "leave": "Dinner_leave"
+}

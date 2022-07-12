@@ -8,5 +8,11 @@
             "cost": ["{T}"],
             "ability": "TheD6_tap"
         }
-    ]
+    ],
+    "on": {
+        "turn_start": {
+            "check": "TheD6_trigger_check",
+            "effect": "TheD6_trigger"
+        }
+    }
 }

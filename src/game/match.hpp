@@ -146,6 +146,12 @@ public:
     static int wrap_this(lua_State *L);
     static int wrap_incBeginningLoot(lua_State* L);
     static int wrap_decBeginningLoot(lua_State* L);
+    static int wrap_plusOneTreasure(lua_State* L);
+    static int wrap_incMaxLife(lua_State* L);
+    static int wrap_decMaxLife(lua_State* L);
+    static int wrap_getCardOwner(lua_State* L);
+    static int wrap_getCurrentPlayer(lua_State* L);
+    void addCardToBoard(TrinketCard* card, Player* owner);
     void removeFromShop(TrinketCard* card);
     Player* playerWithID(int id);
     void pushEOTDeferredTriggers();
@@ -154,7 +160,7 @@ public:
     static void lua_err(lua_State *L);
     void execScript(string script);
     void execFunc(string funcName);
-    bool execCheck(string funcName);
+    bool execCheck(string funcName, CardWrapper* card);
     void addToCharacterPool(CharacterCard* card);
     //  TODO remove the actions par
     Player* addPlayer(std::string name, CharacterCard* character, string actions);

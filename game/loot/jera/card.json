@@ -1,0 +1,7 @@
+{
+    "name": "Jera",
+    "text": "Loot X, X is equal to the number of loot cards in your hand",
+    "image": "image.bmp",
+    "script": "script.lua",
+    "use": "Jera_use"
+}

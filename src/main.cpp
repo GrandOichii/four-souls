@@ -26,7 +26,6 @@ using std::vector;
 
 static const vector<string> P1_ACTIONS = vector<string>{
     ACTION_PASS,
-    ACTION_PASS,
     ACTION_PLAY_LOOT + " 0",
     ACTION_PASS,
     ACTION_BUY_TREASURE + " 0",
@@ -37,21 +36,23 @@ static const vector<string> P2_ACTIONS = vector<string>{
     ACTION_PASS,
     ACTION_PASS,
     ACTION_PASS,
-    ACTION_PASS,
+
     ACTION_PASS,
     ACTION_PLAY_LOOT + " 0",
     ACTION_PASS,
     ACTION_BUY_TREASURE + " 0",
+    ACTION_PASS,
 };
 
 static const vector<string> P3_ACTIONS = vector<string>{
     ACTION_PASS,
     ACTION_PASS,
     ACTION_PASS,
+
     ACTION_PASS,
     ACTION_PASS,
     ACTION_PASS,
-    ACTION_PASS,
+    
     ACTION_PASS,
     ACTION_PLAY_LOOT + " 0",
     ACTION_PASS,
@@ -285,6 +286,10 @@ public:
         this->_assets->addCardBack(CARD_TYPE_TREASURE, _game->treasureCardBackPath());
         this->_assets->addCardBack(CARD_TYPE_MONSTER, _game->monsterCardBackPath());
 
+        _lastLootDiscardCountTex = this->_assets->getMessage("0", SDL_Color{255, 255, 255, 0}, 24);
+        _lastTreasureDiscardCountTex = this->_assets->getMessage("0", SDL_Color{255, 255, 255, 0}, 24);
+        _lastMonsterDiscardCountTex = this->_assets->getMessage("0", SDL_Color{255, 255, 255, 0}, 24);
+
         const int deckCount = 3;
         int between = 3;
         int startY = (this->_wHeight - deckCount * (_cardSize.second+between)) / 2;
@@ -447,10 +452,16 @@ public:
         this->drawTexture(_lastTreasureDeckCountTex, _treasureDeckX + 10, _treasureDeckY + 10);
         // draw treasure discard
         count = state.treasureDiscard.size();
+        // std::cout << "\t" << count << std::endl;
         if (count) {
             this->drawCard(*(state.treasureDiscard.end()-1), true, _treasureDiscardX, _treasureDeckY);
         }
-        if (count != _lastTreasureDeckCount) {
+        // resolve weird error (card with no name)
+        // implement dice rolling (is part of loot card cost, dice result goes BEFORE loot card)
+        // example: [dice roll], [wheel of fortune]
+        // when resolving, searches for first item on stack with type "dice", uses it's value
+        // dice rolls can be rerolled/modified using items and loot cards
+        if (count != _lastTreasureDiscardCount) {
             _lastTreasureDiscardCount = count;
             SDL_DestroyTexture(_lastTreasureDiscardCountTex);
             _lastTreasureDiscardCountTex = this->_assets->getMessage(std::to_string(_lastTreasureDiscardCount), SDL_Color{255, 255, 255, 0}, 24);
@@ -481,7 +492,7 @@ public:
         if (count) {
             this->drawCard(*(state.lootDiscard.end()-1), true, _lootDiscardX, _lootDeckY);
         }
-        if (count != _lastLootDeckCount) {
+        if (count != _lastLootDiscardCount) {
             _lastLootDiscardCount = count;
             SDL_DestroyTexture(_lastLootDiscardCountTex);
             _lastLootDiscardCountTex = this->_assets->getMessage(std::to_string(_lastLootDiscardCount), SDL_Color{255, 255, 255, 0}, 24);
@@ -504,10 +515,7 @@ public:
                 this->drawRect(pX, pY, width, height, SDL_Color{0, 255, 255, 0}, false);
                 this->drawRect(pX+1, pY+1, width-2, height-2, SDL_Color{0, 255, 255, 0}, false);
             }
-            // draw coins
-            auto tex = this->_assets->getMessage(std::to_string(space.coinCount), SDL_Color{255, 255, 51, 0}, 48);
-            drawTexture(tex, pX + 10, pY + 10);
-            SDL_DestroyTexture(tex);
+            
             pX += _cardSize.second - _cardSize.first;
             auto cCard = space.playerCard;
             this->drawCard(cCard.first, cCard.second, pX+10, pY+10);
@@ -521,6 +529,17 @@ public:
                 this->drawCard(card, true, lootX, looyY);
                 lootX += _cardSize.first + betweenCards;
             }
+
+            pX = _playerSpaces[i][0];
+            pY = _playerSpaces[i][1];
+            // draw coins
+            auto tex = this->_assets->getMessage(std::to_string(space.coinCount), SDL_Color{255, 255, 51, 0}, 48);
+            drawTexture(tex, pX + 10, pY + 10);
+            SDL_DestroyTexture(tex);
+            // draw health
+            tex = this->_assets->getMessage(std::to_string(space.health) + "/" + std::to_string(space.maxHealth), SDL_Color{255, 0, 0, 0}, 48);
+            drawTexture(tex, pX + 10, pY + 10 + (48 + 2) * 1);
+            SDL_DestroyTexture(tex);
         }
     }
 
@@ -574,7 +593,7 @@ public:
 
 int main() {
     // srand(time(0)) =
-    srand(0);
+    srand(3);
     auto wrapper = new GameWrapper("four-souls", "game", false);
     wrapper->start();
     delete wrapper;

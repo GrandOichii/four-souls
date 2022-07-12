@@ -14,3 +14,4 @@ using std::string;
 
 void l_pushtablestring(lua_State* L, string key, string value);
 void l_pushtablenumber(lua_State* L, string key, float value);
+void dumpstack (lua_State *L);

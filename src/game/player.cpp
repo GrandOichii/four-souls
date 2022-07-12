@@ -5,8 +5,8 @@ Player::Player(std::string name, CharacterCard* card, int id) :
     _id(id),
     _characterCard(card) 
 {
-    this->_baseMHealth = card->health();
-    this->_health = this->_baseMHealth;
+    this->_maxHealth = card->health();
+    this->_health = this->_maxHealth;
 
     this->_baseAttack = card->attack();
     auto w = new CardWrapper(card->startingItem(), _id);
@@ -63,9 +63,20 @@ void Player::recharge() {
 
 void Player::pushTable(lua_State* L) {
     lua_newtable(L);
+    // push basic stuff
     l_pushtablestring(L, "name", this->_name);
     l_pushtablenumber(L, "id", (float)this->_id);
     l_pushtablenumber(L, "startTurnLootAmount", (float)this->_startTurnLootAmount);
+    // push cards in hand
+    lua_pushstring(L, "hand");
+    auto handSize = _hand.size();
+    lua_createtable(L, handSize, 0);
+    for (int i = 0; i < handSize; i++) {
+        lua_pushnumber(L, i+1);
+        lua_pushstring(L, _hand[i]->name().c_str());
+        lua_settable(L, -3);
+    }
+    lua_settable(L, -3);
 }
 
 int Player::coinCount() { return _coinCount; }
@@ -89,11 +100,27 @@ void Player::addToBoard(CardWrapper* w) {
     _board.push_back(w);
 }
 
+void Player::incMaxLife(int amount) {
+    _maxHealth += amount;
+    _health += amount;
+}
+
+void Player::decMaxLife(int amount) {
+    _maxHealth -= amount;
+    if (_maxHealth < 0) throw std::runtime_error("max player health can't be less than or equal to 0");
+    //  TODO consider decreasing actual health by that amount
+}
+
+int Player::health() { return _health; }
+int Player::maxHealth() { return _maxHealth; }
+
 PlayerBoardState Player::getState() {
     PlayerBoardState result;
     result.playerCard.first = _characterCard->name();
     result.playerCard.second = _characterActive;
     result.coinCount = _coinCount;
+    result.health = _health;
+    result.maxHealth = _maxHealth;
     for (const auto& w : _board)
         result.board.push_back(std::make_pair(w->card()->name(), w->isActive()));
     for (const auto& c : _hand)

@@ -39,10 +39,10 @@ TrinketCard::TrinketCard(string dir, json j, bool isEternal) :
             );
         }
     }
-    if (j.contains("onEnter"))
-        this->_enterFuncName = j["onEnter"];
-    if (j.contains("onLeave"))
-        this->_leaveFuncName = j["onLeave"];
+    if (j.contains("enter"))
+        this->_enterFuncName = j["enter"];
+    if (j.contains("leave"))
+        this->_leaveFuncName = j["leave"];
     if (j.contains("abilities")) {
         for (const auto& jj : j["abilities"].items()) {
             auto a = jj.value();

@@ -11,6 +11,9 @@ using std::string;
 struct PlayerBoardState {
     int coinCount;
     bool characterActive;
+    int health;
+    int maxHealth;
+    
     std::pair<string, bool> playerCard;
     std::vector<std::pair<string, bool>> board;
     std::vector<string> hand;
@@ -21,7 +24,7 @@ private:
     CharacterCard* _characterCard;
     std::string _name;
 
-    int _baseMHealth;
+    int _maxHealth;
     int _health;
 
     int _baseAttack;
@@ -53,6 +56,9 @@ public:
     void incBeginningLoot();
     void decBeginningLoot();
 
+    int health();
+    int maxHealth();
+
     virtual string promptAction() = 0;
 
     string name();
@@ -72,6 +78,9 @@ public:
 
     PlayerBoardState getState();
     void addToBoard(CardWrapper* w);
+
+    void incMaxLife(int amount);
+    void decMaxLife(int amount);
 };
 
 class ScriptedPlayer : public Player {
