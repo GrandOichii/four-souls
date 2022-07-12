@@ -1,11 +1,8 @@
 {
     "back": "images/treasure_card_back.bmp",
     "cards": [
-        "treasure/eye_of_greed",
-        "treasure/moms_purse",
-        "treasure/sack_of_pennies",
-        "treasure/dinner",
         "treasure/moms_coin_purse",
-        "treasure/starting_deck"
+        "treasure/starting_deck",
+        "treasure/the_polaroid"
     ]
 }

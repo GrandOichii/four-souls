@@ -13,6 +13,7 @@ struct PlayerBoardState {
     bool characterActive;
     int health;
     int maxHealth;
+    int soulCount;
     
     std::pair<string, bool> playerCard;
     std::vector<std::pair<string, bool>> board;
@@ -81,6 +82,8 @@ public:
 
     void incMaxLife(int amount);
     void decMaxLife(int amount);
+
+    void addSouls(int amount);
 };
 
 class ScriptedPlayer : public Player {

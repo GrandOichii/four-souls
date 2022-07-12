@@ -83,6 +83,8 @@ LootCard::LootCard(string dir, json j, bool isTrinket) :
 {
     if (!_isTrinket) {
         this->_useFuncName = j["use"];
+        if (j.contains("goes_to_bottom"))
+            this->_goesToBottom = j["goes_to_bottom"];
         return;
     }
     this->_trinket = new TrinketCard(dir, j, false);
@@ -103,13 +105,13 @@ void LootCard::print(string prefix) {
 }
 
 bool LootCard::isTrinket() { return _isTrinket; }
+bool LootCard::goesToBottom() { return _goesToBottom; }
 
 void LootCard::use(Player* player, Match* match) {
     if (_isTrinket) {
         //  TODO
     } else {
         match->execFunc(this->_useFuncName);
-        match->addToDiscard(this);
     }
 }
 

@@ -101,6 +101,7 @@ private:
         {ACTION_PLAY_LOOT, [this](Player* player, std::vector<string> args){
             auto cardI = atoi(args[1].c_str());
             auto card = player->takeCard(cardI);
+            this->log(player->name() + " plays card " + card->name());
             auto wrapper = new CardWrapper(card, this->newCardID());
             this->pushToStack(StackEffect(
                 "_popLootStack",
@@ -113,7 +114,7 @@ private:
         {ACTION_BUY_TREASURE, [this](Player* player, std::vector<string> args){
             this->_lastTreasureIndex = atoi(args[1].c_str());
             this->pushToStack(StackEffect(
-                "buyItem",
+                "_buyItem",
                 player,
                 nullptr,
                 BUY_TREASURE_TYPE
@@ -151,6 +152,8 @@ public:
     static int wrap_decMaxLife(lua_State* L);
     static int wrap_getCardOwner(lua_State* L);
     static int wrap_getCurrentPlayer(lua_State* L);
+    static int wrap_addSouls(lua_State* L);
+    static int wrap_setNextPlayer(lua_State* L);
     void addCardToBoard(TrinketCard* card, Player* owner);
     void removeFromShop(TrinketCard* card);
     Player* playerWithID(int id);

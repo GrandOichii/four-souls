@@ -28,35 +28,40 @@ static const vector<string> P1_ACTIONS = vector<string>{
     ACTION_PASS,
     ACTION_PLAY_LOOT + " 0",
     ACTION_PASS,
-    ACTION_BUY_TREASURE + " 0",
-    ACTION_PASS,
-};
-
-static const vector<string> P2_ACTIONS = vector<string>{
-    ACTION_PASS,
-    ACTION_PASS,
-    ACTION_PASS,
-
-    ACTION_PASS,
-    ACTION_PLAY_LOOT + " 0",
-    ACTION_PASS,
-    ACTION_BUY_TREASURE + " 0",
-    ACTION_PASS,
-};
-
-static const vector<string> P3_ACTIONS = vector<string>{
-    ACTION_PASS,
-    ACTION_PASS,
-    ACTION_PASS,
-
-    ACTION_PASS,
-    ACTION_PASS,
-    ACTION_PASS,
     
     ACTION_PASS,
     ACTION_PLAY_LOOT + " 0",
     ACTION_PASS,
-    ACTION_BUY_TREASURE + " 0",
+    // ACTION_BUY_TREASURE + " 0",
+    // ACTION_PASS,
+};
+
+static const vector<string> P2_ACTIONS = vector<string>{
+    ACTION_PASS,
+    // ACTION_PASS,
+    // ACTION_PASS,
+
+    // ACTION_PASS,
+    // ACTION_PLAY_LOOT + " 0",
+    // ACTION_PASS,
+    // ACTION_BUY_TREASURE + " 0",
+    // ACTION_PASS,
+};
+
+static const vector<string> P3_ACTIONS = vector<string>{
+    ACTION_PASS,
+    // ACTION_PASS,
+    // ACTION_PASS,
+
+    // ACTION_PASS,
+    // ACTION_PASS,
+    // ACTION_PASS,
+    // ACTION_PASS,
+    
+    // ACTION_PASS,
+    // ACTION_PLAY_LOOT + " 0",
+    // ACTION_PASS,
+    // ACTION_BUY_TREASURE + " 0",
 };
 
 std::pair<int, int> getSize(SDL_Texture *texture) {
@@ -540,6 +545,11 @@ public:
             tex = this->_assets->getMessage(std::to_string(space.health) + "/" + std::to_string(space.maxHealth), SDL_Color{255, 0, 0, 0}, 48);
             drawTexture(tex, pX + 10, pY + 10 + (48 + 2) * 1);
             SDL_DestroyTexture(tex);
+            // draw souls
+            tex = this->_assets->getMessage(std::to_string(space.soulCount), SDL_Color{0, 0, 255, 0}, 48);
+            drawTexture(tex, pX + 10, pY + 10 + (48 + 2) * 2);
+            SDL_DestroyTexture(tex);
+
         }
     }
 
@@ -593,7 +603,7 @@ public:
 
 int main() {
     // srand(time(0)) =
-    srand(3);
+    srand(0);
     auto wrapper = new GameWrapper("four-souls", "game", false);
     wrapper->start();
     delete wrapper;

@@ -1,0 +1,12 @@
+{
+    "name": "Eden's Blessing",
+    "text": "If you have 0c at the end of your turn, gain 6c.",
+    "image": "image.bmp",
+    "script": "script.lua",
+    "on": {
+        "turn_end": {
+            "check": "EdensBlessing_trigger_check",
+            "effect": "EdensBlessing_trigger"
+        }
+    }
+}

@@ -3,8 +3,8 @@
 const int MIN_PLAYER_COUNT = 2;
 const int MAX_PLAYER_COUNT = 4;
 const int SOULS_TO_WIN = 4;
-const int STARTING_COIN_AMOUNT = 10;
-const int STARTING_LOOT_AMOUNT = 8;
+const int STARTING_COIN_AMOUNT = 9;
+const int STARTING_LOOT_AMOUNT = 2;
 const int STARTING_SHOP_SIZE = 2;
 const int STARTING_MONSTERS_AMOUNT = 2;
 
@@ -156,6 +156,49 @@ int Match::wrap_getOwner(lua_State *L) {
     
 // }
 
+int Match::wrap_setNextPlayer(lua_State* L) {
+    if (lua_gettop(L) != 2) {
+        lua_err(L);
+        exit(1);
+    }
+    auto match = static_cast<Match*>(lua_touserdata(L, 1));
+    if (!lua_isnumber(L, 2)) {
+        lua_err(L);
+        exit(1);
+    }
+    auto pid = (int)lua_tonumber(L, 2);
+    // check if there is a player with id
+    Player* player = match->playerWithID(pid);
+    for (int i = 0; i < match->_players.size(); i++) {
+        if (match->_players[i] == player) {
+            match->_nextI = i;
+            return 0;
+        }
+    }
+    throw std::runtime_error("failed to set next player - can't find player with id " + std::to_string(pid));
+}
+
+int Match::wrap_addSouls(lua_State* L) {
+    if (lua_gettop(L) != 3) {
+        lua_err(L);
+        exit(1);
+    }
+    auto match = static_cast<Match*>(lua_touserdata(L, 1));
+    if (!lua_isnumber(L, 2)) {
+        lua_err(L);
+        exit(1);
+    }
+    auto pid = (int)lua_tonumber(L, 2);
+    if (!lua_isnumber(L, 3)) {
+        lua_err(L);
+        exit(1);
+    }
+    auto amount = (int)lua_tonumber(L, 3);
+    Player* player = match->playerWithID(pid);
+    player->addSouls(amount);
+    return 0;
+}
+
 int Match::wrap_getCardOwner(lua_State* L) {
     if (lua_gettop(L) != 2) {
         lua_err(L);
@@ -190,14 +233,7 @@ int Match::wrap_addCoins(lua_State* L) {
         exit(1);
     }
     auto amount = (int)lua_tonumber(L, 3);
-    Player* player = nullptr;
-    for (const auto& p : match->_players) {
-        if (p->id() == pid) {
-            player = p;
-            break;
-        }
-    }
-    if (!player) throw std::runtime_error("no player with id " + std::to_string(pid));
+    Player* player = match->playerWithID(pid);
     match->log(player->name() + " gains " + std::to_string(amount) + " coins");
     player->addCoins(amount);
     return 0;
@@ -266,6 +302,12 @@ int Match::wrap_popLootStack(lua_State* L) {
     auto card = last.first;
     auto player = last.second;
     card->use(player, match);
+    if (!card->isTrinket()) {
+        if (card->goesToBottom())
+            match->_lootDeck.push_front(card);
+        else
+            match->addToDiscard(card);
+    }
     return 0;
 }
 
@@ -464,7 +506,7 @@ void Match::setupLua() {
     lua_register(L, "getOwner", wrap_getOwner);
     lua_register(L, "lootCards", wrap_lootCards);
     lua_register(L, "addCoins", wrap_addCoins);
-    lua_register(L, "buyItem", wrap_buyItem);
+    lua_register(L, "_buyItem", wrap_buyItem);
     lua_register(L, "deferEOT", wrap_deferEOT);
     lua_register(L, "_popLootStack", wrap_popLootStack);
     lua_register(L, "incBeginningLoot", wrap_incBeginningLoot);
@@ -474,7 +516,10 @@ void Match::setupLua() {
     lua_register(L, "decMaxLife", wrap_decMaxLife);
     lua_register(L, "getCurrentPlayer", wrap_getCurrentPlayer);
     lua_register(L, "getCardOwner", wrap_getCardOwner);
+    lua_register(L, "addSouls", wrap_addSouls);
     lua_register(L, "this", wrap_this);
+    lua_register(L, "setNextPlayer", wrap_setNextPlayer);
+    //  TODO add state checking after some functions
 
     // load card scripts
     for (const auto& card : _lootDeck) {

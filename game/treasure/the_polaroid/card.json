@@ -1,0 +1,12 @@
+{
+    "name": "The Polaroid",
+    "text": "If you have 0 loot cards in your hand at the end of your turn, loot 2.",
+    "image": "image.bmp",
+    "script": "script.lua",
+    "on": {
+        "turn_end": {
+            "check": "ThePolaroid_trigger_check",
+            "effect": "ThePolaroid_trigger"
+        }
+    }
+}

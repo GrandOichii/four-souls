@@ -14,6 +14,7 @@ for file in listdir(IN_DIR):
     pixdata = img.load()
     y = int(img.size[1] / 2)
     xc = 0
+    print(pixdata[xc, y])
     while True:
         if pixdata[xc, y] != (255, 255, 255):
             break

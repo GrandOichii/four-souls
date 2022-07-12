@@ -67,6 +67,8 @@ void Player::pushTable(lua_State* L) {
     l_pushtablestring(L, "name", this->_name);
     l_pushtablenumber(L, "id", (float)this->_id);
     l_pushtablenumber(L, "startTurnLootAmount", (float)this->_startTurnLootAmount);
+    l_pushtablenumber(L, "coins", (float)this->_coinCount);
+    l_pushtablenumber(L, "souls", (float)this->_soulCount);
     // push cards in hand
     lua_pushstring(L, "hand");
     auto handSize = _hand.size();
@@ -121,12 +123,15 @@ PlayerBoardState Player::getState() {
     result.coinCount = _coinCount;
     result.health = _health;
     result.maxHealth = _maxHealth;
+    result.soulCount = _soulCount;
     for (const auto& w : _board)
         result.board.push_back(std::make_pair(w->card()->name(), w->isActive()));
     for (const auto& c : _hand)
         result.hand.push_back(c->name());
     return result;
 } 
+
+void Player::addSouls(int amount) { _soulCount += amount; }
 
 ScriptedPlayer::ScriptedPlayer(std::string name, CharacterCard* card, int id, string actions) :
     Player(name, card, id)

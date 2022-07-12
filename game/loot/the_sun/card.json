@@ -1,0 +1,8 @@
+{
+    "name": "XIX. The Sun",
+    "text": "If it is your turn, gain an additional turn after this one. Put this card on the bottom of the loot deck.",
+    "image": "image.bmp",
+    "script": "script.lua",
+    "use": "TheSun_use",
+    "goes_to_bottom": true
+}
