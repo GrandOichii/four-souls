@@ -26,6 +26,8 @@ private:
     string _lootCardBackPath;
     string _treasureCardBackPath;
     string _monsterCardBackPath;
+
+    string _setupScript;
 public:
     Game(string path);
     ~Game();

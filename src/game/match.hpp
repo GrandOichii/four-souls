@@ -34,6 +34,7 @@ const int STARTING_LOOT_AMOUNT = 2;
 const int STARTING_SHOP_SIZE = 2;
 const int STARTING_MONSTERS_AMOUNT = 2;
 const int STARTING_TREASURE_PRICE = 10;
+const int STARTING_ATTACK_COUNT = 1;
 
 struct StackMememberState {
     string message;
@@ -164,6 +165,7 @@ public:
     static int wrap_requestChoice(lua_State* L);
     static int wrap_getPlayers(lua_State* L);
     static int wrap_getOwner(lua_State *L);
+    static int wrap_incAttackCount(lua_State *L);
     static int wrap_lootCards(lua_State *L);
     static int wrap_buyItem(lua_State* L);
     static int wrap_addCoins(lua_State *L);
@@ -189,7 +191,7 @@ public:
     Player* playerWithID(int id);
     void pushEOTDeferredTriggers();
     void execEOTDefers();
-    void setupLua();
+    void setupLua(string setupScript);
     static void lua_err(lua_State *L);
     void execScript(string script);
     void execFunc(string funcName);

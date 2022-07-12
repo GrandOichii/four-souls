@@ -35,7 +35,9 @@ private:
     int _attack;
     int _tempAttackBoost = 0;
 
-    int _baseAttack;
+    int _maxAttackCount;
+    int _attackCount;
+
     int _id;
 
     int _soulCount;
@@ -63,6 +65,10 @@ public:
     void rechargeCards();
     void recharge();
     void pushTable(lua_State* L);
+
+    void incMaxAttackCount();
+    void decMaxAttackCount();
+    void incAttackCount();
 
     int attack();
     void tempIncAttack(int amount);

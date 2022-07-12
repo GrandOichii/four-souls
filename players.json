@@ -3,6 +3,8 @@
         "name": "oichii1",
         "actions": [
             "$PASS",
+            "buy_treasure 0",
+            "$PASS",
             "play_loot 0",
             "$PASS",
             "play_loot 0"
@@ -15,10 +17,7 @@
     {
         "name": "oichii2",
         "actions": [
-            "$PASS",
-            "$PASS",
-            "$PASS",
-            "play_loot 0"
+            "$PASS"
         ],
         "responses": [
             "2"

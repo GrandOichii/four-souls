@@ -13,12 +13,6 @@ end
 
 function TwoOfDiamonds_use(host)
     local targetID = popTarget(host)["id"]
-    local players = getPlayers(host)
-    for _, p in pairs(players) do
-        -- print("\t", targetID, "\t", p["id"])
-        if p["id"] == targetID then
-            addCoins(host, targetID, p["coins"])
-            return
-        end
-    end
+    local player = Common_PlayerWithID(host, targetID)
+    addCoins(host, targetID, player["coins"])
 end

@@ -13,12 +13,5 @@ end
 
 function SoulHeart_use(host)
     local targetID = popTarget(host)["id"]
-    local players = getPlayers(host)
-    for _, p in pairs(players) do
-        -- print("\t", targetID, "\t", p["id"])
-        if p["id"] == targetID then
-            addBlueHealth(host, targetID, 1)
-            return
-        end
-    end
+    addBlueHealth(host, targetID, 1)
 end

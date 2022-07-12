@@ -1,4 +1,4 @@
-function TheChariot_cost(host, cardInfo)
+function Justice_cost(host, cardInfo)
 
     local ownerID = cardInfo["ownerID"]
     local players = getPlayers(host)
@@ -13,12 +13,20 @@ function TheChariot_cost(host, cardInfo)
 
 end
 
-function TheChariot_use(host)
+function Justice_use(host)
 
     local target = popTarget(host)
     local targetID = target["id"]
 
-    tempIncMaxLife(host, targetID, 1)
-    tempIncAttack(host, targetID, 1)
+    local player = Common_PlayerWithID(host, targetID)
 
+    local owner = getOwner(host)
+    local diff = player["coins"] - owner["coins"]
+    if diff > 0 then
+        addCoins(host, owner["id"], diff)
+    end
+    diff = Common_CardCount(player) - Common_CardCount(owner)
+    if diff > 0 then
+        lootCards(host, owner["id"], diff)
+    end
 end

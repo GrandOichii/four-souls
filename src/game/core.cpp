@@ -9,6 +9,7 @@ static const string CHARACTER_CARDS_FILE = "characters.json";
 static const string MONSTER_CARDS_FILE = "monsters.json";
 static const string TREASURE_CARDS_FILE = "treasures.json";
 static const string STARTING_ITEMS_FILE = "starting_items.json";
+static const string SETUP_SCRIPT_FILE = "setup.lua";
 
 Game::Game(string dir) {
     this->loadLootCards(dir);
@@ -16,6 +17,8 @@ Game::Game(string dir) {
     this->loadMonsterCards(dir);
     this->loadStartingItems(dir);
     this->loadCharacterCards(dir);
+
+    this->_setupScript = fs::readFile(fs::join(dir, SETUP_SCRIPT_FILE).c_str());
     //  TODO load config
 }
 
@@ -117,7 +120,7 @@ Match* Game::createMatch() {
     result->createLootDeck(_lootDeckTemplate);
     result->createMonsterDeck(_monsterCards);
     result->createTreasureDeck(_treasureCards);
-    result->setupLua();
+    result->setupLua(_setupScript);
     return result;
 }
 

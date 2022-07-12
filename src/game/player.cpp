@@ -11,7 +11,6 @@ Player::Player(std::string name, CharacterCard* card, int id) :
 
     this->_attack = card->attack();
 
-    this->_baseAttack = card->attack();
     auto w = new CardWrapper(card->startingItem(), _id);
     w->tap();
     this->_board.push_back(w);
@@ -26,10 +25,26 @@ Player::Player(std::string name, CharacterCard* card, int id) :
     this->_blueHealth = 0;
 
     this->_treasurePrice = STARTING_TREASURE_PRICE;
+
+    this->_maxAttackCount = STARTING_ATTACK_COUNT;
+    this->_attackCount = this->_maxAttackCount;
 }
 
 Player::~Player()  {
     for (const auto& w : _board) delete w;
+}
+
+void Player::incMaxAttackCount() {
+    _maxAttackCount++;
+    _attackCount++;
+}
+
+void Player::decMaxAttackCount() {
+    _maxAttackCount--;
+}
+
+void Player::incAttackCount() {
+    _attackCount++;
 }
 
 void Player::incBeginningLoot() { _startTurnLootAmount++; }
@@ -165,6 +180,7 @@ void Player::resetEOT() {
     _tempMaxHealthBoost = 0;
     _health = maxHealth();
     _tempAttackBoost = 0;
+    _attackCount = _maxAttackCount;
 }
 
 

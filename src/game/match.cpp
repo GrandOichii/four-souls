@@ -688,6 +688,23 @@ int Match::wrap_decTreasureCost(lua_State* L) {
     return 0;
 }
 
+int Match::wrap_incAttackCount(lua_State* L) {
+    //  TODO untested
+    if (lua_gettop(L) != 2) {
+        lua_err(L);
+        exit(1);
+    }
+    auto match = static_cast<Match*>(lua_touserdata(L, 1));
+    if (!lua_isnumber(L, 2)) {
+        lua_err(L);
+        exit(1);
+    }
+    int pid = (int)lua_tonumber(L, 2);
+    auto player = match->playerWithID(pid);
+    player->incAttackCount();
+    return 0;
+}
+
 void Match::addCardToBoard(TrinketCard* card, Player* owner) {
     auto w = new CardWrapper(card, this->newCardID());
     owner->addToBoard(w);
@@ -728,7 +745,7 @@ void Match::execEOTDefers() {
     }
 }
 
-void Match::setupLua() {
+void Match::setupLua(string setupScript) {
     this->L = luaL_newstate();
     // connect common libs
     luaL_openlibs(L);
@@ -758,6 +775,7 @@ void Match::setupLua() {
     lua_register(L, "pushTarget", wrap_pushTarget);
     lua_register(L, "popTarget", wrap_popTarget);
     lua_register(L, "requestChoice", wrap_requestChoice);
+    lua_register(L, "incAttackCount", wrap_incAttackCount);
 
     //  TODO add state checking after some functions
 
@@ -776,6 +794,8 @@ void Match::setupLua() {
         std::cout << "Loading script for " << card->name() << std::endl;
         this->execScript(card->script());
     }
+    std::cout << "Loading setup script" << std::endl;
+    this->execScript(setupScript);
     std::cout << "All scripts loaded!" << std::endl;
 }
 

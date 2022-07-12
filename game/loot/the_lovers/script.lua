@@ -15,13 +15,5 @@ end
 function TheLovers_use(host)
     local target = popTarget(host)
     local targetID = target["id"]
-    local players = getPlayers(host)
-
-    for _, p in pairs(players) do
-        if p["id"] == targetID then
-            tempIncMaxLife(host, targetID, 2)
-            return
-        end
-    end
-
+    tempIncMaxLife(host, targetID, 2)
 end
