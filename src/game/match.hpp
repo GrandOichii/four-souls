@@ -25,6 +25,7 @@ extern "C" {
 
 using std::string;
 
+static const string CARD_INFO_FILE = "card.json";
 
 const int MIN_PLAYER_COUNT = 2;
 const int MAX_PLAYER_COUNT = 4;
@@ -294,3 +295,5 @@ public:
     MatchState getState();
     int newCardID();
 };
+
+// !!! CHANGE SO THAT EVERY CARD HAS A WRAPPER !!!

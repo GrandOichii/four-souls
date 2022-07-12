@@ -121,17 +121,16 @@ void LootCard::use(Player* player, Match* match) {
 CharacterCard::CharacterCard(string dir, json j) : 
     Card(dir, j),
     _attack(j["attack"]),
-    _health(j["health"]),
-    _startingItemName(j["item"]) {}
+    _health(j["health"])
+{
+    auto itemDir = fs::join(dir, j["item"]);
+    auto jj = fs::readJS(fs::join(itemDir, CARD_INFO_FILE));
+    this->_startingItem = new TrinketCard(itemDir, jj, true);
+}
 
 int CharacterCard::attack() { return _attack; }
 int CharacterCard::health() { return _health; }
 TrinketCard* CharacterCard::startingItem() { return _startingItem; }
-string CharacterCard::startingItemName() { return _startingItemName; }
-
-void CharacterCard::setStartingItem(TrinketCard* card) {
-    this->_startingItem = card;
-}
 
 MonsterCard::MonsterCard(string dir, json j) :
     Card(dir, j)

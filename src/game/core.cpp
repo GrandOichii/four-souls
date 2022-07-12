@@ -2,7 +2,6 @@
 
 #include <iostream>
 
-static const string CARD_INFO_FILE = "card.json";
 
 static const string LOOT_CARDS_FILE = "loot.json";
 static const string CHARACTER_CARDS_FILE = "characters.json";
@@ -15,8 +14,8 @@ Game::Game(string dir) {
     this->loadLootCards(dir);
     this->loadTreasureCards(dir);
     this->loadMonsterCards(dir);
-    this->loadStartingItems(dir);
     this->loadCharacterCards(dir);
+    std::cout << "character" << std::endl;
 
     this->_setupScript = fs::readFile(fs::join(dir, SETUP_SCRIPT_FILE).c_str());
     //  TODO load config
@@ -39,40 +38,23 @@ void Game::loadMonsterCards(string dir) {
     //     c->print("");
 }
 
-void Game::loadStartingItems(string dir) {
-    auto j = fs::readJS(fs::join(dir, STARTING_ITEMS_FILE));
-    for (const auto& jj : j.items()) {
-        string tdir = fs::join(dir, jj.value());
-        auto jjj = fs::readJS(fs::join(tdir, CARD_INFO_FILE));
-        this->_startingItems.push_back(new TrinketCard(tdir, jjj, true));
-    }
-    // for (const auto& c : _startingItems)
-    //     c->print("");
-}
-
 void Game::loadLootCards(string dir) {
     auto j = fs::readJS(fs::join(dir, LOOT_CARDS_FILE));
     this->_lootCardBackPath = fs::join(dir, j["back"]);
     auto loadF = [this, j, dir](string key, bool isTrinket) {
-        for (const auto& el : j["cards"][key].items()) {
-            auto cardPath = fs::join(dir, el.value());
+        for (const auto& [key, value] : j["cards"][key].items()) {
+            auto cardPath = fs::join(dir, key);
+            int amount = value;
             auto cardJS = fs::readJS(fs::join(cardPath, CARD_INFO_FILE));
-            // std::cout << cardJS["name"] << std::endl;
             auto card = new LootCard(cardPath, cardJS, isTrinket);
             this->_lootCards.push_back(card);
-            string name = el.key();
-            if (!j["deck"].contains(name)) continue;
             // add cards to the deck template
-            int amount = j["deck"][name];
             this->_lootDeckTemplate.push_back(std::make_pair(card, amount));
         }
     };
 
     loadF("basic", false);
     loadF("trinkets", true);
-
-    // for (const auto& c : _lootCards)
-    //     c->print("");
 }
 
 void Game::loadTreasureCards(string dir) {
@@ -93,16 +75,6 @@ void Game::loadCharacterCards(string dir) {
     for (const auto& el : j.items()) {
         auto character = new CharacterCard(dir, el.value());
         _characterCards.push_back(character);
-        auto in = character->startingItemName();
-        auto siSet = false;
-        for (const auto& item : _startingItems) {
-            if (item->name() == in) {
-                siSet = true;
-                character->setStartingItem(item);
-                break;
-            }
-        }
-        if (!siSet) throw std::runtime_error("Unkown starting item: " + in);
     }
 }
 
@@ -126,7 +98,10 @@ Match* Game::createMatch() {
 
 std::vector<Card*> Game::getAllCards() {
     vector<Card*> result;
-    for (const auto& c : _characterCards) result.push_back(c);
+    for (const auto& c : _characterCards) {
+        result.push_back(c);
+        result.push_back(c->startingItem());
+    }
     for (const auto& c : _lootCards) result.push_back(c);
     for (const auto& c : _treasureCards) result.push_back(c);
     for (const auto& c : _startingItems) result.push_back(c);

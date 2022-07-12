@@ -2,44 +2,25 @@
     "back": "images/loot_card_back.bmp",
     "cards": {
         "basic": {
-            "A penny!": "loot/one_cent",
-            "2 cents!": "loot/two_cents",
-            "3 cents!": "loot/three_cents",
-            "4 cents!": "loot/four_cents",
-            "A nickel!": "loot/nickel",
-            "A sack": "loot/a_sack",
-            "The Stars": "loot/the_stars",
-            "Jera": "loot/jera",
-            "Lost Soul": "loot/lost_soul",
-            "The Sun" : "loot/the_sun",
-            "Two of Diamonds": "loot/two_of_diamonds",
-            "Soul Heart": "loot/soul_heart",
-            "The Lovers": "loot/the_lovers",
-            "The Chariot": "loot/the_chariot",
-            "Justice": "loot/justice",
-            "Strength": "loot/strength"
+            "loot/one_cent": 0,
+            "loot/two_cents": 0,
+            "loot/three_cents": 20,
+            "loot/four_cents": 0,
+            "loot/nickel": 0,
+            "loot/a_sack": 0,
+            "loot/the_stars": 0,
+            "loot/jera": 0,
+            "loot/lost_soul": 0,
+            "loot/the_sun": 0,
+            "loot/two_of_diamonds": 0,
+            "loot/soul_heart": 0,
+            "loot/the_lovers": 0,
+            "loot/the_chariot": 0,
+            "loot/justice": 0,
+            "loot/strength": 0
         },
         "trinkets": {
-            "Blood penny": "loot/blood_penny"
+            "loot/blood_penny": 0
         }
-    },
-    "deck": {
-        "Strength": 0,
-        "Justice": 0,
-        "The Chariot": 0,
-        "The Lovers": 0,
-        "Soul Heart": 0,
-        "Two of Diamonds": 0,
-        "The Sun": 0,
-        "Lost Soul": 0,
-        "A penny!": 0,
-        "2 cents!": 0,
-        "3 cents!": 0,
-        "4 cents!": 0,
-        "A nickel!": 20,
-        "Blood penny": 0,
-        "A sack": 0,
-        "The Stars": 0,
-        "Jera": 0
     }
 }

@@ -38,7 +38,6 @@ public:
     void loadTreasureCards(string dir);
     void loadMonsterCards(string dir);
     void loadCharacterCards(string dir);
-    void loadStartingItems(string dir);
     Match* createMatch();
     std::vector<Card*> getAllCards();
 };

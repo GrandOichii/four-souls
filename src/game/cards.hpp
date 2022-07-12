@@ -88,14 +88,11 @@ private:
     int _attack;
     int _health;
     TrinketCard* _startingItem;
-    string _startingItemName;
 public:
     CharacterCard(string dir, json j);
     int attack();
     int health();
     TrinketCard* startingItem();
-    string startingItemName();
-    void setStartingItem(TrinketCard* card);
 };
 
 //  TODO change to inhereting ScriptCard
