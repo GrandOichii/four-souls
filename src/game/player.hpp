@@ -81,6 +81,7 @@ public:
 
     int health();
     int maxHealth();
+    void dealDamage(int amount);
 
     virtual string promptAction() = 0;
     virtual string promptResponse(string text, string choiceType, vector<int> choices) = 0;

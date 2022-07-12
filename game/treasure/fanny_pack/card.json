@@ -1,0 +1,12 @@
+{
+    "name": "Fanny Pack",
+    "text": "Each time you take damage, loot 1.",
+    "image": "image.bmp",
+    "script": "script.lua",
+    "on": {
+        "damage": {
+            "check": "FannyPack_trigger_check",
+            "effect": "FannyPack_trigger"
+        }
+    }
+}

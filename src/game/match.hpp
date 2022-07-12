@@ -72,6 +72,20 @@ struct StackEffect {
     StackMememberState getState();
 };
 
+struct DamageTrigger {
+    string targetType;
+    int id;
+    int amount;
+    int shelfLife;
+
+    void pushTable(lua_State* L) {
+        lua_newtable(L);
+        l_pushtablestring(L, "type", this->targetType);
+        l_pushtablenumber(L, "id", (float)this->id);
+        l_pushtablenumber(L, "amount", (float)this->amount);
+    }
+};
+
 template<class T>
 static void millDeck(std::deque<T>& deck, std::deque<T>& discard, int amount) {
     while (amount) {
@@ -110,9 +124,10 @@ private:
     std::deque<MonsterCard*> _monsterDiscard;
     std::vector<MonsterCard*> _monsters;
 
-    std::vector<StackEffect> _stack;
+    // StackEffect _lastStack;
+    std::vector<StackEffect*> _stack;
     std::stack<string> _eotDefers;
-    std::stack<StackEffect> _eotDeferredTriggers;
+    std::stack<StackEffect*> _eotDeferredTriggers;
 
     // whenever a player plays a loot card that is a trinket, the original is placed in the pool
     // after a loot card trinket is destroyed, remove it's parent from _lootCardPool
@@ -130,8 +145,11 @@ private:
             }
             player->takeCard(cardI);
             this->log(player->name() + " plays card " + card->name());
-            auto wrapper = new CardWrapper(card, this->newCardID());
-            this->pushToStack(StackEffect(
+            auto id = this->newCardID();
+            // never deleted ?
+            auto wrapper = new CardWrapper(card, id);
+            this->log("Added card " + card->name() + " with id " + std::to_string(id));
+            this->pushToStack(new StackEffect(
                 "_popLootStack",
                 player,
                 wrapper,
@@ -143,7 +161,7 @@ private:
         {ACTION_BUY_TREASURE, [this](Player* player, std::vector<string> args){
             this->_lastTreasureIndex = atoi(args[1].c_str());
             player->payPricePerTreasure();
-            this->pushToStack(StackEffect(
+            this->pushToStack(new StackEffect(
                 "_buyItem",
                 player,
                 nullptr,
@@ -157,15 +175,17 @@ private:
             auto w = this->cardWithID(cardID);
             auto card = (TrinketCard*)w->card();
             auto ability = card->abilities()[abilityI];
-            this->pushToStack(StackEffect(
+            auto p = new StackEffect(
                 ability.funcName,
                 player,
                 w,
                 ACTIVATE_ITEM_TYPE
-            ));
+            );
+            this->pushToStack(p);
             bool payed = this->requestPayCost(ability.costFuncName, player);
             if (!payed) {
                 this->_stack.pop_back();
+                delete p;
                 return;
             }
             this->log(player->name() + " activated " + card->name());
@@ -186,6 +206,7 @@ private:
     };
 
     std::stack<std::pair<LootCard*, Player*>> _lootStack;
+    std::stack<DamageTrigger> _damageStack;
     std::vector<std::pair<string, int>> _targetStack;
 public:
     Match();
@@ -206,11 +227,14 @@ public:
     void triggerLastEffectType();
     static int wrap_addBlueHealth(lua_State* L);
     static int wrap_tapCard(lua_State* L);
+    static int wrap_rechargeCard(lua_State* L);
+    static int wrap_getDamageEvent(lua_State* L);
     static int wrap_popTarget(lua_State* L);
     static int wrap_pushTarget(lua_State* L);
     static int wrap_requestChoice(lua_State* L);
     static int wrap_getPlayers(lua_State* L);
     static int wrap_getOwner(lua_State *L);
+    static int wrap_dealDamage(lua_State *L);
     static int wrap_incAttackCount(lua_State *L);
     static int wrap_lootCards(lua_State *L);
     static int wrap_buyItem(lua_State* L);
@@ -261,8 +285,8 @@ public:
     void currentPlayerLoot();
     void turn();
     void executePlayerAction(Player* player, string action);
-    void applyTriggers(string triggerType);
-    void pushToStack(const StackEffect& effect);
+    int applyTriggers(string triggerType);
+    void pushToStack(StackEffect* effect);
     void resolveStack();
     void resolveTop();
     string promptPlayerWithPriority();

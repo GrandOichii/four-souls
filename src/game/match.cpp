@@ -166,7 +166,8 @@ int Match::wrap_getOwner(lua_State *L) {
         exit(1);
     }
     auto match = static_cast<Match*>(lua_touserdata(L, 1));
-    match->_stack.back().player->pushTable(L);
+    match->_stack.back()->player->pushTable(L);
+    // match->_lastStack.player->pushTable(L);
     return 1;
 }
 
@@ -191,6 +192,42 @@ int Match::wrap_addBlueHealth(lua_State* L) {
     return 0;
 }
 
+int Match::wrap_dealDamage(lua_State* L) {
+    if (lua_gettop(L) != 3) {
+        lua_err(L);
+        exit(1);
+    }
+    auto match = static_cast<Match*>(lua_touserdata(L, 1));
+    if (!lua_isnumber(L, 2)) {
+        lua_err(L);
+        exit(1);
+    }
+    auto pid = (int)lua_tonumber(L, 2);
+    if (!lua_isnumber(L, 3)) {
+        lua_err(L);
+        exit(1);
+    }
+    auto amount = (int)lua_tonumber(L, 3);
+    Player* player = match->playerWithID(pid);
+    player->dealDamage(amount);
+    match->log(player->name() + " is dealt " + std::to_string(amount) + " damage");
+    // trigger all "dealt damage" triggers
+    DamageTrigger trigger{
+        PLAYER_TARGET,
+        pid,
+        amount,
+        -1
+    };
+    match->_damageStack.push(trigger);
+    // trigger.shelf
+    trigger.shelfLife = match->applyTriggers(DAMAGE_TRIGGER);
+    if (!trigger.shelfLife) {
+        std::cout << "No damage triggers, popping damage stack" << std::endl;
+        match->_damageStack.pop();
+    }
+    return 0;
+}
+
 int Match::wrap_pushTarget(lua_State* L) {
     // dumpstack(L);
     if (lua_gettop(L) != 3) {
@@ -205,12 +242,12 @@ int Match::wrap_pushTarget(lua_State* L) {
     auto id = (int)lua_tonumber(L, 2);
 
     if (!lua_isstring(L, 3)) {
-    std::cout << "lmao" << std::endl;
         lua_err(L);
         exit(1);
     }
     auto targetType = (string)lua_tostring(L, 3);
     match->_targetStack.push_back(std::make_pair(targetType, id));
+    // std::cout << "TARGET TYPE " << targetType << "\t" << id << std::endl;
     return 0;
 }
 
@@ -346,6 +383,22 @@ int Match::wrap_addSouls(lua_State* L) {
     return 0;
 }
 
+int Match::wrap_getDamageEvent(lua_State* L) {
+    if (lua_gettop(L) != 1) {
+        lua_err(L);
+        exit(1);
+    }
+    auto match = static_cast<Match*>(lua_touserdata(L, 1));
+    auto event = match->_damageStack.top();
+    event.pushTable(L);
+    event.shelfLife--;
+    if (!event.shelfLife) {
+        std::cout << "Removing damage trigger" << std::endl;
+        match->_damageStack.pop();
+    }
+    return 1;
+}
+
 int Match::wrap_getCardOwner(lua_State* L) {
     if (lua_gettop(L) != 2) {
         lua_err(L);
@@ -430,7 +483,8 @@ int Match::wrap_buyItem(lua_State* L) {
             match->removeFromShop(card);
         }
     }
-    auto player = match->_stack.back().player;
+    // auto player = match->_lastStack.player;
+    auto player = match->_stack.back()->player;
     match->addCardToBoard(card, player);
     match->log("Player " + player->name() + " bought " + card->name());
     return 0;
@@ -504,11 +558,11 @@ int Match::wrap_deferEOT(lua_State *L) {
     }
     auto isTrigger = (bool)lua_toboolean(L, 4);
     if (isTrigger) {
-        StackEffect effect;
-        effect.funcName = funcName;
-        effect.card = card;
-        effect.player = owner;
-        effect.type = TRIGGER_TYPE;
+        auto effect = new StackEffect();;
+        effect->funcName = funcName;
+        effect->card = card;
+        effect->player = owner;
+        effect->type = TRIGGER_TYPE;
         match->_eotDeferredTriggers.push(effect);
     } else match->_eotDefers.push(funcName);
     return 0;
@@ -520,7 +574,7 @@ int Match::wrap_this(lua_State *L) {
         exit(1);
     }
     auto match = static_cast<Match*>(lua_touserdata(L, 1));
-    match->_stack.back().card->pushTable(match->L);
+    match->_stack.back()->card->pushTable(match->L);
     return 1;
 }
 
@@ -674,6 +728,22 @@ int Match::wrap_tapCard(lua_State* L) {
     return 0;
 }
 
+int Match::wrap_rechargeCard(lua_State* L) {
+    if (lua_gettop(L) != 2) {
+        lua_err(L);
+        exit(1);
+    }
+    auto match = static_cast<Match*>(lua_touserdata(L, 1));
+    if (!lua_isnumber(L, 2)) {
+        lua_err(L);
+        exit(1);
+    }
+    int cid = (int)lua_tonumber(L, 2);
+    auto card = match->cardWithID(cid);
+    card->recharge();
+    return 0;
+}
+
 int Match::wrap_decMaxLife(lua_State* L) {
     if (lua_gettop(L) != 3) {
         lua_err(L);
@@ -765,7 +835,9 @@ int Match::wrap_incAttackCount(lua_State* L) {
 }
 
 void Match::addCardToBoard(TrinketCard* card, Player* owner) {
-    auto w = new CardWrapper(card, this->newCardID());
+    auto id = this->newCardID();
+    auto w = new CardWrapper(card, id);
+    this->log("Added card " + card->name() + " with id " + std::to_string(id));
     owner->addToBoard(w);
     auto efn = card->enterFuncName();
     if (!efn.size()) return;
@@ -826,7 +898,10 @@ void Match::setupLua(string setupScript) {
     lua_register(L, "getCurrentPlayer", wrap_getCurrentPlayer);
     lua_register(L, "getCardOwner", wrap_getCardOwner);
     lua_register(L, "addSouls", wrap_addSouls);
+    lua_register(L, "rechargeCard", wrap_rechargeCard);
+    lua_register(L, "getDamageEvent", wrap_getDamageEvent);
     lua_register(L, "this", wrap_this);
+    lua_register(L, "dealDamage", wrap_dealDamage);
     lua_register(L, "setNextPlayer", wrap_setNextPlayer);
     lua_register(L, "incTreasureCost", wrap_incTreasureCost);
     lua_register(L, "decTreasureCost", wrap_decTreasureCost);
@@ -902,7 +977,6 @@ bool Match::execCheck(string funcName, CardWrapper* card) {
         lua_err(L);
         exit(1);
     }
-
     lua_pushlightuserdata(L, this);
     // push card table
     card->pushTable(L);
@@ -1041,7 +1115,7 @@ void Match::calcNext() {
 }
 
 void Match::currentPlayerLoot() {
-    this->pushToStack(StackEffect(
+    this->pushToStack(new StackEffect(
         "_startTurnLoot", 
         _activePlayer, 
         nullptr,
@@ -1097,7 +1171,8 @@ void Match::executePlayerAction(Player* player, string action) {
     this->_actionMap[split[0]](player, split);
 }
 
-void Match::applyTriggers(string triggerType) {
+int Match::applyTriggers(string triggerType) {
+    int result = 0;
     // first the monsters
 
     // then the items, starting with the current player
@@ -1108,28 +1183,34 @@ void Match::applyTriggers(string triggerType) {
         for (const auto& w : board) {
             auto card = (TrinketCard*)w->card();
             if (!card->hasTrigger(triggerType)) continue;
-            std::cout << "Card " << card->name() << "[" << w->id() << "] has a " << triggerType << " trigger" << std::endl;
+            this->log("Card " + card->name() + "[" + std::to_string(w->id()) + "] has a " + triggerType + " trigger");
             auto pair = card->getTriggerWhen(triggerType);
             auto checkFuncName = pair.first;
-            if (!this->execCheck(checkFuncName, w)) continue;
+            if (!this->execCheck(checkFuncName, w)) {
+                std::cout << "Check failed" << std::endl;
+                continue;
+            }
             this->log(card->name() + " is triggered");
-            this->pushToStack(StackEffect(
+            this->pushToStack(new StackEffect(
                 pair.second, 
                 player, 
                 w,
                 TRIGGER_TYPE    
             ));
+            ++result;
         }
     }
+    return result;
 }
 
 void Match::triggerLastEffectType() {
+    // auto effect = this->_lastStack;
     auto effect = this->_stack.back();
-    this->applyTriggers(effect.type);
+    this->applyTriggers(effect->type);
     this->resolveStack();
 }
 
-void Match::pushToStack(const StackEffect& effect) {
+void Match::pushToStack(StackEffect* effect) {
     this->_stack.push_back(effect);
 }
 
@@ -1141,9 +1222,10 @@ void Match::resolveStack() {
 }
 
 void Match::resolveTop() {
-    auto effect = this->_stack.back();
     this->_priorityI = this->_currentI;
     const auto last = this->_currentI;
+    auto effect = this->_stack.back();
+
     do {
         // prompt action
         auto response = this->promptPlayerWithPriority();
@@ -1160,8 +1242,12 @@ void Match::resolveTop() {
         return;
     } while (last != this->_priorityI);
     // resolve the ability
-    if (effect.resolve) this->execFunc(effect.funcName);
-    this->_stack.pop_back();
+    // std::cout << "LAST STACK SET TO " << effect.funcName << std::endl;
+    // this->_lastStack = effect;
+    // std::cout << "STACK SIZE " << this->_stack;
+    if (effect->resolve) this->execFunc(effect->funcName);
+    _stack.erase(std::find(_stack.begin(), _stack.end(), effect));
+    delete effect;
 }
 
 string Match::promptPlayerWithPriority() {
@@ -1181,7 +1267,7 @@ MatchState Match::getState() {
     for (const auto& p : _players) 
         result.boards.push_back(p->getState());
     for (auto& si : _stack)
-        result.stack.push_back(si.getState());
+        result.stack.push_back(si->getState());
     result.currentI = _currentI;
     result.priorityI = _priorityI;
 

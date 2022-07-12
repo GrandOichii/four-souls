@@ -34,6 +34,11 @@ Player::~Player()  {
     for (const auto& w : _board) delete w;
 }
 
+void Player::dealDamage(int amount) {
+    _health -= amount;
+    if (_health < 0) _health = 0;
+}
+
 void Player::incMaxAttackCount() {
     _maxAttackCount++;
     _attackCount++;

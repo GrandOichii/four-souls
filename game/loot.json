@@ -24,7 +24,7 @@
         }
     },
     "deck": {
-        "Strength": 20,
+        "Strength": 0,
         "Justice": 0,
         "The Chariot": 0,
         "The Lovers": 0,
@@ -36,7 +36,7 @@
         "2 cents!": 0,
         "3 cents!": 0,
         "4 cents!": 0,
-        "A nickel!": 0,
+        "A nickel!": 20,
         "Blood penny": 0,
         "A sack": 0,
         "The Stars": 0,

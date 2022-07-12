@@ -1,8 +1,8 @@
 {
     "back": "images/treasure_card_back.bmp",
     "cards": [
-        "treasure/the_polaroid",
+        "treasure/fanny_pack",
         "treasure/starting_deck",
-        "treasure/potato_peeler"
+        "treasure/razor_blade"
     ]
 }

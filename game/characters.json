@@ -19,7 +19,7 @@
         "name": "Samson",
         "health": 2,
         "attack": 1,
-        "item": "Blood Lust",
+        "item": "Forever Alone",
         "image": "images/samson.bmp",
         "text": "{T}: Play an additional loot card this turn.\nStarting item: Blood Lust"
     }

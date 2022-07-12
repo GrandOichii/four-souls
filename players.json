@@ -5,11 +5,15 @@
             "$PASS",
             "buy_treasure 0",
             "$PASS",
+            "buy_treasure 0",
+            "$PASS",
             "activate 4 0"
         ],
         "responses": [
             "2",
-            "2"
+            "1",
+            "1",
+            "1"
         ]
     },
     {

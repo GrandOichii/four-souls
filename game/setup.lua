@@ -37,6 +37,7 @@ function Common_TargetOpponent(host, cardInfo)
             realI = realI + 1
         end
     end
+    
     local choiceId, payed = requestChoice(host, ownerID, "Choose a player", PLAYER, ids)
     if not payed then return false end
     pushTarget(host, choiceId, PLAYER)
@@ -45,6 +46,7 @@ end
 
 function Common_Tap(host, cardInfo)
     local card = this(host)
+
     if card["tapped"] then
         return false
     end

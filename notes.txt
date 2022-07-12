@@ -22,6 +22,5 @@
 - add cards:
     -- temperance
     -- razor blade
-    -- potato peeler
     -- chaos
     -- smelter

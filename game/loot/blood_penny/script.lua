@@ -8,6 +8,6 @@ end
 function BloodPenny_trigger_check(host)
 
     local deathEvent = getLastDeath(host)
-    return deathEvent["entity"] == PLAYER
+    return deathEvent["type"] == PLAYER
 
 end

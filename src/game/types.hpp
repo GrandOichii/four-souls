@@ -9,6 +9,7 @@ using std::string;
 
 const string ROLL_TRIGGER = "roll";
 const string DEATH_TRIGGER = "death";
+const string DAMAGE_TRIGGER = "damage";
 const string TURN_START_TRIGGER = "turn_start";
 const string TURN_END_TRIGGER = "turn_end";
 
@@ -34,6 +35,7 @@ const string TREASURE_DECK = "treasure";
 const string MONSTER_DECK = "monster";
 
 const string PLAYER_TARGET = "player";
+const string MONSTER_TARGET = "monster";
 
 const string RESPONSE_CANCEL = "$CANCEL";
 const string RESPONSE_FIRST = "$FIRST";
