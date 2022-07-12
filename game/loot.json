@@ -14,14 +14,16 @@
             "The Sun" : "loot/the_sun",
             "Two of Diamonds": "loot/two_of_diamonds",
             "Soul Heart": "loot/soul_heart",
-            "The Lovers": "loot/the_lovers"
+            "The Lovers": "loot/the_lovers",
+            "The Chariot": "loot/the_chariot"
         },
         "trinkets": {
             "Blood penny": "loot/blood_penny"
         }
     },
     "deck": {
-        "The Lovers": 20,
+        "The Chariot": 20,
+        "The Lovers": 0,
         "Soul Heart": 0,
         "Two of Diamonds": 0,
         "The Sun": 0,

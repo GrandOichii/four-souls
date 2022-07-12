@@ -9,6 +9,8 @@ Player::Player(std::string name, CharacterCard* card, int id) :
     this->_maxHealth = card->health();
     this->_health = this->_maxHealth;
 
+    this->_attack = card->attack();
+
     this->_baseAttack = card->attack();
     auto w = new CardWrapper(card->startingItem(), _id);
     w->tap();
@@ -131,6 +133,9 @@ void Player::decMaxLife(int amount) {
 int Player::health() { return _health; }
 int Player::maxHealth() { return _maxHealth + _tempMaxHealthBoost; }
 
+void Player::tempIncAttack(int amount) { _tempAttackBoost += amount; }
+int Player::attack() { return _attack + _tempAttackBoost; }
+
 PlayerBoardState Player::getState() {
     PlayerBoardState result;
     result.playerCard.first = _characterCard->name();
@@ -140,6 +145,7 @@ PlayerBoardState Player::getState() {
     result.maxHealth = maxHealth();
     result.blueHealth = _blueHealth;
     result.soulCount = _soulCount;
+    result.attack = attack();
     for (const auto& w : _board)
         result.board.push_back(std::make_pair(w->card()->name(), w->isActive()));
     for (const auto& c : _hand)
@@ -157,9 +163,8 @@ void Player::tempIncMaxLife(int amount) {
 void Player::resetEOT() {
     _blueHealth = 0;
     _tempMaxHealthBoost = 0;
-    std::cout << "boost : " << _tempMaxHealthBoost << std::endl;
-    std::cout << "max health : " << _maxHealth << std::endl;
     _health = maxHealth();
+    _tempAttackBoost = 0;
 }
 
 

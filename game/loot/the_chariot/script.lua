@@ -1,4 +1,4 @@
-function TheLovers_cost(host, cardInfo)
+function TheChariot_cost(host, cardInfo)
 
     local ownerID = cardInfo["ownerID"]
     local players = getPlayers(host)
@@ -10,16 +10,19 @@ function TheLovers_cost(host, cardInfo)
     if not payed then return false end
     pushTarget(host, choiceId, PLAYER)
     return true
+
 end
 
-function TheLovers_use(host)
+function TheChariot_use(host)
+
     local target = popTarget(host)
     local targetID = target["id"]
     local players = getPlayers(host)
 
     for _, p in pairs(players) do
         if p["id"] == targetID then
-            tempIncMaxLife(host, targetID, 2)
+            tempIncMaxLife(host, targetID, 1)
+            tempIncAttack(host, targetID, 1)
             return
         end
     end

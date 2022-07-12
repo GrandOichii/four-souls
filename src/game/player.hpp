@@ -15,7 +15,7 @@ struct PlayerBoardState {
     int maxHealth;
     int blueHealth;
     int soulCount;
-
+    int attack;
     
     std::pair<string, bool> playerCard;
     std::vector<std::pair<string, bool>> board;
@@ -30,8 +30,10 @@ private:
     int _maxHealth;
     int _health;
     int _blueHealth;
-
     int _tempMaxHealthBoost = 0;
+
+    int _attack;
+    int _tempAttackBoost = 0;
 
     int _baseAttack;
     int _id;
@@ -61,6 +63,9 @@ public:
     void rechargeCards();
     void recharge();
     void pushTable(lua_State* L);
+
+    int attack();
+    void tempIncAttack(int amount);
 
     void addBlueHealth(int amount);
     int blueHealth();

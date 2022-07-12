@@ -532,9 +532,13 @@ public:
             tex = this->_assets->getMessage("/" + std::to_string(space.maxHealth), SDL_Color{255, 0, 0, 0}, 48);
             drawTexture(tex, pX + 10 + width, pY + 10 + (48 + 2) * 1);
             SDL_DestroyTexture(tex);
+            // draw attack
+            tex = this->_assets->getMessage(std::to_string(space.attack), SDL_Color{169, 169, 169, 0}, 48);
+            drawTexture(tex, pX + 10, pY + 10 + (48 + 2) * 2);
+            SDL_DestroyTexture(tex);
             // draw souls
             tex = this->_assets->getMessage(std::to_string(space.soulCount), SDL_Color{255, 255, 255, 0}, 48);
-            drawTexture(tex, pX + 10, pY + 10 + (48 + 2) * 2);
+            drawTexture(tex, pX + 10, pY + 10 + (48 + 2) * 3);
             SDL_DestroyTexture(tex);
         }
     }

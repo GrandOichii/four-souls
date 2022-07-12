@@ -175,6 +175,7 @@ public:
     static int wrap_plusOneTreasure(lua_State* L);
     static int wrap_incMaxLife(lua_State* L);
     static int wrap_tempIncMaxLife(lua_State* L);
+    static int wrap_tempIncAttack(lua_State* L);
     static int wrap_decMaxLife(lua_State* L);
     static int wrap_getCardOwner(lua_State* L);
     static int wrap_getCurrentPlayer(lua_State* L);

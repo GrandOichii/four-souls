@@ -573,6 +573,27 @@ int Match::wrap_tempIncMaxLife(lua_State* L) {
     return 0;
 }
 
+int Match::wrap_tempIncAttack(lua_State* L) {
+    if (lua_gettop(L) != 3) {
+        lua_err(L);
+        exit(1);
+    }
+    auto match = static_cast<Match*>(lua_touserdata(L, 1));
+    if (!lua_isnumber(L, 2)) {
+        lua_err(L);
+        exit(1);
+    }
+    int pid = (int)lua_tonumber(L, 2);
+    auto player = match->playerWithID(pid);
+    if (!lua_isnumber(L, 3)) {
+        lua_err(L);
+        exit(1);
+    }
+    int amount = (int)lua_tonumber(L, 3);
+    player->tempIncAttack(amount);
+    return 0;
+}
+
 int Match::wrap_incMaxLife(lua_State* L) {
     if (lua_gettop(L) != 3) {
         lua_err(L);
@@ -723,6 +744,7 @@ void Match::setupLua() {
     lua_register(L, "plusOneTreasure", wrap_plusOneTreasure);
     lua_register(L, "incMaxLife", wrap_incMaxLife);
     lua_register(L, "tempIncMaxLife", wrap_tempIncMaxLife);
+    lua_register(L, "tempIncAttack", wrap_tempIncAttack);
     lua_register(L, "decMaxLife", wrap_decMaxLife);
     lua_register(L, "getCurrentPlayer", wrap_getCurrentPlayer);
     lua_register(L, "getCardOwner", wrap_getCardOwner);
