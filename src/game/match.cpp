@@ -386,6 +386,29 @@ int Match::wrap_addCoins(lua_State* L) {
     return 0;
 }
 
+int Match::wrap_subCoins(lua_State* L) {
+    if (lua_gettop(L) != 3) {
+        lua_err(L);
+        exit(1);
+    }
+    auto match = static_cast<Match*>(lua_touserdata(L, 1));
+    if (!lua_isnumber(L, 2)) {
+        lua_err(L);
+        exit(1);
+    }
+    auto pid = (int)lua_tonumber(L, 2);
+    
+    if (!lua_isnumber(L, 3)) {
+        lua_err(L);
+        exit(1);
+    }
+    auto amount = (int)lua_tonumber(L, 3);
+    Player* player = match->playerWithID(pid);
+    match->log(player->name() + " gains " + std::to_string(amount) + " coins");
+    player->removeCoins(amount);
+    return 0;
+}
+
 int Match::wrap_buyItem(lua_State* L) {
     if (lua_gettop(L) != 1) {
         lua_err(L);
@@ -501,6 +524,26 @@ int Match::wrap_this(lua_State *L) {
     return 1;
 }
 
+int Match::wrap_millDeck(lua_State* L) {
+    if (lua_gettop(L) != 3) {
+        lua_err(L);
+        exit(1);
+    }
+    auto match = static_cast<Match*>(lua_touserdata(L, 1));
+    if (!lua_isstring(L, 2)) {
+        lua_err(L);
+        exit(1);
+    }
+    auto deckType = (string)lua_tostring(L, 2);
+    if (!lua_isnumber(L, 3)) {
+        lua_err(L);
+        exit(1);
+    }
+    int amount = (int)lua_tonumber(L, 3);
+    match->_millMap[deckType](amount);
+    return 0;
+}
+
 int Match::wrap_plusOneTreasure(lua_State* L) {
     if (lua_gettop(L) != 2) {
         lua_err(L);
@@ -612,6 +655,22 @@ int Match::wrap_incMaxLife(lua_State* L) {
     }
     int amount = (int)lua_tonumber(L, 3);
     player->incMaxLife(amount);
+    return 0;
+}
+
+int Match::wrap_tapCard(lua_State* L) {
+    if (lua_gettop(L) != 2) {
+        lua_err(L);
+        exit(1);
+    }
+    auto match = static_cast<Match*>(lua_touserdata(L, 1));
+    if (!lua_isnumber(L, 2)) {
+        lua_err(L);
+        exit(1);
+    }
+    int cid = (int)lua_tonumber(L, 2);
+    auto card = match->cardWithID(cid);
+    card->tap();
     return 0;
 }
 
@@ -753,6 +812,7 @@ void Match::setupLua(string setupScript) {
     lua_register(L, "getOwner", wrap_getOwner);
     lua_register(L, "lootCards", wrap_lootCards);
     lua_register(L, "addCoins", wrap_addCoins);
+    lua_register(L, "subCoins", wrap_subCoins);
     lua_register(L, "_buyItem", wrap_buyItem);
     lua_register(L, "deferEOT", wrap_deferEOT);
     lua_register(L, "_popLootStack", wrap_popLootStack);
@@ -776,6 +836,8 @@ void Match::setupLua(string setupScript) {
     lua_register(L, "popTarget", wrap_popTarget);
     lua_register(L, "requestChoice", wrap_requestChoice);
     lua_register(L, "incAttackCount", wrap_incAttackCount);
+    lua_register(L, "tapCard", wrap_tapCard);
+    lua_register(L, "millDeck", wrap_millDeck);
 
     //  TODO add state checking after some functions
 
@@ -796,6 +858,10 @@ void Match::setupLua(string setupScript) {
     }
     std::cout << "Loading setup script" << std::endl;
     this->execScript(setupScript);
+    std::cout << "Loading base script" << std::endl;
+    // setup script
+    this->execScript("LOOT_DECK = \"" + LOOT_DECK + "\"\nTREASURE_DECK = \"" + TREASURE_DECK + "\"\nMONSTER_DECK = \"" + MONSTER_DECK + "\"\nPLAYER = \"" + PLAYER_TARGET + "\"function _startTurnLoot(host)\n\tlocal owner = getOwner(host)\nlootCards(host, owner[\"id\"], owner[\"startTurnLootAmount\"])\nend");
+    
     std::cout << "All scripts loaded!" << std::endl;
 }
 
@@ -925,8 +991,6 @@ void Match::createMonsterDeck(std::vector<MonsterCard*> cards) {
 
 void Match::start() {
     std::cout << "\nThe game starts\n\n";
-    // setup script
-    this->execScript("PLAYER = \"" + PLAYER_TARGET + "\"function _startTurnLoot(host)\n\tlocal owner = getOwner(host)\nlootCards(host, owner[\"id\"], owner[\"startTurnLootAmount\"])\nend");
     // give starting hands
     for (auto& p : _players) {
         auto cards = this->getTopLootCards(STARTING_LOOT_AMOUNT);
@@ -1057,6 +1121,12 @@ void Match::applyTriggers(string triggerType) {
             ));
         }
     }
+}
+
+void Match::triggerLastEffectType() {
+    auto effect = this->_stack.back();
+    this->applyTriggers(effect.type);
+    this->resolveStack();
 }
 
 void Match::pushToStack(const StackEffect& effect) {

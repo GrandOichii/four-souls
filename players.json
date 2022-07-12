@@ -5,9 +5,7 @@
             "$PASS",
             "buy_treasure 0",
             "$PASS",
-            "play_loot 0",
-            "$PASS",
-            "play_loot 0"
+            "activate 4 0"
         ],
         "responses": [
             "2",

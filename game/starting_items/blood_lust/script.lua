@@ -1,3 +1,8 @@
+function BloodLust_cost(host, cardInfo)
+    --  TODO
+    return Common_Tap(host, cardInfo)
+end
+
 function BloodLust_tapEOT(host)
     print("the effect wore off")
 end

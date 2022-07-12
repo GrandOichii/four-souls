@@ -72,6 +72,16 @@ struct StackEffect {
     StackMememberState getState();
 };
 
+template<class T>
+static void millDeck(std::deque<T>& deck, std::deque<T>& discard, int amount) {
+    while (amount) {
+        if (deck.empty()) return;
+        discard.push_back(deck.back());
+        deck.pop_back();
+        --amount;
+    }
+}
+
 class Match {
 private:
     int _lastID = 0;
@@ -128,6 +138,7 @@ private:
                 PLAY_LOOT_CARD_TYPE
             ));
             this->_lootStack.push(std::make_pair(card, player));
+            this->triggerLastEffectType();
         }},
         {ACTION_BUY_TREASURE, [this](Player* player, std::vector<string> args){
             this->_lastTreasureIndex = atoi(args[1].c_str());
@@ -138,6 +149,39 @@ private:
                 nullptr,
                 BUY_TREASURE_TYPE
             ));
+            this->triggerLastEffectType();
+        }},
+        {ACTION_ACTIVATE_CARD, [this](Player* player, std::vector<string> args){
+            auto cardID = atoi(args[1].c_str());
+            auto abilityI = atoi(args[2].c_str());
+            auto w = this->cardWithID(cardID);
+            auto card = (TrinketCard*)w->card();
+            auto ability = card->abilities()[abilityI];
+            this->pushToStack(StackEffect(
+                ability.funcName,
+                player,
+                w,
+                ACTIVATE_ITEM_TYPE
+            ));
+            bool payed = this->requestPayCost(ability.costFuncName, player);
+            if (!payed) {
+                this->_stack.pop_back();
+                return;
+            }
+            this->log(player->name() + " activated " + card->name());
+            this->triggerLastEffectType();
+        }}
+    };
+
+    std::map<string, std::function<void(int)>> _millMap = {
+        {LOOT_DECK, [this](int amount){
+            millDeck<LootCard*>(this->_lootDeck, this->_lootDiscard, amount);
+        }},
+        {TREASURE_DECK, [this](int amount){
+            millDeck<TrinketCard*>(this->_treasureDeck, this->_treasureDiscard, amount);
+        }},
+        {MONSTER_DECK, [this](int amount){
+            millDeck<MonsterCard*>(this->_monsterDeck, this->_monsterDiscard, amount);
         }}
     };
 
@@ -159,7 +203,9 @@ public:
     vector<TrinketCard*> getTopTreasureCards(int amount);
     vector<MonsterCard*> getTopMonsterCards(int amount);
     bool requestPayCost(string costFuncName, Player* player);
+    void triggerLastEffectType();
     static int wrap_addBlueHealth(lua_State* L);
+    static int wrap_tapCard(lua_State* L);
     static int wrap_popTarget(lua_State* L);
     static int wrap_pushTarget(lua_State* L);
     static int wrap_requestChoice(lua_State* L);
@@ -169,6 +215,7 @@ public:
     static int wrap_lootCards(lua_State *L);
     static int wrap_buyItem(lua_State* L);
     static int wrap_addCoins(lua_State *L);
+    static int wrap_subCoins(lua_State *L);
     static int wrap_popLootStack(lua_State* L);
     static int wrap_deferEOT(lua_State *L);
     static int wrap_this(lua_State *L);
@@ -180,6 +227,7 @@ public:
     static int wrap_tempIncAttack(lua_State* L);
     static int wrap_decMaxLife(lua_State* L);
     static int wrap_getCardOwner(lua_State* L);
+    static int wrap_millDeck(lua_State* L);
     static int wrap_getCurrentPlayer(lua_State* L);
     static int wrap_addSouls(lua_State* L);
     static int wrap_setNextPlayer(lua_State* L);

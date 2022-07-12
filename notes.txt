@@ -23,6 +23,5 @@
     -- temperance
     -- razor blade
     -- potato peeler
-    -- jawbone
     -- chaos
     -- smelter

@@ -48,8 +48,7 @@ TrinketCard::TrinketCard(string dir, json j, bool isEternal) :
             auto a = jj.value();
             ActivatedAbility ability;
             ability.funcName = a["ability"];
-            for (const auto& c : a["cost"].items())
-                ability.cost.push_back(c.value());
+            ability.costFuncName = a["cost"];
             _abilities.push_back(ability);
         }
     }
@@ -70,6 +69,7 @@ void TrinketCard::print(string prefix) {
     }
 }
 
+std::vector<ActivatedAbility> TrinketCard::abilities() { return _abilities; }
 bool TrinketCard::hasTrigger(string triggerName) { return _triggerMap.count(triggerName); }
 std::pair<string, string> TrinketCard::getTriggerWhen(string triggerName) { return _triggerMap[triggerName]; }
 
@@ -136,7 +136,7 @@ void CharacterCard::setStartingItem(TrinketCard* card) {
 MonsterCard::MonsterCard(string dir, json j) :
     Card(dir, j)
 {
-    
+    //  TODO
 }
 
 CardWrapper::CardWrapper(Card* card, int id) : 
@@ -152,4 +152,5 @@ bool CardWrapper::isActive() { return !_tapped; }
 void CardWrapper::pushTable(lua_State* L) {
     lua_newtable(L);
     l_pushtablenumber(L, "id", (float)this->_id);
+    l_pushtableboolean(L, "tapped", _tapped);
 }

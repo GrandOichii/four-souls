@@ -11,9 +11,7 @@
     },
     "abilities": [
         {
-            "cost": [
-                "{T}"
-            ],
+            "cost": "",
             "ability": "SackOfPennies_tap"
         }
     ]

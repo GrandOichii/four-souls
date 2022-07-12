@@ -14,6 +14,12 @@ void l_pushtablenumber(lua_State* L, string key, float value) {
     lua_settable(L, -3);
 }
 
+void l_pushtableboolean(lua_State* L, string key, bool value) {
+    lua_pushstring(L, key.c_str());
+    lua_pushboolean(L, value);
+    lua_settable(L, -3);
+}
+
 void dumpstack (lua_State *L) {
     int top=lua_gettop(L);
     for (int i=1; i <= top; i++) {

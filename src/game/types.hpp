@@ -18,7 +18,8 @@ const string CARD_TYPE_MONSTER = "monster";
 
 const string ACTION_PLAY_LOOT = "play_loot"; // [0] - the index of the card 
 const string ACTION_ATTACK_MONSTER = "attack_monster"; // [0] - the index of the card being attacked, if -1 then the top
-const string ACTION_BUY_TREASURE = "buy_treasure"; // // [0] - the index of the card being purchased, if -1 then the top
+const string ACTION_BUY_TREASURE = "buy_treasure"; // [0] - the index of the card being purchased, if -1 then the top
+const string ACTION_ACTIVATE_CARD = "activate";
 
 const string LOOT_TYPE = "loot";
 const string PLAY_LOOT_CARD_TYPE = "loot_card";
@@ -26,6 +27,11 @@ const string ROLL_TYPE = "roll";
 const string DEATH_TYPE = "death";
 const string TRIGGER_TYPE = "trigger";
 const string BUY_TREASURE_TYPE = "buy_treasure";
+const string ACTIVATE_ITEM_TYPE = "activate";
+
+const string LOOT_DECK = "loot";
+const string TREASURE_DECK = "treasure";
+const string MONSTER_DECK = "monster";
 
 const string PLAYER_TARGET = "player";
 
@@ -35,11 +41,11 @@ const string RESPONSE_FIRST = "$FIRST";
 const string ACTION_PASS = "$PASS";
 
 struct ActivatedAbility {
-    std::vector<string> cost;
+    string costFuncName;
     string funcName;
 
     void print() {
-        std::cout << "Cost: " << str::join(cost.begin(), cost.end(), ", ") << std::endl;
+        std::cout << "Cost: " << costFuncName << std::endl;
         std::cout << "funcName: " << funcName << std::endl;
     }
 };

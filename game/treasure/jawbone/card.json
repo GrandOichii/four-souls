@@ -1,0 +1,12 @@
+{
+    "name": "Jawbone",
+    "text": "{T}: Steal 3 c from any player.",
+    "image": "image.bmp",
+    "script": "script.lua",
+    "abilities": [
+        {
+            "cost": "Jawbone_cost",
+            "ability": "Jawbone_tap"
+        }
+    ]
+}

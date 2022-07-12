@@ -5,7 +5,7 @@
     "script": "script.lua",
     "abilities": [
         {
-            "cost": ["{T}"],
+            "cost": "BookOfBelial_cost",
             "ability": "BookOfBelial_tap"
         }
     ]

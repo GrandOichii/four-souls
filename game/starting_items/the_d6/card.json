@@ -5,7 +5,7 @@
     "script" : "script.lua",
     "abilities": [
         {
-            "cost": ["{T}"],
+            "cost": "TheD6_cost",
             "ability": "TheD6_tap"
         }
     ]

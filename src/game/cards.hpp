@@ -59,6 +59,7 @@ public:
     std::pair<string, string> getTriggerWhen(string triggerName);
     string enterFuncName();
     string leaveFuncName();
+    std::vector<ActivatedAbility> abilities();
 };
 
 class Player;

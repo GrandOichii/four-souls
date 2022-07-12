@@ -1,0 +1,12 @@
+{
+    "name": "Potato Peeler",
+    "text": "{T}: Put the top cards of all decks into their discard piles.",
+    "image": "image.bmp",
+    "script": "script.lua",
+    "abilities": [
+        {
+            "cost": "PotatoPeeler_cost",
+            "ability": "PotatoPeeler_tap"
+        }
+    ]
+}
