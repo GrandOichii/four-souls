@@ -48,6 +48,7 @@ public:
     virtual ~Player();
     void print();
     LootCard* takeCard(int cardI);
+    LootCard* getCard(int cardI);
     std::vector<CardWrapper*> board();
     std::vector<LootCard*> hand();
     bool characterActive();
@@ -63,6 +64,7 @@ public:
     int maxHealth();
 
     virtual string promptAction() = 0;
+    virtual string promptResponse(string text, string choiceType, vector<int> choices) = 0;
 
     string name();
     int id();
@@ -94,8 +96,10 @@ public:
 class ScriptedPlayer : public Player {
 private:
     std::stack<string> _actions;
+    std::stack<string> _responses;
 public:
-    ScriptedPlayer(std::string name, CharacterCard* card, int id, string actions);
+    ScriptedPlayer(std::string name, CharacterCard* card, int id, string actions, string responses);
 
     string promptAction();
+    string promptResponse(string text, string choiceType, vector<int> choices);
 };

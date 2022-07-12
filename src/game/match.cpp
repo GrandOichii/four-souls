@@ -171,12 +171,12 @@ int Match::wrap_getOwner(lua_State *L) {
 }
 
 int Match::wrap_pushTarget(lua_State* L) {
+    // dumpstack(L);
     if (lua_gettop(L) != 3) {
         lua_err(L);
         exit(1);
     }
     auto match = static_cast<Match*>(lua_touserdata(L, 1));
-
     if (!lua_isnumber(L, 2)) {
         lua_err(L);
         exit(1);
@@ -195,6 +195,7 @@ int Match::wrap_pushTarget(lua_State* L) {
     return 0;
 
 }
+
 int Match::wrap_popTarget(lua_State* L) {
     if (lua_gettop(L) != 1) {
         lua_err(L);
@@ -210,7 +211,61 @@ int Match::wrap_popTarget(lua_State* L) {
 }
 
 int Match::wrap_requestChoice(lua_State* L) {
-    //  TODO
+    if (lua_gettop(L) != 5) {
+        lua_err(L);
+        exit(1);
+    }
+    auto match = static_cast<Match*>(lua_touserdata(L, 1));
+    if (!lua_isnumber(L, 2)) {
+        lua_err(L);
+        exit(1);
+    }
+    auto pid = (int)lua_tonumber(L, 2);
+    if (!lua_isstring(L, 3)) {
+        lua_err(L);
+        exit(1);
+    }
+    auto text = (string)lua_tostring(L, 3);
+    
+    if (!lua_isstring(L, 4)) {
+        lua_err(L);
+        exit(1);
+    }
+    auto choiceType = (string)lua_tostring(L, 4);
+
+    if(!lua_istable(L, 5)) {
+        lua_err(L);
+        exit(1);
+    }
+    vector<int> choices;
+    auto size = lua_rawlen(L, 5);
+    for (int i = 0; i < size; i++) {
+        lua_pushnumber(L, i + 1);
+        lua_gettable(L, 5);
+        if (!lua_isnumber(L, -1)) {
+            lua_err(L);
+            exit(1);
+        }
+        choices.push_back((int)lua_tonumber(L, -1));
+        lua_pop(L, 1);
+    }
+    dumpstack(L);
+    Player* player = match->playerWithID(pid);
+    auto response = player->promptResponse(text, choiceType, choices);
+    // clear lua stack ?
+    std::cout << "\t" << player->name() << ": " << response << " (response)" << std::endl;
+    if (response == RESPONSE_CANCEL) {
+        lua_pushnumber(L, -1);
+        lua_pushboolean(L, false);
+        return 2;
+    }
+    int responseI = choices[0];
+    if (response != RESPONSE_FIRST) {
+        responseI = atoi(response.c_str());
+    }
+    lua_pushnumber(L, responseI);
+    lua_pushboolean(L, true);
+    // requestChoice(host, ownerID, "Choose a player", PLAYER, ids)
     return 2;
 }
 
@@ -639,6 +694,7 @@ void Match::setupLua() {
     lua_register(L, "getPlayers", wrap_getPlayers);
     lua_register(L, "pushTarget", wrap_pushTarget);
     lua_register(L, "popTarget", wrap_popTarget);
+    lua_register(L, "requestChoice", wrap_requestChoice);
 
     //  TODO add state checking after some functions
 
@@ -720,12 +776,12 @@ void Match::addToCharacterPool(CharacterCard* card) {
 }
 
 //  TODO remove the actions part
-Player* Match::addPlayer(std::string name, CharacterCard* character, string actions) {
+Player* Match::addPlayer(std::string name, CharacterCard* character, string actions, string responses) {
     for (const auto& p : _players)
         if (p->name() == name)
             return nullptr;
     //  TODO change this to a player with a port
-    auto result = new ScriptedPlayer(name, character, newCardID(), actions);
+    auto result = new ScriptedPlayer(name, character, newCardID(), actions, responses);
     result->addCoins(STARTING_COIN_AMOUNT);
     _players.push_back(result);
     return result;
@@ -787,7 +843,7 @@ void Match::createMonsterDeck(std::vector<MonsterCard*> cards) {
 void Match::start() {
     std::cout << "\nThe game starts\n\n";
     // setup script
-    this->execScript("PLAYER = \"player\"function _startTurnLoot(host)\n\tlocal owner = getOwner(host)\nlootCards(host, owner[\"id\"], owner[\"startTurnLootAmount\"])\nend");
+    this->execScript("PLAYER = \"" + PLAYER_TARGET + "\"function _startTurnLoot(host)\n\tlocal owner = getOwner(host)\nlootCards(host, owner[\"id\"], owner[\"startTurnLootAmount\"])\nend");
     // give starting hands
     for (auto& p : _players) {
         auto cards = this->getTopLootCards(STARTING_LOOT_AMOUNT);

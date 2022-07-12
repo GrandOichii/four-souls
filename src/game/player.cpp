@@ -41,6 +41,10 @@ void Player::print() {
         std::cout << w->card()->name() << " (" << w->id() << ")" << std::endl;
 }
 
+LootCard* Player::getCard(int cardI) {
+    return _hand[cardI];
+}
+
 LootCard* Player::takeCard(int cardI) {
     return *_hand.erase(_hand.begin()+cardI-1);
 }
@@ -139,17 +143,27 @@ PlayerBoardState Player::getState() {
 
 void Player::addSouls(int amount) { _soulCount += amount; }
 
-ScriptedPlayer::ScriptedPlayer(std::string name, CharacterCard* card, int id, string actions) :
+ScriptedPlayer::ScriptedPlayer(std::string name, CharacterCard* card, int id, string actions, string responses) :
     Player(name, card, id)
 {
     auto split = str::split(actions, "\n");
     for (int i = split.size()-1; i >= 0; i--)
         _actions.push(split[i]);
+    split = str::split(responses, "\n");
+    for (int i = split.size()-1; i >= 0; i--)
+        _responses.push(split[i]);
 }
 
 string ScriptedPlayer::promptAction() {
     if (_actions.empty()) return ACTION_PASS;
     auto result = _actions.top();
     _actions.pop();
+    return result;
+}
+
+string ScriptedPlayer::promptResponse(string text, string choiceType, vector<int> choices) {
+    if (_responses.empty()) return RESPONSE_CANCEL;
+    auto result = _responses.top();
+    _responses.pop();
     return result;
 }

@@ -110,13 +110,14 @@ private:
     std::map<string, std::function<void(Player*, std::vector<string>)>> _actionMap = {
         {ACTION_PLAY_LOOT, [this](Player* player, std::vector<string> args){
             auto cardI = atoi(args[1].c_str());
-            auto card = player->takeCard(cardI);
+            auto card = player->getCard(cardI);
             // request to pay cost
             auto cost = card->costFuncName();
             if (cost.size()) {
                 bool payed = this->requestPayCost(cost, player);
                 if (!payed) return;
             }
+            player->takeCard(cardI);
             this->log(player->name() + " plays card " + card->name());
             auto wrapper = new CardWrapper(card, this->newCardID());
             this->pushToStack(StackEffect(
@@ -190,8 +191,8 @@ public:
     void execFunc(string funcName);
     bool execCheck(string funcName, CardWrapper* card);
     void addToCharacterPool(CharacterCard* card);
-    //  TODO remove the actions par
-    Player* addPlayer(std::string name, CharacterCard* character, string actions);
+    //  TODO remove the actions part
+    Player* addPlayer(std::string name, CharacterCard* character, string actions, string responses);
     std::vector<CharacterCard*> getAvailableCharacters();
     CharacterCard* getRandomAvailableCharacter();
     void shuffleLootDeck();

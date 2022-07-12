@@ -7,18 +7,14 @@ function TwoOfDiamonds_cost(host, cardInfo)
         ids[realI] = p["id"]
         realI = realI + 1
     end
-    -- local choiceId, payed = requestChoice(host, ownerID, "Choose a player", PLAYER, ids)
-    -- if !payed then return false end
-    -- pushTarget(choiceId, PLAYER)
-    
-    pushTarget(host, ownerID, PLAYER)
-    print("cost payed")
+    local choiceId, payed = requestChoice(host, ownerID, "Choose a player", PLAYER, ids)
+    if not payed then return false end
+    pushTarget(host, choiceId, PLAYER)
+    -- pushTarget(host, ownerID, PLAYER)
+    -- print("cost payed")
     return true
 end
 
--- add cost to loot cards
--- getPlayers
--- popTarget
 -- requestChoice
 
 

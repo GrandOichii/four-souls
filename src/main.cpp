@@ -24,49 +24,6 @@ using std::endl;
 using std::string;
 using std::vector;
 
-static const vector<string> P1_ACTIONS = vector<string>{
-    ACTION_PASS,
-    ACTION_PLAY_LOOT + " 0",
-    ACTION_PASS,
-    
-    // ACTION_PASS,
-    // ACTION_PLAY_LOOT + " 0",
-    // ACTION_PASS,
-
-    // ACTION_BUY_TREASURE + " 0",
-    // ACTION_PASS,
-    // ACTION_BUY_TREASURE + " 0",
-    // ACTION_PASS,
-};
-
-static const vector<string> P2_ACTIONS = vector<string>{
-    ACTION_PASS,
-    // ACTION_PASS,
-    // ACTION_PASS,
-
-    // ACTION_PASS,
-    // ACTION_PLAY_LOOT + " 0",
-    // ACTION_PASS,
-    // ACTION_BUY_TREASURE + " 0",
-    // ACTION_PASS,
-};
-
-static const vector<string> P3_ACTIONS = vector<string>{
-    ACTION_PASS,
-    // ACTION_PASS,
-    // ACTION_PASS,
-
-    // ACTION_PASS,
-    // ACTION_PASS,
-    // ACTION_PASS,
-    // ACTION_PASS,
-    
-    // ACTION_PASS,
-    // ACTION_PLAY_LOOT + " 0",
-    // ACTION_PASS,
-    // ACTION_BUY_TREASURE + " 0",
-};
-
 std::pair<int, int> getSize(SDL_Texture *texture) {
     SDL_Point size;
     SDL_QueryTexture(texture, NULL, NULL, &size.x, &size.y);
@@ -237,15 +194,29 @@ private:
     int _lastMonsterDiscardCount = 0;
     SDL_Texture* _lastMonsterDiscardCountTex = nullptr;
 public:
-    GameWrapper(string title, string path, bool fullscreen) :
+    GameWrapper(string title, string path, string playersPath, bool fullscreen) :
         _title(title),
         _fullscreen(fullscreen)
     {
         this->_game = new Game("game");
         this->_match = _game->createMatch();
-        auto p1 = _match->addPlayer("oichii1", _match->getRandomAvailableCharacter(), str::join(P1_ACTIONS.begin(), P1_ACTIONS.end(), "\n"));
-        auto p2 = _match->addPlayer("oichii2", _match->getRandomAvailableCharacter(), str::join(P2_ACTIONS.begin(), P2_ACTIONS.end(), "\n"));
-        auto p3 = _match->addPlayer("oichii3", _match->getRandomAvailableCharacter(), str::join(P3_ACTIONS.begin(), P3_ACTIONS.end(), "\n"));
+
+        // add players
+        auto j = fs::readJS(playersPath);
+        for (const auto& [key, pvalue] : j.items()) {
+            vector<string> actions;
+            vector<string> responses;
+            for (const auto& [key, value] : pvalue["actions"].items()) actions.push_back(value);
+            for (const auto& [key, value] : pvalue["responses"].items()) responses.push_back(value);
+            auto aj = str::join(actions.begin(), actions.end(), "\n");
+            auto rj = str::join(responses.begin(), responses.end(), "\n");
+            _match->addPlayer(
+                pvalue["name"], 
+                _match->getRandomAvailableCharacter(), 
+                aj,
+                rj
+            );
+        }
 
         if (SDL_Init(SDL_INIT_EVERYTHING) != 0){
             std::cout << "SDL_Init Error: " << SDL_GetError() << std::endl;
@@ -607,7 +578,7 @@ public:
 int main() {
     // srand(time(0)) =
     srand(0);
-    auto wrapper = new GameWrapper("four-souls", "game", false);
+    auto wrapper = new GameWrapper("four-souls", "game", "players.json", false);
     wrapper->start();
     delete wrapper;
 }

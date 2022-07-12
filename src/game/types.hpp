@@ -27,6 +27,11 @@ const string DEATH_TYPE = "death";
 const string TRIGGER_TYPE = "trigger";
 const string BUY_TREASURE_TYPE = "buy_treasure";
 
+const string PLAYER_TARGET = "player";
+
+const string RESPONSE_CANCEL = "$CANCEL";
+const string RESPONSE_FIRST = "$FIRST";
+
 const string ACTION_PASS = "$PASS";
 
 struct ActivatedAbility {

@@ -1,0 +1,34 @@
+[
+    {
+        "name": "oichii1",
+        "actions": [
+            "$PASS",
+            "play_loot 0"
+        ],
+        "responses": [
+            "2"
+        ]
+    },
+    {
+        "name": "oichii2",
+        "actions": [
+            "$PASS",
+            "$PASS",
+            "$PASS",
+            "play_loot 0"
+        ],
+        "responses": [
+            "2"
+        ]
+    },
+    {
+        "name": "oichii3",
+        "actions": [
+            "$PASS"
+        ],
+        "responses": [
+            "$CANCEL"
+        ]
+    }
+
+]
