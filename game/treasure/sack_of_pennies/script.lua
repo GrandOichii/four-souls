@@ -1,14 +1,11 @@
-function SackOfPennies_trigger_check(host)
-    --  TODO
-    local rollEvent = getLastRoll(host)
-    return rollEvent["amount"] == 1
+function SackOfPennies_trigger_check(host, me)
+    return Common_LastRoll(host)["value"] == 1
 end
 
-
 function SackOfPennies_trigger(host)
-    --  TODO
+
     local owner = getTopOwner(host)
-    local choice = requestChoice(host, owner["id"], "Recharge Sack of Pennies?", "Yes|No")
+    local choice = requestSimpleChoice(host, owner["id"], "Recharge Sack of Pennies?", {"Yes", "No"})
     if (choice == "No") then
         return
     end

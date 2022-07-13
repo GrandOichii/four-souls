@@ -1,0 +1,12 @@
+{
+    "name": "Charged Baby",
+    "text": "When anyone rolls a 2, you may recharge any item.",
+    "image": "image.bmp",
+    "script": "script.lua",
+    "on": {
+        "roll": {
+            "check": "ChargedBaby_trigger_check",
+            "effect": "ChargedBaby_trigger"
+        }
+    }
+}

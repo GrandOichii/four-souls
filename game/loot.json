@@ -2,6 +2,14 @@
     "back": "images/loot_card_back.bmp",
     "cards": {
         "basic": {
+            "loot/dime": 40
+        },
+        "trinkets": {
+            "loot/blood_penny": 0
+        }
+    },
+    "cards1": {
+        "basic": {
             "loot/one_cent": 2,
             "loot/two_cents": 6,
             "loot/three_cents": 8,

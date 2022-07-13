@@ -8,6 +8,7 @@
         "treasure/breakfast",
         "treasure/moms_coin_purse",
         "treasure/starter_deck",
+        "treasure/dads_lost_coin",
         "treasure/the_polaroid",
         "treasure/edens_blessing",
         "treasure/jawbone",
@@ -15,6 +16,11 @@
         "treasure/razor_blade",
         "treasure/fanny_pack",
         "treasure/cambion_conception",
+        "treasure/the_battery",
+        "treasure/charged_baby",
+        "treasure/book_of_sin",
+        "treasure/d100",
+        "treasure/mystery_sack",
         "treasure/steamy_sale"
     ]
 }

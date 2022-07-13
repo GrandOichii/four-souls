@@ -1,10 +1,11 @@
 {
     "back": "images/treasure_card_back.bmp",
     "cards": [
-        "treasure/sack_head",
-        "treasure/sack_head",
-        "treasure/sack_head",
-        "treasure/sack_head",
-        "treasure/sack_head"
+        "treasure/d100",
+        "treasure/d100",
+        "treasure/d100",
+        "treasure/dads_lost_coin",
+        "treasure/dads_lost_coin",
+        "treasure/dads_lost_coin"
     ]
 }

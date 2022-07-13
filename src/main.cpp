@@ -563,10 +563,19 @@ public:
         int x = _stackX + 10;
         int y = yOffset;
         for (const auto& si : state.stack) {
-            if (si.isCard)
+            if (si.isCard) {
                 this->drawCard(si.card, x, y);
-            else
+            }
+            else {
                 drawRect(x, y, _cardSize.first, _cardSize.second, SDL_Color{0, 0, 255, 0}, true);
+                auto lines = str::split(si.message, "\n");
+                for (int i = 0; i < lines.size(); i++) {
+                    auto tex = _assets->getMessage(lines[i], SDL_Color{200, 200, 100, 0}, 24);
+                    drawTexture(tex, x + 4, y + 4 + 24 * i);
+                    SDL_DestroyTexture(tex);
+
+                }
+            }
             y += _cardSize.second + yOffset;
         }
     }

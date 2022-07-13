@@ -30,7 +30,7 @@ static const string CARD_INFO_FILE = "card.json";
 const int MIN_PLAYER_COUNT = 2;
 const int MAX_PLAYER_COUNT = 4;
 const int SOULS_TO_WIN = 4;
-const int STARTING_COIN_AMOUNT = 3;
+const int STARTING_COIN_AMOUNT = 10;
 const int STARTING_LOOT_AMOUNT = 3;
 const int STARTING_SHOP_SIZE = 2;
 const int STARTING_MONSTERS_AMOUNT = 2;
@@ -39,7 +39,7 @@ const int STARTING_ATTACK_COUNT = 1;
 const int STARTING_PLAYABLE_COUNT = 1;
 const int STARTING_PURCHASE_COUNT = 1;
 
-struct StackMememberState {
+struct StackMemberState {
     string message;
     bool isCard;
     CardState card;
@@ -47,7 +47,7 @@ struct StackMememberState {
 
 struct MatchState {
     vector<PlayerBoardState> boards;
-    vector<StackMememberState> stack;
+    vector<StackMemberState> stack;
     int currentI;
     int priorityI;
     int currentID;
@@ -76,7 +76,7 @@ struct StackEffect {
 
     StackEffect(string funcName, Player* player, CardWrapper* card, string effect);
     StackEffect();
-    StackMememberState getState();
+    StackMemberState getState();
 };
 
 struct DamageTrigger {
@@ -93,7 +93,31 @@ struct DamageTrigger {
     }
 };
 
+struct RollEvent{
+    int value;
+    Player* owner;
+    bool isCombatRoll;
 
+    RollEvent(Player* owner, bool isCombatRoll) :
+        owner(owner),
+        isCombatRoll(isCombatRoll) 
+    {
+        // value = rand() % 6 + 1;
+        value = 1;
+        // value = 2;
+        // value = 3;
+        // value = 4;
+        // value = 5;
+        // value = 6;
+    }
+
+    void pushTable(lua_State *L) {
+        lua_newtable(L);
+        l_pushtablenumber(L, "value", value);
+        l_pushtablenumber(L, "ownerID", owner->id());
+        l_pushtableboolean(L, "isCombatRoll", isCombatRoll);
+    }
+};
 
 class Match {
 private:
@@ -111,6 +135,9 @@ private:
     int _priorityI;
     bool _isMainPhase;
     Player* _activePlayer;
+
+    int _lastRoll = -1;
+    std::vector<RollEvent> _rollStack;
 
     std::deque<CardWrapper*> _lootDeck;
     std::deque<CardWrapper*> _lootDiscard;
@@ -201,16 +228,6 @@ private:
         }}
     };
 
-    // std::map<string, std::pair<
-    //     std::deque<CardWrapper*>, 
-    //     std::deque<CardWrapper*>
-    //     >> _deckDiscardMap = 
-    // {
-    //     {LOOT_DECK, std::make_pair(_lootDeck, _lootDiscard)},
-    //     {TREASURE_DECK, std::make_pair(_monsterDeck, _monsterDiscard)},
-    //     {MONSTER_DECK, std::make_pair(_monsterDeck, _monsterDiscard)},
-    // };
-
     std::map<string, std::deque<CardWrapper*>*> _deckMap = {
         {LOOT_DECK, &_lootDeck},
         {TREASURE_DECK, &_treasureDeck},
@@ -222,7 +239,6 @@ private:
         {MONSTER_DECK, &_monsterDiscard},
     };
 
-    // std::stack<std::pair<LootCard*, Player*>> _lootStack;
     std::stack<DamageTrigger> _damageStack;
     std::vector<std::pair<string, int>> _targetStack;
 
@@ -231,7 +247,6 @@ public:
     Match();
     ~Match();
     CardWrapper* addWrapper(ScriptCard* card);
-
     void addToLootDiscard(CardWrapper* card);
     CardWrapper* cardWithID(int id);
     Player* findOwner(CardWrapper* card);
@@ -247,7 +262,12 @@ public:
     bool requestPayCost(string costFuncName, Player* player);
     void triggerLastEffectType();
     void pushPlayers(lua_State* L);
+    static int wrap_getRollStack(lua_State* L);
+    static int wrap_setRollValue(lua_State* L);
     static int wrap_addBlueHealth(lua_State* L);
+    static int wrap_pushRollEvent(lua_State* L);
+    static int wrap_getLastRoll(lua_State* L);
+    static int wrap_popRollStack(lua_State* L);
     static int wrap_putFromTopToBottom(lua_State* L);
     static int wrap_millDeck(lua_State* L);
     static int wrap_addPlayableCount(lua_State* L);

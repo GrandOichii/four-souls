@@ -1,0 +1,12 @@
+{
+    "name": "Dad's Lost Coin",
+    "text": "When anyone rolls a 1, you may force that player to reroll it.",
+    "image": "image.bmp",
+    "script": "script.lua",
+    "on": {
+        "roll": {
+            "check": "DadsLostCoin_trigger_check",
+            "effect": "DadsLostCoin_trigger"
+        }
+    }
+}

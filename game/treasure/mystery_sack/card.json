@@ -1,0 +1,12 @@
+{
+    "name": "Mystery Sack",
+    "text": "{T}: Roll:\n1-2: Loot 1.\n3-4: Gain 4c.\n5-6: Nothing.",
+    "image": "image.bmp",
+    "script": "script.lua",
+    "abilities": [
+        {
+            "cost": "MysterySack_cost",
+            "ability": "MysterySack_tap"
+        }
+    ]
+}

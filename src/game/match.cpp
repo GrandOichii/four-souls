@@ -18,8 +18,8 @@ StackEffect::StackEffect(string funcName, Player* player, CardWrapper* cardW, st
 
 StackEffect::StackEffect() {}
 
-StackMememberState StackEffect::getState() {
-    StackMememberState result;
+StackMemberState StackEffect::getState() {
+    StackMemberState result;
     result.message = funcName;
     result.isCard = cardW;
     if (cardW) {
@@ -213,6 +213,27 @@ int Match::wrap_getOwner(lua_State *L) {
     return 1;
 }
 
+int Match::wrap_setRollValue(lua_State* L) {
+    if (lua_gettop(L) != 3) {
+        lua_err(L);
+        exit(1);
+    }
+    auto match = static_cast<Match*>(lua_touserdata(L, 1));
+    if (!lua_isnumber(L, 2)) {
+        lua_err(L);
+        exit(1);
+    }
+    auto rid = (int)lua_tonumber(L, 2);
+    if (!lua_isnumber(L, 3)) {
+        lua_err(L);
+        exit(1);
+    }
+    auto value = (int)lua_tonumber(L, 3);
+    match->_rollStack[rid-1].value = value;
+    std::cout << "NEW VALUE " << match->_rollStack[rid].value << std::endl;
+    return 0;
+}
+
 int Match::wrap_addBlueHealth(lua_State* L) {
     if (lua_gettop(L) != 3) {
         lua_err(L);
@@ -390,7 +411,9 @@ int Match::wrap_requestChoice(lua_State* L) {
     }
     // dumpstack(L);
     Player* player = match->playerWithID(pid);
+    std::cout << choices.size() << std::endl;
     auto response = player->promptResponse(match->getState(), text, choiceType, choices);
+    
     // clear lua stack ?
     std::cout << "\t" << player->name() << ": " << response << " (response)" << std::endl;
     if (response == RESPONSE_CANCEL) {
@@ -674,6 +697,56 @@ int Match::wrap_this(lua_State *L) {
     }
     auto match = static_cast<Match*>(lua_touserdata(L, 1));
     match->_stack.back()->cardW->pushTable(match->L);
+    return 1;
+}
+
+int Match::wrap_pushRollEvent(lua_State* L) {
+    // pushRollEvent(host, cardInfo["id"], false)
+    if (lua_gettop(L) != 2) {
+        lua_err(L);
+        exit(1);
+    }
+    auto match = static_cast<Match*>(lua_touserdata(L, 1));
+    if (!lua_isnumber(L, 2)) {
+        lua_err(L);
+        exit(1);
+    }
+    auto pid = (int)lua_tonumber(L, 2);
+    Player* player = match->playerWithID(pid);
+    RollEvent p(
+        player,
+        false
+    );
+    match->log(player->name() + " rolls a " + std::to_string(p.value));
+    match->_rollStack.push_back(p);
+    match->pushToStack(new StackEffect(
+        "_popRollStack",
+        player, 
+        nullptr,
+        ROLL_TYPE
+    ));
+    match->applyTriggers(ROLL_TYPE);
+    return 0;
+}
+
+int Match::wrap_popRollStack(lua_State* L) {
+    if (lua_gettop(L) != 1) {
+        lua_err(L);
+        exit(1);
+    }
+    auto match = static_cast<Match*>(lua_touserdata(L, 1));
+    match->_lastRoll = match->_rollStack.back().value;
+    match->_rollStack.pop_back();
+    return 0;
+}
+
+int Match::wrap_getLastRoll(lua_State* L) {
+    if (lua_gettop(L) != 1) {
+        lua_err(L);
+        exit(1);
+    }
+    auto match = static_cast<Match*>(lua_touserdata(L, 1));
+    lua_pushnumber(L, match->_lastRoll);
     return 1;
 }
 
@@ -1019,6 +1092,22 @@ int Match::wrap_incAttackCount(lua_State* L) {
     return 0;
 }
 
+int Match::wrap_getRollStack(lua_State* L) {
+    if (lua_gettop(L) != 1) {
+        lua_err(L);
+        exit(1);
+    }
+    auto _match = static_cast<Match*>(lua_touserdata(L, 1));
+    auto size = _match->_rollStack.size();
+    lua_createtable(L, size, 0);
+    for (int i = 0; i < size; i++) {
+        lua_pushnumber(L, i+1);
+        _match->_rollStack[i].pushTable(L);
+        lua_settable(L, -3);
+    }
+    return 1;
+}
+
 void Match::addCardToBoard(CardWrapper* w, Player* owner) {
     owner->addToBoard(w);
     this->execEnter(w, owner);
@@ -1083,6 +1172,8 @@ void Match::setupLua(string setupScript) {
     luaL_openlibs(L);
     // connect functions
     lua_register(L, "getOwner", wrap_getOwner);
+    lua_register(L, "getRollStack", wrap_getRollStack);
+    lua_register(L, "setRollValue", wrap_setRollValue);
     lua_register(L, "lootCards", wrap_lootCards);
     lua_register(L, "addCoins", wrap_addCoins);
     lua_register(L, "subCoins", wrap_subCoins);
@@ -1119,7 +1210,10 @@ void Match::setupLua(string setupScript) {
     lua_register(L, "millDeck", wrap_millDeck);
     lua_register(L, "getTopOwner", wrap_getTopOwner);
     lua_register(L, "topCardsOf", wrap_topCardsOf);
+    lua_register(L, "pushRollEvent", wrap_pushRollEvent);
     lua_register(L, "putFromTopToBottom", wrap_putFromTopToBottom);
+    lua_register(L, "getLastRoll", wrap_getLastRoll);
+    lua_register(L, "_popRollStack", wrap_popRollStack);
 
     //  TODO add state checking after some functions
 
@@ -1144,7 +1238,7 @@ void Match::setupLua(string setupScript) {
     this->execScript(setupScript);
     std::cout << "Loading base script" << std::endl;
     // setup script
-    this->execScript("LOOT_DECK = \"" + LOOT_DECK + "\"\nTREASURE_DECK = \"" + TREASURE_DECK + "\"\nMONSTER_DECK = \"" + MONSTER_DECK + "\"\nPLAYER = \"" + PLAYER_TARGET + "\"function _startTurnLoot(host)\n\tlocal owner = getTopOwner(host)\nlootCards(host, owner[\"id\"], owner[\"startTurnLootAmount\"])\nend");
+    this->execScript("LOOT_DECK = \"" + LOOT_DECK + "\"\nTREASURE_DECK = \"" + TREASURE_DECK + "\"\nMONSTER_DECK = \"" + MONSTER_DECK + "\"\nCARD = \"" + CARD_TARGET + "\"\nPLAYER = \"" + PLAYER_TARGET + "\"function _startTurnLoot(host)\n\tlocal owner = getTopOwner(host)\nlootCards(host, owner[\"id\"], owner[\"startTurnLootAmount\"])\nend");
     
     std::cout << "All scripts loaded!" << std::endl;
 }
@@ -1220,6 +1314,8 @@ Player* Match::addPlayer(std::string name, CharacterCard* character, string botS
     _allWrappers.push_back(result->characterCard());
     auto w = addWrapper(character->startingItem());
     addCardToBoard(w, result);
+    w->setOwner(result);
+    w->tap();
     // _allWrappers.push_back(result->board()[0]);
     return result;
 }
@@ -1498,7 +1594,7 @@ void Match::log(string message, bool wait) {
     std::cout << " - " << message << std::endl;
     if (wait) {
         // std::this_thread::sleep_for(std::chrono::seconds(1));
-        std::this_thread::sleep_for(std::chrono::milliseconds(300));
+        std::this_thread::sleep_for(std::chrono::milliseconds(200));
     }
 }
 
@@ -1506,9 +1602,22 @@ MatchState Match::getState() {
     MatchState result;
     for (const auto& p : _players) 
         result.boards.push_back(p->getState());
+    int rsi = 0;
     for (auto& si : _stack){
         auto s = si->getState();
+        if (si->type == ROLL_TYPE) {
+            s.message = "Roll: " + std::to_string(_rollStack[rsi].value);
+            rsi++;
+        }
+        if (si->type == LOOT_TYPE) {
+            s.message = "Looting";
+        }
+        if (si->type == BUY_TREASURE_TYPE) {
+            s.message = "Buying\n" + _shop[_lastTreasureIndex]->card()->name();
+        }
         result.stack.push_back(s);
+
+        //  TODO DEATH_TYPE = "death";
     }
     result.currentI = _currentI;
     result.currentID = _activePlayer->id();
