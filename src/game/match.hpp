@@ -111,6 +111,7 @@ private:
     int _currentI;
     int _nextI;
     int _priorityI;
+    bool _isMainPhase;
     Player* _activePlayer;
 
     std::deque<CardWrapper*> _lootDeck;

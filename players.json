@@ -2,8 +2,13 @@
     {
         "name": "oichii1",
         "actions": [
-            "$PASS",
+            "mainWait",
             "buy_treasure 0",
+            "$PASS",
+            "$PASS",
+            "mainWait",
+            "activate 24 0",
+            "$PASS",
             "$PASS",
             "$PASS",
             "$PASS",
@@ -30,6 +35,8 @@
     {
         "name": "oichii2",
         "actions": [
+            "mainWait",
+            "buy_treasure 0",
             "$PASS"
         ],
         "responses": [
@@ -39,6 +46,8 @@
     {
         "name": "oichii3",
         "actions": [
+            "mainWait",
+            "buy_treasure 0",
             "$PASS"
         ],
         "responses": [

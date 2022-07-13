@@ -1,13 +1,11 @@
-function MomsPurse_enter(host)
+function MomsPurse_enter(host, me, owner)
 
-    local owner = getOwner(host)
     incBeginningLoot(host, owner["id"])
 
 end
 
-function MomsPurse_leave(host)
+function MomsPurse_leave(host, me, owner)
 
-    local owner = getOwner(host)
     decBeginningLoot(host, owner["id"])
 
 end

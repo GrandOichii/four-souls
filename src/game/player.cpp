@@ -215,9 +215,15 @@ ScriptedPlayer::ScriptedPlayer(std::string name, CharacterCard* card, int id, st
         _responses.push(split[i]);
 }
 
-string ScriptedPlayer::promptAction() {
+string ScriptedPlayer::promptAction(bool isMyMain) {
+    // if (isMyMain) std::cout << "PLAYER " << name() << " IS MAIN\n";
     if (_actions.empty()) return ACTION_PASS;
     auto result = _actions.top();
+    if (result == "mainWait") {
+        if (!isMyMain) return ACTION_PASS;
+        _actions.pop();
+        result = _actions.top();
+    }
     _actions.pop();
     return result;
 }

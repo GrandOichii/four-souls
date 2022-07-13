@@ -82,7 +82,7 @@ public:
     int maxHealth();
     void dealDamage(int amount);
 
-    virtual string promptAction() = 0;
+    virtual string promptAction(bool isMyMain) = 0;
     virtual string promptResponse(string text, string choiceType, vector<int> choices) = 0;
 
     string name();
@@ -122,6 +122,6 @@ private:
 public:
     ScriptedPlayer(std::string name, CharacterCard* card, int id, string actions, string responses);
 
-    string promptAction();
+    string promptAction(bool isMyMain);
     string promptResponse(string text, string choiceType, vector<int> choices);
 };

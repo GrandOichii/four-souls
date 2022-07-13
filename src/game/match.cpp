@@ -1166,13 +1166,15 @@ void Match::turn() {
     this->resolveStack();
 
     // main step
+    _isMainPhase = true;
     this->log(_activePlayer->name() + "'s main phase");
     string response = "";
-    while ((response = this->_activePlayer->promptAction()) != ACTION_PASS) {
+    while ((response = this->_activePlayer->promptAction(true)) != ACTION_PASS) {
         std::cout << "\t" << _activePlayer->name() << ": " << response << std::endl;
         this->executePlayerAction(_activePlayer, response);
         this->resolveStack();
     }
+    _isMainPhase = false;
     this->log("End of " + this->_activePlayer->name() + "'s turn");
 
     // end of turn
@@ -1279,7 +1281,7 @@ void Match::resolveTop() {
 string Match::promptPlayerWithPriority() {
     auto player = this->_players[this->_priorityI];
     this->log("Player " + player->name() + " takes priority");
-    return player->promptAction();
+    return player->promptAction(_isMainPhase && _stack.empty() && _priorityI == _currentI);
 }
 
 void Match::log(string message, bool wait) {
