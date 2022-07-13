@@ -20,7 +20,11 @@ struct PlayerBoardState {
     std::pair<string, bool> playerCard;
     std::vector<CardState> board;
     std::vector<CardState> hand;
+
+    void pushTable(lua_State* L);
 };
+
+struct MatchState;
 
 class Player {
 private:
@@ -52,6 +56,10 @@ private:
 
     std::vector<CardWrapper*> _board;
     std::vector<CardWrapper*> _hand;
+
+    int _playableCount;
+    int _maxPlayableCount;
+
 public:
     Player(std::string name, CharacterCard* card, int id);
     virtual ~Player();
@@ -64,6 +72,11 @@ public:
     void rechargeCards();
     void recharge();
     void pushTable(lua_State* L);
+
+    void resetPlayableCount();
+    void decPlayableAmount();
+
+    void setPlayableCount(int amount);
 
     void incMaxAttackCount();
     void decMaxAttackCount();
@@ -82,8 +95,8 @@ public:
     int maxHealth();
     void dealDamage(int amount);
 
-    virtual string promptAction(bool isMyMain) = 0;
-    virtual string promptResponse(string text, string choiceType, vector<int> choices) = 0;
+    virtual string promptAction(const MatchState& state) = 0;
+    virtual string promptResponse(const MatchState& state, string text, string choiceType, vector<int> choices) = 0;
 
     string name();
     int id();
@@ -115,13 +128,13 @@ public:
     void resetEOT();
 };
 
-class ScriptedPlayer : public Player {
+class BotPlayer : public Player {
 private:
-    std::stack<string> _actions;
-    std::stack<string> _responses;
+    lua_State* L;
 public:
-    ScriptedPlayer(std::string name, CharacterCard* card, int id, string actions, string responses);
+    BotPlayer(std::string name, CharacterCard* card, int id, string script);
+    ~BotPlayer();
 
-    string promptAction(bool isMyMain);
-    string promptResponse(string text, string choiceType, vector<int> choices);
+    string promptAction(const MatchState& state);
+    string promptResponse(const MatchState& state, string text, string choiceType, vector<int> choices);
 };

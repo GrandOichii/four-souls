@@ -30,12 +30,13 @@ static const string CARD_INFO_FILE = "card.json";
 const int MIN_PLAYER_COUNT = 2;
 const int MAX_PLAYER_COUNT = 4;
 const int SOULS_TO_WIN = 4;
-const int STARTING_COIN_AMOUNT = 9;
-const int STARTING_LOOT_AMOUNT = 2;
+const int STARTING_COIN_AMOUNT = 10;
+const int STARTING_LOOT_AMOUNT = 8;
 const int STARTING_SHOP_SIZE = 2;
 const int STARTING_MONSTERS_AMOUNT = 2;
 const int STARTING_TREASURE_PRICE = 10;
 const int STARTING_ATTACK_COUNT = 1;
+const int STARTING_PLAYABLE_COUNT = 1;
 
 struct StackMememberState {
     string message;
@@ -48,6 +49,8 @@ struct MatchState {
     vector<StackMememberState> stack;
     int currentI;
     int priorityI;
+    int currentID;
+    bool isMain;
 
     int lootDeckCount;
     int treasureDeckCount;
@@ -59,6 +62,8 @@ struct MatchState {
 
     vector<CardState> shop;
     vector<string> monsters; // turn monsters into card wrappers also
+
+    void pushTable(lua_State* L) const;
 };
 
 struct StackEffect {
@@ -144,6 +149,7 @@ private:
             }
             player->takeCard(cardID);
             this->log(player->name() + " plays card " + card->name());
+            player->decPlayableAmount();
             this->pushToStack(new StackEffect(
                 "_playTopLootCard",
                 player,
@@ -223,12 +229,15 @@ public:
     vector<MonsterCard*> getTopMonsterCards(int amount);
     bool requestPayCost(string costFuncName, Player* player);
     void triggerLastEffectType();
+    void pushPlayers(lua_State* L);
     static int wrap_addBlueHealth(lua_State* L);
     static int wrap_tapCard(lua_State* L);
     static int wrap_rechargeCard(lua_State* L);
     static int wrap_getDamageEvent(lua_State* L);
     static int wrap_popTarget(lua_State* L);
     static int wrap_pushTarget(lua_State* L);
+    static int wrap_addCounters(lua_State* L);
+    static int wrap_removeCounters(lua_State* L);
     static int wrap_requestChoice(lua_State* L);
     static int wrap_getPlayers(lua_State* L);
     static int wrap_getOwner(lua_State *L);
@@ -270,8 +279,8 @@ public:
     void execFunc(string funcName);
     bool execCheck(string funcName, CardWrapper* card);
     void addToCharacterPool(CharacterCard* card);
-    //  TODO remove the actions part
-    Player* addPlayer(std::string name, CharacterCard* character, string actions, string responses);
+    //  TODO replace botScript with ip address
+    Player* addPlayer(std::string name, CharacterCard* character, string botScript);
     std::vector<CharacterCard*> getAvailableCharacters();
     CharacterCard* getRandomAvailableCharacter();
     void shuffleLootDeck();

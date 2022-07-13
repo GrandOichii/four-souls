@@ -91,6 +91,7 @@ struct CardState {
     string cardName;
     bool active;
     int id;
+    int counters;
 };
 
 class CardWrapper {
@@ -99,6 +100,7 @@ private:
     int _id;
     bool _tapped = false;
     Player* _owner;
+    int _counters = 0;
 public:
     CardWrapper(ScriptCard* card, int id);
     ScriptCard* card();
@@ -110,4 +112,6 @@ public:
     Player* owner();
     void setOwner(Player* owner);
     CardState getState();
+    void addCounters(int amount);
+    void removeCounters(int amount);
 };

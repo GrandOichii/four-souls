@@ -1,58 +1,15 @@
 [
     {
         "name": "oichii1",
-        "actions": [
-            "mainWait",
-            "play_loot 1",
-            "$PASS",
-            "$PASS",
-            "mainWait",
-            "activate 24 0",
-            "$PASS",
-            "$PASS",
-            "$PASS",
-            "$PASS",
-            "$PASS",
-            "$PASS",
-            "$PASS",
-            "$PASS",
-            "$PASS",
-            "$PASS",
-            "$PASS",
-            "$PASS",
-            "$PASS",
-            "buy_treasure 0",
-            "$PASS",
-            "activate 23 0"
-        ],
-        "responses": [
-            "$FIRST",
-            "$FIRST",
-            "$FIRST",
-            "$FIRST"
-        ]
+        "script": "bots/play_first_card.lua"
     },
     {
         "name": "oichii2",
-        "actions": [
-            "mainWait",
-            "play_loot 11",
-            "$PASS"
-        ],
-        "responses": [
-            "2"
-        ]
+        "script": "bots/player2.lua"
     },
     {
         "name": "oichii3",
-        "actions": [
-            "mainWait",
-            "play_loot 16",
-            "$PASS"
-        ],
-        "responses": [
-            "$CANCEL"
-        ]
+        "script": "bots/player3.lua"
     }
 
 ]

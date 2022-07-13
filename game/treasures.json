@@ -2,7 +2,9 @@
     "back": "images/treasure_card_back.bmp",
     "cards": [
         "treasure/breakfast",
-        "treasure/starting_deck",
-        "treasure/fanny_pack"
+        "treasure/razor_blade",
+        "treasure/edens_blessing",
+        "treasure/cambion_conception",
+        "treasure/dinner"
     ]
 }

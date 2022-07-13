@@ -1,9 +1,10 @@
 function Jawbone_cost(host, cardInfo)
+    --  TODO? change to target player?
     return Common_TargetOpponent(host, cardInfo) and Common_Tap(host, cardInfo)
 end
 
 function Jawbone_tap(host)
-    local owner = getOwner(host)
+    local owner = getTopOwner(host)
     local target = popTarget(host)
     local opponent = Common_PlayerWithID(host, target["id"])
     local coins = opponent["coins"]

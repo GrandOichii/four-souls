@@ -108,6 +108,7 @@ void CardWrapper::setOwner(Player* owner) { _owner = owner; }
 
 void CardWrapper::pushTable(lua_State* L) {
     lua_newtable(L);
+    l_pushtablestring(L, "name", _card->name().c_str());
     l_pushtablenumber(L, "id", (float)this->_id);
     l_pushtablenumber(L, "ownerID", (float)_owner->id());
     l_pushtableboolean(L, "tapped", _tapped);
@@ -118,5 +119,9 @@ CardState CardWrapper::getState() {
     result.cardName = _card->name();
     result.active = !_tapped;
     result.id = _id;
+    result.counters = _counters;
     return result;
 }
+
+void CardWrapper::addCounters(int amount) { _counters += amount; }
+void CardWrapper::removeCounters(int amount) { _counters -= amount; }

@@ -29,6 +29,9 @@ Player::Player(std::string name, CharacterCard* card, int id) :
 
     this->_maxAttackCount = STARTING_ATTACK_COUNT;
     this->_attackCount = this->_maxAttackCount;
+
+    this->_maxPlayableCount = STARTING_PLAYABLE_COUNT;
+    this->_playableCount = 0;
 }
 
 Player::~Player()  {}
@@ -108,6 +111,7 @@ void Player::pushTable(lua_State* L) {
     l_pushtablenumber(L, "startTurnLootAmount", (float)this->_startTurnLootAmount);
     l_pushtablenumber(L, "coins", (float)this->_coinCount);
     l_pushtablenumber(L, "souls", (float)this->_soulCount);
+    l_pushtablenumber(L, "playableCount", (float)_playableCount);
     // push cards in hand
     lua_pushstring(L, "hand");
     auto handSize = _hand.size();
@@ -131,6 +135,17 @@ void Player::pushTable(lua_State* L) {
     }
     lua_settable(L, -3);
 }
+
+void Player::resetPlayableCount() {
+    _playableCount = _maxPlayableCount;
+}
+
+void Player::setPlayableCount(int amount) {
+    _playableCount = amount;
+}
+
+void Player::decPlayableAmount() { --_playableCount; }
+
 
 int Player::coinCount() { return _coinCount; }
 void Player::addCoins(int amount) { this->_coinCount += amount + _additionalCoins; }
@@ -187,7 +202,12 @@ PlayerBoardState Player::getState() {
     for (const auto& w : _hand)
         result.hand.push_back(w->getState());
     return result;
-} 
+}
+
+void PlayerBoardState::pushTable(lua_State* L) {
+    // lua_createtable(L);
+
+}
 
 void Player::addSouls(int amount) { _soulCount += amount; }
 
@@ -204,33 +224,47 @@ void Player::resetEOT() {
     _attackCount = _maxAttackCount;
 }
 
-ScriptedPlayer::ScriptedPlayer(std::string name, CharacterCard* card, int id, string actions, string responses) :
+BotPlayer::BotPlayer(std::string name, CharacterCard* card, int id, string script) :
     Player(name, card, id)
 {
-    auto split = str::split(actions, "\n");
-    for (int i = split.size()-1; i >= 0; i--)
-        _actions.push(split[i]);
-    split = str::split(responses, "\n");
-    for (int i = split.size()-1; i >= 0; i--)
-        _responses.push(split[i]);
+    // setup lua
+    this->L = luaL_newstate();
+    // connect common libs
+    luaL_openlibs(L);
+    int r = luaL_dostring(L, script.c_str());
+    if (r != LUA_OK) throw std::runtime_error("failed to execute setup script for bot");
 }
 
-string ScriptedPlayer::promptAction(bool isMyMain) {
-    // if (isMyMain) std::cout << "PLAYER " << name() << " IS MAIN\n";
-    if (_actions.empty()) return ACTION_PASS;
-    auto result = _actions.top();
-    if (result == "mainWait") {
-        if (!isMyMain) return ACTION_PASS;
-        _actions.pop();
-        result = _actions.top();
-    }
-    _actions.pop();
-    return result;
+BotPlayer::~BotPlayer() {
+    lua_close(L);
 }
 
-string ScriptedPlayer::promptResponse(string text, string choiceType, vector<int> choices) {
-    if (_responses.empty()) return RESPONSE_CANCEL;
-    auto result = _responses.top();
-    _responses.pop();
-    return result;
+static const char* PROMPT_ACTION_FUNC = "Bot_PromptAction";
+static const char* PROMPT_RESPONSE_FUNC = "Bot_PromptResponse";
+
+string BotPlayer::promptAction(const MatchState& state) {
+    // if (_actions.empty()) return ACTION_PASS;
+    // auto result = _actions.top();
+    // if (result == "mainWait") {
+    //     if (!isMyMain) return ACTION_PASS;
+    //     _actions.pop();
+    //     result = _actions.top();
+    // }
+    // _actions.pop();
+    lua_getglobal(L, PROMPT_ACTION_FUNC);
+    if (!lua_isfunction(L, -1)) throw std::runtime_error("bot doesn't have action prompt script");
+    // lua_pushlightuserdata(L, this);
+    this->pushTable(L);
+    state.pushTable(L);
+    int r = lua_pcall(L, 2, 1, 0);
+    if (r != LUA_OK) throw std::runtime_error("bot action prompt script failed");
+    if (!lua_isstring(L, -1)) throw std::runtime_error("bot action prompt didn't return a string");
+    return (string)lua_tostring(L, -1);
+}
+
+string BotPlayer::promptResponse(const MatchState& state, string text, string choiceType, vector<int> choices) {
+    // if (_responses.empty()) return RESPONSE_CANCEL;
+    // auto result = _responses.top();
+    // _responses.pop();
+    return "$FIRST";
 }

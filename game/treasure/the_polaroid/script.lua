@@ -11,6 +11,6 @@ function ThePolaroid_trigger_check(host, me)
 end
 
 function ThePolaroid_trigger(host)
-    local owner = getOwner(host)
+    local owner = getTopOwner(host)
     lootCards(host, owner["id"], 2)
 end

@@ -17,6 +17,12 @@ StackMememberState StackEffect::getState() {
     return result;
 }
 
+void MatchState::pushTable(lua_State* L) const {
+    lua_newtable(L);
+    l_pushtableboolean(L, "isMain", isMain);
+    l_pushtablenumber(L, "currentID", currentID);
+}
+
 Match::Match() {
     this->rng.seed(rand());
 }
@@ -132,6 +138,16 @@ vector<MonsterCard*> Match::getTopMonsterCards(int amount) {
     return cards;
 }
 
+void Match::pushPlayers(lua_State* L) {
+    auto size = _players.size();
+    lua_createtable(L, size, 0);
+    for (int i = 0; i < size; i++) {
+        lua_pushnumber(L, i+1);
+        _players[i]->pushTable(L);
+        lua_settable(L, -3);
+    }
+}
+
 bool Match::requestPayCost(string costFuncName, Player* player) {
 
     lua_getglobal(L, costFuncName.c_str());
@@ -242,6 +258,48 @@ int Match::wrap_dealDamage(lua_State* L) {
     return 0;
 }
 
+int Match::wrap_addCounters(lua_State* L) {
+    if (lua_gettop(L) != 3) {
+        lua_err(L);
+        exit(1);
+    }
+    auto match = static_cast<Match*>(lua_touserdata(L, 1));
+    if (!lua_isnumber(L, 2)) {
+        lua_err(L);
+        exit(1);
+    }
+    int cid = (int)lua_tonumber(L, 2);
+    auto w = match->cardWithID(cid);
+    if (!lua_isnumber(L, 3)) {
+        lua_err(L);
+        exit(1);
+    }
+    int amount = (int)lua_tonumber(L, 3);
+    w->addCounters(amount);
+    return 0;
+}
+
+int Match::wrap_removeCounters(lua_State* L) {
+    if (lua_gettop(L) != 3) {
+        lua_err(L);
+        exit(1);
+    }
+    auto match = static_cast<Match*>(lua_touserdata(L, 1));
+    if (!lua_isnumber(L, 2)) {
+        lua_err(L);
+        exit(1);
+    }
+    int cid = (int)lua_tonumber(L, 2);
+    auto w = match->cardWithID(cid);
+    if (!lua_isnumber(L, 3)) {
+        lua_err(L);
+        exit(1);
+    }
+    int amount = (int)lua_tonumber(L, 3);
+    w->removeCounters(amount);
+    return 0;
+}
+
 int Match::wrap_pushTarget(lua_State* L) {
     // dumpstack(L);
     if (lua_gettop(L) != 3) {
@@ -320,7 +378,7 @@ int Match::wrap_requestChoice(lua_State* L) {
     }
     // dumpstack(L);
     Player* player = match->playerWithID(pid);
-    auto response = player->promptResponse(text, choiceType, choices);
+    auto response = player->promptResponse(match->getState(), text, choiceType, choices);
     // clear lua stack ?
     std::cout << "\t" << player->name() << ": " << response << " (response)" << std::endl;
     if (response == RESPONSE_CANCEL) {
@@ -344,13 +402,7 @@ int Match::wrap_getPlayers(lua_State* L) {
         exit(1);
     }
     auto match = static_cast<Match*>(lua_touserdata(L, 1));
-    auto size = match->_players.size();
-    lua_createtable(L, size, 0);
-    for (int i = 0; i < size; i++) {
-        lua_pushnumber(L, i+1);
-        match->_players[i]->pushTable(L);
-        lua_settable(L, -3);
-    }
+    match->pushPlayers(L);
     return 1;
 }
 
@@ -921,6 +973,8 @@ void Match::setupLua(string setupScript) {
     lua_register(L, "addBlueHealth", wrap_addBlueHealth);
     lua_register(L, "pushTarget", wrap_pushTarget);
     lua_register(L, "popTarget", wrap_popTarget);
+    lua_register(L, "addCounters", wrap_addCounters);
+    lua_register(L, "removeCounters", wrap_removeCounters);
     lua_register(L, "requestChoice", wrap_requestChoice);
     lua_register(L, "incAttackCount", wrap_incAttackCount);
     lua_register(L, "tapCard", wrap_tapCard);
@@ -1012,12 +1066,12 @@ void Match::addToCharacterPool(CharacterCard* card) {
 }
 
 //  TODO remove the actions part
-Player* Match::addPlayer(std::string name, CharacterCard* character, string actions, string responses) {
+Player* Match::addPlayer(std::string name, CharacterCard* character, string botScript) {
     for (const auto& p : _players)
         if (p->name() == name)
             return nullptr;
     //  TODO change this to a player with a port
-    auto result = new ScriptedPlayer(name, character, newCardID(), actions, responses);
+    auto result = new BotPlayer(name, character, newCardID(), botScript);
     result->addCoins(STARTING_COIN_AMOUNT);
     _players.push_back(result);
     _allWrappers.push_back(result->board()[0]);
@@ -1124,7 +1178,7 @@ void Match::start() {
     this->_priorityI = this->_currentI;
     this->_running = true;
 
-    int c = 10;
+    int c = 30;
     while (this->_running) {
         this->calcNext();
         this->turn();
@@ -1156,6 +1210,8 @@ void Match::turn() {
     this->_activePlayer = this->_players[this->_currentI];
     this->log(this->_activePlayer->name() + " starts their turn");
 
+    this->_activePlayer->resetPlayableCount();
+
     // recharge all of the items and character card of the active player
     this->_activePlayer->recharge();
 
@@ -1171,7 +1227,7 @@ void Match::turn() {
     _isMainPhase = true;
     this->log(_activePlayer->name() + "'s main phase");
     string response = "";
-    while ((response = this->_activePlayer->promptAction(true)) != ACTION_PASS) {
+    while ((response = this->_activePlayer->promptAction(this->getState())) != ACTION_PASS) {
         std::cout << "\t" << _activePlayer->name() << ": " << response << std::endl;
         this->executePlayerAction(_activePlayer, response);
         this->resolveStack();
@@ -1283,7 +1339,7 @@ void Match::resolveTop() {
 string Match::promptPlayerWithPriority() {
     auto player = this->_players[this->_priorityI];
     this->log("Player " + player->name() + " takes priority");
-    return player->promptAction(_isMainPhase && _stack.empty() && _priorityI == _currentI);
+    return player->promptAction(this->getState());
 }
 
 void Match::log(string message, bool wait) {
@@ -1301,7 +1357,9 @@ MatchState Match::getState() {
     for (auto& si : _stack)
         result.stack.push_back(si->getState());
     result.currentI = _currentI;
+    result.currentID = _activePlayer->id();
     result.priorityI = _priorityI;
+    result.isMain = _isMainPhase && _stack.empty() && _priorityI == _currentI;
 
     result.lootDeckCount = _lootDeck.size();
     for (const auto& w : _lootDiscard)
@@ -1310,10 +1368,8 @@ MatchState Match::getState() {
     result.treasureDeckCount = _treasureDeck.size();
     for (const auto& w : _treasureDiscard)
         result.treasureDiscard.push_back(w->getState());
-    // std::cout << "shop1" << std::endl;
     for (const auto& c : _shop)
         result.shop.push_back(c->getState());
-    // std::cout << "shop2" << std::endl;
 
     result.monsterDeckCount = _monsterDeck.size();
     for (const auto& c : _monsterDiscard)

@@ -20,7 +20,5 @@
     -- deferEOT(funcName) - pushes the function to be called at the end of turn
 
 - add cards:
-    -- temperance
-    -- razor blade
     -- chaos
     -- smelter

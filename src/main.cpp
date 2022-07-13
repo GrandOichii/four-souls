@@ -203,18 +203,17 @@ public:
 
         // add players
         auto j = fs::readJS(playersPath);
-        for (const auto& [key, pvalue] : j.items()) {
-            vector<string> actions;
-            vector<string> responses;
-            for (const auto& [key, value] : pvalue["actions"].items()) actions.push_back(value);
-            for (const auto& [key, value] : pvalue["responses"].items()) responses.push_back(value);
-            auto aj = str::join(actions.begin(), actions.end(), "\n");
-            auto rj = str::join(responses.begin(), responses.end(), "\n");
+        for (const auto& [key, value] : j.items()) {
+            // vector<string> actions;
+            // vector<string> responses;
+            // for (const auto& [key, value] : pvalue["actions"].items()) actions.push_back(value);
+            // for (const auto& [key, value] : pvalue["responses"].items()) responses.push_back(value);
+            // auto aj = str::join(actions.begin(), actions.end(), "\n");
+            // auto rj = str::join(responses.begin(), responses.end(), "\n");
             _match->addPlayer(
-                pvalue["name"], 
+                value["name"], 
                 _match->getRandomAvailableCharacter(), 
-                aj,
-                rj
+                fs::readFile(fs::join(path, value["script"]).c_str())
             );
         }
 
@@ -353,6 +352,11 @@ public:
         auto tex = _assets->getMessage("["+std::to_string(card.id)+"]", SDL_Color{255, 0, 255, 0}, 24);
         drawTexture(tex, x + 2, y + 2);
         SDL_DestroyTexture(tex);
+        if (card.counters) {
+            tex = _assets->getMessage(std::to_string(card.counters), SDL_Color{0, 0, 255, 0}, 24);
+            drawTexture(tex, x + 2, y + 2 + 24);
+            SDL_DestroyTexture(tex);
+        }
     }
 
     void drawCard(string cardName, bool active, int x, int y) {

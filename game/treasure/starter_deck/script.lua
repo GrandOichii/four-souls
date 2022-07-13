@@ -4,13 +4,11 @@ function StarterDeck_trigger_check(host, me)
     if owner["id"] ~= currentPlayer["id"] then
         return false
     end
-    local cards = owner["hand"]
-    local count = 0
-    for _ in pairs(cards) do count = count + 1 end
+    local count = Common_CardCount(owner)
     return count >= 8
 end
 
 function StarterDeck_trigger(host)
-    local owner = getOwner(host)
+    local owner = getTopOwner(host)
     lootCards(host, owner["id"], 2)
 end

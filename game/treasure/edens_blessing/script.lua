@@ -9,6 +9,6 @@ function EdensBlessing_trigger_check(host, me)
 end
 
 function EdensBlessing_trigger(host)
-    local owner = getOwner(host)
+    local owner = getTopOwner(host)
     addCoins(host, owner["id"], 6)
 end
