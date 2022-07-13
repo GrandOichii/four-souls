@@ -79,8 +79,7 @@ public:
     ScriptCard* startingItem();
 };
 
-//  TODO change to inhereting ScriptCard
-class MonsterCard : public Card {
+class MonsterCard : public ScriptCard {
 private:
 
 public:
@@ -99,7 +98,7 @@ private:
     ScriptCard* _card;
     int _id;
     bool _tapped = false;
-    Player* _owner;
+    Player* _owner = nullptr;
     int _counters = 0;
 public:
     CardWrapper(ScriptCard* card, int id);

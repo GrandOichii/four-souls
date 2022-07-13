@@ -13,7 +13,6 @@ function Bot_PromptAction(me, state)
             if me["playableCount"] ~= 0 then
                 return "play_loot " .. lootCards[1]["id"]    
             end
-            print(me["characterActive"])
             if me["characterActive"] then
                 return "activate_character"
             end
@@ -34,5 +33,9 @@ function Bot_PromptAction(me, state)
 end
 
 function Bot_PromptResponse(me, state, text, choiceType, choices)
+    
+end
+
+function Bot_PromptSimpleResponse(me, state, text, choices)
     
 end

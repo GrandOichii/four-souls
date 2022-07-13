@@ -6,7 +6,6 @@ function Bot_PromptAction(me, state)
         TURN_COUNTER = TURN_COUNTER + 1
         print("Player" .. me["name"] .. " turn counter: " .. TURN_COUNTER)
     end
-    print(me["coins"])
     return "$PASS"
 end
 

@@ -1,5 +1,14 @@
 #include "match.hpp"
 
+static void pushCards(vector<CardWrapper*> cards, lua_State* L) {
+    auto size = cards.size();
+    lua_createtable(L, size, 0);
+    for (int i = 0; i < size; i++) {
+        lua_pushnumber(L, i+1);
+        cards[i]->pushTable(L);
+        lua_settable(L, -3);
+    }
+}
 
 StackEffect::StackEffect(string funcName, Player* player, CardWrapper* cardW, string type) :
     funcName(funcName),
@@ -105,7 +114,7 @@ CardWrapper* Match::getTopTreasureCard() {
     return _treasureDeck.back();
 }
 
-MonsterCard* Match::getTopMonsterCard() {
+CardWrapper* Match::getTopMonsterCard() {
     if (!_monsterDeck.size()) this->shuffleMonsterDiscardIntoMain();
     if (_monsterDeck.empty()) return nullptr;
     return _monsterDeck.back();
@@ -126,8 +135,8 @@ vector<CardWrapper*> Match::getTopTreasureCards(int amount) {
     return cards;
 }
 
-vector<MonsterCard*> Match::getTopMonsterCards(int amount) {
-    vector<MonsterCard*> cards;
+vector<CardWrapper*> Match::getTopMonsterCards(int amount) {
+    vector<CardWrapper*> cards;
     while (amount) {
         auto card = getTopMonsterCard();
         if (!card) {
@@ -395,8 +404,46 @@ int Match::wrap_requestChoice(lua_State* L) {
     }
     lua_pushnumber(L, responseI);
     lua_pushboolean(L, true);
-    // requestChoice(host, ownerID, "Choose a player", PLAYER, ids)
     return 2;
+}
+
+int Match::wrap_requestSimpleChoice(lua_State* L) {
+    if (lua_gettop(L) != 4) {
+        lua_err(L);
+        exit(1);
+    }
+    auto match = static_cast<Match*>(lua_touserdata(L, 1));
+    if (!lua_isnumber(L, 2)) {
+        lua_err(L);
+        exit(1);
+    }
+    auto pid = (int)lua_tonumber(L, 2);
+    Player* player = match->playerWithID(pid);
+    if (!lua_isstring(L, 3)) {
+        lua_err(L);
+        exit(1);
+    }
+    auto text = (string)lua_tostring(L, 3);
+    if (!lua_istable(L, 4)) {
+        lua_err(L);
+        exit(1);
+    }
+    vector<string> choices;
+    auto size = lua_rawlen(L, 4);
+    for (int i = 0; i < size; i++) {
+        lua_pushnumber(L, i + 1);
+        lua_gettable(L, 4);
+        if (!lua_isstring(L, -1)) {
+            lua_err(L);
+            exit(1);
+        }
+        choices.push_back((string)lua_tostring(L, -1));
+        lua_pop(L, 1);
+    }
+    auto response = player->promptSimpleResponse(match->getState(), text, choices);
+    if (response == RESPONSE_FIRST) response = choices[0];
+    lua_pushstring(L, response.c_str());
+    return 1;
 }
 
 int Match::wrap_getPlayers(lua_State* L) {
@@ -630,6 +677,15 @@ int Match::wrap_this(lua_State *L) {
     return 1;
 }
 
+static void millDeck(std::deque<CardWrapper*>* deck, std::deque<CardWrapper*>* discard, int amount) {
+    while (amount) {
+        if (deck->empty()) return;
+        discard->push_back(deck->back());
+        deck->pop_back();
+        --amount;
+    }
+}
+
 int Match::wrap_millDeck(lua_State* L) {
     if (lua_gettop(L) != 3) {
         lua_err(L);
@@ -646,8 +702,69 @@ int Match::wrap_millDeck(lua_State* L) {
         exit(1);
     }
     int amount = (int)lua_tonumber(L, 3);
-    match->_millMap[deckType](amount);
+    auto deck = match->_deckMap[deckType];
+    auto discard = match->_discardMap[deckType];
+    // auto pair = match->_deckDiscardMap[deckType];
+    millDeck(deck, discard, amount);
     return 0;
+}
+
+static void fromTopToBottom(std::deque<CardWrapper*>* deck, int amount) {
+    while (amount) {
+        if (deck->empty()) return;
+        deck->push_front(deck->back());
+        deck->pop_back();
+        --amount;
+    }
+}
+
+int Match::wrap_putFromTopToBottom(lua_State* L) {
+    if (lua_gettop(L) != 3) {
+        lua_err(L);
+        exit(1);
+    }
+    auto match = static_cast<Match*>(lua_touserdata(L, 1));
+    if (!lua_isstring(L, 2)) {
+        lua_err(L);
+        exit(1);
+    }
+    auto deckType = (string)lua_tostring(L, 2);
+    if (!lua_isnumber(L, 3)) {
+        lua_err(L);
+        exit(1);
+    }
+    int amount = (int)lua_tonumber(L, 3);
+    auto deck = match->_deckMap[deckType];
+    fromTopToBottom(deck, amount);
+    return 0;
+}
+
+int Match::wrap_topCardsOf(lua_State* L) {
+    if (lua_gettop(L) != 3) {
+        lua_err(L);
+        exit(1);
+    }
+    auto match = static_cast<Match*>(lua_touserdata(L, 1));
+    if (!lua_isstring(L, 2)) {
+        lua_err(L);
+        exit(1);
+    }
+    auto deckType = (string)lua_tostring(L, 2);
+    if (!lua_isnumber(L, 3)) {
+        lua_err(L);
+        exit(1);
+    }
+    int amount = (int)lua_tonumber(L, 3);
+    auto deck = match->_deckMap[deckType];
+    vector<CardWrapper*> result;
+    auto size = deck->size();
+    for (int i = 0; i < amount; i++) {
+        auto ii = size - i - 1;
+        if (ii < 0) break;
+        result.push_back(deck->at(ii));
+    }
+    pushCards(result, L);
+    return 1;
 }
 
 int Match::wrap_plusOneTreasure(lua_State* L) {
@@ -996,10 +1113,13 @@ void Match::setupLua(string setupScript) {
     lua_register(L, "addCounters", wrap_addCounters);
     lua_register(L, "removeCounters", wrap_removeCounters);
     lua_register(L, "requestChoice", wrap_requestChoice);
+    lua_register(L, "requestSimpleChoice", wrap_requestSimpleChoice);
     lua_register(L, "incAttackCount", wrap_incAttackCount);
     lua_register(L, "tapCard", wrap_tapCard);
     lua_register(L, "millDeck", wrap_millDeck);
     lua_register(L, "getTopOwner", wrap_getTopOwner);
+    lua_register(L, "topCardsOf", wrap_topCardsOf);
+    lua_register(L, "putFromTopToBottom", wrap_putFromTopToBottom);
 
     //  TODO add state checking after some functions
 
@@ -1031,7 +1151,7 @@ void Match::setupLua(string setupScript) {
 
 void Match::lua_err(lua_State *L) {
     string errormsg = lua_tostring(L, -1);
-    std::cout << errormsg << std::endl;
+    std::cout << "LUA ERR:" << errormsg << std::endl;
 }
 
 void Match::execScript(string script) {
@@ -1165,8 +1285,10 @@ void Match::createTreasureDeck(std::vector<ScriptCard*> cards) {
 }
 
 void Match::createMonsterDeck(std::vector<MonsterCard*> cards) {
-    for (const auto& card : cards)
-        this->_monsterDeck.push_back(card);            
+    for (const auto& card : cards) {
+        auto w = addWrapper(card);
+        this->_monsterDeck.push_back(w);            
+    }
     this->shuffleMonsterDeck();
 }
 
@@ -1400,15 +1522,14 @@ MatchState Match::getState() {
     result.treasureDeckCount = _treasureDeck.size();
     for (const auto& w : _treasureDiscard)
         result.treasureDiscard.push_back(w->getState());
-    for (const auto& c : _shop)
-        result.shop.push_back(c->getState());
+    for (const auto& w : _shop)
+        result.shop.push_back(w->getState());
 
     result.monsterDeckCount = _monsterDeck.size();
-    for (const auto& c : _monsterDiscard)
-        result.monsterDiscard.push_back(c->name());
-    for (const auto& c : _monsters)
-        result.monsters.push_back(c->name());
-
+    for (const auto& w : _monsterDiscard)
+        result.monsterDiscard.push_back(w->getState());
+    for (const auto& w : _monsters)
+        result.monsters.push_back(w->getState());
     return result;
 }
 

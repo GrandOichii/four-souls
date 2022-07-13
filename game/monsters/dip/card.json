@@ -1,5 +1,6 @@
 {
     "name": "Dip",
     "text": "",
-    "image": "image.bmp"
+    "image": "image.bmp",
+    "script": "script.lua"
 }

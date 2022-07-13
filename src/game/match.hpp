@@ -59,10 +59,10 @@ struct MatchState {
 
     vector<CardState> lootDiscard;
     vector<CardState> treasureDiscard;
-    vector<string> monsterDiscard;
+    vector<CardState> monsterDiscard;
 
     vector<CardState> shop;
-    vector<string> monsters; // turn monsters into card wrappers also
+    vector<CardState> monsters; // turn monsters into card wrappers also
 
     void pushTable(lua_State* L) const;
 };
@@ -93,15 +93,7 @@ struct DamageTrigger {
     }
 };
 
-template<class T>
-static void millDeck(std::deque<T>& deck, std::deque<T>& discard, int amount) {
-    while (amount) {
-        if (deck.empty()) return;
-        discard.push_back(deck.back());
-        deck.pop_back();
-        --amount;
-    }
-}
+
 
 class Match {
 private:
@@ -128,9 +120,9 @@ private:
     std::vector<CardWrapper*> _shop;
     int _lastTreasureIndex = -2;
 
-    std::deque<MonsterCard*> _monsterDeck;
-    std::deque<MonsterCard*> _monsterDiscard;
-    std::vector<MonsterCard*> _monsters;
+    std::deque<CardWrapper*> _monsterDeck;
+    std::deque<CardWrapper*> _monsterDiscard;
+    std::vector<CardWrapper*> _monsters;
 
     // StackEffect _lastStack;
     std::vector<StackEffect*> _stack;
@@ -209,16 +201,25 @@ private:
         }}
     };
 
-    std::map<string, std::function<void(int)>> _millMap = {
-        {LOOT_DECK, [this](int amount){
-            millDeck<CardWrapper*>(this->_lootDeck, this->_lootDiscard, amount);
-        }},
-        {TREASURE_DECK, [this](int amount){
-            millDeck<CardWrapper*>(this->_treasureDeck, this->_treasureDiscard, amount);
-        }},
-        {MONSTER_DECK, [this](int amount){
-            millDeck<MonsterCard*>(this->_monsterDeck, this->_monsterDiscard, amount);
-        }}
+    // std::map<string, std::pair<
+    //     std::deque<CardWrapper*>, 
+    //     std::deque<CardWrapper*>
+    //     >> _deckDiscardMap = 
+    // {
+    //     {LOOT_DECK, std::make_pair(_lootDeck, _lootDiscard)},
+    //     {TREASURE_DECK, std::make_pair(_monsterDeck, _monsterDiscard)},
+    //     {MONSTER_DECK, std::make_pair(_monsterDeck, _monsterDiscard)},
+    // };
+
+    std::map<string, std::deque<CardWrapper*>*> _deckMap = {
+        {LOOT_DECK, &_lootDeck},
+        {TREASURE_DECK, &_treasureDeck},
+        {MONSTER_DECK, &_monsterDeck},
+    };
+    std::map<string, std::deque<CardWrapper*>*> _discardMap = {
+        {LOOT_DECK, &_lootDiscard},
+        {TREASURE_DECK, &_treasureDiscard},
+        {MONSTER_DECK, &_monsterDiscard},
     };
 
     // std::stack<std::pair<LootCard*, Player*>> _lootStack;
@@ -239,14 +240,16 @@ public:
     void shuffleMonsterDiscardIntoMain();
     CardWrapper* getTopLootCard();
     CardWrapper* getTopTreasureCard();
-    MonsterCard* getTopMonsterCard();
+    CardWrapper* getTopMonsterCard();
     vector<CardWrapper*> getTopLootCards(int amount);
     vector<CardWrapper*> getTopTreasureCards(int amount);
-    vector<MonsterCard*> getTopMonsterCards(int amount);
+    vector<CardWrapper*> getTopMonsterCards(int amount);
     bool requestPayCost(string costFuncName, Player* player);
     void triggerLastEffectType();
     void pushPlayers(lua_State* L);
     static int wrap_addBlueHealth(lua_State* L);
+    static int wrap_putFromTopToBottom(lua_State* L);
+    static int wrap_millDeck(lua_State* L);
     static int wrap_addPlayableCount(lua_State* L);
     static int wrap_tapCard(lua_State* L);
     static int wrap_rechargeCard(lua_State* L);
@@ -256,6 +259,7 @@ public:
     static int wrap_addCounters(lua_State* L);
     static int wrap_removeCounters(lua_State* L);
     static int wrap_requestChoice(lua_State* L);
+    static int wrap_requestSimpleChoice(lua_State* L);
     static int wrap_getPlayers(lua_State* L);
     static int wrap_getOwner(lua_State *L);
     static int wrap_dealDamage(lua_State *L);
@@ -275,8 +279,7 @@ public:
     static int wrap_tempIncMaxLife(lua_State* L);
     static int wrap_tempIncAttack(lua_State* L);
     static int wrap_decMaxLife(lua_State* L);
-    // static int wrap_getCardOwner(lua_State* L);
-    static int wrap_millDeck(lua_State* L);
+    static int wrap_topCardsOf(lua_State* L);
     static int wrap_getCurrentPlayer(lua_State* L);
     static int wrap_addSouls(lua_State* L);
     static int wrap_setNextPlayer(lua_State* L);

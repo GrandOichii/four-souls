@@ -412,7 +412,7 @@ public:
         // draw monster discard
         count = state.monsterDiscard.size();
         if (count) {
-            this->drawCard(*(state.monsterDiscard.end()-1), true, _monsterDiscardX, _monsterDeckY);
+            this->drawCard(*(state.monsterDiscard.end()-1), _monsterDiscardX, _monsterDeckY);
         }
         if (count != _lastMonsterDeckCount) {
             _lastMonsterDiscardCount = count;
@@ -422,9 +422,10 @@ public:
         this->drawTexture(_lastMonsterDiscardCountTex, _monsterDiscardX + 10, _monsterDeckY + 10);
         // draw monster slots
         auto y = _monsterDeckY + _cardSize.second;
-        for (const auto& name : state.monsters) {
-            auto tex = this->_assets->getCard(name);
-            this->drawTexture(tex, _monsterDiscardX + 20, y, -90);
+        for (const auto& card : state.monsters) {
+            this->drawTexture(this->_assets->getCard(card.cardName),_monsterDiscardX + 20, y, -90);
+            // auto tex = this->_assets->getCard(name);
+            // this->drawTexture(tex, _monsterDiscardX + 20, y, -90);
             y += _cardSize.first + 3;
         }
     }

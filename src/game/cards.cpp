@@ -82,7 +82,6 @@ CharacterCard::CharacterCard(string dir, json j) :
     auto itemDir = fs::join(dir, j["item"]);
     auto jj = fs::readJS(fs::join(itemDir, CARD_INFO_FILE));
     this->_startingItem = new ScriptCard(itemDir, jj, true, true);
-    std::cout << "MY USEFUNC IS " << useFuncName() << std::endl;
 }
 
 int CharacterCard::attack() { return _attack; }
@@ -90,7 +89,7 @@ int CharacterCard::health() { return _health; }
 ScriptCard* CharacterCard::startingItem() { return _startingItem; }
 
 MonsterCard::MonsterCard(string dir, json j) :
-    Card(dir, j)
+    ScriptCard(dir, j, true)
 {
     //  TODO
 }
@@ -111,7 +110,11 @@ void CardWrapper::pushTable(lua_State* L) {
     lua_newtable(L);
     l_pushtablestring(L, "name", _card->name().c_str());
     l_pushtablenumber(L, "id", (float)this->_id);
-    l_pushtablenumber(L, "ownerID", (float)_owner->id());
+    auto ownerID = -1;
+    if (_owner) {
+        ownerID = _owner->id();
+    }
+    l_pushtablenumber(L, "ownerID", (float)ownerID);
     l_pushtableboolean(L, "tapped", _tapped);
     l_pushtableboolean(L, "passive", !_card->abilities().size());
 }

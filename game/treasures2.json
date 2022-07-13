@@ -1,0 +1,20 @@
+{
+    "back": "images/treasure_card_back.bmp",
+    "cards": [
+        "treasure/eye_of_greed",
+        "treasure/moms_purse",
+        "treasure/sack_of_pennies",
+        "treasure/dinner",
+        "treasure/breakfast",
+        "treasure/moms_coin_purse",
+        "treasure/starter_deck",
+        "treasure/the_polaroid",
+        "treasure/edens_blessing",
+        "treasure/jawbone",
+        "treasure/potato_peeler",
+        "treasure/razor_blade",
+        "treasure/fanny_pack",
+        "treasure/cambion_conception",
+        "treasure/steamy_sale"
+    ]
+}

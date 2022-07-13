@@ -263,6 +263,7 @@ BotPlayer::~BotPlayer() {
 
 static const char* PROMPT_ACTION_FUNC = "Bot_PromptAction";
 static const char* PROMPT_RESPONSE_FUNC = "Bot_PromptResponse";
+static const char* PROMPT_SIMPLE_RESPONSE_FUNC = "Bot_PromptSimpleResponse";
 
 string BotPlayer::promptAction(const MatchState& state) {
     // if (_actions.empty()) return ACTION_PASS;
@@ -288,5 +289,9 @@ string BotPlayer::promptResponse(const MatchState& state, string text, string ch
     // if (_responses.empty()) return RESPONSE_CANCEL;
     // auto result = _responses.top();
     // _responses.pop();
+    return "$FIRST";
+}
+
+string BotPlayer::promptSimpleResponse(const MatchState& state, string text, vector<string> choices) {
     return "$FIRST";
 }
