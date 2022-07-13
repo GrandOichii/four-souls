@@ -1,0 +1,8 @@
+{
+    "name": "Counterfeit Penny",
+    "text": "Each time you gain any number of c, gain an additional 1c.",
+    "image": "image.bmp",
+    "script": "script.lua",
+    "enter": "CounterfeitPenny_enter",
+    "leave": "CounterfeitPenny_leave"
+}

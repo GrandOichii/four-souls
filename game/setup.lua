@@ -112,3 +112,15 @@ function Common_TargetTappedCard(host, ownerID)
     pushTarget(host, choiceId, CARD)
     return true
 end
+
+function Common_OwnerDamaged(host, cardID)
+    local owner = getOwner(host, cardID)
+    local damageEvent = getDamageEvent(host)
+    return damageEvent["type"] == PLAYER and damageEvent["id"] == owner["id"]
+end
+
+function Common_OwnersTurn(host, cardID)
+    local owner = getOwner(host, cardID)
+    local currentPlayer = getCurrentPlayer(host)
+    return owner["id"] == currentPlayer["id"]
+end

@@ -1,7 +1,5 @@
 function CambionConception_trigger_check(host, me)
-    local owner = getOwner(host, me["id"])
-    local damageEvent = getDamageEvent(host)
-    return damageEvent["type"] == PLAYER and damageEvent["id"] == owner["id"]
+    return Common_OwnerDamaged(host, me["id"])
 end
 
 function CambionConception_trigger(host)

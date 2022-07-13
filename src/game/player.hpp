@@ -102,7 +102,7 @@ public:
 
     int health();
     int maxHealth();
-    void dealDamage(int amount);
+    int dealDamage(int amount);
 
     virtual string promptAction(const MatchState& state) = 0;
     virtual string promptResponse(const MatchState& state, string text, string choiceType, vector<int> choices) = 0;

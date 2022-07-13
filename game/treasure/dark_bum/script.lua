@@ -1,7 +1,5 @@
 function DarkBum_trigger_check(host, me)
-    local owner = getOwner(host, me["id"])
-    local currentPlayer = getCurrentPlayer(host)
-    return owner["id"] == currentPlayer["id"]
+    return Common_OwnersTurn(host, me["id"])
 end
 
 function DarkBum_trigger_cost(host, me)

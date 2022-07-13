@@ -42,9 +42,14 @@ Player::Player(std::string name, CharacterCard* card, int id) :
 
 Player::~Player()  {}
 
-void Player::dealDamage(int amount) {
+int Player::dealDamage(int amount) {
+    _blueHealth -= amount;
+    if (_blueHealth >= 0) return 0;
+    amount = -_blueHealth;
+    _blueHealth = 0;
     _health -= amount;
     if (_health < 0) _health = 0;
+    return amount;
 }
 
 void Player::incMaxAttackCount() {

@@ -272,7 +272,8 @@ int Match::wrap_dealDamage(lua_State* L) {
     }
     auto amount = (int)lua_tonumber(L, 3);
     Player* player = match->playerWithID(pid);
-    player->dealDamage(amount);
+    int dealt = player->dealDamage(amount);
+    if (!dealt) return 0;
     match->log(player->name() + " is dealt " + std::to_string(amount) + " damage");
     // trigger all "dealt damage" triggers
     DamageTrigger trigger{
@@ -741,6 +742,38 @@ int Match::wrap_popRollStack(lua_State* L) {
     return 0;
 }
 
+int Match::wrap_incAdditionalCoins(lua_State* L) {
+    if (lua_gettop(L) != 2) {
+        lua_err(L);
+        exit(1);
+    }
+    auto match = static_cast<Match*>(lua_touserdata(L, 1));
+    if (!lua_isnumber(L, 2)) {
+        lua_err(L);
+        exit(1);
+    }
+    auto pid = (int)lua_tonumber(L, 2);
+    Player* player = match->playerWithID(pid);
+    player->incAdditionalCoins();
+    return 0;
+}
+
+int Match::wrap_decAdditionalCoins(lua_State* L) {
+    if (lua_gettop(L) != 2) {
+        lua_err(L);
+        exit(1);
+    }
+    auto match = static_cast<Match*>(lua_touserdata(L, 1));
+    if (!lua_isnumber(L, 2)) {
+        lua_err(L);
+        exit(1);
+    }
+    auto pid = (int)lua_tonumber(L, 2);
+    Player* player = match->playerWithID(pid);
+    player->decAdditionalCoins();
+    return 0;
+}
+
 int Match::wrap_getLastRoll(lua_State* L) {
     if (lua_gettop(L) != 1) {
         lua_err(L);
@@ -1175,6 +1208,8 @@ void Match::setupLua(string setupScript) {
     luaL_openlibs(L);
     // connect functions
     lua_register(L, "getOwner", wrap_getOwner);
+    lua_register(L, "incAdditionalCoins", wrap_incAdditionalCoins);
+    lua_register(L, "decAdditionalCoins", wrap_decAdditionalCoins);
     lua_register(L, "getRollStack", wrap_getRollStack);
     lua_register(L, "setRollValue", wrap_setRollValue);
     lua_register(L, "lootCards", wrap_lootCards);

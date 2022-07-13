@@ -102,13 +102,13 @@ struct RollEvent {
         owner(owner),
         isCombatRoll(isCombatRoll) 
     {
-        // value = rand() % 6 + 1;
+        value = rand() % 6 + 1;
         // value = 1;
         // value = 2;
         // value = 3;
         // value = 4;
         // value = 5;
-        value = 6;
+        // value = 6;
     }
 
     void pushTable(lua_State *L) {
@@ -268,6 +268,8 @@ public:
     bool requestPayCost(string costFuncName, Player* player);
     void triggerLastEffectType();
     void pushPlayers(lua_State* L);
+    static int wrap_incAdditionalCoins(lua_State* L);
+    static int wrap_decAdditionalCoins(lua_State* L);
     static int wrap_getRollStack(lua_State* L);
     static int wrap_setRollValue(lua_State* L);
     static int wrap_addBlueHealth(lua_State* L);

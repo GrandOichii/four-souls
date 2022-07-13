@@ -1,0 +1,13 @@
+{
+    "name": "Guppy's Hairball",
+    "text": "Each time you take damage, roll:\n1-5: Nothing\n6: Prevent 1 damage.",
+    "image": "image.bmp",
+    "script": "script.lua",
+    "on": {
+        "damage": {
+            "check": "GuppysHairball_trigger_check",
+            "cost": "GuppysHairball_trigger_cost",
+            "effect": "GuppysHairball_trigger"
+        }
+    }
+}
