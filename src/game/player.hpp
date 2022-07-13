@@ -17,7 +17,7 @@ struct PlayerBoardState {
     int soulCount;
     int attack;
     
-    std::pair<string, bool> playerCard;
+    CardState playerCard;
     std::vector<CardState> board;
     std::vector<CardState> hand;
 
@@ -28,7 +28,7 @@ struct MatchState;
 
 class Player {
 private:
-    CharacterCard* _characterCard;
+    CardWrapper* _characterCard;
     std::string _name;
 
     int _maxHealth;
@@ -60,6 +60,9 @@ private:
     int _playableCount;
     int _maxPlayableCount;
 
+    int _purchaseCount;
+    int _maxPurchaseCount;
+
 public:
     Player(std::string name, CharacterCard* card, int id);
     virtual ~Player();
@@ -67,6 +70,7 @@ public:
     CardWrapper* takeCard(int cardID);
     std::vector<CardWrapper*> board();
     std::vector<CardWrapper*> hand();
+    void tapCharacter();
     bool characterActive();
     void rechargeCharacter();
     void rechargeCards();
@@ -75,8 +79,13 @@ public:
 
     void resetPlayableCount();
     void decPlayableAmount();
-
+    void incPlayableAmount();
     void setPlayableCount(int amount);
+
+    void resetPurchaseCount();
+    void setPurchaseCount(int amount);
+    void decPurchaseAmount();
+    void incPurchaseAmount();
 
     void incMaxAttackCount();
     void decMaxAttackCount();
@@ -101,7 +110,7 @@ public:
     string name();
     int id();
     int soulCount();
-    CharacterCard* characterCard();
+    CardWrapper* characterCard();
 
     int coinCount();
     void addCoins(int amount);

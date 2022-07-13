@@ -3,18 +3,21 @@
 
 Player::Player(std::string name, CharacterCard* card, int id) :
     _name(name),
-    _id(id),
-    _characterCard(card) 
+    _id(id)
 {
     this->_maxHealth = card->health();
     this->_health = this->_maxHealth;
 
     this->_attack = card->attack();
 
-    auto w = new CardWrapper(card->startingItem(), _id);
-    w->setOwner(this);
-    w->tap();
-    this->_board.push_back(w);
+    // auto w = 
+
+    // w->setOwner(this);
+    // w->tap();
+    // this->_board.push_back(w);
+
+    this->_characterCard = new CardWrapper(card, _id);
+
     this->_characterActive = false;
     this->_startTurnLootAmount = 1;
 
@@ -32,6 +35,9 @@ Player::Player(std::string name, CharacterCard* card, int id) :
 
     this->_maxPlayableCount = STARTING_PLAYABLE_COUNT;
     this->_playableCount = 0;
+
+    this->_maxPurchaseCount = STARTING_PURCHASE_COUNT;
+    this->_purchaseCount = 0;
 }
 
 Player::~Player()  {}
@@ -87,11 +93,13 @@ bool Player::characterActive() { return _characterActive; }
 string Player::name() { return _name; }
 int Player::id() { return _id; }
 int Player::soulCount() { return _soulCount; }
-CharacterCard* Player::characterCard() { return _characterCard; }
+CardWrapper* Player::characterCard() { return _characterCard; }
 
 void Player::rechargeCharacter() {
     this->_characterActive = true;
 }
+
+void Player::tapCharacter() { _characterActive = false; }
 
 void Player::rechargeCards() {
     for (auto& w : _board)
@@ -112,6 +120,9 @@ void Player::pushTable(lua_State* L) {
     l_pushtablenumber(L, "coins", (float)this->_coinCount);
     l_pushtablenumber(L, "souls", (float)this->_soulCount);
     l_pushtablenumber(L, "playableCount", (float)_playableCount);
+    l_pushtablenumber(L, "purchaseCount", (float)_purchaseCount);
+    l_pushtablenumber(L, "treasurePrice", _treasurePrice);
+    l_pushtableboolean(L, "characterActive", _characterActive);
     // push cards in hand
     lua_pushstring(L, "hand");
     auto handSize = _hand.size();
@@ -145,7 +156,18 @@ void Player::setPlayableCount(int amount) {
 }
 
 void Player::decPlayableAmount() { --_playableCount; }
+void Player::incPlayableAmount() { ++_playableCount; }
 
+void Player::resetPurchaseCount() {
+    _purchaseCount = _maxPurchaseCount;
+}
+
+void Player::setPurchaseCount(int amount) {
+    _purchaseCount = amount;
+}
+
+void Player::decPurchaseAmount() { --_purchaseCount; }
+void Player::incPurchaseAmount() { --_purchaseCount; }
 
 int Player::coinCount() { return _coinCount; }
 void Player::addCoins(int amount) { this->_coinCount += amount + _additionalCoins; }
@@ -189,8 +211,8 @@ int Player::attack() { return _attack + _tempAttackBoost; }
 
 PlayerBoardState Player::getState() {
     PlayerBoardState result;
-    result.playerCard.first = _characterCard->name();
-    result.playerCard.second = _characterActive;
+    result.playerCard = _characterCard->getState();
+    result.playerCard.active = _characterActive;
     result.coinCount = _coinCount;
     result.health = _health;
     result.maxHealth = maxHealth();

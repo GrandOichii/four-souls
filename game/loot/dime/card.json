@@ -1,0 +1,7 @@
+{
+    "name": "A Dime!!",
+    "text": "Gain 10c",
+    "image": "image.bmp",
+    "script": "script.lua",
+    "use": "Dime_use"
+}

@@ -1,0 +1,10 @@
+{
+    "name": "Judas",
+    "health": 2,
+    "attack": 1,
+    "item": "book_of_belial", 
+    "image": "image.bmp",
+    "text": "{T}: Play an additional loot card this turn.\nStarting item: Book of Belial",
+    "script": "script.lua",
+    "use": "Judas_tap"
+}

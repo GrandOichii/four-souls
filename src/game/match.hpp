@@ -30,13 +30,14 @@ static const string CARD_INFO_FILE = "card.json";
 const int MIN_PLAYER_COUNT = 2;
 const int MAX_PLAYER_COUNT = 4;
 const int SOULS_TO_WIN = 4;
-const int STARTING_COIN_AMOUNT = 10;
-const int STARTING_LOOT_AMOUNT = 8;
+const int STARTING_COIN_AMOUNT = 3;
+const int STARTING_LOOT_AMOUNT = 3;
 const int STARTING_SHOP_SIZE = 2;
 const int STARTING_MONSTERS_AMOUNT = 2;
 const int STARTING_TREASURE_PRICE = 10;
 const int STARTING_ATTACK_COUNT = 1;
 const int STARTING_PLAYABLE_COUNT = 1;
+const int STARTING_PURCHASE_COUNT = 1;
 
 struct StackMememberState {
     string message;
@@ -161,6 +162,7 @@ private:
         {ACTION_BUY_TREASURE, [this](Player* player, std::vector<string> args){
             this->_lastTreasureIndex = atoi(args[1].c_str());
             player->payPricePerTreasure();
+            player->decPurchaseAmount();
             this->pushToStack(new StackEffect(
                 "_buyItem",
                 player,
@@ -190,6 +192,20 @@ private:
             }
             this->log(player->name() + " activated " + card->name());
             this->triggerLastEffectType();
+        }},
+        {ACTION_ACTIVATE_CHARACTER_CARD, [this](Player* player, std::vector<string> args) {
+            player->tapCharacter();
+            auto cardW = player->characterCard();
+            auto p = new StackEffect(
+                cardW->card()->useFuncName(),
+                player,
+                cardW,
+                ACTIVATE_CHARACTER_TYPE
+            );
+            this->pushToStack(p);
+            this->log(player->name() + " activates his characted card");
+            this->triggerLastEffectType();
+            // std::cout << "PLAYING " << ->card()->useFuncName() << std::endl;
         }}
     };
 
@@ -231,6 +247,7 @@ public:
     void triggerLastEffectType();
     void pushPlayers(lua_State* L);
     static int wrap_addBlueHealth(lua_State* L);
+    static int wrap_addPlayableCount(lua_State* L);
     static int wrap_tapCard(lua_State* L);
     static int wrap_rechargeCard(lua_State* L);
     static int wrap_getDamageEvent(lua_State* L);

@@ -1,0 +1,10 @@
+{
+    "name": "Samson",
+    "health": 2,
+    "attack": 1,
+    "item": "forever_alone",
+    "image": "image.bmp",
+    "script": "script.lua",
+    "text": "{T}: Play an additional loot card this turn.\nStarting item: Blood Lust",
+    "use": "Samson_use"
+}

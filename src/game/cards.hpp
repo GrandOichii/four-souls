@@ -51,7 +51,7 @@ private:
     bool _isTrinket;
     string _useFuncName;
     string _costFuncName;
-    bool _goesToBottom;
+    bool _goesToBottom = false;
 public:
     ScriptCard(string dir, json j, bool isTrinket, bool isEternal=false);
     ~ScriptCard();
@@ -67,7 +67,7 @@ public:
     string costFuncName();
 };
 
-class CharacterCard : public Card {
+class CharacterCard : public ScriptCard {
 private:
     int _attack;
     int _health;

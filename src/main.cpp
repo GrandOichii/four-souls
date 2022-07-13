@@ -210,7 +210,7 @@ public:
             // for (const auto& [key, value] : pvalue["responses"].items()) responses.push_back(value);
             // auto aj = str::join(actions.begin(), actions.end(), "\n");
             // auto rj = str::join(responses.begin(), responses.end(), "\n");
-            _match->addPlayer(
+            auto p = _match->addPlayer(
                 value["name"], 
                 _match->getRandomAvailableCharacter(), 
                 fs::readFile(fs::join(path, value["script"]).c_str())
@@ -460,7 +460,7 @@ public:
         // draw shop
         auto y = _treasureDeckY - _cardSize.second;
         for (const auto& card : state.shop) {
-            this->drawCard(card, _treasureDiscardX + 20, y);
+            this->drawTexture(this->_assets->getCard(card.cardName),_treasureDiscardX + 20, y, -90);
             // auto tex = this->_assets->getCard(name);
             // this->drawTexture(tex, _treasureDiscardX + 20, y, -90);
             y -= _cardSize.first + 3;
@@ -510,7 +510,7 @@ public:
             pX += _cardSize.second - _cardSize.first;
             auto cCard = space.playerCard;
 
-            this->drawCard(cCard.first, cCard.second, pX+10, pY+10);
+            this->drawCard(cCard, pX+10, pY+10);
             pY += 150;
             int betweenCards = 2;
             for (const auto& card : space.board) {

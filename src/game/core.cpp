@@ -73,7 +73,9 @@ void Game::loadTreasureCards(string dir) {
 void Game::loadCharacterCards(string dir) {
     auto j = fs::readJS(fs::join(dir, CHARACTER_CARDS_FILE));
     for (const auto& el : j.items()) {
-        auto character = new CharacterCard(dir, el.value());
+        string tdir = fs::join(dir, el.value()); 
+        auto jj = fs::readJS(fs::join(tdir, CARD_INFO_FILE));
+        auto character = new CharacterCard(tdir, jj);
         _characterCards.push_back(character);
     }
 }

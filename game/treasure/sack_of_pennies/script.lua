@@ -1,11 +1,12 @@
 function SackOfPennies_trigger_check(host)
+    --  TODO
     local rollEvent = getLastRoll(host)
     return rollEvent["amount"] == 1
 end
 
 
 function SackOfPennies_trigger(host)
-
+    --  TODO
     local owner = getTopOwner(host)
     local choice = requestChoice(host, owner["id"], "Recharge Sack of Pennies?", "Yes|No")
     if (choice == "No") then
@@ -14,6 +15,10 @@ function SackOfPennies_trigger(host)
     local id = this(host)["id"]
     rechargeCard(host, id)
 
+end
+
+function SackOfPennies_cost(host, cardInfo)
+    return Common_Tap(host, cardInfo)
 end
 
 function SackOfPennies_tap(host)

@@ -2,25 +2,26 @@
     "back": "images/loot_card_back.bmp",
     "cards": {
         "basic": {
-            "loot/one_cent": 0,
-            "loot/two_cents": 0,
-            "loot/three_cents": 0,
-            "loot/four_cents": 0,
-            "loot/nickel": 0,
-            "loot/a_sack": 0,
-            "loot/the_stars": 0,
-            "loot/jera": 0,
-            "loot/lost_soul": 0,
-            "loot/the_sun": 0,
-            "loot/two_of_diamonds": 0,
-            "loot/soul_heart": 0,
-            "loot/the_lovers": 0,
-            "loot/the_chariot": 0,
-            "loot/justice": 0,
-            "loot/strength": 0
+            "loot/one_cent": 2,
+            "loot/two_cents": 6,
+            "loot/three_cents": 8,
+            "loot/four_cents": 4,
+            "loot/nickel": 2,
+            "loot/dime": 1,
+            "loot/a_sack": 1,
+            "loot/the_stars": 1,
+            "loot/jera": 1,
+            "loot/lost_soul": 1,
+            "loot/the_sun": 1,
+            "loot/two_of_diamonds": 1,
+            "loot/soul_heart": 1,
+            "loot/the_lovers": 1,
+            "loot/the_chariot": 1,
+            "loot/justice": 1,
+            "loot/strength": 1
         },
         "trinkets": {
-            "loot/blood_penny": 50
+            "loot/blood_penny": 1
         }
     }
 }

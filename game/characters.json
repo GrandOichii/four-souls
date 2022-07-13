@@ -1,27 +1,5 @@
 [
-    {
-        "name": "Isaac",
-        "health": 2,
-        "attack": 1,
-        "item": "starting_items/the_d6",
-        "image": "images/isaac.bmp",
-        "text": "{T}: Play an additional loot card this turn.\nStarting item: The D6"
-    },
-    {
-        "name": "Judas",
-        "health": 2,
-        "attack": 1,
-        "item": "starting_items/book_of_belial", 
-        "image": "images/judas.bmp",
-        "text": "{T}: Play an additional loot card this turn.\nStarting item: Book of Belial"
-    },
-    {
-        "name": "Samson",
-        "health": 2,
-        "attack": 1,
-        "item": "starting_items/forever_alone",
-        "image": "images/samson.bmp",
-        "text": "{T}: Play an additional loot card this turn.\nStarting item: Blood Lust"
-    }
-
+    "characters/isaac",
+    "characters/judas",
+    "characters/samson"
 ]

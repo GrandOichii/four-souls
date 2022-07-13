@@ -13,7 +13,10 @@ StackMememberState StackEffect::getState() {
     StackMememberState result;
     result.message = funcName;
     result.isCard = cardW;
-    if (cardW) result.card = cardW->getState();
+    if (cardW) {
+        result.card = cardW->getState();
+        result.card.active = true;
+    }
     return result;
 }
 
@@ -666,6 +669,22 @@ int Match::wrap_plusOneTreasure(lua_State* L) {
     return 0;
 }
 
+int Match::wrap_addPlayableCount(lua_State* L) {
+    if (lua_gettop(L) != 2) {
+        lua_err(L);
+        exit(1);
+    }
+    auto match = static_cast<Match*>(lua_touserdata(L, 1));
+    if (!lua_isnumber(L, 2)) {
+        lua_err(L);
+        exit(1);
+    }
+    auto pid = (int)lua_tonumber(L, 2);
+    Player* player = match->playerWithID(pid);
+    player->incPlayableAmount();
+    return 0;
+}
+
 int Match::wrap_incBeginningLoot(lua_State* L) {
     if (lua_gettop(L) != 2) {
         lua_err(L);
@@ -956,6 +975,7 @@ void Match::setupLua(string setupScript) {
     lua_register(L, "incBeginningLoot", wrap_incBeginningLoot);
     lua_register(L, "decBeginningLoot", wrap_decBeginningLoot);
     lua_register(L, "plusOneTreasure", wrap_plusOneTreasure);
+    lua_register(L, "addPlayableCount", wrap_addPlayableCount);
     lua_register(L, "incMaxLife", wrap_incMaxLife);
     lua_register(L, "tempIncMaxLife", wrap_tempIncMaxLife);
     lua_register(L, "tempIncAttack", wrap_tempIncAttack);
@@ -994,6 +1014,8 @@ void Match::setupLua(string setupScript) {
     }
     for (const auto& pair : _characterPool) {
         auto character = pair.first;
+        std::cout << "Loading script for " << character->name() << std::endl;
+        this->execScript(character->script());
         auto card = character->startingItem();
         std::cout << "Loading script for " << card->name() << std::endl;
         this->execScript(card->script());
@@ -1074,7 +1096,11 @@ Player* Match::addPlayer(std::string name, CharacterCard* character, string botS
     auto result = new BotPlayer(name, character, newCardID(), botScript);
     result->addCoins(STARTING_COIN_AMOUNT);
     _players.push_back(result);
-    _allWrappers.push_back(result->board()[0]);
+
+    _allWrappers.push_back(result->characterCard());
+    auto w = addWrapper(character->startingItem());
+    addCardToBoard(w, result);
+    // _allWrappers.push_back(result->board()[0]);
     return result;
 }
 
@@ -1211,6 +1237,7 @@ void Match::turn() {
     this->log(this->_activePlayer->name() + " starts their turn");
 
     this->_activePlayer->resetPlayableCount();
+    this->_activePlayer->resetPurchaseCount();
 
     // recharge all of the items and character card of the active player
     this->_activePlayer->recharge();
@@ -1240,6 +1267,9 @@ void Match::turn() {
     this->applyTriggers(TURN_END_TRIGGER);
     this->pushEOTDeferredTriggers();
     this->resolveStack();
+
+    _activePlayer->setPlayableCount(0);
+    _activePlayer->setPurchaseCount(0);
 
     // all silent end of turn effects
     this->execEOTDefers();
@@ -1354,8 +1384,10 @@ MatchState Match::getState() {
     MatchState result;
     for (const auto& p : _players) 
         result.boards.push_back(p->getState());
-    for (auto& si : _stack)
-        result.stack.push_back(si->getState());
+    for (auto& si : _stack){
+        auto s = si->getState();
+        result.stack.push_back(s);
+    }
     result.currentI = _currentI;
     result.currentID = _activePlayer->id();
     result.priorityI = _priorityI;

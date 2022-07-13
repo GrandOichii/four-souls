@@ -21,6 +21,7 @@ const string ACTION_PLAY_LOOT = "play_loot"; // [0] - the index of the card
 const string ACTION_ATTACK_MONSTER = "attack_monster"; // [0] - the index of the card being attacked, if -1 then the top
 const string ACTION_BUY_TREASURE = "buy_treasure"; // [0] - the index of the card being purchased, if -1 then the top
 const string ACTION_ACTIVATE_CARD = "activate";
+const string ACTION_ACTIVATE_CHARACTER_CARD = "activate_character";
 
 const string LOOT_TYPE = "loot";
 const string PLAY_LOOT_CARD_TYPE = "loot_card";
@@ -29,6 +30,7 @@ const string DEATH_TYPE = "death";
 const string TRIGGER_TYPE = "trigger";
 const string BUY_TREASURE_TYPE = "buy_treasure";
 const string ACTIVATE_ITEM_TYPE = "activate";
+const string ACTIVATE_CHARACTER_TYPE = "activate_character";
 
 const string LOOT_DECK = "loot";
 const string TREASURE_DECK = "treasure";

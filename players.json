@@ -1,15 +1,15 @@
 [
     {
         "name": "oichii1",
-        "script": "bots/play_first_card.lua"
+        "script": "bots/random.lua"
     },
     {
         "name": "oichii2",
-        "script": "bots/player2.lua"
+        "script": "bots/random.lua"
     },
     {
         "name": "oichii3",
-        "script": "bots/player3.lua"
+        "script": "bots/random.lua"
     }
 
 ]

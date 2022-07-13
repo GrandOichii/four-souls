@@ -75,13 +75,14 @@ bool ScriptCard::isTrinket() { return _isTrinket; }
 bool ScriptCard::goesToBottom() { return _goesToBottom; }
 
 CharacterCard::CharacterCard(string dir, json j) : 
-    Card(dir, j),
+    ScriptCard(dir, j, false),
     _attack(j["attack"]),
     _health(j["health"])
 {
     auto itemDir = fs::join(dir, j["item"]);
     auto jj = fs::readJS(fs::join(itemDir, CARD_INFO_FILE));
     this->_startingItem = new ScriptCard(itemDir, jj, true, true);
+    std::cout << "MY USEFUNC IS " << useFuncName() << std::endl;
 }
 
 int CharacterCard::attack() { return _attack; }
@@ -112,6 +113,7 @@ void CardWrapper::pushTable(lua_State* L) {
     l_pushtablenumber(L, "id", (float)this->_id);
     l_pushtablenumber(L, "ownerID", (float)_owner->id());
     l_pushtableboolean(L, "tapped", _tapped);
+    l_pushtableboolean(L, "passive", !_card->abilities().size());
 }
 
 CardState CardWrapper::getState() {
