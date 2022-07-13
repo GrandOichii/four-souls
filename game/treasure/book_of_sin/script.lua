@@ -1,5 +1,5 @@
 function BookOfSin_cost(host, cardInfo)
-    return Common_Tap(host, cardInfo) and Common_Roll(host, cardInfo)
+    return Common_Tap(host) and Common_Roll(host, cardInfo["ownerID"])
 end
 
 function BookOfSin_tap(host)

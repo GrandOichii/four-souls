@@ -46,7 +46,7 @@ function Common_TargetOpponent(host, cardInfo)
     return true
 end
 
-function Common_Tap(host, cardInfo)
+function Common_Tap(host)
     local card = this(host)
 
     if card["tapped"] then
@@ -56,8 +56,8 @@ function Common_Tap(host, cardInfo)
     return true
 end
 
-function Common_Roll(host, cardInfo)
-    pushRollEvent(host, cardInfo["ownerID"])
+function Common_Roll(host, ownerID)
+    pushRollEvent(host, ownerID)
     return true
 end
 
@@ -69,6 +69,23 @@ function Common_LastRoll(host)
     local rolls = getRollStack(host)
     local roll = rolls[#rolls]
     return roll
+end
+
+function Common_TargetRoll(host, ownerID)
+    local rolls = getRollStack(host)
+    if #rolls == 0 then
+        return false
+    end
+    local choices = {}
+    for i, _ in ipairs(rolls) do
+        choices[i] = i-1
+    end
+    local choice, payed = requestChoice(host, ownerID, "Choose a roll", ROLL, choices)
+    if not payed then
+        return false
+    end
+    pushTarget(host, choice, ROLL)
+    return true
 end
 
 function Common_TargetTappedCard(host, ownerID)

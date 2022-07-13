@@ -1,9 +1,9 @@
 {
     "back": "images/treasure_card_back.bmp",
     "cards": [
-        "treasure/d100",
-        "treasure/d100",
-        "treasure/d100",
+        "treasure/dark_bum",
+        "treasure/dark_bum",
+        "treasure/dark_bum",
         "treasure/dads_lost_coin",
         "treasure/dads_lost_coin",
         "treasure/dads_lost_coin"

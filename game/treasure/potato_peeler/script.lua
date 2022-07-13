@@ -1,5 +1,5 @@
 function PotatoPeeler_cost(host, cardInfo)
-    return Common_Tap(host, cardInfo)
+    return Common_Tap(host)
 end
 
 function PotatoPeeler_tap(host)

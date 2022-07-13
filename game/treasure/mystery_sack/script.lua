@@ -1,5 +1,5 @@
 function MysterySack_cost(host, cardInfo)
-    return Common_Tap(host, cardInfo) and Common_Roll(host, cardInfo)
+    return Common_Tap(host) and Common_Roll(host, cardInfo["ownerID"])
 end
 
 function MysterySack_tap(host)

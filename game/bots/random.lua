@@ -5,6 +5,8 @@
     
 -- end
 
+local lastActivation = ""
+
 function Bot_PromptAction(me, state)
     if me["id"] == state["currentID"] and state["isMain"] then
         -- main phase actions
@@ -23,7 +25,12 @@ function Bot_PromptAction(me, state)
         local trinkets = me["board"]
         for _, trinket in pairs(trinkets) do
             if not trinket["passive"] and not trinket["tapped"] then
-                return "activate " .. trinket["id"] .. " 0"
+                local response = "activate " .. trinket["id"] .. " 0"
+                if lastActivation == response then
+                    return "$PASS"
+                end
+                lastActivation = response
+                return response
             end
         end
         return "$PASS"

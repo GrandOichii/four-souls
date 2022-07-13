@@ -1,5 +1,5 @@
 function SackHead_cost(host, cardInfo)
-    return Common_Tap(host, cardInfo)
+    return Common_Tap(host)
 end
 
 function SackHead_tap(host)

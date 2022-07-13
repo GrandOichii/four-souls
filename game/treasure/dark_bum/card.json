@@ -1,0 +1,13 @@
+{
+    "name": "Dark Bum",
+    "text": "At the start of your turn, roll:\n1-2: Gain 3c.\n3-4: Loot 1.\n5-6: Take 1 damage.",
+    "image": "image.bmp",
+    "script": "script.lua",
+    "on": {
+        "turn_end": {
+            "check": "DarkBum_trigger_check",
+            "cost": "DarkBum_trigger_cost",
+            "effect": "DarkBum_trigger"
+        }
+    }
+}

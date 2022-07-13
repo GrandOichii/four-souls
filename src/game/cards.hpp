@@ -22,6 +22,16 @@ extern "C" {
 
 using std::string;
 
+struct Trigger {
+    string checkFuncName;
+    string costFuncName = "";
+    string effectFuncName;
+
+    // Trigger(string checkFuncName, string effectFuncName) :
+    //     checkFuncName(checkFuncName),
+    //     effectFuncName(effectFuncName) {}
+};
+
 class Card {
 protected:
     string _name;
@@ -42,7 +52,7 @@ private:
     string _script;
     bool _isEternal;
 
-    std::map<string, std::pair<string, string>> _triggerMap;
+    std::map<string, Trigger> _triggerMap;
     std::vector<ActivatedAbility> _abilities;
 
     string _enterFuncName = "";
@@ -57,7 +67,7 @@ public:
     ~ScriptCard();
     string script();
     bool hasTrigger(string triggerName);
-    std::pair<string, string> getTriggerWhen(string triggerName);
+    Trigger getTriggerWhen(string triggerName);
     string useFuncName();
     string enterFuncName();
     string leaveFuncName();

@@ -1,5 +1,5 @@
 function ForeverAlone_cost(host, cardInfo)
-    return Common_Tap(host, cardInfo)
+    return Common_Tap(host)
 end
 
 function ForeverAlone_tap(host)

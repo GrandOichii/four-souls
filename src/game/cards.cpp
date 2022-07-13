@@ -28,10 +28,11 @@ ScriptCard::ScriptCard(string dir, json j, bool isTrinket, bool isEternal) :
             auto triggers = j["on"];
             for (const auto& pair : triggers.items()) {
                 auto v = pair.value();
-                _triggerMap[pair.key()] = std::make_pair(
-                    v["check"],
-                    v["effect"]
-                );
+                Trigger trigger;
+                trigger.checkFuncName = v["check"];
+                trigger.effectFuncName = v["effect"];
+                if (v.contains("cost")) trigger.costFuncName = v["cost"];
+                _triggerMap[pair.key()] = trigger;
             }
         }
         if (j.contains("enter"))
@@ -64,7 +65,7 @@ string ScriptCard::script() { return _script; }
 
 std::vector<ActivatedAbility> ScriptCard::abilities() { return _abilities; }
 bool ScriptCard::hasTrigger(string triggerName) { return _triggerMap.count(triggerName); }
-std::pair<string, string> ScriptCard::getTriggerWhen(string triggerName) { return _triggerMap[triggerName]; }
+Trigger ScriptCard::getTriggerWhen(string triggerName) { return _triggerMap[triggerName]; }
 
 string ScriptCard::useFuncName() { return _useFuncName; }
 string ScriptCard::enterFuncName() { return _enterFuncName; }

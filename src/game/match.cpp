@@ -1518,19 +1518,28 @@ int Match::applyTriggers(string triggerType) {
             auto card = w->card();
             if (!card->hasTrigger(triggerType)) continue;
             this->log("Card " + card->name() + "[" + std::to_string(w->id()) + "] has a " + triggerType + " trigger");
-            auto pair = card->getTriggerWhen(triggerType);
-            auto checkFuncName = pair.first;
+            auto effect = card->getTriggerWhen(triggerType);
+            auto checkFuncName = effect.checkFuncName;
             if (!this->execCheck(checkFuncName, w)) {
                 std::cout << "Check failed" << std::endl;
                 continue;
             }
             this->log(card->name() + " is triggered");
-            this->pushToStack(new StackEffect(
-                pair.second, 
+            auto p = new StackEffect(
+                effect.effectFuncName, 
                 player, 
                 w,
                 TRIGGER_TYPE    
-            ));
+            );
+            this->pushToStack(p);
+            if (effect.costFuncName.size()) {
+                bool payed = this->requestPayCost(effect.costFuncName, player);
+                if (!payed) {
+                    this->_stack.pop_back();
+                    delete p;
+                    continue;
+                }
+            }
             ++result;
         }
     }
@@ -1594,7 +1603,7 @@ void Match::log(string message, bool wait) {
     std::cout << " - " << message << std::endl;
     if (wait) {
         // std::this_thread::sleep_for(std::chrono::seconds(1));
-        std::this_thread::sleep_for(std::chrono::milliseconds(200));
+        std::this_thread::sleep_for(std::chrono::milliseconds(150));
     }
 }
 

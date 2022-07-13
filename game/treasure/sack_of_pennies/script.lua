@@ -15,7 +15,7 @@ function SackOfPennies_trigger(host)
 end
 
 function SackOfPennies_cost(host, cardInfo)
-    return Common_Tap(host, cardInfo)
+    return Common_Tap(host)
 end
 
 function SackOfPennies_tap(host)

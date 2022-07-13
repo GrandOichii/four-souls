@@ -1,6 +1,6 @@
 function BloodLust_cost(host, cardInfo)
     --  TODO
-    return Common_Tap(host, cardInfo)
+    return Common_Tap(host)
 end
 
 function BloodLust_tapEOT(host)
