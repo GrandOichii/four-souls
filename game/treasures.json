@@ -1,8 +1,8 @@
 {
     "back": "images/treasure_card_back.bmp",
     "cards": [
-        "treasure/fanny_pack",
+        "treasure/breakfast",
         "treasure/starting_deck",
-        "treasure/breakfast"
+        "treasure/fanny_pack"
     ]
 }

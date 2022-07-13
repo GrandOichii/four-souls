@@ -36,7 +36,6 @@ public:
 };
 
 class Player;
-class Match;
 
 class ScriptCard : public Card {
 private:
@@ -59,13 +58,13 @@ public:
     string script();
     bool hasTrigger(string triggerName);
     std::pair<string, string> getTriggerWhen(string triggerName);
+    string useFuncName();
     string enterFuncName();
     string leaveFuncName();
     std::vector<ActivatedAbility> abilities();
     bool isTrinket();
     bool goesToBottom();
     string costFuncName();
-    void use(Player* player, Match* match);
 };
 
 class CharacterCard : public Card {

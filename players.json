@@ -3,7 +3,7 @@
         "name": "oichii1",
         "actions": [
             "mainWait",
-            "buy_treasure 0",
+            "play_loot 1",
             "$PASS",
             "$PASS",
             "mainWait",
@@ -26,17 +26,17 @@
             "activate 23 0"
         ],
         "responses": [
-            "25",
-            "25",
-            "25",
-            "25"
+            "$FIRST",
+            "$FIRST",
+            "$FIRST",
+            "$FIRST"
         ]
     },
     {
         "name": "oichii2",
         "actions": [
             "mainWait",
-            "buy_treasure 0",
+            "play_loot 11",
             "$PASS"
         ],
         "responses": [
@@ -47,7 +47,7 @@
         "name": "oichii3",
         "actions": [
             "mainWait",
-            "buy_treasure 0",
+            "play_loot 16",
             "$PASS"
         ],
         "responses": [

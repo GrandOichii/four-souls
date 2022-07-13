@@ -519,12 +519,14 @@ int Match::wrap_playTopLootCard(lua_State* L) {
     auto last = match->_stack.back();
     auto cardW = last->cardW;
     auto card = cardW->card();
-    card->use(last->player, match);
     if (!card->isTrinket()) {
+        match->execFunc(card->useFuncName());
         if (card->goesToBottom())
             match->_lootDeck.push_front(cardW);
         else
             match->addToLootDiscard(cardW);
+    } else {
+        match->addCardToBoard(cardW, last->player);
     }
     return 0;
 }

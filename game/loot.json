@@ -4,7 +4,7 @@
         "basic": {
             "loot/one_cent": 0,
             "loot/two_cents": 0,
-            "loot/three_cents": 20,
+            "loot/three_cents": 0,
             "loot/four_cents": 0,
             "loot/nickel": 0,
             "loot/a_sack": 0,
@@ -20,7 +20,7 @@
             "loot/strength": 0
         },
         "trinkets": {
-            "loot/blood_penny": 0
+            "loot/blood_penny": 20
         }
     }
 }

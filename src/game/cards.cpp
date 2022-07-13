@@ -1,7 +1,7 @@
 #include "cards.hpp"
 
-#include "player.hpp"
 #include "match.hpp"
+#include "player.hpp"
 
 Card::Card(string dir, json j) : 
     _name(j["name"]),
@@ -66,21 +66,13 @@ std::vector<ActivatedAbility> ScriptCard::abilities() { return _abilities; }
 bool ScriptCard::hasTrigger(string triggerName) { return _triggerMap.count(triggerName); }
 std::pair<string, string> ScriptCard::getTriggerWhen(string triggerName) { return _triggerMap[triggerName]; }
 
+string ScriptCard::useFuncName() { return _useFuncName; }
 string ScriptCard::enterFuncName() { return _enterFuncName; }
 string ScriptCard::leaveFuncName() { return _leaveFuncName; }
-
 
 string ScriptCard::costFuncName() { return _costFuncName; }
 bool ScriptCard::isTrinket() { return _isTrinket; }
 bool ScriptCard::goesToBottom() { return _goesToBottom; }
-
-void ScriptCard::use(Player* player, Match* match) {
-    if (_isTrinket) {
-        //  TODO
-    } else {
-        match->execFunc(this->_useFuncName);
-    }
-}
 
 CharacterCard::CharacterCard(string dir, json j) : 
     Card(dir, j),
