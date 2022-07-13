@@ -93,7 +93,7 @@ struct DamageTrigger {
     }
 };
 
-struct RollEvent{
+struct RollEvent {
     int value;
     Player* owner;
     bool isCombatRoll;
@@ -103,12 +103,12 @@ struct RollEvent{
         isCombatRoll(isCombatRoll) 
     {
         // value = rand() % 6 + 1;
-        value = 1;
+        // value = 1;
         // value = 2;
         // value = 3;
         // value = 4;
         // value = 5;
-        // value = 6;
+        value = 6;
     }
 
     void pushTable(lua_State *L) {
@@ -137,6 +137,7 @@ private:
     Player* _activePlayer;
 
     int _lastRoll = -1;
+    int _lastRollOwnerID = -1;
     std::vector<RollEvent> _rollStack;
 
     std::deque<CardWrapper*> _lootDeck;
@@ -161,21 +162,26 @@ private:
             auto cardID = atoi(args[1].c_str());
             auto cardW = this->cardWithID(cardID);
             auto card = cardW->card();
-            // request to pay cost
-            auto cost = card->costFuncName();
-            if (cost.size()) {
-                bool payed = this->requestPayCost(cost, player);
-                if (!payed) return;
-            }
-            player->takeCard(cardID);
-            this->log(player->name() + " plays card " + card->name());
-            player->decPlayableAmount();
-            this->pushToStack(new StackEffect(
+            auto e = new StackEffect(
                 "_playTopLootCard",
                 player,
                 cardW,
                 PLAY_LOOT_CARD_TYPE
-            ));
+            );
+            this->pushToStack(e);
+            auto cost = card->costFuncName();
+            if (cost.size()) {
+                bool payed = this->requestPayCost(cost, player);
+                if (!payed) {
+                    this->_stack.pop_back();
+                    delete e;
+                    return;
+                };
+            }
+            player->takeCard(cardID);
+            this->log(player->name() + " plays card " + card->name());
+            player->decPlayableAmount();
+            
             this->triggerLastEffectType();
         }},
         {ACTION_BUY_TREASURE, [this](Player* player, std::vector<string> args){

@@ -2,7 +2,7 @@
     "back": "images/loot_card_back.bmp",
     "cards": {
         "basic": {
-            "loot/dime": 40
+            "loot/yellow_pills": 40
         },
         "trinkets": {
             "loot/blood_penny": 0
@@ -25,6 +25,7 @@
             "loot/soul_heart": 1,
             "loot/the_lovers": 1,
             "loot/the_chariot": 1,
+            "loot/yellow_pills": 1,
             "loot/justice": 1,
             "loot/strength": 1
         },

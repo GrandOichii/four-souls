@@ -10,7 +10,7 @@ end
 
 function DarkBum_trigger(host)
     local owner = getTopOwner(host)
-    local roll = Common_LastRoll(host)
+    local roll = getLastRoll(host)["value"]
     if roll == 1 or roll == 2 then
         addCoins(host, owner["id"], 3)
         return

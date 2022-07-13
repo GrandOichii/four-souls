@@ -736,6 +736,7 @@ int Match::wrap_popRollStack(lua_State* L) {
     }
     auto match = static_cast<Match*>(lua_touserdata(L, 1));
     match->_lastRoll = match->_rollStack.back().value;
+    match->_lastRollOwnerID = match->_rollStack.back().owner->id();
     match->_rollStack.pop_back();
     return 0;
 }
@@ -746,7 +747,9 @@ int Match::wrap_getLastRoll(lua_State* L) {
         exit(1);
     }
     auto match = static_cast<Match*>(lua_touserdata(L, 1));
-    lua_pushnumber(L, match->_lastRoll);
+    lua_newtable(L);
+    l_pushtablenumber(L, "value", match->_lastRoll);
+    l_pushtablenumber(L, "ownerID", match->_lastRollOwnerID);
     return 1;
 }
 

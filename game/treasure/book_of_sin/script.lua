@@ -4,7 +4,7 @@ end
 
 function BookOfSin_tap(host)
     local owner = getTopOwner(host)
-    local roll = getLastRoll(host)
+    local roll = getLastRoll(host)["value"]
     if roll == 1 or roll == 2 then
         addCoins(host, owner["id"], 1)
     end

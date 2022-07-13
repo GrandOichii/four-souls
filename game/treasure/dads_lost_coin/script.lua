@@ -1,6 +1,4 @@
 function DadsLostCoin_trigger_check(host, me)
-    print("he")
-
     return Common_LastRoll(host)["value"] == 1
 end
 
