@@ -18,8 +18,8 @@ struct PlayerBoardState {
     int attack;
     
     std::pair<string, bool> playerCard;
-    std::vector<std::pair<string, bool>> board;
-    std::vector<string> hand;
+    std::vector<CardState> board;
+    std::vector<CardState> hand;
 };
 
 class Player {
@@ -50,16 +50,15 @@ private:
 
     int _treasurePrice;
 
-    std::vector<CardWrapper*> _board; // dont forget to delete these!
-    std::vector<LootCard*> _hand;
+    std::vector<CardWrapper*> _board;
+    std::vector<CardWrapper*> _hand;
 public:
     Player(std::string name, CharacterCard* card, int id);
     virtual ~Player();
     void print();
-    LootCard* takeCard(int cardI);
-    LootCard* getCard(int cardI);
+    CardWrapper* takeCard(int cardID);
     std::vector<CardWrapper*> board();
-    std::vector<LootCard*> hand();
+    std::vector<CardWrapper*> hand();
     bool characterActive();
     void rechargeCharacter();
     void rechargeCards();
@@ -102,7 +101,7 @@ public:
     void incTreasureCost(int amount);
     void decTreasureCost(int amount);
 
-    void addLootCards(vector<LootCard*> cards);
+    void addLootCards(vector<CardWrapper*> cards);
 
     PlayerBoardState getState();
     void addToBoard(CardWrapper* w);

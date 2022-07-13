@@ -35,16 +35,12 @@ public:
     virtual void print(string prefix);
 };
 
+class Player;
+class Match;
+
 class ScriptCard : public Card {
 private:
     string _script;
-public:
-    ScriptCard(string dir, json j);
-    string script();
-};
-
-class TrinketCard : public ScriptCard {
-private:
     bool _isEternal;
 
     std::map<string, std::pair<string, string>> _triggerMap;
@@ -52,31 +48,20 @@ private:
 
     string _enterFuncName = "";
     string _leaveFuncName = "";
+
+    bool _isTrinket;
+    string _useFuncName;
+    string _costFuncName;
+    bool _goesToBottom;
 public:
-    TrinketCard(string dir, json j, bool isEternal);
-    void print(string prefix) override;
+    ScriptCard(string dir, json j, bool isTrinket, bool isEternal=false);
+    ~ScriptCard();
+    string script();
     bool hasTrigger(string triggerName);
     std::pair<string, string> getTriggerWhen(string triggerName);
     string enterFuncName();
     string leaveFuncName();
     std::vector<ActivatedAbility> abilities();
-};
-
-class Player;
-class Match;
-
-class LootCard : public ScriptCard {
-private:
-    bool _isTrinket;
-    TrinketCard* _trinket = nullptr;
-
-    string _useFuncName;
-    string _costFuncName;
-    bool _goesToBottom;
-public:
-    LootCard(string dir, json j, bool isTrinket);
-    ~LootCard();
-    void print(string prefix) override;
     bool isTrinket();
     bool goesToBottom();
     string costFuncName();
@@ -87,12 +72,12 @@ class CharacterCard : public Card {
 private:
     int _attack;
     int _health;
-    TrinketCard* _startingItem;
+    ScriptCard* _startingItem;
 public:
     CharacterCard(string dir, json j);
     int attack();
     int health();
-    TrinketCard* startingItem();
+    ScriptCard* startingItem();
 };
 
 //  TODO change to inhereting ScriptCard
@@ -103,17 +88,27 @@ public:
     MonsterCard(string dir, json j);
 };
 
+struct CardState {
+    string cardName;
+    bool active;
+    int id;
+};
+
 class CardWrapper {
 private:
-    Card* _card;
+    ScriptCard* _card;
     int _id;
     bool _tapped = false;
+    Player* _owner;
 public:
-    CardWrapper(Card* card, int id);
-    Card* card();
+    CardWrapper(ScriptCard* card, int id);
+    ScriptCard* card();
     int id();
     void recharge();
     void tap();
     bool isActive();
     void pushTable(lua_State* L);
+    Player* owner();
+    void setOwner(Player* owner);
+    CardState getState();
 };

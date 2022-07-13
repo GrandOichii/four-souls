@@ -16,101 +16,65 @@ void Card::print(string prefix) {
     std::cout << prefix << _name << std::endl;
 }
 
-ScriptCard::ScriptCard(string dir, json j) : 
-    Card(dir, j)
+ScriptCard::ScriptCard(string dir, json j, bool isTrinket, bool isEternal) : 
+    Card(dir, j),
+    _isTrinket(isTrinket),
+    _isEternal(isEternal)
+
 { 
     this->_script = fs::readFile(fs::join(dir, j["script"]).c_str());
-}
-
-string ScriptCard::script() { return _script; }
-
-TrinketCard::TrinketCard(string dir, json j, bool isEternal) :
-    ScriptCard(dir, j),
-    _isEternal(isEternal)
-{
-    std::cout << _name << std::endl;
-    if (j.contains("on")) {
-        auto triggers = j["on"];
-        for (const auto& pair : triggers.items()) {
-            auto v = pair.value();
-            _triggerMap[pair.key()] = std::make_pair(
-                v["check"],
-                v["effect"]
-            );
+    if (_isTrinket) {
+        if (j.contains("on")) {
+            auto triggers = j["on"];
+            for (const auto& pair : triggers.items()) {
+                auto v = pair.value();
+                _triggerMap[pair.key()] = std::make_pair(
+                    v["check"],
+                    v["effect"]
+                );
+            }
         }
-    }
-    if (j.contains("enter"))
-        this->_enterFuncName = j["enter"];
-    if (j.contains("leave"))
-        this->_leaveFuncName = j["leave"];
-    if (j.contains("abilities")) {
-        for (const auto& jj : j["abilities"].items()) {
-            auto a = jj.value();
-            ActivatedAbility ability;
-            ability.funcName = a["ability"];
-            ability.costFuncName = a["cost"];
-            _abilities.push_back(ability);
+        if (j.contains("enter"))
+            this->_enterFuncName = j["enter"];
+        if (j.contains("leave"))
+            this->_leaveFuncName = j["leave"];
+        if (j.contains("abilities")) {
+            for (const auto& jj : j["abilities"].items()) {
+                auto a = jj.value();
+                ActivatedAbility ability;
+                ability.funcName = a["ability"];
+                ability.costFuncName = a["cost"];
+                _abilities.push_back(ability);
+            }
         }
-    }
-}
-
-void TrinketCard::print(string prefix) {
-    ScriptCard::print(prefix);
-    std::cout << prefix << "Is eternal: " << _isEternal << std::endl;
-    std::cout << prefix << "Enter script:" << std::endl << prefix << "\t" << _enterFuncName << std::endl;
-    std::cout << prefix << "Leave script:" << std::endl << prefix << "\t" << _leaveFuncName << std::endl;
-    std::cout << prefix << "trigger map:" << std::endl;
-    for (const auto& [key, value] : _triggerMap) {
-        std::cout << prefix << "\t" << key << " : " << value.second << std::endl;
-    }
-    std::cout << prefix << "Activations:" << std::endl;
-    for (auto& ability : _abilities) {
-        ability.print();
-    }
-}
-
-std::vector<ActivatedAbility> TrinketCard::abilities() { return _abilities; }
-bool TrinketCard::hasTrigger(string triggerName) { return _triggerMap.count(triggerName); }
-std::pair<string, string> TrinketCard::getTriggerWhen(string triggerName) { return _triggerMap[triggerName]; }
-
-string TrinketCard::enterFuncName() { return _enterFuncName; }
-string TrinketCard::leaveFuncName() { return _leaveFuncName; }
-
-
-LootCard::LootCard(string dir, json j, bool isTrinket) : 
-    ScriptCard(dir, j),
-    _isTrinket(isTrinket) 
-{
-    if (!_isTrinket) {
+    } else {
         this->_useFuncName = j["use"];
         if (j.contains("goes_to_bottom"))
             this->_goesToBottom = j["goes_to_bottom"];
         if (j.contains("cost"))
             this->_costFuncName = j["cost"];
-        return;
-    }
-    this->_trinket = new TrinketCard(dir, j, false);
-}
-
-LootCard::~LootCard() {
-    delete _trinket;
-}
-
-void LootCard::print(string prefix) {
-    ScriptCard::print(prefix);
-    if (_isTrinket) {
-        std::cout << "Trinket:" << std::endl;
-        this->_trinket->print("\t");
-    } else {
-        std::cout << "Use: " << std::endl << "\t" << _useFuncName << std::endl;;
     }
 }
 
-string LootCard::costFuncName() { return _costFuncName; }
-bool LootCard::isTrinket() { return _isTrinket; }
-bool LootCard::goesToBottom() { return _goesToBottom; }
+ScriptCard::~ScriptCard() {
 
-void LootCard::use(Player* player, Match* match) {
+}
+
+string ScriptCard::script() { return _script; }
+
+std::vector<ActivatedAbility> ScriptCard::abilities() { return _abilities; }
+bool ScriptCard::hasTrigger(string triggerName) { return _triggerMap.count(triggerName); }
+std::pair<string, string> ScriptCard::getTriggerWhen(string triggerName) { return _triggerMap[triggerName]; }
+
+string ScriptCard::enterFuncName() { return _enterFuncName; }
+string ScriptCard::leaveFuncName() { return _leaveFuncName; }
+
+
+string ScriptCard::costFuncName() { return _costFuncName; }
+bool ScriptCard::isTrinket() { return _isTrinket; }
+bool ScriptCard::goesToBottom() { return _goesToBottom; }
+
+void ScriptCard::use(Player* player, Match* match) {
     if (_isTrinket) {
         //  TODO
     } else {
@@ -125,12 +89,12 @@ CharacterCard::CharacterCard(string dir, json j) :
 {
     auto itemDir = fs::join(dir, j["item"]);
     auto jj = fs::readJS(fs::join(itemDir, CARD_INFO_FILE));
-    this->_startingItem = new TrinketCard(itemDir, jj, true);
+    this->_startingItem = new ScriptCard(itemDir, jj, true, true);
 }
 
 int CharacterCard::attack() { return _attack; }
 int CharacterCard::health() { return _health; }
-TrinketCard* CharacterCard::startingItem() { return _startingItem; }
+ScriptCard* CharacterCard::startingItem() { return _startingItem; }
 
 MonsterCard::MonsterCard(string dir, json j) :
     Card(dir, j)
@@ -138,18 +102,29 @@ MonsterCard::MonsterCard(string dir, json j) :
     //  TODO
 }
 
-CardWrapper::CardWrapper(Card* card, int id) : 
+CardWrapper::CardWrapper(ScriptCard* card, int id) :
     _card(card),
     _id(id) {}
 
-Card* CardWrapper::card() { return _card; }
+ScriptCard* CardWrapper::card() { return _card; }
 int CardWrapper::id() { return _id; }
 void CardWrapper::recharge() { _tapped = false; }
 void CardWrapper::tap() { _tapped = true; }
 bool CardWrapper::isActive() { return !_tapped; }
+Player* CardWrapper::owner() { return _owner; }
+void CardWrapper::setOwner(Player* owner) { _owner = owner; }
 
 void CardWrapper::pushTable(lua_State* L) {
     lua_newtable(L);
     l_pushtablenumber(L, "id", (float)this->_id);
+    l_pushtablenumber(L, "ownerID", (float)_owner->id());
     l_pushtableboolean(L, "tapped", _tapped);
+}
+
+CardState CardWrapper::getState() {
+    CardState result;
+    result.cardName = _card->name();
+    result.active = !_tapped;
+    result.id = _id;
+    return result;
 }

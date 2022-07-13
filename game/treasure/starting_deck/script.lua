@@ -1,5 +1,5 @@
 function StarterDeck_trigger_check(host, me)
-    local owner = getCardOwner(host, me["id"])
+    local owner = getOwner(host, me["id"])
     local currentPlayer = getCurrentPlayer(host)
     if owner["id"] ~= currentPlayer["id"] then
         return false

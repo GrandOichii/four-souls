@@ -5,15 +5,26 @@
             "$PASS",
             "buy_treasure 0",
             "$PASS",
+            "$PASS",
+            "$PASS",
+            "$PASS",
+            "$PASS",
+            "$PASS",
+            "$PASS",
+            "$PASS",
+            "$PASS",
+            "$PASS",
+            "$PASS",
+            "$PASS",
             "buy_treasure 0",
             "$PASS",
-            "activate 4 0"
+            "activate 23 0"
         ],
         "responses": [
-            "2",
-            "1",
-            "1",
-            "1"
+            "25",
+            "25",
+            "25",
+            "25"
         ]
     },
     {

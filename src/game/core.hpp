@@ -8,18 +8,16 @@
 
 class Game {
 private:
-    // starting items
-    std::vector<TrinketCard*> _startingItems;
     // character cards
     std::vector<CharacterCard*> _characterCards;
     // loot cards
-    std::vector<LootCard*> _lootCards;
+    std::vector<ScriptCard*> _lootCards;
     // treasure cards
-    std::vector<TrinketCard*> _treasureCards;
+    std::vector<ScriptCard*> _treasureCards;
     // monster cards
     std::vector<MonsterCard*> _monsterCards;
 
-    std::vector<std::pair<LootCard*, int>> _lootDeckTemplate;
+    std::vector<std::pair<ScriptCard*, int>> _lootDeckTemplate;
 
     //  TODO move this to client
     // card backs

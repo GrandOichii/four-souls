@@ -1,6 +1,6 @@
 function BloodPenny_trigger(host)
 
-    local owner = getOwner(host)
+    local owner = getTopOwner(host)
     lootCards(host, owner["id"], 1)
 
 end

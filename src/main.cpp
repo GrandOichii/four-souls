@@ -348,6 +348,13 @@ public:
         SDL_RenderClear(_ren);
     }
 
+    void drawCard(const CardState& card, int x, int y) {
+        this->drawTexture(this->_assets->getCard(card.cardName), x, y, card.active ? 0 : 90);
+        auto tex = _assets->getMessage("["+std::to_string(card.id)+"]", SDL_Color{255, 0, 255, 0}, 24);
+        drawTexture(tex, x + 2, y + 2);
+        SDL_DestroyTexture(tex);
+    }
+
     void drawCard(string cardName, bool active, int x, int y) {
         this->drawTexture(this->_assets->getCard(cardName), x, y, active ? 0 : 90);
     }
@@ -433,7 +440,7 @@ public:
         count = state.treasureDiscard.size();
         // std::cout << "\t" << count << std::endl;
         if (count) {
-            this->drawCard(*(state.treasureDiscard.end()-1), true, _treasureDiscardX, _treasureDeckY);
+            this->drawCard(*(state.treasureDiscard.end()-1), _treasureDiscardX, _treasureDeckY);
         }
         // resolve weird error (card with no name)
         // implement dice rolling (is part of loot card cost, dice result goes BEFORE loot card)
@@ -448,9 +455,10 @@ public:
         this->drawTexture(_lastTreasureDiscardCountTex, _treasureDiscardX + 10, _treasureDeckY + 10);
         // draw shop
         auto y = _treasureDeckY - _cardSize.second;
-        for (const auto& name : state.shop) {
-            auto tex = this->_assets->getCard(name);
-            this->drawTexture(tex, _treasureDiscardX + 20, y, -90);
+        for (const auto& card : state.shop) {
+            this->drawCard(card, _treasureDiscardX + 20, y);
+            // auto tex = this->_assets->getCard(name);
+            // this->drawTexture(tex, _treasureDiscardX + 20, y, -90);
             y -= _cardSize.first + 3;
             // auto tex = this->drawCard(name, true);
         }
@@ -469,7 +477,7 @@ public:
         // draw loot discard
         count = state.lootDiscard.size();
         if (count) {
-            this->drawCard(*(state.lootDiscard.end()-1), true, _lootDiscardX, _lootDeckY);
+            this->drawCard(*(state.lootDiscard.end()-1), _lootDiscardX, _lootDeckY);
         }
         if (count != _lastLootDiscardCount) {
             _lastLootDiscardCount = count;
@@ -497,15 +505,16 @@ public:
             
             pX += _cardSize.second - _cardSize.first;
             auto cCard = space.playerCard;
+
             this->drawCard(cCard.first, cCard.second, pX+10, pY+10);
             pY += 150;
             int betweenCards = 2;
             for (const auto& card : space.board) {
-                this->drawCard(card.first, card.second, pX+10, pY);
+                this->drawCard(card, pX+10, pY);
                 pX += _cardSize.second + betweenCards;
             }
             for (const auto& card : space.hand) {
-                this->drawCard(card, true, lootX, looyY);
+                this->drawCard(card, lootX, looyY);
                 lootX += _cardSize.first + betweenCards;
             }
 
@@ -550,7 +559,7 @@ public:
         int y = yOffset;
         for (const auto& si : state.stack) {
             if (si.isCard)
-                this->drawCard(si.cardName, true, x, y);
+                this->drawCard(si.card, x, y);
             else
                 drawRect(x, y, _cardSize.first, _cardSize.second, SDL_Color{0, 0, 255, 0}, true);
             y += _cardSize.second + yOffset;

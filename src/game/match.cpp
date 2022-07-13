@@ -1,10 +1,10 @@
 #include "match.hpp"
 
 
-StackEffect::StackEffect(string funcName, Player* player, CardWrapper* card, string type) :
+StackEffect::StackEffect(string funcName, Player* player, CardWrapper* cardW, string type) :
     funcName(funcName),
     player(player),
-    card(card),
+    cardW(cardW),
     type(type) {}
 
 StackEffect::StackEffect() {}
@@ -12,8 +12,8 @@ StackEffect::StackEffect() {}
 StackMememberState StackEffect::getState() {
     StackMememberState result;
     result.message = funcName;
-    result.isCard = card;
-    if (card) result.cardName = card->card()->name();
+    result.isCard = cardW;
+    if (cardW) result.card = cardW->getState();
     return result;
 }
 
@@ -22,29 +22,27 @@ Match::Match() {
 }
 
 Match::~Match() {
+    // delete all players
     for (const auto& p : _players) delete p;
-
+    // delete all wrappers
+    for (const auto& w : _allWrappers) delete w;
+    // close lua vm
     lua_close(this->L);
 }
 
-void Match::addToDiscard(LootCard* card) {
-    this->_lootDiscard.push_back(card);
+void Match::addToLootDiscard(CardWrapper* wrapper) {
+    this->_lootDiscard.push_back(wrapper);
+    wrapper->setOwner(nullptr);
 }
 
 CardWrapper* Match::cardWithID(int id) {
-    for (const auto& p : _players)
-        for (const auto& w : p->board())
-            if (w->id() == id)
-                return w;
-    throw std::runtime_error("no card with id " + std::to_string(id));
-}
-
-Player* Match::findOwner(CardWrapper* card) {
-    for (const auto& p : _players)
-        for (const auto& w : p->board())
-            if (w == card)
-                return p;
-    throw std::runtime_error("can't find owner of card " + card->card()->name() + " [" + std::to_string(card->id()) + "]");
+    // std::cout << "wrappers: " << _allWrappers.size() << std::endl;
+    for (const auto& w : _allWrappers) {
+        // std::cout << w->card()->name() << " -> " << w->id() << std::endl;
+        if (w->id() == id)
+            return w;
+    }
+    throw std::runtime_error("no wrapper with id " + std::to_string(id));
 }
 
 void Match::shuffleLootDiscardIntoMain() {
@@ -71,29 +69,28 @@ void Match::shuffleMonsterDiscardIntoMain() {
     this->shuffleMonsterDeck();
 }
 
-LootCard* Match::getTopLootCard() {
+CardWrapper* Match::getTopLootCard() {
     if (!_lootDeck.size()) this->shuffleLootDiscardIntoMain();
     if (_lootDeck.empty()) return nullptr;
     return _lootDeck.back();
 }
 
-vector<LootCard*> Match::getTopLootCards(int amount) {
-    vector<LootCard*> cards;
+vector<CardWrapper*> Match::getTopLootCards(int amount) {
+    vector<CardWrapper*> result;
     while (amount) {
         auto card = getTopLootCard();
         if (!card) {
             this->log("The loot deck is empty");
             break;
         }
-        cards.push_back(card);
-        // cards.push_back(_lootDeck.back());
+        result.push_back(card);
         _lootDeck.pop_back();
         amount--;
     }
-    return cards;
+    return result;
 }
 
-TrinketCard* Match::getTopTreasureCard() {
+CardWrapper* Match::getTopTreasureCard() {
     if (!_treasureDeck.size()) this->shuffleTreasureDiscardIntoMain();
     if (_treasureDeck.empty()) return nullptr;
     return _treasureDeck.back();
@@ -105,8 +102,8 @@ MonsterCard* Match::getTopMonsterCard() {
     return _monsterDeck.back();
 }
 
-vector<TrinketCard*> Match::getTopTreasureCards(int amount) {
-    vector<TrinketCard*> cards;
+vector<CardWrapper*> Match::getTopTreasureCards(int amount) {
+    vector<CardWrapper*> cards;
     while (amount) {
         auto card = getTopTreasureCard();
         if (!card) {
@@ -136,6 +133,7 @@ vector<MonsterCard*> Match::getTopMonsterCards(int amount) {
 }
 
 bool Match::requestPayCost(string costFuncName, Player* player) {
+
     lua_getglobal(L, costFuncName.c_str());
     if (!lua_isfunction(L, -1)) {
         lua_err(L);
@@ -146,7 +144,6 @@ bool Match::requestPayCost(string costFuncName, Player* player) {
     // push card info
     lua_newtable(L);
     l_pushtablenumber(L, "ownerID", (float)player->id());
-
     int r = lua_pcall(L, 2, 1, 0);
     if (r != LUA_OK) {
         lua_err(this->L);
@@ -160,14 +157,31 @@ bool Match::requestPayCost(string costFuncName, Player* player) {
 
 }
 
-int Match::wrap_getOwner(lua_State *L) {
+int Match::wrap_getTopOwner(lua_State* L) {
     if (lua_gettop(L) != 1) {
         lua_err(L);
         exit(1);
     }
     auto match = static_cast<Match*>(lua_touserdata(L, 1));
-    match->_stack.back()->player->pushTable(L);
-    // match->_lastStack.player->pushTable(L);
+    auto last = match->_stack.back();
+    last->player->pushTable(L);
+    return 1;
+}
+
+int Match::wrap_getOwner(lua_State *L) {
+    if (lua_gettop(L) != 2) {
+        lua_err(L);
+        exit(1);
+    }
+    auto match = static_cast<Match*>(lua_touserdata(L, 1));
+    if (!lua_isnumber(L, 2)) {
+        lua_err(L);
+        exit(1);
+    }
+    auto cid = (int)lua_tonumber(L, 2);
+    auto w = match->cardWithID(cid);
+    if (!w->owner()) std::cout << "FIX ME ALREADY" << std::endl;
+    w->owner()->pushTable(L);
     return 1;
 }
 
@@ -399,23 +413,6 @@ int Match::wrap_getDamageEvent(lua_State* L) {
     return 1;
 }
 
-int Match::wrap_getCardOwner(lua_State* L) {
-    if (lua_gettop(L) != 2) {
-        lua_err(L);
-        exit(1);
-    }
-    auto match = static_cast<Match*>(lua_touserdata(L, 1));
-    if (!lua_isnumber(L, 2)) {
-        lua_err(L);
-        exit(1);
-    }
-    auto cid = (int)lua_tonumber(L, 2);
-    auto card = match->cardWithID(cid);
-    auto player = match->findOwner(card);
-    player->pushTable(L);
-    return 1;
-}
-
 int Match::wrap_addCoins(lua_State* L) {
     if (lua_gettop(L) != 3) {
         lua_err(L);
@@ -468,25 +465,24 @@ int Match::wrap_buyItem(lua_State* L) {
         exit(1);
     }
     auto match = static_cast<Match*>(lua_touserdata(L, 1));
-    TrinketCard* card = nullptr;
+    CardWrapper* w = nullptr;
     auto top = match->getTopTreasureCard();
     if (top) match->_treasureDeck.pop_back();
     int lti = match->_lastTreasureIndex;
     if (lti == -1) {
-        card = top;
+        w = top;
     } else {
         if (match->_shop.size() <= lti) return 0; //  TODO replace this with error
 
-        card = match->_shop[lti];
+        w = match->_shop[lti];
         if (top) {match->_shop[lti] = top;}
         else {
-            match->removeFromShop(card);
+            match->removeFromShop(w);
         }
     }
-    // auto player = match->_lastStack.player;
     auto player = match->_stack.back()->player;
-    match->addCardToBoard(card, player);
-    match->log("Player " + player->name() + " bought " + card->name());
+    match->addCardToBoard(w, player);
+    match->log("Player " + player->name() + " bought " + w->card()->name());
     return 0;
 }
 
@@ -514,22 +510,21 @@ int Match::wrap_lootCards(lua_State *L) {
     return 0;
 }
 
-int Match::wrap_popLootStack(lua_State* L) {
+int Match::wrap_playTopLootCard(lua_State* L) {
     if (lua_gettop(L) != 1) {
         lua_err(L);
         exit(1);
     }
     auto match = static_cast<Match*>(lua_touserdata(L, 1));
-    auto last = match->_lootStack.top();
-    match->_lootStack.pop();
-    auto card = last.first;
-    auto player = last.second;
-    card->use(player, match);
+    auto last = match->_stack.back();
+    auto cardW = last->cardW;
+    auto card = cardW->card();
+    card->use(last->player, match);
     if (!card->isTrinket()) {
         if (card->goesToBottom())
-            match->_lootDeck.push_front(card);
+            match->_lootDeck.push_front(cardW);
         else
-            match->addToDiscard(card);
+            match->addToLootDiscard(cardW);
     }
     return 0;
 }
@@ -545,8 +540,8 @@ int Match::wrap_deferEOT(lua_State *L) {
         exit(1);
     }
     auto cardID = (int)lua_tonumber(L, 2);
-    auto card = match->cardWithID(cardID);
-    auto owner = match->findOwner(card);
+    auto w = match->cardWithID(cardID);
+    auto owner = w->owner();
     if (!lua_isstring(L, 3)) {
         lua_err(L);
         exit(1);
@@ -560,7 +555,7 @@ int Match::wrap_deferEOT(lua_State *L) {
     if (isTrigger) {
         auto effect = new StackEffect();;
         effect->funcName = funcName;
-        effect->card = card;
+        effect->cardW = w;
         effect->player = owner;
         effect->type = TRIGGER_TYPE;
         match->_eotDeferredTriggers.push(effect);
@@ -574,7 +569,7 @@ int Match::wrap_this(lua_State *L) {
         exit(1);
     }
     auto match = static_cast<Match*>(lua_touserdata(L, 1));
-    match->_stack.back()->card->pushTable(match->L);
+    match->_stack.back()->cardW->pushTable(match->L);
     return 1;
 }
 
@@ -723,8 +718,8 @@ int Match::wrap_tapCard(lua_State* L) {
         exit(1);
     }
     int cid = (int)lua_tonumber(L, 2);
-    auto card = match->cardWithID(cid);
-    card->tap();
+    auto w = match->cardWithID(cid);
+    w->tap();
     return 0;
 }
 
@@ -739,8 +734,8 @@ int Match::wrap_rechargeCard(lua_State* L) {
         exit(1);
     }
     int cid = (int)lua_tonumber(L, 2);
-    auto card = match->cardWithID(cid);
-    card->recharge();
+    auto w = match->cardWithID(cid);
+    w->recharge();
     return 0;
 }
 
@@ -834,25 +829,20 @@ int Match::wrap_incAttackCount(lua_State* L) {
     return 0;
 }
 
-void Match::addCardToBoard(TrinketCard* card, Player* owner) {
-    auto id = this->newCardID();
-    auto w = new CardWrapper(card, id);
-    this->log("Added card " + card->name() + " with id " + std::to_string(id));
+void Match::addCardToBoard(CardWrapper* w, Player* owner) {
     owner->addToBoard(w);
-    auto efn = card->enterFuncName();
-    if (!efn.size()) return;
-    this->execFunc(efn);
+    this->execEnter(w, owner);
 }
 
-void Match::removeFromShop(TrinketCard* card) {
+void Match::removeFromShop(CardWrapper* cardW) {
     for (auto it = _shop.begin(); it != _shop.end(); it++) {
-        if (*it == card) {
+        if (*it == cardW) {
             _shop.erase(it);
-            log(card->name() + " removed from shop");
+            log(cardW->card()->name() + " removed from shop");
             return;
         }
     }
-    throw std::runtime_error("attempted to remove card " + card->name() + " from shop(it isn't there)");
+    throw std::runtime_error("attempted to remove card with id " + cardW->card()->name() + " from shop(it isn't there)");
 }
 
 Player* Match::playerWithID(int id) {
@@ -876,6 +866,27 @@ void Match::execEOTDefers() {
     }
 }
 
+void Match::execEnter(CardWrapper* w, Player* owner) {
+    auto funcName = w->card()->enterFuncName();
+    if (!funcName.size()) return;
+
+    // this->execFunc(efn);
+    this->log("Executing enter function " + funcName);
+    lua_getglobal(L, funcName.c_str());
+    if (!lua_isfunction(L, -1)) {
+        lua_err(L);
+        exit(1);
+    }
+    lua_pushlightuserdata(L, this);
+    w->pushTable(L);
+    owner->pushTable(L);
+    int r = lua_pcall(L, 3, 0, 0);
+    if (r != LUA_OK) {
+        lua_err(this->L);
+        exit(1);
+    }
+}
+
 void Match::setupLua(string setupScript) {
     this->L = luaL_newstate();
     // connect common libs
@@ -887,7 +898,7 @@ void Match::setupLua(string setupScript) {
     lua_register(L, "subCoins", wrap_subCoins);
     lua_register(L, "_buyItem", wrap_buyItem);
     lua_register(L, "deferEOT", wrap_deferEOT);
-    lua_register(L, "_popLootStack", wrap_popLootStack);
+    lua_register(L, "_playTopLootCard", wrap_playTopLootCard);
     lua_register(L, "incBeginningLoot", wrap_incBeginningLoot);
     lua_register(L, "decBeginningLoot", wrap_decBeginningLoot);
     lua_register(L, "plusOneTreasure", wrap_plusOneTreasure);
@@ -896,7 +907,6 @@ void Match::setupLua(string setupScript) {
     lua_register(L, "tempIncAttack", wrap_tempIncAttack);
     lua_register(L, "decMaxLife", wrap_decMaxLife);
     lua_register(L, "getCurrentPlayer", wrap_getCurrentPlayer);
-    lua_register(L, "getCardOwner", wrap_getCardOwner);
     lua_register(L, "addSouls", wrap_addSouls);
     lua_register(L, "rechargeCard", wrap_rechargeCard);
     lua_register(L, "getDamageEvent", wrap_getDamageEvent);
@@ -913,17 +923,18 @@ void Match::setupLua(string setupScript) {
     lua_register(L, "incAttackCount", wrap_incAttackCount);
     lua_register(L, "tapCard", wrap_tapCard);
     lua_register(L, "millDeck", wrap_millDeck);
+    lua_register(L, "getTopOwner", wrap_getTopOwner);
 
     //  TODO add state checking after some functions
 
     // load card scripts
-    for (const auto& card : _lootDeck) {
-        std::cout << "Loading script for " << card->name() << std::endl;
-        this->execScript(card->script());
+    for (const auto& w : _lootDeck) {
+        std::cout << "Loading script for " << w->card()->name() << std::endl;
+        this->execScript(w->card()->script());
     }
-    for (const auto& card : _treasureDeck) {
-        std::cout << "Loading script for " << card->name() << std::endl;
-        this->execScript(card->script());
+    for (const auto& w : _treasureDeck) {
+        std::cout << "Loading script for " << w->card()->name() << std::endl;
+        this->execScript(w->card()->script());
     }
     for (const auto& pair : _characterPool) {
         auto character = pair.first;
@@ -935,7 +946,7 @@ void Match::setupLua(string setupScript) {
     this->execScript(setupScript);
     std::cout << "Loading base script" << std::endl;
     // setup script
-    this->execScript("LOOT_DECK = \"" + LOOT_DECK + "\"\nTREASURE_DECK = \"" + TREASURE_DECK + "\"\nMONSTER_DECK = \"" + MONSTER_DECK + "\"\nPLAYER = \"" + PLAYER_TARGET + "\"function _startTurnLoot(host)\n\tlocal owner = getOwner(host)\nlootCards(host, owner[\"id\"], owner[\"startTurnLootAmount\"])\nend");
+    this->execScript("LOOT_DECK = \"" + LOOT_DECK + "\"\nTREASURE_DECK = \"" + TREASURE_DECK + "\"\nMONSTER_DECK = \"" + MONSTER_DECK + "\"\nPLAYER = \"" + PLAYER_TARGET + "\"function _startTurnLoot(host)\n\tlocal owner = getTopOwner(host)\nlootCards(host, owner[\"id\"], owner[\"startTurnLootAmount\"])\nend");
     
     std::cout << "All scripts loaded!" << std::endl;
 }
@@ -1007,6 +1018,7 @@ Player* Match::addPlayer(std::string name, CharacterCard* character, string acti
     auto result = new ScriptedPlayer(name, character, newCardID(), actions, responses);
     result->addCoins(STARTING_COIN_AMOUNT);
     _players.push_back(result);
+    _allWrappers.push_back(result->board()[0]);
     return result;
 }
 
@@ -1044,16 +1056,29 @@ void Match::shuffleMonsterDeck() {
     std::shuffle(std::begin(_monsterDeck), std::end(_monsterDeck), rng);
 }
 
-void Match::createLootDeck(std::vector<std::pair<LootCard*, int>> pairs) {
-    for (const auto& pair : pairs)
-        for (int i = 0; i < pair.second; i++)
-            this->_lootDeck.push_back(pair.first);
+CardWrapper* Match::addWrapper(ScriptCard* card) {
+    auto id = newCardID();
+    this->log(card->name() + " -> " + std::to_string(id), false);
+    auto w = new CardWrapper(card, id);
+    _allWrappers.push_back(w);
+    return w;
+}
+
+void Match::createLootDeck(std::vector<std::pair<ScriptCard*, int>> pairs) {
+    for (const auto& pair : pairs) {
+        for (int i = 0; i < pair.second; i++) {
+            auto w = addWrapper(pair.first);
+            this->_lootDeck.push_back(w);
+        }
+    }
     this->shuffleLootDeck();
 }
 
-void Match::createTreasureDeck(std::vector<TrinketCard*> cards) {
-    for (const auto& card : cards)
-        this->_treasureDeck.push_back(card);            
+void Match::createTreasureDeck(std::vector<ScriptCard*> cards) {
+    for (const auto& card : cards) {
+        auto w = addWrapper(card);
+        this->_treasureDeck.push_back(w);
+    }
     this->shuffleTreasureDeck();
 }
 
@@ -1069,6 +1094,7 @@ void Match::start() {
     for (auto& p : _players) {
         auto cards = this->getTopLootCards(STARTING_LOOT_AMOUNT);
         p->addLootCards(cards);
+        std::cout << p->name() << "\t" << p->id() << std::endl;
     }
     // setup shop
     auto tcards = getTopTreasureCards(STARTING_SHOP_SIZE);
@@ -1181,7 +1207,7 @@ int Match::applyTriggers(string triggerType) {
         auto player = _players[(_currentI + i) % _players.size()];
         auto board = player->board();
         for (const auto& w : board) {
-            auto card = (TrinketCard*)w->card();
+            auto card = w->card();
             if (!card->hasTrigger(triggerType)) continue;
             this->log("Card " + card->name() + "[" + std::to_string(w->id()) + "] has a " + triggerType + " trigger");
             auto pair = card->getTriggerWhen(triggerType);
@@ -1256,10 +1282,12 @@ string Match::promptPlayerWithPriority() {
     return player->promptAction();
 }
 
-void Match::log(string message) {
+void Match::log(string message, bool wait) {
     std::cout << " - " << message << std::endl;
-    // std::this_thread::sleep_for(std::chrono::seconds(1));
-    std::this_thread::sleep_for(std::chrono::milliseconds(200));
+    if (wait) {
+        // std::this_thread::sleep_for(std::chrono::seconds(1));
+        std::this_thread::sleep_for(std::chrono::milliseconds(300));
+    }
 }
 
 MatchState Match::getState() {
@@ -1272,15 +1300,15 @@ MatchState Match::getState() {
     result.priorityI = _priorityI;
 
     result.lootDeckCount = _lootDeck.size();
-    for (const auto& c : _lootDiscard)
-        result.lootDiscard.push_back(c->name());
+    for (const auto& w : _lootDiscard)
+        result.lootDiscard.push_back(w->getState());
     
     result.treasureDeckCount = _treasureDeck.size();
-    for (const auto& c : _treasureDiscard)
-        result.treasureDiscard.push_back(c->name());
+    for (const auto& w : _treasureDiscard)
+        result.treasureDiscard.push_back(w->getState());
     // std::cout << "shop1" << std::endl;
     for (const auto& c : _shop)
-        result.shop.push_back(c->name());
+        result.shop.push_back(c->getState());
     // std::cout << "shop2" << std::endl;
 
     result.monsterDeckCount = _monsterDeck.size();

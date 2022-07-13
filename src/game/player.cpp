@@ -12,6 +12,7 @@ Player::Player(std::string name, CharacterCard* card, int id) :
     this->_attack = card->attack();
 
     auto w = new CardWrapper(card->startingItem(), _id);
+    w->setOwner(this);
     w->tap();
     this->_board.push_back(w);
     this->_characterActive = false;
@@ -30,9 +31,7 @@ Player::Player(std::string name, CharacterCard* card, int id) :
     this->_attackCount = this->_maxAttackCount;
 }
 
-Player::~Player()  {
-    for (const auto& w : _board) delete w;
-}
+Player::~Player()  {}
 
 void Player::dealDamage(int amount) {
     _health -= amount;
@@ -68,16 +67,19 @@ void Player::print() {
         std::cout << w->card()->name() << " (" << w->id() << ")" << std::endl;
 }
 
-LootCard* Player::getCard(int cardI) {
-    return _hand[cardI];
-}
-
-LootCard* Player::takeCard(int cardI) {
-    return *_hand.erase(_hand.begin()+cardI-1);
+CardWrapper* Player::takeCard(int cardID) {
+    for (auto it = _hand.begin(); it != _hand.end(); it++) {
+        if ((*it)->id() == cardID) {
+            auto result = *it;
+            _hand.erase(it);
+            return result;
+        }
+    }
+    throw std::runtime_error("player " + _name + " doesn't have a card with id " + std::to_string(cardID));
 }
 
 std::vector<CardWrapper*> Player::board() { return _board; }
-std::vector<LootCard*> Player::hand() { return _hand; }
+std::vector<CardWrapper*> Player::hand() { return _hand; }
 bool Player::characterActive() { return _characterActive; }
 string Player::name() { return _name; }
 int Player::id() { return _id; }
@@ -100,7 +102,7 @@ void Player::recharge() {
 
 void Player::pushTable(lua_State* L) {
     lua_newtable(L);
-    // push basic stuff
+    // push general info
     l_pushtablestring(L, "name", this->_name);
     l_pushtablenumber(L, "id", (float)this->_id);
     l_pushtablenumber(L, "startTurnLootAmount", (float)this->_startTurnLootAmount);
@@ -112,7 +114,19 @@ void Player::pushTable(lua_State* L) {
     lua_createtable(L, handSize, 0);
     for (int i = 0; i < handSize; i++) {
         lua_pushnumber(L, i+1);
-        lua_pushstring(L, _hand[i]->name().c_str());
+        _hand[i]->pushTable(L);
+        lua_settable(L, -3);
+    }
+    lua_settable(L, -3);
+    // push board
+
+    lua_pushstring(L, "board");
+    auto boardSize = _board.size();
+    lua_createtable(L, boardSize, 0);
+
+    for (int i = 0; i < boardSize; i++) {
+        lua_pushnumber(L, i+1);
+        _board[i]->pushTable(L);
         lua_settable(L, -3);
     }
     lua_settable(L, -3);
@@ -123,20 +137,22 @@ void Player::addCoins(int amount) { this->_coinCount += amount + _additionalCoin
 void Player::removeCoins(int amount) { this->_coinCount -= amount; }
 
 void Player::payPricePerTreasure() {
-    //  TODO
     this->_coinCount -= this->_treasurePrice;
 }
 
 void Player::incAdditionalCoins() { _additionalCoins++; }
 void Player::decAdditionalCoins() { _additionalCoins--; }
 
-void Player::addLootCards(vector<LootCard*> cards) {
-    for (const auto& c : cards)
+void Player::addLootCards(vector<CardWrapper*> cards) {
+    for (const auto& c : cards) {
         this->_hand.push_back(c);
+        c->setOwner(this);
+    }
 }
 
 void Player::addToBoard(CardWrapper* w) {
     _board.push_back(w);
+    w->setOwner(this);
 }
 
 void Player::incMaxLife(int amount) {
@@ -167,9 +183,9 @@ PlayerBoardState Player::getState() {
     result.soulCount = _soulCount;
     result.attack = attack();
     for (const auto& w : _board)
-        result.board.push_back(std::make_pair(w->card()->name(), w->isActive()));
-    for (const auto& c : _hand)
-        result.hand.push_back(c->name());
+        result.board.push_back(w->getState());
+    for (const auto& w : _hand)
+        result.hand.push_back(w->getState());
     return result;
 } 
 
@@ -187,7 +203,6 @@ void Player::resetEOT() {
     _tempAttackBoost = 0;
     _attackCount = _maxAttackCount;
 }
-
 
 ScriptedPlayer::ScriptedPlayer(std::string name, CharacterCard* card, int id, string actions, string responses) :
     Player(name, card, id)

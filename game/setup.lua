@@ -1,6 +1,9 @@
 function Common_TargetPlayer(host, cardInfo)
+    print("hello")
     local ownerID = cardInfo["ownerID"]
     local players = getPlayers(host)
+    print("burger")
+
     local ids = {}
     for i, p in pairs(players) do
         ids[i] = p["id"]

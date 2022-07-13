@@ -39,8 +39,8 @@ const int STARTING_ATTACK_COUNT = 1;
 
 struct StackMememberState {
     string message;
-    string cardName;
     bool isCard;
+    CardState card;
 };
 
 struct MatchState {
@@ -53,18 +53,18 @@ struct MatchState {
     int treasureDeckCount;
     int monsterDeckCount;
 
-    vector<string> lootDiscard;
-    vector<string> treasureDiscard;
+    vector<CardState> lootDiscard;
+    vector<CardState> treasureDiscard;
     vector<string> monsterDiscard;
 
-    vector<string> shop;
-    vector<string> monsters;
+    vector<CardState> shop;
+    vector<string> monsters; // turn monsters into card wrappers also
 };
 
 struct StackEffect {
     string funcName;
     Player* player;
-    CardWrapper* card;
+    CardWrapper* cardW;
     string type;
     bool resolve = true;
 
@@ -113,12 +113,12 @@ private:
     int _priorityI;
     Player* _activePlayer;
 
-    std::deque<LootCard*> _lootDeck;
-    std::deque<LootCard*> _lootDiscard;
+    std::deque<CardWrapper*> _lootDeck;
+    std::deque<CardWrapper*> _lootDiscard;
 
-    std::deque<TrinketCard*> _treasureDeck;
-    std::deque<TrinketCard*> _treasureDiscard;
-    std::vector<TrinketCard*> _shop;
+    std::deque<CardWrapper*> _treasureDeck;
+    std::deque<CardWrapper*> _treasureDiscard;
+    std::vector<CardWrapper*> _shop;
     int _lastTreasureIndex = -2;
 
     std::deque<MonsterCard*> _monsterDeck;
@@ -130,33 +130,25 @@ private:
     std::stack<string> _eotDefers;
     std::stack<StackEffect*> _eotDeferredTriggers;
 
-    // whenever a player plays a loot card that is a trinket, the original is placed in the pool
-    // after a loot card trinket is destroyed, remove it's parent from _lootCardPool
-    std::vector<LootCard*> _lootCardPool; 
-
     std::map<string, std::function<void(Player*, std::vector<string>)>> _actionMap = {
         {ACTION_PLAY_LOOT, [this](Player* player, std::vector<string> args){
-            auto cardI = atoi(args[1].c_str());
-            auto card = player->getCard(cardI);
+            auto cardID = atoi(args[1].c_str());
+            auto cardW = this->cardWithID(cardID);
+            auto card = cardW->card();
             // request to pay cost
             auto cost = card->costFuncName();
             if (cost.size()) {
                 bool payed = this->requestPayCost(cost, player);
                 if (!payed) return;
             }
-            player->takeCard(cardI);
+            player->takeCard(cardID);
             this->log(player->name() + " plays card " + card->name());
-            auto id = this->newCardID();
-            // never deleted ?
-            auto wrapper = new CardWrapper(card, id);
-            this->log("Added card " + card->name() + " with id " + std::to_string(id));
             this->pushToStack(new StackEffect(
-                "_popLootStack",
+                "_playTopLootCard",
                 player,
-                wrapper,
+                cardW,
                 PLAY_LOOT_CARD_TYPE
             ));
-            this->_lootStack.push(std::make_pair(card, player));
             this->triggerLastEffectType();
         }},
         {ACTION_BUY_TREASURE, [this](Player* player, std::vector<string> args){
@@ -174,7 +166,7 @@ private:
             auto cardID = atoi(args[1].c_str());
             auto abilityI = atoi(args[2].c_str());
             auto w = this->cardWithID(cardID);
-            auto card = (TrinketCard*)w->card();
+            auto card = w->card();
             auto ability = card->abilities()[abilityI];
             auto p = new StackEffect(
                 ability.funcName,
@@ -196,33 +188,37 @@ private:
 
     std::map<string, std::function<void(int)>> _millMap = {
         {LOOT_DECK, [this](int amount){
-            millDeck<LootCard*>(this->_lootDeck, this->_lootDiscard, amount);
+            millDeck<CardWrapper*>(this->_lootDeck, this->_lootDiscard, amount);
         }},
         {TREASURE_DECK, [this](int amount){
-            millDeck<TrinketCard*>(this->_treasureDeck, this->_treasureDiscard, amount);
+            millDeck<CardWrapper*>(this->_treasureDeck, this->_treasureDiscard, amount);
         }},
         {MONSTER_DECK, [this](int amount){
             millDeck<MonsterCard*>(this->_monsterDeck, this->_monsterDiscard, amount);
         }}
     };
 
-    std::stack<std::pair<LootCard*, Player*>> _lootStack;
+    // std::stack<std::pair<LootCard*, Player*>> _lootStack;
     std::stack<DamageTrigger> _damageStack;
     std::vector<std::pair<string, int>> _targetStack;
+
+    std::vector<CardWrapper*> _allWrappers;
 public:
     Match();
     ~Match();
-    void addToDiscard(LootCard* card);
+    CardWrapper* addWrapper(ScriptCard* card);
+
+    void addToLootDiscard(CardWrapper* card);
     CardWrapper* cardWithID(int id);
     Player* findOwner(CardWrapper* card);
     void shuffleLootDiscardIntoMain();
     void shuffleTreasureDiscardIntoMain();
     void shuffleMonsterDiscardIntoMain();
-    LootCard* getTopLootCard();
-    TrinketCard* getTopTreasureCard();
+    CardWrapper* getTopLootCard();
+    CardWrapper* getTopTreasureCard();
     MonsterCard* getTopMonsterCard();
-    vector<LootCard*> getTopLootCards(int amount);
-    vector<TrinketCard*> getTopTreasureCards(int amount);
+    vector<CardWrapper*> getTopLootCards(int amount);
+    vector<CardWrapper*> getTopTreasureCards(int amount);
     vector<MonsterCard*> getTopMonsterCards(int amount);
     bool requestPayCost(string costFuncName, Player* player);
     void triggerLastEffectType();
@@ -236,6 +232,7 @@ public:
     static int wrap_getPlayers(lua_State* L);
     static int wrap_getOwner(lua_State *L);
     static int wrap_dealDamage(lua_State *L);
+    static int wrap_playTopLootCard(lua_State *L);
     static int wrap_incAttackCount(lua_State *L);
     static int wrap_lootCards(lua_State *L);
     static int wrap_buyItem(lua_State* L);
@@ -251,22 +248,24 @@ public:
     static int wrap_tempIncMaxLife(lua_State* L);
     static int wrap_tempIncAttack(lua_State* L);
     static int wrap_decMaxLife(lua_State* L);
-    static int wrap_getCardOwner(lua_State* L);
+    // static int wrap_getCardOwner(lua_State* L);
     static int wrap_millDeck(lua_State* L);
     static int wrap_getCurrentPlayer(lua_State* L);
     static int wrap_addSouls(lua_State* L);
     static int wrap_setNextPlayer(lua_State* L);
     static int wrap_incTreasureCost(lua_State* L);
     static int wrap_decTreasureCost(lua_State* L);
+    static int wrap_getTopOwner(lua_State* L);
     void resetEOT();
-    void addCardToBoard(TrinketCard* card, Player* owner);
-    void removeFromShop(TrinketCard* card);
+    void addCardToBoard(CardWrapper* card, Player* owner);
+    void removeFromShop(CardWrapper* card);
     Player* playerWithID(int id);
     void pushEOTDeferredTriggers();
     void execEOTDefers();
     void setupLua(string setupScript);
     static void lua_err(lua_State *L);
     void execScript(string script);
+    void execEnter(CardWrapper* w, Player* owner);
     void execFunc(string funcName);
     bool execCheck(string funcName, CardWrapper* card);
     void addToCharacterPool(CharacterCard* card);
@@ -277,8 +276,8 @@ public:
     void shuffleLootDeck();
     void shuffleTreasureDeck();
     void shuffleMonsterDeck();
-    void createLootDeck(std::vector<std::pair<LootCard*, int>> pairs);
-    void createTreasureDeck(std::vector<TrinketCard*> cards);
+    void createLootDeck(std::vector<std::pair<ScriptCard*, int>> pairs);
+    void createTreasureDeck(std::vector<ScriptCard*> cards);
     void createMonsterDeck(std::vector<MonsterCard*> cards);
     void start();
     void passTurn();
@@ -291,9 +290,7 @@ public:
     void resolveStack();
     void resolveTop();
     string promptPlayerWithPriority();
-    void log(string message);
+    void log(string message, bool wait=true);
     MatchState getState();
     int newCardID();
 };
-
-// !!! CHANGE SO THAT EVERY CARD HAS A WRAPPER !!!

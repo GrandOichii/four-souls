@@ -20,7 +20,7 @@ function Justice_use(host)
 
     local player = Common_PlayerWithID(host, targetID)
 
-    local owner = getOwner(host)
+    local owner = getTopOwner(host)
     local diff = player["coins"] - owner["coins"]
     if diff > 0 then
         addCoins(host, owner["id"], diff)
