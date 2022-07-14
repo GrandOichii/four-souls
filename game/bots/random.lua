@@ -20,7 +20,7 @@ function Bot_PromptAction(me, state)
             end
         end
         if me["purchaseCount"] ~= 0 and me["coins"] >= me["treasurePrice"] then
-            return "buy_treasure 0"
+            return "buy_treasure -1"
         end
         local trinkets = me["board"]
         for _, trinket in pairs(trinkets) do

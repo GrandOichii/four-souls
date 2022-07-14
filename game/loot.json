@@ -2,7 +2,7 @@
     "back": "images/loot_card_back.bmp",
     "cards1": {
         "basic": {
-            "loot/wheel_of_fortune": 40
+            "loot/two_of_diamonds": 40
         },
         "trinkets": {
             "loot/guppys_hairball": 0

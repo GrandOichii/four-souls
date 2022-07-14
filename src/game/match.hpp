@@ -159,7 +159,7 @@ private:
 
     std::map<string, std::function<void(Player*, std::vector<string>)>> _actionMap = {
         {ACTION_PLAY_LOOT, [this](Player* player, std::vector<string> args){
-            auto cardID = atoi(args[1].c_str());
+            auto cardID = std::stoi(args[1].c_str());
             auto cardW = this->cardWithID(cardID);
             auto card = cardW->card();
             auto e = new StackEffect(
@@ -185,7 +185,7 @@ private:
             this->triggerLastEffectType();
         }},
         {ACTION_BUY_TREASURE, [this](Player* player, std::vector<string> args){
-            this->_lastTreasureIndex = atoi(args[1].c_str());
+            this->_lastTreasureIndex = std::stoi(args[1].c_str());
             player->payPricePerTreasure();
             player->decPurchaseAmount();
             this->pushToStack(new StackEffect(
@@ -194,11 +194,13 @@ private:
                 nullptr,
                 BUY_TREASURE_TYPE
             ));
+
             this->triggerLastEffectType();
+
         }},
         {ACTION_ACTIVATE_CARD, [this](Player* player, std::vector<string> args){
-            auto cardID = atoi(args[1].c_str());
-            auto abilityI = atoi(args[2].c_str());
+            auto cardID = std::stoi(args[1].c_str());
+            auto abilityI = std::stoi(args[2].c_str());
             auto w = this->cardWithID(cardID);
             auto card = w->card();
             auto ability = card->abilities()[abilityI];

@@ -424,7 +424,7 @@ int Match::wrap_requestChoice(lua_State* L) {
     }
     int responseI = choices[0];
     if (response != RESPONSE_FIRST) {
-        responseI = atoi(response.c_str());
+        responseI = std::stoi(response.c_str());
     }
     lua_pushnumber(L, responseI);
     lua_pushboolean(L, true);
@@ -593,8 +593,10 @@ int Match::wrap_buyItem(lua_State* L) {
     auto match = static_cast<Match*>(lua_touserdata(L, 1));
     CardWrapper* w = nullptr;
     auto top = match->getTopTreasureCard();
+    std::cout << top->card()->name() << std::endl;
     if (top) match->_treasureDeck.pop_back(); //  TODO fix
     int lti = match->_lastTreasureIndex;
+
     if (lti == -1) {
         w = top;
     } else {
@@ -606,6 +608,7 @@ int Match::wrap_buyItem(lua_State* L) {
             match->removeFromShop(w);
         }
     }
+
     auto player = match->_stack.back()->player;
     match->addCardToBoard(w, player);
     match->log("Player " + player->name() + " bought " + w->card()->name());
@@ -1579,8 +1582,9 @@ int Match::applyTriggers(string triggerType) {
 void Match::triggerLastEffectType() {
     // auto effect = this->_lastStack;
     auto effect = this->_stack.back();
+
     this->applyTriggers(effect->type);
-    this->resolveStack();
+    // this->resolveStack();
 }
 
 void Match::pushToStack(StackEffect* effect) {
@@ -1626,7 +1630,8 @@ void Match::resolveTop() {
 string Match::promptPlayerWithPriority() {
     auto player = this->_players[this->_priorityI];
     this->log("Player " + player->name() + " takes priority");
-    return player->promptAction(this->getState());
+    auto state = this->getState();
+    return player->promptAction(state);
 }
 
 void Match::log(string message, bool wait) {
@@ -1652,7 +1657,9 @@ MatchState Match::getState() {
             s.message = "Looting";
         }
         if (si->type == BUY_TREASURE_TYPE) {
-            s.message = "Buying\n" + _shop[_lastTreasureIndex]->card()->name();
+            auto card = getTopTreasureCard();
+            if (_lastTreasureIndex != -1) card = _shop[_lastTreasureIndex];
+            s.message = "Buying\n" + card->card()->name();
         }
         result.stack.push_back(s);
 

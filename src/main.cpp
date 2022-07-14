@@ -4,8 +4,8 @@
 #include <stdlib.h>
 #include <time.h>  
 
-#define CONNECTED_PLAYERS 1
-#define BOTS 1
+#define CONNECTED_PLAYERS 0
+#define BOTS 2
 
 // #include <asio.hpp>
 // #include <asio/ts/buffer.hpp>
@@ -284,14 +284,15 @@ public:
     }
 
     string promptResponse(const MatchState& state, string text, string choiceType, vector<int> choices) { 
-        return getResponse();
+        auto result = getResponse();
+        return (result == "$PASS" ? "$FIRST" : result);
     }
 
     string promptSimpleResponse(const MatchState& state, string text, vector<string> choices) {
-        return getResponse();
+        auto result = getResponse();
+        return (result == "$PASS" ? "$FIRST" : result);
     }
 };
-
 
 class GameWrapper {
 private:
@@ -556,6 +557,7 @@ public:
     }
 
     void draw() {
+        // return;
         // draw player separators
         this->drawLine(
             this->_sideBoardX + this->_boardWidth / 2, 
@@ -903,8 +905,8 @@ int main1() {
 }
 
 int main() {
-    srand(time(0));
-    // srand(0);
+    // srand(time(0));
+    srand(0);
     auto wrapper = new GameWrapper("four-souls", "game", "players.json", false);
     wrapper->start();
     delete wrapper;

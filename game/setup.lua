@@ -4,7 +4,7 @@ function Common_TargetPlayer(host, cardInfo)
     local ownerID = cardInfo["ownerID"]
     local players = getPlayers(host)
     local ids = {}
-    for i, p in pairs(players) do
+    for i, p in ipairs(players) do
         ids[i] = p["id"]
     end
     local choiceId, payed = requestChoice(host, ownerID, "Choose a player", PLAYER, ids)
@@ -39,7 +39,6 @@ function Common_TargetOpponent(host, cardInfo)
             realI = realI + 1
         end
     end
-    
     local choiceId, payed = requestChoice(host, ownerID, "Choose a player", PLAYER, ids)
     if not payed then return false end
     pushTarget(host, choiceId, PLAYER)
@@ -103,7 +102,7 @@ function Common_TargetTappedCard(host, ownerID)
         end
     end
     if #ids == 0 then
-        return 0
+        return false
     end
     local choiceId, payed = requestChoice(host, ownerID, "Choose a card to untap", CARD, ids)
     if not payed then
