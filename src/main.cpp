@@ -3,11 +3,21 @@
 #include <thread>
 #include <stdlib.h>
 #include <time.h>  
-#include <SDL.h>
-#include <SDL_ttf.h>
+
+#define CONNECTED_PLAYERS 1
+#define BOTS 1
+
+// #include <asio.hpp>
+// #include <asio/ts/buffer.hpp>
+// #include <asio/ts/internet.hpp>
+
+#include "network/olc_network.hpp"
 
 #include "util.hpp"
 
+
+#include <SDL.h>
+#include <SDL_ttf.h>
 #include "game/core.hpp"
 #include "game/cards.hpp"
 #include "game/match.hpp"
@@ -142,8 +152,150 @@ public:
     }
 };
 
+enum ResponseType : uint8_t {
+    PlayLootCard,
+    Pass
+};
+
+class Server : public server_interface<int> {
+private:
+    int _connections = 0;
+    int _maxConnections;
+
+public:
+    Server(uint16_t port, int maxConnections) :
+        server_interface<int>(port),
+        _maxConnections(maxConnections)
+    {}
+
+    tsqueue<owned_message<int>>& Incoming() {
+        return m_qMessagesIn;
+    }
+
+    std::deque<std::shared_ptr<connection<int>>>& GetClients() {
+        return m_deqConnections;
+    }
+
+    void WaitForMessages() {
+        this->Update(1, true);
+    }
+
+    std::shared_ptr<connection<int>>& LastClient() {
+        return _lastClient;
+    }
+
+    message<int>& LastMessage() {
+        return _lastMsg;
+    }
+
+    int Connections() {
+        return _connections;
+    }
+
+protected:
+    std::shared_ptr<connection<int>> _lastClient;
+    message<int> _lastMsg;
+
+    virtual bool OnClientConnect(std::shared_ptr<connection<int>> client)
+    {
+        // std::cout << "Client connected, id: " << client->GetID() << std::endl;
+        if (_maxConnections == _connections) return false;
+        _connections++;
+        std::cout << "NEW PLAYER " << _connections << "\t" << _maxConnections << std::endl;
+        return true;
+    }
+
+    // Called when a client appears to have disconnected
+    virtual void OnClientDisconnect(std::shared_ptr<connection<int>> client)
+    {
+        std::cout << "Client with id " << client->GetID() << " disconnected" << std::endl;
+    }
+
+    // Called when a message arrives
+    virtual void OnMessage(std::shared_ptr<connection<int>> client, message<int> &msg)
+    {
+        // fix bug on too many characters
+        _lastClient = client;
+        _lastMsg = msg;
+        /*
+      switch (msg.header.id) {
+      case int::ServerPing: {
+        std::wcout << "[" << msg.header.name.data() << "]: Ping the server\n";
+
+        // Simply bounce message back to client
+        client->send(msg);
+        break;
+      }
+
+      case int::MessageAll: {
+        std::wcout << "[" << msg.header.name.data() << "]: Send the message to all user\n";
+
+        //Construct a new message and send it to all clients
+        message<int> __msg;
+        __msg.header.id = int::ServerMessage;
+        __msg.header.name = msg.header.name;
+        message_all_clients(__msg, client);
+        break;
+      }
+
+      case int::JoinServer: {
+        std::wcout << "[" << msg.header.name.data() << "] Join the server\n";
+        break;
+      }
+
+      case int::PassString: {
+        std::wcout << "[" << msg.header.name.data() << "]: " << msg.data.data() << '\n';
+        break;
+      }
+      }
+      */
+    }
+};
+
+class ConnectedPlayer : public Player {
+private:
+    Server* _server;
+    std::shared_ptr<connection<int>> _conn;
+public:
+    ConnectedPlayer(std::string name, CharacterCard* card, int id, Server* server, std::shared_ptr<connection<int>> conn) :
+        Player(name, card, id),
+        _server(server),
+        _conn(conn)
+    {}
+
+    ~ConnectedPlayer() {
+
+    }
+
+    string getResponse() {
+        message<int> msg;
+        msg.header.id = 0;
+        msg << string("Do what?");
+        _server->MessageClient(_conn, msg);
+        _server->WaitForMessages();
+        auto response = _server->LastMessage();
+        string result;
+        response >> result;
+        return result;
+    }
+
+    string promptAction(const MatchState& state) { 
+        return getResponse();
+    }
+
+    string promptResponse(const MatchState& state, string text, string choiceType, vector<int> choices) { 
+        return getResponse();
+    }
+
+    string promptSimpleResponse(const MatchState& state, string text, vector<string> choices) {
+        return getResponse();
+    }
+};
+
+
 class GameWrapper {
 private:
+    Server* _server;
     bool _fullscreen;
     string _title;
 
@@ -200,22 +352,26 @@ public:
     {
         this->_game = new Game("game");
         this->_match = _game->createMatch();
+        // start server
+        _server = new Server(9090, CONNECTED_PLAYERS);
+        _server->Start();
 
         // add players
-        auto j = fs::readJS(playersPath);
-        for (const auto& [key, value] : j.items()) {
-            // vector<string> actions;
-            // vector<string> responses;
-            // for (const auto& [key, value] : pvalue["actions"].items()) actions.push_back(value);
-            // for (const auto& [key, value] : pvalue["responses"].items()) responses.push_back(value);
-            // auto aj = str::join(actions.begin(), actions.end(), "\n");
-            // auto rj = str::join(responses.begin(), responses.end(), "\n");
-            auto p = _match->addPlayer(
-                value["name"], 
-                _match->getRandomAvailableCharacter(), 
-                fs::readFile(fs::join(path, value["script"]).c_str())
-            );
-        }
+        this->addPlayers();
+        // auto j = fs::readJS(playersPath);
+        // for (const auto& [key, value] : j.items()) {
+        //     // vector<string> actions;
+        //     // vector<string> responses;
+        //     // for (const auto& [key, value] : pvalue["actions"].items()) actions.push_back(value);
+        //     // for (const auto& [key, value] : pvalue["responses"].items()) responses.push_back(value);
+        //     // auto aj = str::join(actions.begin(), actions.end(), "\n");
+        //     // auto rj = str::join(responses.begin(), responses.end(), "\n");
+        //     auto p = _match->addPlayer(
+        //         value["name"], 
+        //         _match->getRandomAvailableCharacter(), 
+        //         fs::readFile(fs::join(path, value["script"]).c_str())
+        //     );
+        // }
 
         if (SDL_Init(SDL_INIT_EVERYTHING) != 0){
             std::cout << "SDL_Init Error: " << SDL_GetError() << std::endl;
@@ -292,6 +448,7 @@ public:
         delete _game;
         delete _match;
         delete _assets;
+        delete _server;
 
         SDL_DestroyTexture(_lastLootDeckCountTex);
         SDL_DestroyTexture(_lastLootDiscardCountTex);
@@ -299,6 +456,37 @@ public:
         SDL_DestroyTexture(_lastTreasureDiscardCountTex);
         SDL_DestroyTexture(_lastMonsterDeckCountTex);
         SDL_DestroyTexture(_lastMonsterDiscardCountTex);
+    }
+
+    void addPlayers() {
+        while (_server->Connections() != CONNECTED_PLAYERS) {
+            std::this_thread::sleep_for(std::chrono::milliseconds(150));
+            std::cout << "Waiting for players.." << std::endl;            
+        }
+        
+        int pcount = 0;
+        for (auto& conn : _server->GetClients()) {
+            pcount++;
+            auto p = new ConnectedPlayer(
+                "player " + std::to_string(pcount),
+                _match->getRandomAvailableCharacter(),
+                pcount,
+                _server,
+                conn
+                // fs::readFile(fs::join(path, value["script"]).c_str())
+            );
+            _match->addPlayer(p);
+        }
+        for (int i = 0; i < BOTS; i++) {
+            pcount++;
+            _match->addPlayer(new BotPlayer(
+                "player " + std::to_string(pcount),
+                _match->getRandomAvailableCharacter(),
+                pcount,
+                fs::readFile("game/bots/random.lua")
+            ));
+            
+        }
     }
 
     void start() {
@@ -614,10 +802,113 @@ public:
     }
 };
 
+
+// int main()
+// {
+//     srand(0);
+//     Server server(9090);
+
+//     while (true) {
+//         server.Update(-1, false);
+//         if (server.GetClients().size()) {
+//             auto client = server.GetClients()[0];
+//             message<int> msg;
+//             msg.header.id = 0;
+//             msg << string("Burger?");
+//             server.MessageClient(client, msg);
+//             server.WaitForMessages();
+//             auto response = server.LastMessage();
+//             std::cout << "received response" << std::endl;
+//             std::cout << response << std::endl;
+//             string re;
+//             response >> re;
+//             std::cout << "Clients response: " << re << std::endl;
+//         }
+//     }
+
+//     return 0;
+// }
+
+class Client : public client_interface<int> {
+public:
+    void ping_server()
+    {
+        // message<int> msg;
+        // msg.header.id = int::ServerPing;
+        // msg.header.name = user_name;
+        // send(msg);
+    }
+
+    void message_all()
+    {
+        // message<int> msg;
+        // msg.header.id = int::MessageAll;
+        // msg.header.name = user_name;
+        // send(msg);
+    }
+
+    void join_server()
+    {
+        // std::cout << "Input Your Name: ";
+        // std::wcin.get(user_name.data(), user_name.size());
+        // std::wcin.clear();
+        // std::wcin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+
+        // message<int> msg;
+        // msg.header.id = int::JoinServer;
+        // msg.header.name = user_name;
+        // send(msg);
+    }
+
+    void send_msg(std::wstring &__data)
+    {
+        // message<int> msg;
+        // msg.header.id = int::PassString;
+        // msg.header.name = user_name;
+        // for (unsigned int i{}, j{}; j < __data.size(); ++i, ++j)
+        //     msg.data[i] = __data[j];
+
+        // send(msg);
+    }
+
+public:
+    std::array<wchar_t, 256> user_name{};
+};
+
+int main1() {
+    Client c;
+    c.Connect("localhost", 9090);
+    if (!c.IsConnected()) {
+        std::cerr << "Something went wrong, could not connect\n";
+        return 0;
+    }
+    while (1) {
+        int count = 0;
+        if (!c.Incoming().empty()) {
+            auto msg = c.Incoming().pop_front().msg;
+            string m;
+            msg >> m;
+            std::cout << "Recived: " << m << std::endl;
+            std::cout << "Your response: ";
+            string response;
+            std::getline(std::cin, response);
+            message<int> reply;
+            if (!response.size())
+                response = "$PASS";
+            reply << response;
+            reply.header.id = 0;
+            c.Send(reply);
+        }
+    }
+}
+
 int main() {
-    // srand(time(0)) =
-    srand(0);
+    srand(time(0));
+    // srand(0);
     auto wrapper = new GameWrapper("four-souls", "game", "players.json", false);
     wrapper->start();
     delete wrapper;
+    // Message<CustomMsgTypes> msg;
+    // msg.header.id = CustomMsgTypes::Attack;
+
 }

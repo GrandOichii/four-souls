@@ -593,7 +593,7 @@ int Match::wrap_buyItem(lua_State* L) {
     auto match = static_cast<Match*>(lua_touserdata(L, 1));
     CardWrapper* w = nullptr;
     auto top = match->getTopTreasureCard();
-    if (top) match->_treasureDeck.pop_back();
+    if (top) match->_treasureDeck.pop_back(); //  TODO fix
     int lti = match->_lastTreasureIndex;
     if (lti == -1) {
         w = top;
@@ -1339,23 +1339,15 @@ void Match::addToCharacterPool(CharacterCard* card) {
     _characterPool.push_back(std::make_pair(card, true));
 }
 
-//  TODO remove the actions part
-Player* Match::addPlayer(std::string name, CharacterCard* character, string botScript) {
-    for (const auto& p : _players)
-        if (p->name() == name)
-            return nullptr;
-    //  TODO change this to a player with a port
-    auto result = new BotPlayer(name, character, newCardID(), botScript);
-    result->addCoins(STARTING_COIN_AMOUNT);
-    _players.push_back(result);
+void Match::addPlayer(Player* player) {
+    player->addCoins(STARTING_COIN_AMOUNT);
+    _players.push_back(player);
 
-    _allWrappers.push_back(result->characterCard());
-    auto w = addWrapper(character->startingItem());
-    addCardToBoard(w, result);
-    w->setOwner(result);
+    _allWrappers.push_back(player->characterCard());
+    auto w = addWrapper(player->origCharacterCard()->startingItem());
+    addCardToBoard(w, player);
+    w->setOwner(player);
     w->tap();
-    // _allWrappers.push_back(result->board()[0]);
-    return result;
 }
 
 std::vector<CharacterCard*> Match::getAvailableCharacters() {

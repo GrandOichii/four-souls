@@ -3,7 +3,8 @@
 
 Player::Player(std::string name, CharacterCard* card, int id) :
     _name(name),
-    _id(id)
+    _id(id),
+    _characterCardOrig(card)
 {
     this->_maxHealth = card->health();
     this->_health = this->_maxHealth;
@@ -41,6 +42,8 @@ Player::Player(std::string name, CharacterCard* card, int id) :
 }
 
 Player::~Player()  {}
+
+CharacterCard* Player::origCharacterCard() { return _characterCardOrig; }
 
 int Player::dealDamage(int amount) {
     _blueHealth -= amount;

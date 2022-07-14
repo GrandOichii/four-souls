@@ -29,6 +29,7 @@ struct MatchState;
 class Player {
 private:
     CardWrapper* _characterCard;
+    CharacterCard* _characterCardOrig;
     std::string _name;
 
     int _maxHealth;
@@ -67,6 +68,7 @@ public:
     Player(std::string name, CharacterCard* card, int id);
     virtual ~Player();
     void print();
+    CharacterCard* origCharacterCard();;
     CardWrapper* takeCard(int cardID);
     std::vector<CardWrapper*> board();
     std::vector<CardWrapper*> hand();

@@ -16,8 +16,8 @@ function YellowPills_use(host)
     end
     if roll == 5 or roll == 6 then
         local amount = owner["coins"]
-        if amount > 7 then
-            amount = 7
+        if amount > 4 then
+            amount = 4
         end
         subCoins(host, owner["id"], amount)
         return

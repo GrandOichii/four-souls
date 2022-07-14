@@ -1,6 +1,6 @@
 {
     "back": "images/loot_card_back.bmp",
-    "cards": {
+    "cards1": {
         "basic": {
             "loot/wheel_of_fortune": 40
         },
@@ -8,7 +8,7 @@
             "loot/guppys_hairball": 0
         }
     },
-    "cards1": {
+    "cards": {
         "basic": {
             "loot/one_cent": 2,
             "loot/two_cents": 6,

@@ -327,8 +327,7 @@ public:
     void execFunc(string funcName);
     bool execCheck(string funcName, CardWrapper* card);
     void addToCharacterPool(CharacterCard* card);
-    //  TODO replace botScript with ip address
-    Player* addPlayer(std::string name, CharacterCard* character, string botScript);
+    void addPlayer(Player* player);
     std::vector<CharacterCard*> getAvailableCharacters();
     CharacterCard* getRandomAvailableCharacter();
     void shuffleLootDeck();

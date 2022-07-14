@@ -7,3 +7,6 @@
 [submodule "external/Lua"]
 	path = external/Lua
 	url = https://github.com/walterschell/Lua
+[submodule "external/asio"]
+	path = external/asio
+	url = https://github.com/chriskohlhoff/asio
