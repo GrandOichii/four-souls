@@ -267,10 +267,14 @@ public:
 
     }
 
-    string getResponse() {
+    string getResponse(const MatchState& state) {
         message<int> msg;
         msg.header.id = 0;
-        msg << string("Do what?");
+        // msg << string("Do what?");
+        string s = state.toJson();
+        msg << s;
+        std::cout << msg << std::endl;
+        // std::cout << s << std::endl;
         _server->MessageClient(_conn, msg);
         _server->WaitForMessages();
         auto response = _server->LastMessage();
@@ -280,17 +284,21 @@ public:
     }
 
     string promptAction(const MatchState& state) { 
-        return getResponse();
+        return getResponse(state);
     }
 
     string promptResponse(const MatchState& state, string text, string choiceType, vector<int> choices) { 
-        auto result = getResponse();
+        auto result = getResponse(state);
         return (result == "$PASS" ? "$FIRST" : result);
     }
 
     string promptSimpleResponse(const MatchState& state, string text, vector<string> choices) {
-        auto result = getResponse();
+        auto result = getResponse(state);
         return (result == "$PASS" ? "$FIRST" : result);
+    }
+
+    string promptChooseCardsInHand(const MatchState& state, string text, int targetID, int amount){ 
+        return getResponse(state);
     }
 };
 
@@ -637,11 +645,6 @@ public:
         if (count) {
             this->drawCard(*(state.treasureDiscard.end()-1), _treasureDiscardX, _treasureDeckY);
         }
-        // resolve weird error (card with no name)
-        // implement dice rolling (is part of loot card cost, dice result goes BEFORE loot card)
-        // example: [dice roll], [wheel of fortune]
-        // when resolving, searches for first item on stack with type "dice", uses it's value
-        // dice rolls can be rerolled/modified using items and loot cards
         if (count != _lastTreasureDiscardCount) {
             _lastTreasureDiscardCount = count;
             SDL_DestroyTexture(_lastTreasureDiscardCountTex);
@@ -805,32 +808,6 @@ public:
 };
 
 
-// int main()
-// {
-//     srand(0);
-//     Server server(9090);
-
-//     while (true) {
-//         server.Update(-1, false);
-//         if (server.GetClients().size()) {
-//             auto client = server.GetClients()[0];
-//             message<int> msg;
-//             msg.header.id = 0;
-//             msg << string("Burger?");
-//             server.MessageClient(client, msg);
-//             server.WaitForMessages();
-//             auto response = server.LastMessage();
-//             std::cout << "received response" << std::endl;
-//             std::cout << response << std::endl;
-//             string re;
-//             response >> re;
-//             std::cout << "Clients response: " << re << std::endl;
-//         }
-//     }
-
-//     return 0;
-// }
-
 class Client : public client_interface<int> {
 public:
     void ping_server()
@@ -874,12 +851,18 @@ public:
     }
 
 public:
-    std::array<wchar_t, 256> user_name{};
+    // std::array<wchar_t, 256> user_name{};
 };
 
-int main1() {
+int ma1in() {
     Client c;
-    c.Connect("localhost", 9090);
+    string host = "localhost";
+    int port = 9090;
+    std::cout << "Enter host (" << host << "): ";
+    string s1;
+    std::getline(std::cin, s1);
+    if (s1.size() != 0) host = s1;
+    c.Connect("localhost", port);
     if (!c.IsConnected()) {
         std::cerr << "Something went wrong, could not connect\n";
         return 0;
@@ -888,9 +871,13 @@ int main1() {
         int count = 0;
         if (!c.Incoming().empty()) {
             auto msg = c.Incoming().pop_front().msg;
-            string m;
-            msg >> m;
-            std::cout << "Recived: " << m << std::endl;
+            string jstate;
+            // std::cout << msg << std::endl;
+            msg >> jstate;
+            // std::cout << jstate << std::endl;
+            MatchState state(jstate);
+            // std::cout << "Current ID: " << state.currentID << std::endl;
+            // std::cout << "Shop size: " << state.shop.size() << std::endl;
             std::cout << "Your response: ";
             string response;
             std::getline(std::cin, response);
@@ -906,11 +893,12 @@ int main1() {
 
 int main() {
     // srand(time(0));
-    srand(0);
+    srand(1);
     auto wrapper = new GameWrapper("four-souls", "game", "players.json", false);
     wrapper->start();
     delete wrapper;
     // Message<CustomMsgTypes> msg;
     // msg.header.id = CustomMsgTypes::Attack;
+    return 0;
 
 }

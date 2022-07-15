@@ -239,6 +239,23 @@ void PlayerBoardState::pushTable(lua_State* L) {
 
 }
 
+// string toJson(const PlayerBoardState& state) {
+//     string result = "{";
+//     addValue(result, "coinCount", state.coinCount);
+//     addValue(result, "characterActive", state.characterActive);
+//     addValue(result, "health", state.health);
+//     addValue(result, "maxHealth", state.maxHealth);
+//     addValue(result, "blueHealth", state.blueHealth);
+//     addValue(result, "soulCount", state.soulCount);
+//     addValue(result, "attack", state.attack);
+//     addValue(result, "playerCard", state.playerCard);
+//     addValue(result, "board", state.board);
+//     addValue(result, "hand", state.hand, true);
+//     result += "}";
+//     return result;
+// }
+
+
 void Player::addSouls(int amount) { _soulCount += amount; }
 
 void Player::tempIncMaxLife(int amount) {
@@ -294,12 +311,16 @@ string BotPlayer::promptAction(const MatchState& state) {
 }
 
 string BotPlayer::promptResponse(const MatchState& state, string text, string choiceType, vector<int> choices) {
-    // if (_responses.empty()) return RESPONSE_CANCEL;
-    // auto result = _responses.top();
-    // _responses.pop();
+    //  TODO
     return "$FIRST";
 }
 
 string BotPlayer::promptSimpleResponse(const MatchState& state, string text, vector<string> choices) {
+    //  TODO
     return "$FIRST";
+}
+
+string BotPlayer::promptChooseCardsInHand(const MatchState& state, string text, int targetID, int amount) { 
+    //  TODO
+    return "";
 }

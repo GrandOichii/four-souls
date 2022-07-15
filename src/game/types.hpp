@@ -37,6 +37,7 @@ const string MONSTER_DECK = "monster";
 
 const string PLAYER_TARGET = "player";
 const string CARD_TARGET = "card";
+const string ROLL_TARGET = "roll";
 const string MONSTER_TARGET = "monster";
 
 const string RESPONSE_CANCEL = "$CANCEL";

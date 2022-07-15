@@ -10,5 +10,5 @@ function DadsLostCoin_trigger(host)
         return
     end
     local rollI = Common_RollStackSize(host)
-    setRollValue(host, rollI, math.random(1, 6))
+    setRollValue(host, rollI-1, math.random(1, 6))
 end

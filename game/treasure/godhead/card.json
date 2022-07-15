@@ -1,0 +1,12 @@
+{
+    "name": "Godhead",
+    "text": "{T}: Change the result of a dice roll to a 1 or 6.",
+    "image": "image.bmp",
+    "script": "script.lua",
+    "abilities": [
+        {
+            "cost": "Godhead_cost",
+            "ability": "Godhead_tap"
+        }
+    ]
+}

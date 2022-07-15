@@ -95,6 +95,16 @@ MonsterCard::MonsterCard(string dir, json j) :
     //  TODO
 }
 
+// string toJson(const CardState& state) {
+//     string result = "{";
+//     addValue(result, "active", state.active);
+//     addValue(result, "id", state.id);
+//     addValue(result, "cardName", state.cardName);
+//     addValue(result, "counters", state.counters, true);
+//     result += "}";
+//     return result;
+// }
+
 CardWrapper::CardWrapper(ScriptCard* card, int id) :
     _card(card),
     _id(id) {}
@@ -116,6 +126,7 @@ void CardWrapper::pushTable(lua_State* L) {
         ownerID = _owner->id();
     }
     l_pushtablenumber(L, "ownerID", (float)ownerID);
+    l_pushtablenumber(L, "counters", (float)_counters);
     l_pushtableboolean(L, "tapped", _tapped);
     l_pushtableboolean(L, "passive", !_card->abilities().size());
 }

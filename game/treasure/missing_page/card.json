@@ -1,0 +1,12 @@
+{
+    "name": "The Missing Page",
+    "text": "When anyone rolls a 5, you may force that player to reroll it.",
+    "image": "image.bmp",
+    "script": "script.lua",
+    "on": {
+        "roll": {
+            "check": "MissingPage_trigger_check",
+            "effect": "MissingPage_trigger"
+        }
+    }
+}

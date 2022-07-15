@@ -5,7 +5,6 @@ end
 function YellowPills_use(host)
     local owner = getTopOwner(host)
     local roll = getLastRoll(host)["value"]
-    print(roll)
     if roll == 1 or roll == 2 then
         addCoins(host, owner["id"], 4)
         return

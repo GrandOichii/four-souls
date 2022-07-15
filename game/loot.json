@@ -2,7 +2,7 @@
     "back": "images/loot_card_back.bmp",
     "cards1": {
         "basic": {
-            "loot/two_of_diamonds": 40
+            "loot/red_pills": 40
         },
         "trinkets": {
             "loot/guppys_hairball": 0
@@ -27,6 +27,7 @@
             "loot/the_chariot": 1,
             "loot/wheel_of_fortune": 1,
             "loot/yellow_pills": 1,
+            "loot/red_pills": 1,
             "loot/blank_rune": 1,
             "loot/justice": 1,
             "loot/strength": 1

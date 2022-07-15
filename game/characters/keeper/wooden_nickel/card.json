@@ -1,0 +1,12 @@
+{
+    "name": "Wooden Nickel",
+    "text": "{T}, choose a player, then roll:\nThat player gains c equal to the dice roll.",
+    "image": "image.bmp",
+    "script": "script.lua",
+    "abilities": [
+        {
+            "cost": "WoodenNickel_cost",
+            "ability": "WoodenNickel_tap"
+        }
+    ]
+}

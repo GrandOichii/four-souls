@@ -24,6 +24,8 @@ struct PlayerBoardState {
     void pushTable(lua_State* L);
 };
 
+// string toJson(const PlayerBoardState& state);
+
 struct MatchState;
 
 class Player {
@@ -109,6 +111,7 @@ public:
     virtual string promptAction(const MatchState& state) = 0;
     virtual string promptResponse(const MatchState& state, string text, string choiceType, vector<int> choices) = 0;
     virtual string promptSimpleResponse(const MatchState& state, string text, vector<string> choices) = 0;
+    virtual string promptChooseCardsInHand(const MatchState& state, string text, int targetID, int amount) = 0;
 
     string name();
     int id();
@@ -150,4 +153,5 @@ public:
     string promptAction(const MatchState& state);
     string promptResponse(const MatchState& state, string text, string choiceType, vector<int> choices);
     string promptSimpleResponse(const MatchState& state, string text, vector<string> choices);
+    string promptChooseCardsInHand(const MatchState& state, string text, int targetID, int amount);
 };

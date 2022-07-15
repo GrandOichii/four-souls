@@ -1,0 +1,8 @@
+{
+    "name": "Pills! (Red)",
+    "text": "Roll: 1-2: +1a till the end of turn.\n3-4: +1h till the end of turn.\n5-6: Take 1 damage.",
+    "image": "image.bmp",
+    "script": "script.lua",
+    "cost": "RedPills_cost",
+    "use": "RedPills_use"
+}

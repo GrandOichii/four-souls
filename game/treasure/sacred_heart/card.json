@@ -1,0 +1,12 @@
+{
+    "name": "Sacred Heart",
+    "text": "Each time you roll a 1, you may turn it into a 6.",
+    "image": "image.bmp",
+    "script": "script.lua",
+    "on": {
+        "roll": {
+            "check": "SacredHeart_trigger_check",
+            "effect": "SacredHeart_trigger"
+        }
+    }
+}

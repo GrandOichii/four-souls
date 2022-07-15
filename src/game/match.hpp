@@ -65,6 +65,11 @@ struct MatchState {
     vector<CardState> monsters; // turn monsters into card wrappers also
 
     void pushTable(lua_State* L) const;
+    
+    string toJson() const;
+
+    MatchState();
+    MatchState(string js);
 };
 
 struct StackEffect {
@@ -116,6 +121,7 @@ struct RollEvent {
         l_pushtablenumber(L, "value", value);
         l_pushtablenumber(L, "ownerID", owner->id());
         l_pushtableboolean(L, "isCombatRoll", isCombatRoll);
+        std::cout << "TABLE PUSHED" <<std::endl;
     }
 };
 
@@ -196,7 +202,6 @@ private:
             ));
 
             this->triggerLastEffectType();
-
         }},
         {ACTION_ACTIVATE_CARD, [this](Player* player, std::vector<string> args){
             auto cardID = std::stoi(args[1].c_str());
@@ -289,6 +294,7 @@ public:
     static int wrap_addCounters(lua_State* L);
     static int wrap_removeCounters(lua_State* L);
     static int wrap_requestChoice(lua_State* L);
+    static int wrap_requestCardsInHand(lua_State* L);
     static int wrap_requestSimpleChoice(lua_State* L);
     static int wrap_getPlayers(lua_State* L);
     static int wrap_getOwner(lua_State *L);

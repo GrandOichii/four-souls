@@ -1,9 +1,10 @@
+--  TODO untested
+
 function RazorBlade_cost(host, cardInfo)
     return Common_TargetPlayer(host, cardInfo) and Common_Tap(host)
 end
 
 function RazorBlade_tap(host)
     local target = popTarget(host)
-    local opponent = Common_PlayerWithID(host, target["id"])
-    dealDamage(host, opponent["id"], 1)
+    dealDamage(host, target["id"], 1)
 end

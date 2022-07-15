@@ -1,5 +1,137 @@
 #include "match.hpp"
 
+// #include "../nlohmann/json.hpp"
+
+MatchState::MatchState() {}
+
+using namespace nlohmann;
+
+static CardState cardFromJson(json j) {
+    CardState result;
+    result.cardName = j["cardName"];
+    result.active = j["active"];
+    result.id = j["id"];
+    result.counters = j["counters"];
+    return result;
+}
+
+static vector<CardState> cardVectorFromJson(json j) {
+    vector<CardState> result;
+    for (const auto& [key, value] : j.items())
+        result.push_back(cardFromJson(value));
+    return result;
+}
+
+static PlayerBoardState playerFromJson(json j) {
+    PlayerBoardState result;
+    result.coinCount = j["coinCount"];
+    result.characterActive = j["characterActive"];
+    result.health = j["health"];
+    result.maxHealth = j["maxHealth"];
+    result.blueHealth = j["blueHealth"];
+    result.soulCount = j["soulCount"];
+    result.attack = j["attack"];
+    result.health = j["health"];
+    result.playerCard = cardFromJson(j["playerCard"]);
+    result.board = cardVectorFromJson(j["board"]);
+    result.hand = cardVectorFromJson(j["hand"]);
+    return result;
+}
+
+static StackMemberState stackMemberFromJson(json j) {
+    StackMemberState result;
+    result.message = j["message"];
+    result.isCard = j["isCard"];
+    result.card = cardFromJson(j["card"]);
+    return result;
+}
+
+MatchState::MatchState(string text){
+    auto j = json::parse(text);
+    // boards = vector<PlayerBoardState>();
+    for (const auto& [key, value] : j["boards"].items())
+        boards.push_back(playerFromJson(value));
+    // std::cout << "DESERIALIZED BOARDS" << std::endl;
+    // stack = vector<StackMemberState>();
+    for (const auto& [key, value] : j["stack"].items())
+        stack.push_back(stackMemberFromJson(value));
+    currentI = j["currentI"];
+    priorityI = j["priorityI"];
+    currentID = j["currentID"];
+    isMain = j["isMain"];
+    lootDeckCount = j["lootDeckCount"];
+    treasureDeckCount = j["treasureDeckCount"];
+    monsterDeckCount = j["monsterDeckCount"];
+    lootDiscard = cardVectorFromJson(j["lootDiscard"]);
+    treasureDiscard = cardVectorFromJson(j["treasureDiscard"]);
+    monsterDiscard = cardVectorFromJson(j["monsterDiscard"]);
+    shop = cardVectorFromJson(j["shop"]);
+    monsters = cardVectorFromJson(j["monsters"]);
+}
+
+static json cardToJson(const CardState& card) {
+    json result;
+    result["cardName"] = card.cardName;
+    result["active"] = card.active;
+    result["id"] = card.id;
+    result["counters"] = card.counters;
+    return result;
+}
+
+static json cardVectorToJson(const vector<CardState>& vec) {
+    json result = json::array();
+    for (const auto& card : vec) {
+        result.push_back(cardToJson(card));
+    }
+    return result;
+}
+
+static json stackMemberToJson(const StackMemberState& member) {
+    json result;
+    result["message"] = member.message;
+    result["isCard"] = member.isCard;
+    result["card"] = cardToJson(member.card);
+    return result;
+}
+
+static json playerToJson(const PlayerBoardState& player) {
+    json result;
+    result["coinCount"] = player.coinCount;
+    result["characterActive"] = player.characterActive;
+    result["health"] = player.health;
+    result["maxHealth"] = player.maxHealth;
+    result["blueHealth"] = player.blueHealth;
+    result["soulCount"] = player.soulCount;
+    result["attack"] = player.attack;
+    result["playerCard"] = cardToJson(player.playerCard);
+    result["board"] = cardVectorToJson(player.board);
+    result["hand"] = cardVectorToJson(player.hand);
+    return result;
+}
+
+string MatchState::toJson() const {
+    json result;
+    result["boards"] = json::array();
+    for (const auto& board : boards)
+        result["boards"].push_back(playerToJson(board));
+    result["stack"] = json::array();
+    for (const auto& member : stack)
+        result["stack"].push_back(stackMemberToJson(member));
+    result["currentI"] = currentI;
+    result["priorityI"] = priorityI;
+    result["currentID"] = currentID;
+    result["isMain"] = isMain;
+    result["lootDeckCount"] = lootDeckCount;
+    result["treasureDeckCount"] = treasureDeckCount;
+    result["monsterDeckCount"] = monsterDeckCount;
+    result["lootDiscard"] = cardVectorToJson(lootDiscard);
+    result["treasureDiscard"] = cardVectorToJson(treasureDiscard);
+    result["monsterDiscard"] = cardVectorToJson(monsterDiscard);
+    result["shop"] = cardVectorToJson(shop);
+    result["monsters"] = cardVectorToJson(monsters);
+    return result.dump(4);
+}
+
 static void pushCards(vector<CardWrapper*> cards, lua_State* L) {
     auto size = cards.size();
     lua_createtable(L, size, 0);
@@ -28,6 +160,14 @@ StackMemberState StackEffect::getState() {
     }
     return result;
 }
+
+// string toJson(const StackMemberState& state) {
+//     string result = "";
+//     addValue(result, "message", state.message);
+//     addValue(result, "isCard", state.isCard);
+//     addValue(result, "card", state.card, true);
+//     return result;
+// }
 
 void MatchState::pushTable(lua_State* L) const {
     lua_newtable(L);
@@ -229,7 +369,8 @@ int Match::wrap_setRollValue(lua_State* L) {
         exit(1);
     }
     auto value = (int)lua_tonumber(L, 3);
-    match->_rollStack[rid-1].value = value;
+    // std::
+    match->_rollStack[rid].value = value;
     std::cout << "NEW VALUE " << match->_rollStack[rid].value << std::endl;
     return 0;
 }
@@ -335,7 +476,6 @@ int Match::wrap_removeCounters(lua_State* L) {
 }
 
 int Match::wrap_pushTarget(lua_State* L) {
-    // dumpstack(L);
     if (lua_gettop(L) != 3) {
         lua_err(L);
         exit(1);
@@ -346,7 +486,6 @@ int Match::wrap_pushTarget(lua_State* L) {
         exit(1);
     }
     auto id = (int)lua_tonumber(L, 2);
-
     if (!lua_isstring(L, 3)) {
         lua_err(L);
         exit(1);
@@ -387,13 +526,11 @@ int Match::wrap_requestChoice(lua_State* L) {
         exit(1);
     }
     auto text = (string)lua_tostring(L, 3);
-    
     if (!lua_isstring(L, 4)) {
         lua_err(L);
         exit(1);
     }
     auto choiceType = (string)lua_tostring(L, 4);
-
     if(!lua_istable(L, 5)) {
         lua_err(L);
         exit(1);
@@ -410,7 +547,6 @@ int Match::wrap_requestChoice(lua_State* L) {
         choices.push_back((int)lua_tonumber(L, -1));
         lua_pop(L, 1);
     }
-    // dumpstack(L);
     Player* player = match->playerWithID(pid);
     std::cout << choices.size() << std::endl;
     auto response = player->promptResponse(match->getState(), text, choiceType, choices);
@@ -429,6 +565,47 @@ int Match::wrap_requestChoice(lua_State* L) {
     lua_pushnumber(L, responseI);
     lua_pushboolean(L, true);
     return 2;
+}
+
+int Match::wrap_requestCardsInHand(lua_State* L){ 
+    if (lua_gettop(L) != 5) {
+        lua_err(L);
+        exit(1);
+    }
+    auto match = static_cast<Match*>(lua_touserdata(L, 1));
+    if (!lua_isnumber(L, 2)) {
+        lua_err(L);
+        exit(1);
+    }
+    auto pid = (int)lua_tonumber(L, 2);
+    Player* player = match->playerWithID(pid);
+    if (!lua_isnumber(L, 3)) {
+        lua_err(L);
+        exit(1);
+    }
+    auto tid = (int)lua_tonumber(L, 3);
+    Player* target = match->playerWithID(pid); // just check that they exist
+    if (!lua_isstring(L, 4)) {
+        lua_err(L);
+        exit(1);
+    }
+    auto text = (string)lua_tostring(L, 4);
+    if (!lua_isnumber(L, 5)) {
+        lua_err(L);
+        exit(1);
+    }
+    auto amount = (int)lua_tonumber(L, 5);
+    auto result = player->promptChooseCardsInHand(match->getState(), text, tid, amount);
+    auto split = str::split(result, " ");
+    auto size = split.size();
+    lua_createtable(L, size, 0);
+    for (int i = 0; i < size; i++) {
+        lua_pushnumber(L, i+1);
+        lua_pushnumber(L, atoi(split[i].c_str()));
+        lua_settable(L, -3);
+    }
+    return 1;
+    // requestCardsInHand(host, playerID, targetID, text, amount)
 }
 
 int Match::wrap_requestSimpleChoice(lua_State* L) {
@@ -465,7 +642,9 @@ int Match::wrap_requestSimpleChoice(lua_State* L) {
         lua_pop(L, 1);
     }
     auto response = player->promptSimpleResponse(match->getState(), text, choices);
+    std::cout << response << std::endl;
     if (response == RESPONSE_FIRST) response = choices[0];
+    std::cout << response << std::endl;
     lua_pushstring(L, response.c_str());
     return 1;
 }
@@ -1245,7 +1424,9 @@ void Match::setupLua(string setupScript) {
     lua_register(L, "addCounters", wrap_addCounters);
     lua_register(L, "removeCounters", wrap_removeCounters);
     lua_register(L, "requestChoice", wrap_requestChoice);
+    lua_register(L, "requestChoice", wrap_requestChoice);
     lua_register(L, "requestSimpleChoice", wrap_requestSimpleChoice);
+    lua_register(L, "requestCardsInHand", wrap_requestCardsInHand);
     lua_register(L, "incAttackCount", wrap_incAttackCount);
     lua_register(L, "tapCard", wrap_tapCard);
     lua_register(L, "millDeck", wrap_millDeck);
@@ -1279,7 +1460,7 @@ void Match::setupLua(string setupScript) {
     this->execScript(setupScript);
     std::cout << "Loading base script" << std::endl;
     // setup script
-    this->execScript("LOOT_DECK = \"" + LOOT_DECK + "\"\nTREASURE_DECK = \"" + TREASURE_DECK + "\"\nMONSTER_DECK = \"" + MONSTER_DECK + "\"\nCARD = \"" + CARD_TARGET + "\"\nPLAYER = \"" + PLAYER_TARGET + "\"function _startTurnLoot(host)\n\tlocal owner = getTopOwner(host)\nlootCards(host, owner[\"id\"], owner[\"startTurnLootAmount\"])\nend");
+    this->execScript("LOOT_DECK = \"" + LOOT_DECK + "\"\nTREASURE_DECK = \"" + TREASURE_DECK + "\"\nMONSTER_DECK = \"" + MONSTER_DECK + "\"\nCARD = \"" + CARD_TARGET + "\"\nROLL = \"" + ROLL_TARGET + "\"\nPLAYER = \"" + PLAYER_TARGET + "\"function _startTurnLoot(host)\n\tlocal owner = getTopOwner(host)\nlootCards(host, owner[\"id\"], owner[\"startTurnLootAmount\"])\nend");
     
     std::cout << "All scripts loaded!" << std::endl;
 }
@@ -1657,9 +1838,9 @@ MatchState Match::getState() {
             s.message = "Looting";
         }
         if (si->type == BUY_TREASURE_TYPE) {
-            auto card = getTopTreasureCard();
-            if (_lastTreasureIndex != -1) card = _shop[_lastTreasureIndex];
-            s.message = "Buying\n" + card->card()->name();
+            string cardName = " top card";
+            if (_lastTreasureIndex != -1) cardName = _shop[_lastTreasureIndex]->card()->name();
+            s.message = "Buying\n" + cardName;
         }
         result.stack.push_back(s);
 

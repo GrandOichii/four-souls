@@ -1,0 +1,12 @@
+{
+    "name": "Crooked Penny",
+    "text": "{T}: Choose a played, then roll:\n1-3: Double that player's total c.\n4-6: That player loses all their c.",
+    "image": "image.bmp",
+    "script": "script.lua",
+    "abilities": [
+        {
+            "cost": "CrookedPenny_cost",
+            "ability": "CrookedPenny_tap"
+        }
+    ]
+}

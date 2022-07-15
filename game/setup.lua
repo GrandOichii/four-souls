@@ -22,6 +22,15 @@ function Common_PlayerWithID(host, id)
     end
 end
 
+function Common_Pay(host, ownerID, amount)
+    local player = Common_PlayerWithID(host, ownerID)
+    if player["coins"] < amount then
+        return false
+    end
+    subCoins(host, ownerID, amount)
+    return true
+end
+
 function Common_CardCount(player)
     local count = 0
     for _ in pairs(player["hand"]) do count = count + 1 end
@@ -70,6 +79,14 @@ function Common_LastRoll(host)
     return roll
 end
 
+function Common_OwnerRolled(host, ownerID, value)
+    local roll = Common_LastRoll(host)
+    if roll["ownerID"] ~= ownerID then
+        return false
+    end
+    return roll["value"] == value
+end
+
 function Common_TargetRoll(host, ownerID)
     local rolls = getRollStack(host)
     if #rolls == 0 then
@@ -86,6 +103,20 @@ function Common_TargetRoll(host, ownerID)
     pushTarget(host, choice, ROLL)
     return true
 end
+
+function Common_RemoveCounter(host)
+    local card = this(host)
+    print("attempting to remove counters "..card["counters"])
+    if card["counters"] == 0 then
+        return false
+    end
+    removeCounters(host, card["id"], 1)
+    return true
+end
+
+-- function Common_HasCounter()
+    
+-- end
 
 function Common_TargetTappedCard(host, ownerID)
     local players = getPlayers(host)
@@ -122,4 +153,34 @@ function Common_OwnersTurn(host, cardID)
     local owner = getOwner(host, cardID)
     local currentPlayer = getCurrentPlayer(host)
     return owner["id"] == currentPlayer["id"]
+end
+
+function Common_ChooseCardInHand(host, playerID, handsPlayerID)
+    --  TODO
+end
+
+function Common_PayOneLife(host, ownerID)
+    dealDamage(host, ownerID, 1)
+    return true
+end
+
+function Common_AllPlayersLoot(host, amount)
+    local players = getPlayers(host)
+    for _, player in ipairs(players) do
+        lootCards(host, player["id"], amount)
+    end
+end
+
+function Common_AllPlayersAddCoins(host, amount)
+    local players = getPlayers(host)
+    for _, player in ipairs(players) do
+        addCoins(host, player["id"], amount)
+    end
+end
+
+function Common_DamageAllPlayers(host, amount)
+    local players = getPlayers(host)
+    for _, player in ipairs(players) do
+        dealDamage(host, player["id"], amount)
+    end
 end

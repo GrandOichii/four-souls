@@ -65,6 +65,7 @@ David Barr, aka javidx9, �OneLoneCoder 2019, 2020, 2021
 #include <vector>
 #include <iostream>
 #include <algorithm>
+#include <string>
 #include <chrono>
 #include <cstdint>
 
@@ -132,15 +133,28 @@ struct message
         size_t i = msg.body.size();
 
         // Resize the vector by the size of the data being pushed
-        msg.body.resize(msg.body.size() + sizeof(DataType));
+        msg.body.resize(msg.body.size() + sizeof(data));
 
         // Physically copy the data into the newly allocated vector space
-        std::memcpy(msg.body.data() + i, &data, sizeof(DataType));
+        std::memcpy(msg.body.data() + i, &data, sizeof(data));
 
         // Recalculate the message size
         msg.header.size = msg.size();
 
         // Return the target message so it can be "chained"
+        return msg;
+    }
+    
+    friend message<T>& operator << (message<T>& msg, const std::string& data)
+    {
+        // uint16_t size = data.size();
+        // msg << size;
+        // for (const auto& c : data)
+        //     msg << c;
+        // std::cout << "SIZE: " <<  data.size() << std::endl;
+        msg.header.size += data.size();
+        for (int i = 0; i < data.size(); i++)
+            msg.body.push_back(data[i]);
         return msg;
     }
 
@@ -152,10 +166,10 @@ struct message
         static_assert(std::is_standard_layout<DataType>::value, "Data is too complex to be pulled from vector");
 
         // Cache the location towards the end of the vector where the pulled data starts
-        size_t i = msg.body.size() - sizeof(DataType);
+        size_t i = msg.body.size() - sizeof(data);
 
         // Physically copy the data from the vector into the user variable
-        std::memcpy(&data, msg.body.data() + i, sizeof(DataType));
+        std::memcpy(&data, msg.body.data() + i, sizeof(data));
 
         // Shrink the vector to remove read bytes, and reset end position
         msg.body.resize(i);
@@ -165,7 +179,16 @@ struct message
 
         // Return the target message so it can be "chained"
         return msg;
-    }			
+    }
+
+    friend message<T>& operator >> (message<T>& msg, std::string& data)
+    {
+        data = "";
+        for (int i = 0; i < msg.body.size(); i++) {
+            data += msg.body[i];
+        }
+        return msg;
+    }
 };
 
 

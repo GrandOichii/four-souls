@@ -1,5 +1,3 @@
---  TODO untested
-
 function BookOfBelial_cost(host, cardInfo)
     return Common_TargetRoll(host, cardInfo["ownerID"]) and Common_Tap(host)
 end
@@ -7,7 +5,7 @@ end
 function BookOfBelial_tap(host)
     local target = popTarget(host)
     local rolls = getRollStack(host)
-    local roll = rolls[target["id"]]
+    local roll = rolls[target["id"]+1]
     if roll == 6 then
         setRollValue(host, target["id"], roll["value"] - 1)
         return

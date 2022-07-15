@@ -2,6 +2,8 @@
 
 #include <iostream>
 
+#include "cards.hpp"
+
 void l_pushtablestring(lua_State* L, string key, string value) {
     lua_pushstring(L, key.c_str());
     lua_pushstring(L, value.c_str());
@@ -43,3 +45,44 @@ void dumpstack (lua_State *L) {
         }
     }
 }
+
+// string toJson(const string& v) { return "\"" + v + "\""; }
+// string toJson(const int& v) { return std::to_string(v); }
+// string toJson(const bool& v) { return (v ? "true" : "false"); }
+
+// string toJson(const CardState& state) {
+//     string result = "{";
+//     addValue(result, "active", state.active);
+//     addValue(result, "id", state.id);
+//     addValue(result, "cardName", state.cardName);
+//     addValue(result, "counters", state.counters, true);
+//     result += "}";
+//     return result;
+// }
+
+// template<class T>
+// string toJson(std::vector<T> v) {
+//     string result = "[";
+//     for (int i = 0; i < v.size(); i++) {
+//         result += toJson(v[i]);
+//         if (i != v.size()-1) result += ", ";
+//     }
+//     result += "]";
+//     return result;
+// }
+
+// template<class T>
+// void addValue(string& j, string key, T value, bool last) {
+//     j += "\"" + key + "\" : " + toJson(value) + "" + (last ? "" : ", ");
+// }
+
+// template<class T>
+// void addValueV(string& j, string key, std::vector<T> value, bool last) {
+//     j += "\"" + key + "\" : [";
+//     for (int i = 0; i < value.size(); i++) {
+//         j += toJson(value[i]);
+//         if (i != value.size()-1) j += ", ";
+//     }
+//     j += "]";
+//     if (last) j += "}";
+// }

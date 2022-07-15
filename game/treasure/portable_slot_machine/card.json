@@ -1,0 +1,12 @@
+{
+    "name": "Portable Slot Machine",
+    "text": "($) Pay 3c, roll:\n1-2: Loot 1.\n3-4: Gain 4c.\n5-6: Nothing.",
+    "image": "image.bmp",
+    "script": "script.lua",
+    "abilities": [
+        {
+            "cost": "PortableSlotMachine_cost",
+            "ability": "PortableSlotMachine_play"
+        }
+    ]
+}

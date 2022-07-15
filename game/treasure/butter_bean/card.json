@@ -1,0 +1,12 @@
+{
+    "name": "The Butter Bean",
+    "text": "{T}, roll:\n1-5: Nothing.\n6: Recharge this.",
+    "image": "image.bmp",
+    "script": "script.lua",
+    "abilities": [
+        {
+            "cost": "TheButterBean_cost",
+            "ability": "TheButterBean_tap"
+        }
+    ]
+}
