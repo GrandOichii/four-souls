@@ -108,6 +108,7 @@ public:
     int maxHealth();
     int dealDamage(int amount);
 
+    virtual void update(const MatchState& state) = 0;
     virtual string promptAction(const MatchState& state) = 0;
     virtual string promptResponse(const MatchState& state, string text, string choiceType, vector<int> choices) = 0;
     virtual string promptSimpleResponse(const MatchState& state, string text, vector<string> choices) = 0;
@@ -150,6 +151,7 @@ public:
     BotPlayer(std::string name, CharacterCard* card, int id, string script);
     ~BotPlayer();
 
+    void update(const MatchState& state);
     string promptAction(const MatchState& state);
     string promptResponse(const MatchState& state, string text, string choiceType, vector<int> choices);
     string promptSimpleResponse(const MatchState& state, string text, vector<string> choices);

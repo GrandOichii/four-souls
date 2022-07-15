@@ -259,6 +259,7 @@ private:
 public:
     Match();
     ~Match();
+    void updateAllPlayers();
     CardWrapper* addWrapper(ScriptCard* card);
     void addToLootDiscard(CardWrapper* card);
     CardWrapper* cardWithID(int id);

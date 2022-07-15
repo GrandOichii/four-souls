@@ -54,3 +54,16 @@ struct ActivatedAbility {
         std::cout << "funcName: " << funcName << std::endl;
     }
 };
+
+enum Zones : int {
+    Unknown,
+    Hand,
+    Board,
+    CCard,
+    Shop,
+    Stack,
+    LootDiscard,
+    TreasureDiscard,
+    MonsterDiscard,
+    ActiveMonsters
+};

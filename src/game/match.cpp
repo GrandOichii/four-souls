@@ -12,6 +12,7 @@ static CardState cardFromJson(json j) {
     result.active = j["active"];
     result.id = j["id"];
     result.counters = j["counters"];
+    result.zone = j["zone"];
     return result;
 }
 
@@ -75,6 +76,7 @@ static json cardToJson(const CardState& card) {
     result["active"] = card.active;
     result["id"] = card.id;
     result["counters"] = card.counters;
+    result["zone"] = card.zone;
     return result;
 }
 
@@ -156,6 +158,7 @@ StackMemberState StackEffect::getState() {
     result.isCard = cardW;
     if (cardW) {
         result.card = cardW->getState();
+        result.card.zone = Zones::Stack;
         result.card.active = true;
     }
     return result;
@@ -1715,7 +1718,8 @@ void Match::resetEOT() {
 
 void Match::executePlayerAction(Player* player, string action) {
     auto split = str::split(action, " ");
-    if (!this->_actionMap.count(split[0])) throw std::runtime_error("don't have a handler for " + split[0] + " action in match");
+    // std::cout << "ACIONS"
+    if (!this->_actionMap.count(split[0])) throw std::runtime_error("don't have a handler for |" + split[0] + "| action in match");
     this->_actionMap[split[0]](player, split);
 }
 
@@ -1770,6 +1774,7 @@ void Match::triggerLastEffectType() {
 
 void Match::pushToStack(StackEffect* effect) {
     this->_stack.push_back(effect);
+    updateAllPlayers();
 }
 
 void Match::resolveStack() {
@@ -1777,6 +1782,11 @@ void Match::resolveStack() {
     while (!this->_stack.empty()) {
         this->resolveTop();
     }
+}
+
+void Match::updateAllPlayers() {
+    for (auto& player : _players)
+        player->update(this->getState());
 }
 
 void Match::resolveTop() {
@@ -1806,6 +1816,7 @@ void Match::resolveTop() {
     if (effect->resolve) this->execFunc(effect->funcName);
     _stack.erase(std::find(_stack.begin(), _stack.end(), effect));
     delete effect;
+    updateAllPlayers();
 }
 
 string Match::promptPlayerWithPriority() {
@@ -1852,20 +1863,33 @@ MatchState Match::getState() {
     result.isMain = _isMainPhase && _stack.empty() && _priorityI == _currentI;
 
     result.lootDeckCount = _lootDeck.size();
-    for (const auto& w : _lootDiscard)
-        result.lootDiscard.push_back(w->getState());
-    
+    for (const auto& w : _lootDiscard) {
+        auto s = w->getState();
+        s.zone = Zones::LootDiscard;
+        result.lootDiscard.push_back(s);
+    }
     result.treasureDeckCount = _treasureDeck.size();
-    for (const auto& w : _treasureDiscard)
-        result.treasureDiscard.push_back(w->getState());
-    for (const auto& w : _shop)
-        result.shop.push_back(w->getState());
-
+    for (const auto& w : _treasureDiscard) {
+        auto s = w->getState();
+        s.zone = Zones::TreasureDiscard;
+        result.treasureDiscard.push_back(s);
+    }
+    for (const auto& w : _shop) {
+        auto s = w->getState();
+        s.zone = Zones::Shop;
+        result.shop.push_back(s);
+    }
     result.monsterDeckCount = _monsterDeck.size();
-    for (const auto& w : _monsterDiscard)
-        result.monsterDiscard.push_back(w->getState());
-    for (const auto& w : _monsters)
-        result.monsters.push_back(w->getState());
+    for (const auto& w : _monsterDiscard) {
+        auto s = w->getState();
+        s.zone = Zones::MonsterDiscard;
+        result.monsterDiscard.push_back(s);
+    }
+    for (const auto& w : _monsters) {
+        auto s = w->getState();
+        s.zone = Zones::ActiveMonsters;
+        result.monsters.push_back(s);
+    }
     return result;
 }
 

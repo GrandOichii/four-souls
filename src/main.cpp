@@ -152,28 +152,32 @@ public:
 };
 
 enum PollType : uint8_t {
+    // client - server
     ServerMessage,
-    Action,
+
+    // server - client
+    Update,
+    GetAction,
     Prompt,
     SimplePrompt
 };
 
-class Server : public server_interface<int> {
+class Server : public server_interface<PollType> {
 private:
     int _connections = 0;
     int _maxConnections;
 
 public:
     Server(uint16_t port, int maxConnections) :
-        server_interface<int>(port),
+        server_interface<PollType>(port),
         _maxConnections(maxConnections)
     {}
 
-    tsqueue<owned_message<int>>& Incoming() {
+    tsqueue<owned_message<PollType>>& Incoming() {
         return m_qMessagesIn;
     }
 
-    std::deque<std::shared_ptr<connection<int>>>& GetClients() {
+    std::deque<std::shared_ptr<connection<PollType>>>& GetClients() {
         return m_deqConnections;
     }
 
@@ -181,11 +185,11 @@ public:
         this->Update(1, true);
     }
 
-    std::shared_ptr<connection<int>>& LastClient() {
+    std::shared_ptr<connection<PollType>>& LastClient() {
         return _lastClient;
     }
 
-    message<int>& LastMessage() {
+    message<PollType>& LastMessage() {
         return _lastMsg;
     }
 
@@ -194,10 +198,10 @@ public:
     }
 
 protected:
-    std::shared_ptr<connection<int>> _lastClient;
-    message<int> _lastMsg;
+    std::shared_ptr<connection<PollType>> _lastClient;
+    message<PollType> _lastMsg;
 
-    virtual bool OnClientConnect(std::shared_ptr<connection<int>> client)
+    virtual bool OnClientConnect(std::shared_ptr<connection<PollType>> client)
     {
         // std::cout << "Client connected, id: " << client->GetID() << std::endl;
         if (_maxConnections == _connections) return false;
@@ -207,13 +211,13 @@ protected:
     }
 
     // Called when a client appears to have disconnected
-    virtual void OnClientDisconnect(std::shared_ptr<connection<int>> client)
+    virtual void OnClientDisconnect(std::shared_ptr<connection<PollType>> client)
     {
         std::cout << "Client with id " << client->GetID() << " disconnected" << std::endl;
     }
 
     // Called when a message arrives
-    virtual void OnMessage(std::shared_ptr<connection<int>> client, message<int> &msg)
+    virtual void OnMessage(std::shared_ptr<connection<PollType>> client, message<PollType> &msg)
     {
         // fix bug on too many characters
         _lastClient = client;
@@ -232,7 +236,7 @@ protected:
         std::wcout << "[" << msg.header.name.data() << "]: Send the message to all user\n";
 
         //Construct a new message and send it to all clients
-        message<int> __msg;
+        message<PollType> __msg;
         __msg.header.id = int::ServerMessage;
         __msg.header.name = msg.header.name;
         message_all_clients(__msg, client);
@@ -256,9 +260,9 @@ protected:
 class ConnectedPlayer : public Player {
 private:
     Server* _server;
-    std::shared_ptr<connection<int>> _conn;
+    std::shared_ptr<connection<PollType>> _conn;
 public:
-    ConnectedPlayer(std::string name, CharacterCard* card, int id, Server* server, std::shared_ptr<connection<int>> conn) :
+    ConnectedPlayer(std::string name, CharacterCard* card, int id, Server* server, std::shared_ptr<connection<PollType>> conn) :
         Player(name, card, id),
         _server(server),
         _conn(conn)
@@ -269,8 +273,8 @@ public:
     }
 
     string getResponse(const MatchState& state) {
-        message<int> msg;
-        msg.header.id = 0;
+        message<PollType> msg;
+        msg.header.id = PollType::GetAction;
         // msg << string("Do what?");
         string s = state.toJson();
         msg << s;
@@ -284,8 +288,25 @@ public:
         return result;
     }
 
+    void update(const MatchState& state) {
+        message<PollType> msg;
+        msg.header.id = PollType::Update;
+        string s = state.toJson();
+        msg << s;
+        _server->MessageClient(_conn, msg);   
+    }
+
     string promptAction(const MatchState& state) { 
-        return getResponse(state);
+        message<PollType> msg;
+        msg.header.id = PollType::GetAction;
+        string s = state.toJson();
+        msg << s;
+        _server->MessageClient(_conn, msg);
+        _server->WaitForMessages();
+        auto response = _server->LastMessage();
+        string result;
+        response >> result;
+        return result;
     }
 
     string promptResponse(const MatchState& state, string text, string choiceType, vector<int> choices) { 
@@ -808,11 +829,11 @@ public:
     }
 };
 
-class Client : public client_interface<int> {
+class Client : public client_interface<PollType> {
 public:
     void ping_server()
     {
-        // message<int> msg;
+        // message<PollType> msg;
         // msg.header.id = int::ServerPing;
         // msg.header.name = user_name;
         // send(msg);
@@ -820,7 +841,7 @@ public:
 
     void message_all()
     {
-        // message<int> msg;
+        // message<PollType> msg;
         // msg.header.id = int::MessageAll;
         // msg.header.name = user_name;
         // send(msg);
@@ -833,7 +854,7 @@ public:
         // std::wcin.clear();
         // std::wcin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
 
-        // message<int> msg;
+        // message<PollType> msg;
         // msg.header.id = int::JoinServer;
         // msg.header.name = user_name;
         // send(msg);
@@ -841,7 +862,7 @@ public:
 
     void send_msg(std::wstring& __data)
     {
-        // message<int> msg;
+        // message<PollType> msg;
         // msg.header.id = int::PassString;
         // msg.header.name = user_name;
         // for (unsigned int i{}, j{}; j < __data.size(); ++i, ++j)
@@ -856,8 +877,6 @@ public:
 
 class ClientWrapper {
 private:
-    bool _wasClicked = false;
-    CardState _lastClicked;
     bool _waitingResponse = false;
     
     string _host;
@@ -947,15 +966,15 @@ public:
         this->_boardHeight = this->_wHeight;
 
         this->_playerSpaces[0][0] = this->_sideBoardX;
-        this->_playerSpaces[0][1] = 0;
+        this->_playerSpaces[0][1] = _boardHeight / 2 + 1;
 
-        this->_playerSpaces[1][0] = this->_sideBoardX + _boardWidth / 2 + 1;
+        this->_playerSpaces[1][0] = this->_sideBoardX;
         this->_playerSpaces[1][1] = 0;
 
         this->_playerSpaces[2][0] = this->_sideBoardX + _boardWidth / 2 + 1;
-        this->_playerSpaces[2][1] = _boardHeight / 2 + 1;
+        this->_playerSpaces[2][1] = 0;
 
-        this->_playerSpaces[3][0] = this->_sideBoardX;
+        this->_playerSpaces[3][0] = this->_sideBoardX + _boardWidth / 2 + 1;
         this->_playerSpaces[3][1] = _boardHeight / 2 + 1;
 
         this->_assets = new AssetsManager(this->_ren, "font/font.ttf");
@@ -1010,12 +1029,21 @@ public:
         bool clicked = false;
         while (this->_running) {
             if (!_c->Incoming().empty()) {
-                auto msg = _c->Incoming().pop_front().msg;
+                auto f = _c->Incoming().pop_front();
+                auto msg = f.msg;
                 string jstate;
                 msg >> jstate;
                 _state = MatchState(jstate);
                 _hasState = true;
-                _waitingResponse = true;
+                switch (msg.header.id) {
+                case PollType::Update:
+                    break;
+                case PollType::GetAction:
+                    _waitingResponse = true;
+                    break;
+                default:
+                    break;
+                }
                 // request = true;
             }
             // handle events
@@ -1027,24 +1055,12 @@ public:
                 case SDL_KEYDOWN:
                     this->handleKey(_event->key.keysym.sym);
                     break;
-                case SDL_MOUSEBUTTONDOWN:
-                    clicked = true;
-                    break;
                 }
             }
             this->clear();
             if (_hasState)
                 this->draw();
             this->flush();
-            if (_waitingResponse && clicked && _wasClicked) {
-                message<int> reply;
-                std::cout << _lastClicked.cardName << "\t" << _lastClicked.id << std::endl;
-                reply << "play_loot " + std::to_string(_lastClicked.id);
-                _c->Send(reply);
-                _waitingResponse = false;
-                _wasClicked = false;
-            }
-            clicked = false;
         }
     }
 
@@ -1064,7 +1080,7 @@ public:
             return;
         case SDLK_SPACE:
             if (!_waitingResponse) return;
-            message<int> reply;
+            message<PollType> reply;
             reply << ACTION_PASS;
             _c->Send(reply);
             _waitingResponse = false;
@@ -1081,8 +1097,52 @@ public:
         SDL_RenderClear(_ren);
     }
 
-    void drawCard(CardState& card, int x, int y) {
-        this->drawTexture(this->_assets->getCard(card.cardName), x, y, card.active ? 0 : 90);
+    void onClick(CardState card) {
+        if (!_waitingResponse) return;
+        std::cout << card.cardName << "\t" << card.id << std::endl;
+        message<PollType> reply;
+        switch (card.zone) {
+        case Zones::Unknown:
+            throw std::runtime_error("Card " + card.cardName + " [" + std::to_string(card.id) + "] has unknown zone");
+            return;
+        case Zones::Hand:
+            //  TODO check that the card is owned by active player
+            reply << "play_loot " + std::to_string(card.id);
+            break;
+        case Zones::Board:
+            //  TODO check if the card can be activated
+            //  TODO prompt player to choose the activated ability of the card
+            reply << "activate " + std::to_string(card.id) + " 0";
+            break;
+        case Zones::CCard:
+            reply << ACTION_ACTIVATE_CHARACTER_CARD;
+            break;
+        case Zones::Shop:
+            //  TODO choose the treasure
+            reply << string("buy_treasure 0");
+            break;
+        case Zones::Stack:
+            //  TODO
+            break;
+        case Zones::LootDiscard:
+            //  TODO show the player the discard pile
+            break;
+        case Zones::TreasureDiscard:
+            //  TODO show the player the discard pile
+            break;
+        case Zones::MonsterDiscard:
+            //  TODO show the player the discard pile
+            break;
+        case Zones::ActiveMonsters:
+            //  TODO attack the clicked monster
+            break;
+        }
+        _c->Send(reply);
+        _waitingResponse = false;
+    }
+
+    void drawCard(CardState& card, int angle, int x, int y) {
+        this->drawTexture(this->_assets->getCard(card.cardName), x, y, angle);
         auto tex = _assets->getMessage("[" + std::to_string(card.id) + "]", SDL_Color{ 255, 0, 255, 0 }, 24);
         drawTexture(tex, x + 2, y + 2);
         SDL_DestroyTexture(tex);
@@ -1093,29 +1153,16 @@ public:
         }
         int mx, my;
         auto s = SDL_GetMouseState(&mx, &my);
-        if (mx >= x && my >= y && mx <= x + _cardSize.first && my <= _cardSize.second) {
-            int w = card.active ? _cardSize.first : _cardSize.second;
-            int h = card.active ? _cardSize.second : _cardSize.first;
+        int w = (angle == 0) ? _cardSize.first : _cardSize.second;
+        int h = (angle == 0) ? _cardSize.second : _cardSize.first;
+        if (mx >= x && my >= y && mx <= x + w && my <= h+ y) {
             auto color = (s&1) ? SDL_Color{255, 0, 0, 0} : SDL_Color{0, 255, 0, 0};
             this->drawRect(x, y, w, h, color, false);
             this->drawRect(x+1, y+1, w-2, h-2, color, false);
             if (s&1) {
-                _lastClicked = card;
-                _wasClicked = true;
+                onClick(card);                
             }
         }
-    }
-
-    void drawCard(string cardName, bool active, int x, int y) {
-        this->drawTexture(this->_assets->getCard(cardName), x, y, active ? 0 : 90);
-        // int mx, my;
-        // SDL_GetMouseState(&mx, &my);
-        // if (mx >= x && my >= y && mx <= x + _cardSize.first && my <= _cardSize.second) {
-        //     int w = active ? _cardSize.first : _cardSize.second;
-        //     int h = active ? _cardSize.second : _cardSize.first;
-        //     this->drawRect(x, y, w, h, SDL_Color{255, 0, 0, 0}, false);
-        //     this->drawRect(x+1, y+1, w-2, h-2, SDL_Color{255, 0, 0, 0}, false);
-        // }
     }
 
     void drawCardBack(string cardType, bool active, int x, int y) {
@@ -1166,7 +1213,8 @@ public:
         // draw monster discard
         count = _state.monsterDiscard.size();
         if (count) {
-            this->drawCard(*(_state.monsterDiscard.end() - 1), _monsterDiscardX, _monsterDeckY);
+            auto card = *(_state.monsterDiscard.end() - 1);
+            this->drawCard(card, 0, _monsterDiscardX, _monsterDeckY);
         }
         if (count != _lastMonsterDeckCount) {
             _lastMonsterDiscardCount = count;
@@ -1176,8 +1224,10 @@ public:
         this->drawTexture(_lastMonsterDiscardCountTex, _monsterDiscardX + 10, _monsterDeckY + 10);
         // draw monster slots
         auto y = _monsterDeckY + _cardSize.second;
-        for (const auto& card : _state.monsters) {
-            this->drawTexture(this->_assets->getCard(card.cardName), _monsterDiscardX + 20, y, -90);
+        for (auto& card : _state.monsters) {
+            this->drawCard(card, -90, _monsterDiscardX + 20, y);
+            int mx, my;
+            SDL_GetMouseState(&mx, &my);
             // auto tex = this->_assets->getCard(name);
             // this->drawTexture(tex, _monsterDiscardX + 20, y, -90);
             y += _cardSize.first + 3;
@@ -1199,22 +1249,21 @@ public:
         count = _state.treasureDiscard.size();
         // std::cout << "\t" << count << std::endl;
         if (count) {
-            this->drawCard(*(_state.treasureDiscard.end() - 1), _treasureDiscardX, _treasureDeckY);
+            auto card = *(_state.treasureDiscard.end() - 1);
+            this->drawCard(card, 0, _treasureDiscardX, _treasureDeckY);
         }
         if (count != _lastTreasureDiscardCount) {
             _lastTreasureDiscardCount = count;
             SDL_DestroyTexture(_lastTreasureDiscardCountTex);
             _lastTreasureDiscardCountTex = this->_assets->getMessage(std::to_string(_lastTreasureDiscardCount), SDL_Color{ 255, 255, 255, 0 }, 24);
         }
-        this->drawTexture(_lastTreasureDiscardCountTex, _treasureDiscardX + 10, _treasureDeckY + 10);
+        this->drawTexture(_lastTreasureDiscardCountTex, 0, _treasureDiscardX + 10, _treasureDeckY + 10);
         // draw shop
         auto y = _treasureDeckY - _cardSize.second;
-        for (const auto& card : _state.shop) {
-            this->drawTexture(this->_assets->getCard(card.cardName), _treasureDiscardX + 20, y, -90);
-            // auto tex = this->_assets->getCard(name);
-            // this->drawTexture(tex, _treasureDiscardX + 20, y, -90);
+        for (auto& card : _state.shop) {
+            this->drawCard(card, -90, _treasureDiscardX + 20, y);
+
             y -= _cardSize.first + 3;
-            // auto tex = this->drawCard(name, true);
         }
     }
 
@@ -1231,7 +1280,7 @@ public:
         // draw loot discard
         count = _state.lootDiscard.size();
         if (count) {
-            this->drawCard(*(_state.lootDiscard.end() - 1), _lootDiscardX, _lootDeckY);
+            this->drawCard(*(_state.lootDiscard.end() - 1), 0, _lootDiscardX, _lootDeckY);
         }
         if (count != _lastLootDiscardCount) {
             _lastLootDiscardCount = count;
@@ -1260,15 +1309,16 @@ public:
             pX += _cardSize.second - _cardSize.first;
             auto cCard = space.playerCard;
 
-            this->drawCard(cCard, pX + 10, pY + 10);
+            this->drawCard(cCard, (cCard.active ? 0 : 90), pX + 10, pY + 10);
             pY += 150;
             int betweenCards = 2;
             for (auto& card : space.board) {
-                this->drawCard(card, pX + 10, pY);
+                // this->drawCard(card, (card.active ? 0 : 90), pX + 10, pY);
+                this->drawCard(card, 0, pX + 10, pY);
                 pX += _cardSize.second + betweenCards;
             }
             for (auto& card : space.hand) {
-                this->drawCard(card, lootX, looyY);
+                this->drawCard(card, 0, lootX, looyY);
                 lootX += _cardSize.first + betweenCards;
             }
 
@@ -1313,7 +1363,7 @@ public:
         int y = yOffset;
         for (auto& si : _state.stack) {
             if (si.isCard) {
-                this->drawCard(si.card, x, y);
+                this->drawCard(si.card, 0, x, y);
             }
             else {
                 drawRect(x, y, _cardSize.first, _cardSize.second, SDL_Color{ 0, 0, 255, 0 }, true);
@@ -1364,11 +1414,8 @@ public:
 };
 
 int main() {
-
-    Client c;
     string host = "localhost";
 
-    int port = 9090;
     std::cout << "Enter host (" << host << "): ";
     string s1;
     std::getline(std::cin, s1);
@@ -1379,11 +1426,11 @@ int main() {
     delete wrapper;
 }
 
-int mai1n(int argc, char* argv[]) {
-    // srand(time(0));
+int ma1in(int argc, char* argv[]) {
+    srand(time(0));
+    // srand(1);
     BOTS = atoi(argv[1]);
     CONNECTED_PLAYERS = atoi(argv[2]);
-    srand(1);
     try {
     auto wrapper = new GameWrapper("four-souls", "game", "players.json", false);
     wrapper->start();

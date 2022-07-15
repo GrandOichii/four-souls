@@ -101,6 +101,7 @@ struct CardState {
     bool active;
     int id;
     int counters;
+    Zones zone;
 };
 
 class CardWrapper {

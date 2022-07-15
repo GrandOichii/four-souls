@@ -137,6 +137,7 @@ CardState CardWrapper::getState() {
     result.active = !_tapped;
     result.id = _id;
     result.counters = _counters;
+    result.zone = Zones::Unknown;
     return result;
 }
 

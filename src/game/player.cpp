@@ -220,6 +220,7 @@ int Player::attack() { return _attack + _tempAttackBoost; }
 PlayerBoardState Player::getState() {
     PlayerBoardState result;
     result.playerCard = _characterCard->getState();
+    result.playerCard.zone = Zones::CCard;
     result.playerCard.active = _characterActive;
     result.coinCount = _coinCount;
     result.health = _health;
@@ -227,10 +228,16 @@ PlayerBoardState Player::getState() {
     result.blueHealth = _blueHealth;
     result.soulCount = _soulCount;
     result.attack = attack();
-    for (const auto& w : _board)
-        result.board.push_back(w->getState());
-    for (const auto& w : _hand)
-        result.hand.push_back(w->getState());
+    for (const auto& w : _board) {
+        auto s = w->getState();
+        s.zone = Zones::Board;
+        result.board.push_back(s);
+    }
+    for (const auto& w : _hand) {
+        auto s = w->getState();
+        s.zone = Zones::Hand;
+        result.hand.push_back(s);
+    }
     return result;
 }
 
@@ -308,6 +315,10 @@ string BotPlayer::promptAction(const MatchState& state) {
     if (r != LUA_OK) throw std::runtime_error("bot action prompt script failed");
     if (!lua_isstring(L, -1)) throw std::runtime_error("bot action prompt didn't return a string");
     return (string)lua_tostring(L, -1);
+}
+
+void BotPlayer::update(const MatchState& state) {
+    
 }
 
 string BotPlayer::promptResponse(const MatchState& state, string text, string choiceType, vector<int> choices) {
