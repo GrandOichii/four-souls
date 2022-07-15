@@ -15,7 +15,6 @@ Game::Game(string dir) {
     this->loadTreasureCards(dir);
     this->loadMonsterCards(dir);
     this->loadCharacterCards(dir);
-    std::cout << "character" << std::endl;
 
     this->_setupScript = fs::readFile(fs::join(dir, SETUP_SCRIPT_FILE).c_str());
     //  TODO load config

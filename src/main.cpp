@@ -4,8 +4,7 @@
 #include <stdlib.h>
 #include <time.h>  
 
-#define CONNECTED_PLAYERS 0
-#define BOTS 2
+
 
 #include "network/olc_network.hpp"
 
@@ -36,6 +35,9 @@ std::pair<int, int> getSize(SDL_Texture *texture) {
     SDL_QueryTexture(texture, NULL, NULL, &size.x, &size.y);
     return std::make_pair(size.x, size.y);
 }
+
+int CONNECTED_PLAYERS;
+int BOTS;
 
 class Font {
 private:
@@ -149,9 +151,11 @@ public:
     }
 };
 
-enum ResponseType : uint8_t {
-    PlayLootCard,
-    Pass
+enum PollType : uint8_t {
+    ServerMessage,
+    Action,
+    Prompt,
+    SimplePrompt
 };
 
 class Server : public server_interface<int> {
@@ -852,6 +856,10 @@ public:
 
 class ClientWrapper {
 private:
+    bool _wasClicked = false;
+    CardState _lastClicked;
+    bool _waitingResponse = false;
+    
     string _host;
     Client* _c;
     bool _hasState = false;
@@ -999,15 +1007,16 @@ public:
     void start() {
         this->setup();
         this->_running = true;
+        bool clicked = false;
         while (this->_running) {
-            bool request = false;
             if (!_c->Incoming().empty()) {
                 auto msg = _c->Incoming().pop_front().msg;
                 string jstate;
                 msg >> jstate;
                 _state = MatchState(jstate);
                 _hasState = true;
-                request = true;
+                _waitingResponse = true;
+                // request = true;
             }
             // handle events
             while (SDL_PollEvent(this->_event)) {
@@ -1017,24 +1026,25 @@ public:
                     break;
                 case SDL_KEYDOWN:
                     this->handleKey(_event->key.keysym.sym);
+                    break;
+                case SDL_MOUSEBUTTONDOWN:
+                    clicked = true;
+                    break;
                 }
             }
             this->clear();
             if (_hasState)
                 this->draw();
             this->flush();
-            if (request) {
-                std::cout << "Your response: ";
-                string response;
-                std::getline(std::cin, response);
+            if (_waitingResponse && clicked && _wasClicked) {
                 message<int> reply;
-                if (!response.size())
-                    response = "$PASS";
-                reply << response;
-                reply.header.id = 0;
+                std::cout << _lastClicked.cardName << "\t" << _lastClicked.id << std::endl;
+                reply << "play_loot " + std::to_string(_lastClicked.id);
                 _c->Send(reply);
+                _waitingResponse = false;
+                _wasClicked = false;
             }
-            request = false;
+            clicked = false;
         }
     }
 
@@ -1052,6 +1062,12 @@ public:
         case 'f':
             this->toggleFullscreen();
             return;
+        case SDLK_SPACE:
+            if (!_waitingResponse) return;
+            message<int> reply;
+            reply << ACTION_PASS;
+            _c->Send(reply);
+            _waitingResponse = false;
         }
     }
 
@@ -1065,7 +1081,7 @@ public:
         SDL_RenderClear(_ren);
     }
 
-    void drawCard(const CardState& card, int x, int y) {
+    void drawCard(CardState& card, int x, int y) {
         this->drawTexture(this->_assets->getCard(card.cardName), x, y, card.active ? 0 : 90);
         auto tex = _assets->getMessage("[" + std::to_string(card.id) + "]", SDL_Color{ 255, 0, 255, 0 }, 24);
         drawTexture(tex, x + 2, y + 2);
@@ -1075,10 +1091,31 @@ public:
             drawTexture(tex, x + 2, y + 2 + 24);
             SDL_DestroyTexture(tex);
         }
+        int mx, my;
+        auto s = SDL_GetMouseState(&mx, &my);
+        if (mx >= x && my >= y && mx <= x + _cardSize.first && my <= _cardSize.second) {
+            int w = card.active ? _cardSize.first : _cardSize.second;
+            int h = card.active ? _cardSize.second : _cardSize.first;
+            auto color = (s&1) ? SDL_Color{255, 0, 0, 0} : SDL_Color{0, 255, 0, 0};
+            this->drawRect(x, y, w, h, color, false);
+            this->drawRect(x+1, y+1, w-2, h-2, color, false);
+            if (s&1) {
+                _lastClicked = card;
+                _wasClicked = true;
+            }
+        }
     }
 
     void drawCard(string cardName, bool active, int x, int y) {
         this->drawTexture(this->_assets->getCard(cardName), x, y, active ? 0 : 90);
+        // int mx, my;
+        // SDL_GetMouseState(&mx, &my);
+        // if (mx >= x && my >= y && mx <= x + _cardSize.first && my <= _cardSize.second) {
+        //     int w = active ? _cardSize.first : _cardSize.second;
+        //     int h = active ? _cardSize.second : _cardSize.first;
+        //     this->drawRect(x, y, w, h, SDL_Color{255, 0, 0, 0}, false);
+        //     this->drawRect(x+1, y+1, w-2, h-2, SDL_Color{255, 0, 0, 0}, false);
+        // }
     }
 
     void drawCardBack(string cardType, bool active, int x, int y) {
@@ -1102,22 +1139,22 @@ public:
             SDL_Color{ 255, 0, 0, 0 });
 
         // draw boards
-        this->drawBoards(_state);
+        this->drawBoards();
         // draw decks
-        this->drawSideBoard(_state);
+        this->drawSideBoard();
         // draw stack
-        this->drawStack(_state);
+        this->drawStack();
     }
 
-    void drawSideBoard(const MatchState& state) {
-        this->drawLoot(state);
-        this->drawTreasure(state);
-        this->drawMonsters(state);
+    void drawSideBoard() {
+        this->drawLoot();
+        this->drawTreasure();
+        this->drawMonsters();
     }
 
-    void drawMonsters(const MatchState& state) {
+    void drawMonsters() {
         // draw monster deck
-        auto count = state.monsterDeckCount;
+        auto count = _state.monsterDeckCount;
         if (count) this->drawCardBack(CARD_TYPE_MONSTER, true, _monsterDeckX, _monsterDeckY);
         // _lastLootDeckCount
         if (count != _lastMonsterDeckCount) {
@@ -1127,9 +1164,9 @@ public:
         }
         this->drawTexture(_lastMonsterDeckCountTex, _monsterDeckX + 10, _monsterDeckY + 10);
         // draw monster discard
-        count = state.monsterDiscard.size();
+        count = _state.monsterDiscard.size();
         if (count) {
-            this->drawCard(*(state.monsterDiscard.end() - 1), _monsterDiscardX, _monsterDeckY);
+            this->drawCard(*(_state.monsterDiscard.end() - 1), _monsterDiscardX, _monsterDeckY);
         }
         if (count != _lastMonsterDeckCount) {
             _lastMonsterDiscardCount = count;
@@ -1139,7 +1176,7 @@ public:
         this->drawTexture(_lastMonsterDiscardCountTex, _monsterDiscardX + 10, _monsterDeckY + 10);
         // draw monster slots
         auto y = _monsterDeckY + _cardSize.second;
-        for (const auto& card : state.monsters) {
+        for (const auto& card : _state.monsters) {
             this->drawTexture(this->_assets->getCard(card.cardName), _monsterDiscardX + 20, y, -90);
             // auto tex = this->_assets->getCard(name);
             // this->drawTexture(tex, _monsterDiscardX + 20, y, -90);
@@ -1147,9 +1184,9 @@ public:
         }
     }
 
-    void drawTreasure(const MatchState& state) {
+    void drawTreasure() {
         // draw treasure deck
-        auto count = state.treasureDeckCount;
+        auto count = _state.treasureDeckCount;
         if (count) this->drawCardBack(CARD_TYPE_TREASURE, true, _treasureDeckX, _treasureDeckY);
         // _lastLootDeckCount
         if (count != _lastTreasureDeckCount) {
@@ -1159,10 +1196,10 @@ public:
         }
         this->drawTexture(_lastTreasureDeckCountTex, _treasureDeckX + 10, _treasureDeckY + 10);
         // draw treasure discard
-        count = state.treasureDiscard.size();
+        count = _state.treasureDiscard.size();
         // std::cout << "\t" << count << std::endl;
         if (count) {
-            this->drawCard(*(state.treasureDiscard.end() - 1), _treasureDiscardX, _treasureDeckY);
+            this->drawCard(*(_state.treasureDiscard.end() - 1), _treasureDiscardX, _treasureDeckY);
         }
         if (count != _lastTreasureDiscardCount) {
             _lastTreasureDiscardCount = count;
@@ -1172,7 +1209,7 @@ public:
         this->drawTexture(_lastTreasureDiscardCountTex, _treasureDiscardX + 10, _treasureDeckY + 10);
         // draw shop
         auto y = _treasureDeckY - _cardSize.second;
-        for (const auto& card : state.shop) {
+        for (const auto& card : _state.shop) {
             this->drawTexture(this->_assets->getCard(card.cardName), _treasureDiscardX + 20, y, -90);
             // auto tex = this->_assets->getCard(name);
             // this->drawTexture(tex, _treasureDiscardX + 20, y, -90);
@@ -1181,9 +1218,9 @@ public:
         }
     }
 
-    void drawLoot(const MatchState& state) {
+    void drawLoot() {
         // draw loot deck
-        auto count = state.lootDeckCount;
+        auto count = _state.lootDeckCount;
         if (count) this->drawCardBack(CARD_TYPE_LOOT, true, _lootDeckX, _lootDeckY);
         if (count != _lastLootDeckCount) {
             _lastLootDeckCount = count;
@@ -1192,9 +1229,9 @@ public:
         }
         this->drawTexture(_lastLootDeckCountTex, _lootDeckX + 10, _lootDeckY + 10);
         // draw loot discard
-        count = state.lootDiscard.size();
+        count = _state.lootDiscard.size();
         if (count) {
-            this->drawCard(*(state.lootDiscard.end() - 1), _lootDiscardX, _lootDeckY);
+            this->drawCard(*(_state.lootDiscard.end() - 1), _lootDiscardX, _lootDeckY);
         }
         if (count != _lastLootDiscardCount) {
             _lastLootDiscardCount = count;
@@ -1204,16 +1241,16 @@ public:
         this->drawTexture(_lastLootDiscardCountTex, _lootDiscardX + 10, _lootDeckY + 10);
     }
 
-    void drawBoards(const MatchState& state) {
-        for (int i = 0; i < state.boards.size(); i++) {
-            auto space = state.boards[i];
+    void drawBoards() {
+        for (int i = 0; i < _state.boards.size(); i++) {
+            auto space = _state.boards[i];
             int pX = _playerSpaces[i][0];
             int pY = _playerSpaces[i][1];
             int lootX = pX + 200;
             int looyY = pY + 10;
-            if (i == state.currentI)
+            if (i == _state.currentI)
                 this->drawRect(pX, pY, _boardWidth / 2, _boardHeight / 2, SDL_Color{ 0, 150, 0, 0 }, true);
-            if (i == state.priorityI) {
+            if (i == _state.priorityI) {
                 int width = _boardWidth / 2;
                 int height = _boardHeight / 2;
                 this->drawRect(pX, pY, width, height, SDL_Color{ 0, 255, 255, 0 }, false);
@@ -1226,11 +1263,11 @@ public:
             this->drawCard(cCard, pX + 10, pY + 10);
             pY += 150;
             int betweenCards = 2;
-            for (const auto& card : space.board) {
+            for (auto& card : space.board) {
                 this->drawCard(card, pX + 10, pY);
                 pX += _cardSize.second + betweenCards;
             }
-            for (const auto& card : space.hand) {
+            for (auto& card : space.hand) {
                 this->drawCard(card, lootX, looyY);
                 lootX += _cardSize.first + betweenCards;
             }
@@ -1269,12 +1306,12 @@ public:
         }
     }
 
-    void drawStack(const MatchState& state) {
+    void drawStack() {
         this->drawRect(_stackX, 0, _wWidth - _stackX, _wHeight, SDL_Color{ 169, 169, 169, 0 }, true);
         int yOffset = 10;
         int x = _stackX + 10;
         int y = yOffset;
-        for (const auto& si : state.stack) {
+        for (auto& si : _state.stack) {
             if (si.isCard) {
                 this->drawCard(si.card, x, y);
             }
@@ -1326,9 +1363,6 @@ public:
     }
 };
 
-
-
-
 int main() {
 
     Client c;
@@ -1345,8 +1379,10 @@ int main() {
     delete wrapper;
 }
 
-int main1() {
+int mai1n(int argc, char* argv[]) {
     // srand(time(0));
+    BOTS = atoi(argv[1]);
+    CONNECTED_PLAYERS = atoi(argv[2]);
     srand(1);
     try {
     auto wrapper = new GameWrapper("four-souls", "game", "players.json", false);
