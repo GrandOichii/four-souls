@@ -66,10 +66,10 @@ struct MatchState {
 
     void pushTable(lua_State* L) const;
     
-    string toJson() const;
+    nlohmann::json toJson();
 
     MatchState();
-    MatchState(string js);
+    MatchState(nlohmann::json j);
 };
 
 struct StackEffect {

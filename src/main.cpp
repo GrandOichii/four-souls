@@ -272,14 +272,11 @@ public:
 
     }
 
-    string getResponse(const MatchState& state) {
+    string getResponse(MatchState& state) {
         message<PollType> msg;
         msg.header.id = PollType::GetAction;
-        // msg << string("Do what?");
-        string s = state.toJson();
+        string s = state.toJson().dump();
         msg << s;
-        std::cout << msg << std::endl;
-        // std::cout << s << std::endl;
         _server->MessageClient(_conn, msg);
         _server->WaitForMessages();
         auto response = _server->LastMessage();
@@ -288,18 +285,18 @@ public:
         return result;
     }
 
-    void update(const MatchState& state) {
+    void update(MatchState& state) {
         message<PollType> msg;
         msg.header.id = PollType::Update;
-        string s = state.toJson();
+        string s = state.toJson().dump();
         msg << s;
         _server->MessageClient(_conn, msg);   
     }
 
-    string promptAction(const MatchState& state) { 
+    string promptAction(MatchState& state) { 
         message<PollType> msg;
         msg.header.id = PollType::GetAction;
-        string s = state.toJson();
+        string s = state.toJson().dump();
         msg << s;
         _server->MessageClient(_conn, msg);
         _server->WaitForMessages();
@@ -309,17 +306,32 @@ public:
         return result;
     }
 
-    string promptResponse(const MatchState& state, string text, string choiceType, vector<int> choices) { 
+    string promptResponse(MatchState& state, string text, string choiceType, vector<int> choices) { 
+        message<PollType> msg;
+        msg.header.id = PollType::Prompt;
+        auto j = state.toJson();
+        j["prompt"] = nlohmann::json::object();
+        j["prompt"]["text"] = text;
+        j["prompt"]["choiceType"] = choiceType;
+        j["prompt"]["choices"] = nlohmann::json::array();
+        for (const auto& c : choices)
+            j["prompt"]["choices"].push_back(c);
+        string s = j.dump();
+        msg << s;
+        _server->MessageClient(_conn, msg);
+        _server->WaitForMessages();
+        auto response = _server->LastMessage();
+        string result;
+        response >> result;
+        return result;
+    }
+
+    string promptSimpleResponse(MatchState& state, string text, vector<string> choices) {
         auto result = getResponse(state);
         return (result == "$PASS" ? "$FIRST" : result);
     }
 
-    string promptSimpleResponse(const MatchState& state, string text, vector<string> choices) {
-        auto result = getResponse(state);
-        return (result == "$PASS" ? "$FIRST" : result);
-    }
-
-    string promptChooseCardsInHand(const MatchState& state, string text, int targetID, int amount){ 
+    string promptChooseCardsInHand(MatchState& state, string text, int targetID, int amount){ 
         return getResponse(state);
     }
 };
@@ -878,6 +890,12 @@ public:
 class ClientWrapper {
 private:
     bool _waitingResponse = false;
+    PollType _lastRequestType;
+    string _lastChoiceType = "";
+    vector<int> _allowedCards;
+
+    SDL_Texture* _lastTextTex = nullptr;
+    string _lastText = "";
     
     string _host;
     Client* _c;
@@ -962,20 +980,22 @@ public:
         auto stackWidth = 150;
         this->_stackX = this->_wWidth - stackWidth;
 
+        auto boardStart = 24;
+
         this->_boardWidth = this->_stackX - 1 - this->_sideBoardX;
-        this->_boardHeight = this->_wHeight;
+        this->_boardHeight = this->_wHeight - boardStart;
 
         this->_playerSpaces[0][0] = this->_sideBoardX;
-        this->_playerSpaces[0][1] = _boardHeight / 2 + 1;
+        this->_playerSpaces[0][1] = boardStart + _boardHeight / 2 + 1;
 
         this->_playerSpaces[1][0] = this->_sideBoardX;
-        this->_playerSpaces[1][1] = 0;
+        this->_playerSpaces[1][1] = boardStart;
 
         this->_playerSpaces[2][0] = this->_sideBoardX + _boardWidth / 2 + 1;
-        this->_playerSpaces[2][1] = 0;
+        this->_playerSpaces[2][1] = boardStart;
 
         this->_playerSpaces[3][0] = this->_sideBoardX + _boardWidth / 2 + 1;
-        this->_playerSpaces[3][1] = _boardHeight / 2 + 1;
+        this->_playerSpaces[3][1] = boardStart + _boardHeight / 2 + 1;
 
         this->_assets = new AssetsManager(this->_ren, "font/font.ttf");
         auto allCards = this->_game->getAllCards();
@@ -1015,12 +1035,63 @@ public:
         delete _c;
         delete _assets;
 
+        SDL_DestroyTexture(_lastTextTex);
         SDL_DestroyTexture(_lastLootDeckCountTex);
         SDL_DestroyTexture(_lastLootDiscardCountTex);
         SDL_DestroyTexture(_lastTreasureDeckCountTex);
         SDL_DestroyTexture(_lastTreasureDiscardCountTex);
         SDL_DestroyTexture(_lastMonsterDeckCountTex);
         SDL_DestroyTexture(_lastMonsterDiscardCountTex);
+    }
+
+    void getActionCalc() {
+        _allowedCards.clear();
+        auto me = _state.boards[_state.priorityI];
+        _waitingResponse = true;
+        // check character card
+        if (me.playerCard.active) _allowedCards.push_back(me.playerCard.id);
+        // check board
+        for (const auto& value : me.board)
+            if (value.active) _allowedCards.push_back(value.id);
+        // check loot cards
+        if (me.playableCount)
+            for (const auto& value : me.hand)
+                _allowedCards.push_back(value.id);
+        // check treasure
+        if (me.purchaseCount && me.coinCount >= me.treasurePrice)
+            for (const auto& value : _state.shop)
+                _allowedCards.push_back(value.id);
+        // check monsters
+    }
+
+    void promptCalc(nlohmann::json j) {
+        _waitingResponse = true;
+        _lastText = j["prompt"]["text"];
+        _lastChoiceType = j["prompt"]["choiceType"];
+        std::vector<int> choices;
+        std::cout << "LAST" << std::endl;
+        std::cout << _lastText << std::endl;
+        std::cout << _lastChoiceType << std::endl;
+        for (const auto& [key, value] : j["prompt"]["choices"].items()) {
+            choices.push_back(value);
+            std::cout << value << " ";
+        }
+        std::cout << std::endl;
+    }
+
+    void calcAllowedCards(nlohmann::json j) {
+        switch (_lastRequestType) {
+        case PollType::Update:
+            break;
+        case PollType::GetAction:
+            this->getActionCalc();
+            break;
+        case PollType::Prompt:
+            this->promptCalc(j);
+            break;
+        default:
+            break;
+        }
     }
 
     void start() {
@@ -1033,17 +1104,11 @@ public:
                 auto msg = f.msg;
                 string jstate;
                 msg >> jstate;
-                _state = MatchState(jstate);
+                auto j = nlohmann::json::parse(jstate);
+                _state = MatchState(j);
                 _hasState = true;
-                switch (msg.header.id) {
-                case PollType::Update:
-                    break;
-                case PollType::GetAction:
-                    _waitingResponse = true;
-                    break;
-                default:
-                    break;
-                }
+                _lastRequestType = msg.header.id;
+                this->calcAllowedCards(j);
                 // request = true;
             }
             // handle events
@@ -1151,6 +1216,10 @@ public:
             drawTexture(tex, x + 2, y + 2 + 24);
             SDL_DestroyTexture(tex);
         }
+        bool allowed = false;
+        for (const auto& id : _allowedCards)
+            if (id == card.id) allowed = true;
+        if (!allowed) return;
         int mx, my;
         auto s = SDL_GetMouseState(&mx, &my);
         int w = (angle == 0) ? _cardSize.first : _cardSize.second;
@@ -1314,7 +1383,7 @@ public:
             int betweenCards = 2;
             for (auto& card : space.board) {
                 // this->drawCard(card, (card.active ? 0 : 90), pX + 10, pY);
-                this->drawCard(card, 0, pX + 10, pY);
+                this->drawCard(card, (card.active ? 0 : 90), pX + 10, pY);
                 pX += _cardSize.second + betweenCards;
             }
             for (auto& card : space.hand) {

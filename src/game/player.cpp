@@ -223,7 +223,10 @@ PlayerBoardState Player::getState() {
     result.playerCard.zone = Zones::CCard;
     result.playerCard.active = _characterActive;
     result.coinCount = _coinCount;
+    result.playableCount = _playableCount;
+    result.purchaseCount = _purchaseCount;
     result.health = _health;
+    result.treasurePrice = _treasurePrice;
     result.maxHealth = maxHealth();
     result.blueHealth = _blueHealth;
     result.soulCount = _soulCount;
@@ -297,7 +300,7 @@ static const char* PROMPT_ACTION_FUNC = "Bot_PromptAction";
 static const char* PROMPT_RESPONSE_FUNC = "Bot_PromptResponse";
 static const char* PROMPT_SIMPLE_RESPONSE_FUNC = "Bot_PromptSimpleResponse";
 
-string BotPlayer::promptAction(const MatchState& state) {
+string BotPlayer::promptAction(MatchState& state) {
     // if (_actions.empty()) return ACTION_PASS;
     // auto result = _actions.top();
     // if (result == "mainWait") {
@@ -317,21 +320,21 @@ string BotPlayer::promptAction(const MatchState& state) {
     return (string)lua_tostring(L, -1);
 }
 
-void BotPlayer::update(const MatchState& state) {
+void BotPlayer::update(MatchState& state) {
     
 }
 
-string BotPlayer::promptResponse(const MatchState& state, string text, string choiceType, vector<int> choices) {
+string BotPlayer::promptResponse(MatchState& state, string text, string choiceType, vector<int> choices) {
     //  TODO
     return "$FIRST";
 }
 
-string BotPlayer::promptSimpleResponse(const MatchState& state, string text, vector<string> choices) {
+string BotPlayer::promptSimpleResponse(MatchState& state, string text, vector<string> choices) {
     //  TODO
     return "$FIRST";
 }
 
-string BotPlayer::promptChooseCardsInHand(const MatchState& state, string text, int targetID, int amount) { 
+string BotPlayer::promptChooseCardsInHand(MatchState& state, string text, int targetID, int amount) { 
     //  TODO
     return "";
 }

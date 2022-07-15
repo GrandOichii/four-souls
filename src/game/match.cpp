@@ -30,9 +30,13 @@ static PlayerBoardState playerFromJson(json j) {
     result.health = j["health"];
     result.maxHealth = j["maxHealth"];
     result.blueHealth = j["blueHealth"];
+    result.treasurePrice = j["treasurePrice"];
     result.soulCount = j["soulCount"];
     result.attack = j["attack"];
     result.health = j["health"];
+    result.playableCount = j["playableCount"];
+    result.purchaseCount = j["purchaseCount"];
+
     result.playerCard = cardFromJson(j["playerCard"]);
     result.board = cardVectorFromJson(j["board"]);
     result.hand = cardVectorFromJson(j["hand"]);
@@ -47,12 +51,10 @@ static StackMemberState stackMemberFromJson(json j) {
     return result;
 }
 
-MatchState::MatchState(string text){
-    auto j = json::parse(text);
+MatchState::MatchState(nlohmann::json j){
     // boards = vector<PlayerBoardState>();
     for (const auto& [key, value] : j["boards"].items())
         boards.push_back(playerFromJson(value));
-    // std::cout << "DESERIALIZED BOARDS" << std::endl;
     // stack = vector<StackMemberState>();
     for (const auto& [key, value] : j["stack"].items())
         stack.push_back(stackMemberFromJson(value));
@@ -104,14 +106,18 @@ static json playerToJson(const PlayerBoardState& player) {
     result["maxHealth"] = player.maxHealth;
     result["blueHealth"] = player.blueHealth;
     result["soulCount"] = player.soulCount;
+    result["treasurePrice"] = player.treasurePrice;
     result["attack"] = player.attack;
+    result["playableCount"] = player.playableCount;
+    result["purchaseCount"] = player.purchaseCount;
+
     result["playerCard"] = cardToJson(player.playerCard);
     result["board"] = cardVectorToJson(player.board);
     result["hand"] = cardVectorToJson(player.hand);
     return result;
 }
 
-string MatchState::toJson() const {
+json MatchState::toJson() {
     json result;
     result["boards"] = json::array();
     for (const auto& board : boards)
@@ -131,7 +137,7 @@ string MatchState::toJson() const {
     result["monsterDiscard"] = cardVectorToJson(monsterDiscard);
     result["shop"] = cardVectorToJson(shop);
     result["monsters"] = cardVectorToJson(monsters);
-    return result.dump(4);
+    return result;
 }
 
 static void pushCards(vector<CardWrapper*> cards, lua_State* L) {
@@ -163,14 +169,6 @@ StackMemberState StackEffect::getState() {
     }
     return result;
 }
-
-// string toJson(const StackMemberState& state) {
-//     string result = "";
-//     addValue(result, "message", state.message);
-//     addValue(result, "isCard", state.isCard);
-//     addValue(result, "card", state.card, true);
-//     return result;
-// }
 
 void MatchState::pushTable(lua_State* L) const {
     lua_newtable(L);
@@ -552,7 +550,8 @@ int Match::wrap_requestChoice(lua_State* L) {
     }
     Player* player = match->playerWithID(pid);
     std::cout << choices.size() << std::endl;
-    auto response = player->promptResponse(match->getState(), text, choiceType, choices);
+    auto state = match->getState();
+    auto response = player->promptResponse(state, text, choiceType, choices);
     
     // clear lua stack ?
     std::cout << "\t" << player->name() << ": " << response << " (response)" << std::endl;
@@ -598,7 +597,8 @@ int Match::wrap_requestCardsInHand(lua_State* L){
         exit(1);
     }
     auto amount = (int)lua_tonumber(L, 5);
-    auto result = player->promptChooseCardsInHand(match->getState(), text, tid, amount);
+    auto state = match->getState();
+    auto result = player->promptChooseCardsInHand(state, text, tid, amount);
     auto split = str::split(result, " ");
     auto size = split.size();
     lua_createtable(L, size, 0);
@@ -644,7 +644,8 @@ int Match::wrap_requestSimpleChoice(lua_State* L) {
         choices.push_back((string)lua_tostring(L, -1));
         lua_pop(L, 1);
     }
-    auto response = player->promptSimpleResponse(match->getState(), text, choices);
+    auto state = match->getState();
+    auto response = player->promptSimpleResponse(state, text, choices);
     std::cout << response << std::endl;
     if (response == RESPONSE_FIRST) response = choices[0];
     std::cout << response << std::endl;
@@ -1689,10 +1690,12 @@ void Match::turn() {
     _isMainPhase = true;
     this->log(_activePlayer->name() + "'s main phase");
     string response = "";
-    while ((response = this->_activePlayer->promptAction(this->getState())) != ACTION_PASS) {
+    auto state = this->getState();
+    while ((response = this->_activePlayer->promptAction(state)) != ACTION_PASS) {
         std::cout << "\t" << _activePlayer->name() << ": " << response << std::endl;
         this->executePlayerAction(_activePlayer, response);
         this->resolveStack();
+        state = this->getState();
     }
     _isMainPhase = false;
     this->log("End of " + this->_activePlayer->name() + "'s turn");
@@ -1785,8 +1788,10 @@ void Match::resolveStack() {
 }
 
 void Match::updateAllPlayers() {
-    for (auto& player : _players)
-        player->update(this->getState());
+    for (auto& player : _players) {
+        auto state = this->getState();
+        player->update(state);
+    }
 }
 
 void Match::resolveTop() {
