@@ -66,6 +66,20 @@ function Common_Tap(host)
     return true
 end
 
+function Common_Discard(host, ownerID, amount)
+    local player = Common_PlayerWithID(host, ownerID)
+    if #player["hand"] == 0 then
+        return false
+    end
+    local cardIDs = requestCardsInHand(host, ownerID, ownerID, "Choose a card to discard", 1)
+    --  TODO debug
+    for _, cid in ipairs(cardIDs) do
+        print("DISCARDING CARD WITH ID "..cid)
+        discardLoot(host, ownerID, cid)
+    end
+    return true
+end
+
 function Common_Roll(host, ownerID)
     pushRollEvent(host, ownerID)
     return true
@@ -176,9 +190,9 @@ function Common_OwnersTurn(host, cardID)
     return owner["id"] == currentPlayer["id"]
 end
 
-function Common_ChooseCardInHand(host, playerID, handsPlayerID)
-    --  TODO
-end
+-- function Common_ChooseCardInHand(host, playerID, handsPlayerID)
+--     --  TODO
+-- end
 
 function Common_PayOneLife(host, ownerID)
     dealDamage(host, ownerID, 1)

@@ -670,6 +670,12 @@ int Match::wrap_requestCardsInHand(lua_State* L){
     auto amount = (int)lua_tonumber(L, 5);
     auto state = match->getState();
     auto result = player->promptChooseCardsInHand(state, text, tid, amount);
+    if (result == RESPONSE_FIRST) {
+        auto hand = player->hand();
+        result = std::to_string(hand[0]->id());
+        for (int i = 1; i < amount; i++)
+            result += " " + std::to_string(hand[i]->id());
+    }
     auto split = str::split(result, " ");
     auto size = split.size();
     lua_createtable(L, size, 0);
@@ -680,6 +686,28 @@ int Match::wrap_requestCardsInHand(lua_State* L){
     }
     return 1;
     // requestCardsInHand(host, playerID, targetID, text, amount)
+}
+
+int Match::wrap_discardLoot(lua_State* L) {
+    if (lua_gettop(L) != 3) {
+        lua_err(L);
+        exit(1);
+    }
+    auto match = static_cast<Match*>(lua_touserdata(L, 1));
+    if (!lua_isnumber(L, 2)) {
+        lua_err(L);
+        exit(1);
+    }
+    auto pid = (int)lua_tonumber(L, 2);
+    Player* player = match->playerWithID(pid);
+    if (!lua_isnumber(L, 3)) {
+        lua_err(L);
+        exit(1);
+    }
+    auto cid = (int)lua_tonumber(L, 3);
+    auto card = player->takeCard(cid);
+    match->_lootDiscard.push_back(card);
+    return 0;
 }
 
 int Match::wrap_requestSimpleChoice(lua_State* L) {
@@ -1520,6 +1548,7 @@ void Match::setupLua(string setupScript) {
     lua_register(L, "requestChoice", wrap_requestChoice);
     lua_register(L, "requestSimpleChoice", wrap_requestSimpleChoice);
     lua_register(L, "requestCardsInHand", wrap_requestCardsInHand);
+    lua_register(L, "discardLoot", wrap_discardLoot);
     lua_register(L, "incAttackCount", wrap_incAttackCount);
     lua_register(L, "tapCard", wrap_tapCard);
     lua_register(L, "millDeck", wrap_millDeck);

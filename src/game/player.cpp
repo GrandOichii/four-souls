@@ -334,5 +334,5 @@ string BotPlayer::promptSimpleResponse(MatchState& state, string text, vector<st
 
 string BotPlayer::promptChooseCardsInHand(MatchState& state, string text, int targetID, int amount) { 
     //  TODO
-    return "";
+    return "$FIRST";
 }

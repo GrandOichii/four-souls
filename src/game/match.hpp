@@ -328,6 +328,7 @@ public:
     static int wrap_this(lua_State *L);
     static int wrap_incBeginningLoot(lua_State* L);
     static int wrap_decBeginningLoot(lua_State* L);
+    static int wrap_discardLoot(lua_State* L);
     static int wrap_plusOneTreasure(lua_State* L);
     static int wrap_incMaxLife(lua_State* L);
     static int wrap_tempIncMaxLife(lua_State* L);

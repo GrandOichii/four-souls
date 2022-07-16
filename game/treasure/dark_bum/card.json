@@ -4,7 +4,7 @@
     "image": "image.bmp",
     "script": "script.lua",
     "on": {
-        "turn_end": {
+        "turn_start": {
             "check": "DarkBum_trigger_check",
             "cost": "DarkBum_trigger_cost",
             "effect": "DarkBum_trigger"

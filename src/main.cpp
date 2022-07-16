@@ -159,7 +159,8 @@ enum PollType : uint8_t {
     Update,
     GetAction,
     Prompt,
-    SimplePrompt
+    SimplePrompt,
+    ChooseCards
 };
 
 class Server : public server_interface<PollType> {
@@ -332,7 +333,21 @@ public:
     }
 
     string promptChooseCardsInHand(MatchState& state, string text, int targetID, int amount){ 
-        return getResponse(state);
+        message<PollType> msg;
+        msg.header.id = PollType::ChooseCards;
+        auto j = state.toJson();
+        j["prompt"] = nlohmann::json::object();
+        j["prompt"]["text"] = text;
+        j["prompt"]["targetID"] = targetID;
+        j["prompt"]["amount"] = amount;
+        string s = j.dump();
+        msg << s;
+        _server->MessageClient(_conn, msg);
+        _server->WaitForMessages();
+        auto response = _server->LastMessage();
+        string result;
+        response >> result;
+        return result;
     }
 };
 
@@ -599,7 +614,7 @@ public:
     }
 
     void draw() {
-        return;
+        // return;
         // draw player separators
         this->drawLine(
             this->_sideBoardX + this->_boardWidth / 2, 
@@ -894,6 +909,9 @@ private:
     bool _waitingResponse = false;
     PollType _lastRequestType;
 
+    int _cardAmount = 0;
+    vector<int> _chosenCardIDs;
+
     vector<int> _allowedCards;
     vector<int> _allowedPlayers;
     vector<int> _allowedStackMembers;
@@ -906,6 +924,7 @@ private:
     MatchState _state;
     bool _fullscreen;
     string _title;
+    bool _mouseLock;
 
     Game* _game = nullptr;
     AssetsManager* _assets = nullptr;
@@ -960,6 +979,7 @@ public:
         _allowedCards.clear();
         _allowedPlayers.clear();
         _allowedStackMembers.clear();
+        _chosenCardIDs.clear();
         this->_game = new Game("game");
 
         if (SDL_Init(SDL_INIT_EVERYTHING) != 0) {
@@ -1053,6 +1073,7 @@ public:
         _allowedCards.clear();
         _allowedPlayers.clear();
         _allowedStackMembers.clear();
+        _chosenCardIDs.clear();
         auto me = _state.boards[_state.priorityI];
         _waitingResponse = true;
         // check character card
@@ -1076,11 +1097,13 @@ public:
         _allowedCards.clear();
         _allowedPlayers.clear();
         _allowedStackMembers.clear();
+        _chosenCardIDs.clear();
         _waitingResponse = true;
 
         std::vector<int> choices;
         for (const auto& [key, value] : j["prompt"]["choices"].items()) choices.push_back(value);
         // last text texture
+        SDL_DestroyTexture(this->_lastTextTex);
         this->_lastTextTex = _assets->getMessage(j["prompt"]["text"], SDL_Color{255, 0, 0, 0}, _boardStart);
         auto lastChoiceType = j["prompt"]["choiceType"];
         if (lastChoiceType == PLAYER_TARGET) {
@@ -1093,25 +1116,34 @@ public:
             return;
         }
         if (lastChoiceType == STACK_MEMBER_TARGET) {
-            // int rollI = 0;
-            // for (const auto& i : choices)
-            //     std::cout << i << " ";
-            // std::cout << std::endl;
             _allowedStackMembers = choices;
-            // for (int i = 0; i < _state.stack.size(); i++) {
-            //     if (_state.stack[i].type != ROLL_TYPE) continue;
-            //     rollI++;
-            //     bool add = false;
-            //     for (const auto& c : choices)
-            //         if (c == rollI)
-            //             add = true;
-            //     if (!add) continue;
-            //     _allowedStackMembers.push_back(i);
-            // }
             return;
         }
         //  TODO items in shop
         //  TODO monsters
+    }
+
+    void simplePromptCalc(nlohmann::json j) {
+        //  TODO
+    }
+
+    void chooseCardsCalc(nlohmann::json j) {
+        _allowedCards.clear();
+        _allowedPlayers.clear();
+        _allowedStackMembers.clear();
+        _chosenCardIDs.clear();
+        _waitingResponse = true;
+
+        SDL_DestroyTexture(this->_lastTextTex);
+        this->_lastTextTex = _assets->getMessage(j["prompt"]["text"], SDL_Color{255, 0, 0, 0}, _boardStart);
+        auto targetID = j["prompt"]["targetID"];
+        this->_cardAmount = j["prompt"]["amount"];
+        for (const auto& board : _state.boards) {
+            if (board.id != targetID) continue;
+            for (const auto& card : board.hand)
+                _allowedCards.push_back(card.id);
+            break;
+        }
     }
 
     void calcAllowedCards(nlohmann::json j) {
@@ -1123,6 +1155,12 @@ public:
             break;
         case PollType::Prompt:
             this->promptCalc(j);
+            break;
+        case PollType::SimplePrompt:
+            this->simplePromptCalc(j);
+            break;
+        case PollType::ChooseCards:
+            this->chooseCardsCalc(j);
             break;
         default:
             break;
@@ -1154,6 +1192,9 @@ public:
                     break;
                 case SDL_KEYDOWN:
                     this->handleKey(_event->key.keysym.sym);
+                    break;
+                case SDL_MOUSEBUTTONUP:
+                    _mouseLock = false;
                     break;
                 }
             }
@@ -1289,6 +1330,21 @@ public:
         _lastTextTex = nullptr;
     }
 
+    void chooseCard(CardState& card) {
+        _chosenCardIDs.push_back(card.id);
+        if (_chosenCardIDs.size() != _cardAmount) return;
+
+        message<PollType> reply;
+        string message = std::to_string(_chosenCardIDs[0]);
+        for (int i = 1; i < _chosenCardIDs.size(); i++)
+            message += " " + std::to_string(_chosenCardIDs[i]);
+        reply << message;
+        _c->Send(reply);
+        SDL_DestroyTexture(_lastTextTex);
+        _lastTextTex = nullptr;
+        _waitingResponse = false;
+    }
+
     void onClick(CardState card) {
         if (!_waitingResponse) return;
         std::cout << card.cardName << "\t" << card.id << std::endl;
@@ -1299,15 +1355,18 @@ public:
         case PollType::Prompt:
             this->answerPrompt(card);
             break;
+        case PollType::ChooseCards:
+            this->chooseCard(card);
+            break;
         default:
             break;
         }
         _waitingResponse = false;
     }
 
-    void drawStackMember(StackMemberState& member, int x, int y) {
-        //  TODO
-    }
+    // void drawStackMember(StackMemberState& member, int x, int y) {
+    //     //  TODO
+    // }
 
     void drawCard(CardState& card, int angle, int x, int y) {
         this->drawTexture(this->_assets->getCard(card.cardName), x, y, angle);
@@ -1319,6 +1378,7 @@ public:
             drawTexture(tex, x + 2, y + 2 + 24);
             SDL_DestroyTexture(tex);
         }
+        if (_mouseLock) return;
         bool allowed = false;
         for (const auto& id : _allowedCards)
             if (id == card.id) allowed = true;
@@ -1332,7 +1392,8 @@ public:
             this->drawRect(x, y, w, h, color, false);
             this->drawRect(x+1, y+1, w-2, h-2, color, false);
             if (s&1) {
-                onClick(card);                
+                onClick(card);
+                _mouseLock = true;         
             }
         }
     }
@@ -1553,7 +1614,8 @@ public:
                 this->drawRect(x, y, w, h, color, false);
                 this->drawRect(x+1, y+1, w-2, h-2, color, false);
                 if (s&1) {
-                    onClick(space);                
+                    onClick(space);
+                    _mouseLock = true;                
                 }
             }
         }
@@ -1595,7 +1657,8 @@ public:
                         this->drawRect(x, y, w, h, color, false);
                         this->drawRect(x+1, y+1, w-2, h-2, color, false);
                         if (s&1) {
-                            onClick(stackI);                
+                            onClick(stackI);    
+                            _mouseLock = true;            
                         }
                     }
                 }
@@ -1657,7 +1720,7 @@ int main() {
     return 0;
 }
 
-int m1ain(int argc, char* argv[]) {
+int ma1in(int argc, char* argv[]) {
     srand(time(0));
     // srand(1);
     BOTS = atoi(argv[1]);

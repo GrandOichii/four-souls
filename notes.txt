@@ -3,8 +3,17 @@
     -- the first table in getPlayers has to be the owner of the ability    
 
 - implement:
+    -- disable opponents hands in client
+    -- treasure buying in client
+    -- discard number in client
+    -- 
+    -- discard view in client (treasure, loot and discard)
+    -- simple choice to client
+    -- card choice in client
+    -- card discarding
     -- card destruction
     -- card leave - arguments: host, me(the card being destroyed), owner(the owner of the destroyed card)
     -- player deaths
     -- monsters
     -- bonus souls
+    -- card parser (?)

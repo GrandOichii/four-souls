@@ -1,0 +1,10 @@
+{
+    "name": "Guppy",
+    "health": 2,
+    "attack": 1,
+    "item": "infestation",
+    "image": "image.bmp",
+    "text": "{T}: Play an additional loot card this turn.\nStarting item: The D6",
+    "script": "script.lua",
+    "use": "Guppy_tap"
+}
