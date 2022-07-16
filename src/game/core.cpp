@@ -2,7 +2,7 @@
 
 #include <iostream>
 
-
+static const string CONFIG_FILE = "config.json";
 static const string LOOT_CARDS_FILE = "loot.json";
 static const string CHARACTER_CARDS_FILE = "characters.json";
 static const string MONSTER_CARDS_FILE = "monsters.json";
@@ -18,6 +18,7 @@ Game::Game(string dir) {
 
     this->_setupScript = fs::readFile(fs::join(dir, SETUP_SCRIPT_FILE).c_str());
     //  TODO load config
+    this->_matchConfig = fs::readJS(fs::join(dir, CONFIG_FILE).c_str());
 }
 
 string Game::lootCardBackPath(){ return _lootCardBackPath;}
@@ -86,7 +87,7 @@ Game::~Game() {
 }
 
 Match* Game::createMatch() {
-    auto result = new Match();
+    auto result = new Match(_matchConfig);
     for (auto& card : _characterCards)
         result->addToCharacterPool(card);
     result->createLootDeck(_lootDeckTemplate);

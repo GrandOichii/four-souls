@@ -221,8 +221,17 @@ void MatchState::pushTable(lua_State* L) const {
     l_pushtablenumber(L, "currentID", currentID);
 }
 
-Match::Match() {
+Match::Match(nlohmann::json config) {
     this->rng.seed(rand());
+
+    this->_startingLootAmount = config.contains("startingLootCount") ? (int)config["startingLootCount"] : 3;
+    this->_startingCoinAmount = config.contains("startingCoinCount") ? (int)config["startingCoinCount"] : 3;
+    this->_startingShopSize = config.contains("startingShopSize") ? (int)config["startingShopSize"]: 2;
+    this->_startingMonstersAmount = config.contains("startingMonstersAmount") ? (int)config["startingMonstersAmount"]: 2;
+    this->_startingTreasurePrice = config.contains("startingTreasurePrice") ? (int)config["startingTreasurePrice"] : 10;
+    this->_startingAttackCount = config.contains("startingAttackCount") ? (int)config["startingAttackCount"] : 1;
+    this->_startingPlayableCount = config.contains("startingPlayableCount") ? (int)config["startingPlayableCount"] : 1;
+    this->_startingPurchaseCount = config.contains("startingPurchaseCount") ? (int)config["startingPurchaseCount"] : 1;
 }
 
 Match::~Match() {
@@ -1609,8 +1618,9 @@ void Match::addToCharacterPool(CharacterCard* card) {
 }
 
 void Match::addPlayer(Player* player) {
-    player->addCoins(STARTING_COIN_AMOUNT);
+    player->addCoins(_startingCoinAmount);
     _players.push_back(player);
+    player->setStartingValues( _startingTreasurePrice,  _startingAttackCount,  _startingPlayableCount,  _startingPurchaseCount);
 
     _allWrappers.push_back(player->characterCard());
     auto w = addWrapper(player->origCharacterCard()->startingItem());
@@ -1691,31 +1701,18 @@ void Match::start() {
     std::cout << "\nThe game starts\n\n";
     // give starting hands
     for (auto& p : _players) {
-        auto cards = this->getTopLootCards(STARTING_LOOT_AMOUNT);
+        auto cards = this->getTopLootCards(_startingLootAmount);
         p->addLootCards(cards);
         std::cout << p->name() << "\t" << p->id() << std::endl;
     }
     // setup shop
-    auto tcards = getTopTreasureCards(STARTING_SHOP_SIZE);
+    auto tcards = getTopTreasureCards(_startingShopSize);
     for (const auto& c : tcards)
         _shop.push_back(c);
     // setup monsters
-    auto mcards = getTopMonsterCards(STARTING_MONSTERS_AMOUNT);
+    auto mcards = getTopMonsterCards(_startingMonstersAmount);
     for (const auto& c : mcards)
         _monsters.push_back(c);
-
-    // std::cout << "Gave the starting hands" << std::endl;
-    // std::cout << "Loot deck:" << std::endl;
-    // for (const auto& card : _lootDeck)
-    //     std::cout << "\t" << card->name() << std::endl;
-    // std::cout << "Treasure deck:" << std::endl;
-    // for (const auto& card : _treasureDeck)
-    //     std::cout << "\t" << card->name() << std::endl;
-    // std::cout << "Players:" << std::endl;
-    // for (const auto& p : _players)
-    //     p->print();
-
-    // this->_currentI = rand() % _players.size();
     this->_currentI = 0;
 
     this->_priorityI = this->_currentI;

@@ -11,12 +11,6 @@ Player::Player(std::string name, CharacterCard* card, int id) :
 
     this->_attack = card->attack();
 
-    // auto w = 
-
-    // w->setOwner(this);
-    // w->tap();
-    // this->_board.push_back(w);
-
     this->_characterCard = new CardWrapper(card, _id);
 
     this->_characterActive = false;
@@ -28,20 +22,22 @@ Player::Player(std::string name, CharacterCard* card, int id) :
     this->_additionalCoins = 0;
 
     this->_blueHealth = 0;
-
-    this->_treasurePrice = STARTING_TREASURE_PRICE;
-
-    this->_maxAttackCount = STARTING_ATTACK_COUNT;
-    this->_attackCount = this->_maxAttackCount;
-
-    this->_maxPlayableCount = STARTING_PLAYABLE_COUNT;
-    this->_playableCount = 0;
-
-    this->_maxPurchaseCount = STARTING_PURCHASE_COUNT;
-    this->_purchaseCount = 0;
 }
 
 Player::~Player()  {}
+
+void Player::setStartingValues(int treasurePrice, int attackCount, int playableCount, int purchaseCount) {
+    this->_treasurePrice = treasurePrice;
+
+    this->_maxAttackCount = attackCount;
+    this->_attackCount = this->_maxAttackCount;
+
+    this->_maxPlayableCount = playableCount;
+    this->_playableCount = 0;
+
+    this->_maxPurchaseCount = purchaseCount;
+    this->_purchaseCount = 0;
+}
 
 CharacterCard* Player::origCharacterCard() { return _characterCardOrig; }
 

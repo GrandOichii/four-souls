@@ -147,6 +147,7 @@ public:
     void addSouls(int amount);
 
     void resetEOT();
+    void setStartingValues(int treasurePrice, int attackCount, int playableCount, int purchaseCount);
 };
 
 class BotPlayer : public Player {

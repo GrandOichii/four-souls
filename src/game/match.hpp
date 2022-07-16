@@ -27,24 +27,13 @@ using std::string;
 
 static const string CARD_INFO_FILE = "card.json";
 
-const int MIN_PLAYER_COUNT = 2;
-const int MAX_PLAYER_COUNT = 4;
-const int SOULS_TO_WIN = 4;
-const int STARTING_COIN_AMOUNT = 100;
-const int STARTING_LOOT_AMOUNT = 3;
-const int STARTING_SHOP_SIZE = 2;
-const int STARTING_MONSTERS_AMOUNT = 2;
-const int STARTING_TREASURE_PRICE = 10;
-const int STARTING_ATTACK_COUNT = 1;
-const int STARTING_PLAYABLE_COUNT = 1;
-const int STARTING_PURCHASE_COUNT = 3;
-
 struct StackMemberState {
     string message;
     bool isCard;
     CardState card;
     string type;
 };
+
 struct RollEventState;
 struct MatchState {
     vector<PlayerBoardState> boards;
@@ -143,6 +132,17 @@ struct RollEvent {
 
 class Match {
 private:
+    // config
+    int _startingLootAmount;
+    int _startingCoinAmount;
+    int _startingShopSize;
+    int _startingMonstersAmount;
+    int _startingTreasurePrice;
+    int _startingAttackCount;
+    int _startingPlayableCount;
+    int _startingPurchaseCount;
+
+
     int _lastID = 0;
     bool _running = false;
     lua_State *L;
@@ -273,7 +273,7 @@ private:
 
     std::vector<CardWrapper*> _allWrappers;
 public:
-    Match();
+    Match(nlohmann::json config);
     ~Match();
     void updateAllPlayers();
     CardWrapper* addWrapper(ScriptCard* card);

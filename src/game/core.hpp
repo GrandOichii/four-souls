@@ -8,6 +8,8 @@
 
 class Game {
 private:
+    nlohmann::json _matchConfig;
+
     // character cards
     std::vector<CharacterCard*> _characterCards;
     // loot cards

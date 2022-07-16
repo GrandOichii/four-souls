@@ -1065,7 +1065,7 @@ public:
             for (const auto& value : me.hand)
                 _allowedCards.push_back(value.id);
         // check treasure
-        if (me.purchaseCount && me.coinCount >= me.treasurePrice)
+        if (me.purchaseCount && me.coinCount >= me.treasurePrice && _state.stack.size() == 0)
             for (const auto& value : _state.shop)
                 _allowedCards.push_back(value.id);
         // check monsters
@@ -1657,7 +1657,7 @@ int main() {
     return 0;
 }
 
-int ma1in(int argc, char* argv[]) {
+int m1ain(int argc, char* argv[]) {
     srand(time(0));
     // srand(1);
     BOTS = atoi(argv[1]);
