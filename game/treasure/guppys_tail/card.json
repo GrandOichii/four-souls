@@ -6,7 +6,7 @@
     "enter": "GuppysTail_enter",    
     "leave": "GuppysTail_leave",
     "on": {
-        "turn_start": {
+        "turn_end": {
             "check": "GuppysTail_trigger_check",
             "effect": "GuppysTail_trigger"
         }

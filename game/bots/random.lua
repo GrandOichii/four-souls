@@ -26,11 +26,10 @@ function Bot_PromptAction(me, state)
         for _, trinket in pairs(trinkets) do
             if not trinket["passive"] and not trinket["tapped"] then
                 local response = "activate " .. trinket["id"] .. " 0"
-                if lastActivation == response then
-                    return "$PASS"
+                if lastActivation ~= response then
+                    lastActivation = response
+                    return response
                 end
-                lastActivation = response
-                return response
             end
         end
         return "$PASS"

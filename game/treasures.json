@@ -1,23 +1,23 @@
 {
     "back": "images/treasure_card_back.bmp",
-    "cards": [
+    "car1ds": [
         "treasure/moms_box",      
-        "treasure/goat_head",      
-        "treasure/goat_head",      
-        "treasure/goat_head",      
-        "treasure/goat_head",      
-        "treasure/goat_head",      
-        "treasure/goat_head",      
-        "treasure/goat_head",      
-        "treasure/goat_head",      
-        "treasure/goat_head",      
-        "treasure/goat_head",      
-        "treasure/goat_head",      
-        "treasure/guppys_tail",      
+        "treasure/guppys_tail",
+        "treasure/guppys_tail",
+        "treasure/guppys_tail",
+        "treasure/guppys_tail",
+        "treasure/guppys_tail",
+        "treasure/guppys_tail",
+        "treasure/guppys_tail",
+        "treasure/guppys_tail",
+        "treasure/guppys_tail",
+        "treasure/guppys_tail",
+        "treasure/guppys_tail",
+        "treasure/guppys_tail",
         "treasure/lard",
         "treasure/athame"
     ],
-    "card1s": [
+    "cards": [
         "treasure/guppys_tail",      
         "treasure/moms_box",      
         "treasure/eye_of_greed",

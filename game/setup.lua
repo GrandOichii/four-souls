@@ -194,10 +194,6 @@ function Common_OwnersTurn(host, cardID)
     return owner["id"] == currentPlayer["id"]
 end
 
--- function Common_ChooseCardInHand(host, playerID, handsPlayerID)
---     --  TODO
--- end
-
 function Common_PayOneLife(host, ownerID)
     dealDamage(host, ownerID, 1)
     return true

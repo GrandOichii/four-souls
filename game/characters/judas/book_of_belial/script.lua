@@ -4,8 +4,7 @@ end
 
 function BookOfBelial_tap(host)
     local target = popTarget(host)
-    local rolls = getRollStack(host)
-    local roll = rolls[target["id"]+1]
+    local roll = Common_RollWithID(host, target["id"])
     if roll == 6 then
         setRollValue(host, target["id"], roll["value"] - 1)
         return

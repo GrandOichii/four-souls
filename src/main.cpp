@@ -957,8 +957,12 @@ public:
             std::cout << "SDL_Init Error: " << SDL_GetError() << std::endl;
             return;
         }
+        SDL_DisplayMode DM;
+        SDL_GetCurrentDisplayMode(0, &DM);
+        auto width = DM.w;
+        auto height = DM.h;
         SDL_StartTextInput();
-        this->_win = SDL_CreateWindow(this->_title.c_str(), SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, 1280, 800, SDL_WINDOW_SHOWN);
+        this->_win = SDL_CreateWindow(this->_title.c_str(), SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, width, height, SDL_WINDOW_SHOWN);
         if (this->_win == nullptr) {
             std::cout << "SDL_CreateWindow Error: " << SDL_GetError() << std::endl;
             return;
