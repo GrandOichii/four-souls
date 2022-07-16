@@ -4,16 +4,13 @@
 #include <stdlib.h>
 #include <time.h>  
 
-
-
 #include "network/olc_network.hpp"
-
 #include "util.hpp"
-
 
 #define SDL_MAIN_HANDLED
 #include <SDL.h>
 #include <SDL_ttf.h>
+
 #include "game/core.hpp"
 #include "game/cards.hpp"
 #include "game/match.hpp"
@@ -223,38 +220,6 @@ protected:
         // fix bug on too many characters
         _lastClient = client;
         _lastMsg = msg;
-        /*
-      switch (msg.header.id) {
-      case int::ServerPing: {
-        std::wcout << "[" << msg.header.name.data() << "]: Ping the server\n";
-
-        // Simply bounce message back to client
-        client->send(msg);
-        break;
-      }
-
-      case int::MessageAll: {
-        std::wcout << "[" << msg.header.name.data() << "]: Send the message to all user\n";
-
-        //Construct a new message and send it to all clients
-        message<PollType> __msg;
-        __msg.header.id = int::ServerMessage;
-        __msg.header.name = msg.header.name;
-        message_all_clients(__msg, client);
-        break;
-      }
-
-      case int::JoinServer: {
-        std::wcout << "[" << msg.header.name.data() << "] Join the server\n";
-        break;
-      }
-
-      case int::PassString: {
-        std::wcout << "[" << msg.header.name.data() << "]: " << msg.data.data() << '\n';
-        break;
-      }
-      }
-      */
     }
 };
 
@@ -328,8 +293,22 @@ public:
     }
 
     string promptSimpleResponse(MatchState& state, string text, vector<string> choices) {
-        auto result = getResponse(state);
-        return (result == "$PASS" ? "$FIRST" : result);
+        message<PollType> msg;
+        msg.header.id = PollType::SimplePrompt;
+        auto j = state.toJson();
+        j["prompt"] = nlohmann::json::object();
+        j["prompt"]["text"] = text;
+        j["prompt"]["choices"] = nlohmann::json::array();
+        for (const auto& c : choices)
+            j["prompt"]["choices"].push_back(c);
+        string s = j.dump();
+        msg << s;
+        _server->MessageClient(_conn, msg);
+        _server->WaitForMessages();
+        auto response = _server->LastMessage();
+        string result;
+        response >> result;
+        return result;
     }
 
     string promptChooseCardsInHand(MatchState& state, string text, int targetID, int amount){ 
@@ -416,20 +395,6 @@ public:
 
         // add players
         this->addPlayers();
-        // auto j = fs::readJS(playersPath);
-        // for (const auto& [key, value] : j.items()) {
-        //     // vector<string> actions;
-        //     // vector<string> responses;
-        //     // for (const auto& [key, value] : pvalue["actions"].items()) actions.push_back(value);
-        //     // for (const auto& [key, value] : pvalue["responses"].items()) responses.push_back(value);
-        //     // auto aj = str::join(actions.begin(), actions.end(), "\n");
-        //     // auto rj = str::join(responses.begin(), responses.end(), "\n");
-        //     auto p = _match->addPlayer(
-        //         value["name"], 
-        //         _match->getRandomAvailableCharacter(), 
-        //         fs::readFile(fs::join(path, value["script"]).c_str())
-        //     );
-        // }
 
         if (SDL_Init(SDL_INIT_EVERYTHING) != 0){
             std::cout << "SDL_Init Error: " << SDL_GetError() << std::endl;
@@ -909,6 +874,10 @@ private:
     bool _waitingResponse = false;
     PollType _lastRequestType;
 
+    vector<string> _simpleChoices;
+    vector<SDL_Texture*> _simpleChoiceTextures;
+    int _maxSimpleChoiceLength = 0;
+
     int _cardAmount = 0;
     vector<int> _chosenCardIDs;
 
@@ -976,10 +945,12 @@ public:
         _title(title),
         _fullscreen(fullscreen)
     {
-        _allowedCards.clear();
-        _allowedPlayers.clear();
-        _allowedStackMembers.clear();
-        _chosenCardIDs.clear();
+        // _allowedCards.clear();
+        // _allowedPlayers.clear();
+        // _allowedStackMembers.clear();
+        // _chosenCardIDs.clear();
+        // _simpleChoices.clear();
+        clearSimpleChoiceTextures();
         this->_game = new Game("game");
 
         if (SDL_Init(SDL_INIT_EVERYTHING) != 0) {
@@ -1070,12 +1041,7 @@ public:
     }
 
     void getActionCalc() {
-        _allowedCards.clear();
-        _allowedPlayers.clear();
-        _allowedStackMembers.clear();
-        _chosenCardIDs.clear();
         auto me = _state.boards[_state.priorityI];
-        _waitingResponse = true;
         // check character card
         if (me.playerCard.active) _allowedCards.push_back(me.playerCard.id);
         // check board
@@ -1093,13 +1059,12 @@ public:
         //  TODO
     }
 
-    void promptCalc(nlohmann::json j) {
-        _allowedCards.clear();
-        _allowedPlayers.clear();
-        _allowedStackMembers.clear();
-        _chosenCardIDs.clear();
-        _waitingResponse = true;
+    void clearSimpleChoiceTextures() {
+        for (const auto& tex : _simpleChoiceTextures) SDL_DestroyTexture(tex);
+        _simpleChoiceTextures.clear();
+    }
 
+    void promptCalc(nlohmann::json j) {
         std::vector<int> choices;
         for (const auto& [key, value] : j["prompt"]["choices"].items()) choices.push_back(value);
         // last text texture
@@ -1108,7 +1073,6 @@ public:
         auto lastChoiceType = j["prompt"]["choiceType"];
         if (lastChoiceType == PLAYER_TARGET) {
             _allowedPlayers = choices;
-            std::cout << "PLAYERS " << _allowedPlayers.size() << std::endl;
             return;
         }
         if (lastChoiceType == CARD_TARGET) {
@@ -1124,16 +1088,53 @@ public:
     }
 
     void simplePromptCalc(nlohmann::json j) {
-        //  TODO
+        SDL_DestroyTexture(this->_lastTextTex);
+        this->_lastTextTex = _assets->getMessage(j["prompt"]["text"], SDL_Color{255, 0, 0, 0}, 24);
+        _maxSimpleChoiceLength = 0;
+        for (const auto& [key, value] : j["prompt"]["choices"].items()) {
+            _simpleChoices.push_back(value);
+            auto tex = _assets->getMessage(value, SDL_Color{0, 0, 0, 0}, 48);
+            _simpleChoiceTextures.push_back(tex);
+            auto size = getSize(tex);
+            if (size.first > _maxSimpleChoiceLength) _maxSimpleChoiceLength = size.first;
+        }
+        _maxSimpleChoiceLength += 4;
+    }
+
+    void drawSimplePromptBox() {
+        if (!_simpleChoices.size()) return;
+        // std::cout << "DRAWING SIM"
+        int y = _boardStart + 1;
+        int x = _sideBoardX + 1;
+        auto fontSize = 48;
+        drawRect(x, y, _maxSimpleChoiceLength, fontSize * _simpleChoices.size(), SDL_Color{255, 255, 255, 0}, true);
+        int ci = -1;
+        y -= fontSize;
+        for (const auto& tex : _simpleChoiceTextures) {
+            y += fontSize;
+            ++ci;
+            drawTexture(tex, x, y);
+            if (_mouseLock) continue;
+            int mx, my;
+            auto s = SDL_GetMouseState(&mx, &my);
+            int w = _maxSimpleChoiceLength;
+            int h = fontSize;
+            if (!(mx >= x && my >= y && mx <= x + w && my <= h+ y)) continue;
+            auto color = (s&1) ? SDL_Color{255, 0, 0, 0} : SDL_Color{0, 255, 0, 0};
+            this->drawRect(x, y, w, h, color, false);
+            this->drawRect(x+1, y+1, w-2, h-2, color, false);
+            if (!(s&1)) continue;
+            message<PollType> reply;
+            reply << _simpleChoices[ci];
+            _c->Send(reply);
+            SDL_DestroyTexture(_lastTextTex);
+            _lastTextTex = nullptr;
+            _waitingResponse = false;
+            _mouseLock = true;
+        }
     }
 
     void chooseCardsCalc(nlohmann::json j) {
-        _allowedCards.clear();
-        _allowedPlayers.clear();
-        _allowedStackMembers.clear();
-        _chosenCardIDs.clear();
-        _waitingResponse = true;
-
         SDL_DestroyTexture(this->_lastTextTex);
         this->_lastTextTex = _assets->getMessage(j["prompt"]["text"], SDL_Color{255, 0, 0, 0}, _boardStart);
         auto targetID = j["prompt"]["targetID"];
@@ -1147,9 +1148,16 @@ public:
     }
 
     void calcAllowedCards(nlohmann::json j) {
+        if (_lastRequestType == PollType::Update) return;
+        _allowedCards.clear();
+        _allowedPlayers.clear();
+        _allowedStackMembers.clear();
+        _chosenCardIDs.clear();
+        _simpleChoices.clear();
+        clearSimpleChoiceTextures();
+        _waitingResponse = true;
+
         switch (_lastRequestType) {
-        case PollType::Update:
-            break;
         case PollType::GetAction:
             this->getActionCalc();
             break;
@@ -1269,7 +1277,6 @@ public:
 
     void onClick(int i) {
         if (!_waitingResponse) return;
-        std::cout << "CLICKED" << std::endl;
         switch (_lastRequestType) {
         case PollType::Prompt:
             sendAction(i);
@@ -1331,11 +1338,10 @@ public:
     }
 
     void chooseCard(CardState& card) {
+        for (const auto& id : _chosenCardIDs)
+            if (id == card.id) return;
         _chosenCardIDs.push_back(card.id);
-        std::cout << "ADDED ID " << card.id << std::endl;
-        std::cout << "ACCUMILATED: " << _chosenCardIDs.size() << " (NEED: " << _cardAmount << ")\n";
         if (_chosenCardIDs.size() != _cardAmount) return;
-
         message<PollType> reply;
         string message = std::to_string(_chosenCardIDs[0]);
         for (int i = 1; i < _chosenCardIDs.size(); i++)
@@ -1349,7 +1355,7 @@ public:
 
     void onClick(CardState card) {
         if (!_waitingResponse) return;
-        std::cout << card.cardName << "\t" << card.id << std::endl;
+        // std::cout << card.cardName << "\t" << card.id << std::endl;
         switch (_lastRequestType) {
         case PollType::GetAction:
             this->sendAction(card);
@@ -1431,6 +1437,8 @@ public:
         if (_lastTextTex) {
             drawTexture(_lastTextTex, _sideBoardX, 0);
         }
+        // draw simple choice choices
+        this->drawSimplePromptBox();
     }
 
     void drawSideBoard() {
