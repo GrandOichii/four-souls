@@ -6,7 +6,7 @@
     -- disable opponents hands in client
     -- treasure buying in client
     -- discard number in client
-    -- 
+    -- add choice stack (acts the same as the damage stack)
     -- discard view in client (treasure, loot and discard)
     -- simple choice to client
     -- card choice in client

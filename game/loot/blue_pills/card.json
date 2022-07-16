@@ -1,0 +1,8 @@
+{
+    "name": "Pills! (Blue)",
+    "text": "Roll:\n1-2: Loot 1.\n3-4: Loot 3.\n5-6: Discard 1 loot.",
+    "image": "image.bmp",
+    "script": "script.lua",
+    "cost": "BluePills_cost",
+    "use": "BluePills_use"
+}

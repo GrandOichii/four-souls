@@ -1,0 +1,12 @@
+{
+    "name": "Gimpy",
+    "text": "Each time you take damage, choose 1:\nGain +1a.\nGain 1c.\nLoot 1, then discard a loot card.",
+    "image": "image.bmp",
+    "script": "script.lua",
+    "on": {
+        "damage": {
+            "check": "Gimpy_check",
+            "effect": "Gimpy_effect"
+        }
+    }
+}

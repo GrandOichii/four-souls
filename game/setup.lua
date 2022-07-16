@@ -68,10 +68,14 @@ end
 
 function Common_Discard(host, ownerID, amount)
     local player = Common_PlayerWithID(host, ownerID)
-    if #player["hand"] == 0 then
+    if #player["hand"] < amount then
         return false
     end
-    local cardIDs = requestCardsInHand(host, ownerID, ownerID, "Choose a card to discard", 1)
+    local message = "Choose a card to discard"
+    if amount > 1 then
+        message = "Choose "..amount.." cards to discard"
+    end
+    local cardIDs = requestCardsInHand(host, ownerID, ownerID, message, amount)
     --  TODO debug
     for _, cid in ipairs(cardIDs) do
         print("DISCARDING CARD WITH ID "..cid)

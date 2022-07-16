@@ -1,0 +1,14 @@
+{
+    "name": "Guppy's Tail",
+    "text": "At the start of your turn, loot +1.\nAt the end of your turn, discard a loot card.",
+    "image": "image.bmp",
+    "script": "script.lua",
+    "enter": "GuppysTail_enter",    
+    "leave": "GuppysTail_leave",
+    "on": {
+        "turn_start": {
+            "check": "GuppysTail_trigger_check",
+            "effect": "GuppysTail_trigger"
+        }
+    }
+}

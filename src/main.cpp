@@ -924,7 +924,7 @@ private:
     MatchState _state;
     bool _fullscreen;
     string _title;
-    bool _mouseLock;
+    bool _mouseLock = false;
 
     Game* _game = nullptr;
     AssetsManager* _assets = nullptr;
@@ -1332,6 +1332,8 @@ public:
 
     void chooseCard(CardState& card) {
         _chosenCardIDs.push_back(card.id);
+        std::cout << "ADDED ID " << card.id << std::endl;
+        std::cout << "ACCUMILATED: " << _chosenCardIDs.size() << " (NEED: " << _cardAmount << ")\n";
         if (_chosenCardIDs.size() != _cardAmount) return;
 
         message<PollType> reply;
@@ -1357,7 +1359,7 @@ public:
             break;
         case PollType::ChooseCards:
             this->chooseCard(card);
-            break;
+            return;
         default:
             break;
         }

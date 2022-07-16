@@ -1,8 +1,8 @@
 {
-    "name": "Isaac",
+    "name": "Whore of Babylon",
     "health": 2,
     "attack": 1,
-    "item": "the_d6",
+    "item": "gimpy",
     "image": "image.bmp",
     "text": "{T}: Play an additional loot card this turn.\nStarting item: The D6",
     "script": "script.lua",

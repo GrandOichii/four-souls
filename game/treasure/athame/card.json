@@ -1,0 +1,12 @@
+{
+    "name": "Athame",
+    "text": "($) Discard a loot card:\nForce a player to discard 2 loot cards.",
+    "image": "image.bmp",
+    "script": "script.lua",
+    "abilities": [
+        {
+            "cost": "Athame_cost",
+            "ability": "Athame_force"
+        }
+    ]
+}
