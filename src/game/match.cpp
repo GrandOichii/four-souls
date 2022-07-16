@@ -36,6 +36,8 @@ static PlayerBoardState playerFromJson(json j) {
     result.health = j["health"];
     result.playableCount = j["playableCount"];
     result.purchaseCount = j["purchaseCount"];
+    result.id = j["id"];
+    result.name = j["name"];
 
     result.playerCard = cardFromJson(j["playerCard"]);
     result.board = cardVectorFromJson(j["board"]);
@@ -47,17 +49,27 @@ static StackMemberState stackMemberFromJson(json j) {
     StackMemberState result;
     result.message = j["message"];
     result.isCard = j["isCard"];
+    result.type = j["type"];
     result.card = cardFromJson(j["card"]);
     return result;
 }
 
+static RollEventState rollStackMemberFromJson(json j) {
+    //  TODO
+    RollEventState result;
+    result.value = j["value"];
+    result.isCombatRoll = j["isCombatRoll"];
+    result.ownerID = j["ownerID"];
+    return result;
+}
+
 MatchState::MatchState(nlohmann::json j){
-    // boards = vector<PlayerBoardState>();
     for (const auto& [key, value] : j["boards"].items())
         boards.push_back(playerFromJson(value));
-    // stack = vector<StackMemberState>();
     for (const auto& [key, value] : j["stack"].items())
         stack.push_back(stackMemberFromJson(value));
+    for (const auto& [key, value] : j["rollStack"].items())
+        rollStack.push_back(rollStackMemberFromJson(value));
     currentI = j["currentI"];
     priorityI = j["priorityI"];
     currentID = j["currentID"];
@@ -94,7 +106,16 @@ static json stackMemberToJson(const StackMemberState& member) {
     json result;
     result["message"] = member.message;
     result["isCard"] = member.isCard;
+    result["type"] = member.type;
     result["card"] = cardToJson(member.card);
+    return result;
+}
+
+static json rollStackMemberToJson(const RollEventState& member) {
+    json result;
+    result["value"] = member.value;
+    result["isCombatRoll"] = member.isCombatRoll;
+    result["ownerID"] = member.ownerID;
     return result;
 }
 
@@ -110,6 +131,8 @@ static json playerToJson(const PlayerBoardState& player) {
     result["attack"] = player.attack;
     result["playableCount"] = player.playableCount;
     result["purchaseCount"] = player.purchaseCount;
+    result["id"] = player.id;
+    result["name"] = player.name;
 
     result["playerCard"] = cardToJson(player.playerCard);
     result["board"] = cardVectorToJson(player.board);
@@ -125,6 +148,9 @@ json MatchState::toJson() {
     result["stack"] = json::array();
     for (const auto& member : stack)
         result["stack"].push_back(stackMemberToJson(member));
+    result["rollStack"] = json::array();
+    for (const auto& member : rollStack)
+        result["rollStack"].push_back(rollStackMemberToJson(member));
     result["currentI"] = currentI;
     result["priorityI"] = priorityI;
     result["currentID"] = currentID;
@@ -158,10 +184,29 @@ StackEffect::StackEffect(string funcName, Player* player, CardWrapper* cardW, st
 
 StackEffect::StackEffect() {}
 
+void StackEffect::pushTable(lua_State* L) {
+    lua_newtable(L);
+    l_pushtablestring(L, "type", type);
+    if (player)
+        l_pushtablenumber(L, "ownerID", player->id());
+    if (cardW) {
+        lua_pushstring(L, "card");
+        cardW->pushTable(L);
+        lua_settable(L, -3);
+    }
+
+    // string funcName;
+    // Player* player;
+    // CardWrapper* cardW;
+    // string type;
+    // bool resolve = true;
+}
+
 StackMemberState StackEffect::getState() {
     StackMemberState result;
     result.message = funcName;
     result.isCard = cardW;
+    result.type = type;
     if (cardW) {
         result.card = cardW->getState();
         result.card.zone = Zones::Stack;
@@ -371,8 +416,25 @@ int Match::wrap_setRollValue(lua_State* L) {
     }
     auto value = (int)lua_tonumber(L, 3);
     // std::
-    match->_rollStack[rid].value = value;
-    std::cout << "NEW VALUE " << match->_rollStack[rid].value << std::endl;
+    std::cout << "ROLL ID " << rid << std::endl;
+    int rc = 0;
+    for (int i = 0; i < rid; i++) {
+        if (match->_stack[i]->type != ROLL_TYPE) continue;
+        rc++;
+    }
+    /*
+    3
+
+    0 play_loot
+    1 buy_treasure
+    2 activate
+    3 roll
+    4 activate
+
+    0 roll
+    */
+    match->_rollStack[rc].value = value;
+    std::cout << "NEW VALUE " << match->_rollStack[rc].value << std::endl;
     return 0;
 }
 
@@ -1034,6 +1096,24 @@ int Match::wrap_putFromTopToBottom(lua_State* L) {
     return 0;
 }
 
+int Match::wrap_getStack(lua_State* L) {
+     if (lua_gettop(L) != 1) {
+        lua_err(L);
+        exit(1);
+    }
+    auto match = static_cast<Match*>(lua_touserdata(L, 1));
+
+    auto size = match->_stack.size();
+    lua_createtable(L, size, 0);
+    // std::cout 
+    for (int i = 0; i < size; i++) {
+        lua_pushnumber(L, i+1);
+        match->_stack[i]->pushTable(L);
+        lua_settable(L, -3);
+    }
+    return 1;
+}
+
 int Match::wrap_topCardsOf(lua_State* L) {
     if (lua_gettop(L) != 3) {
         lua_err(L);
@@ -1440,6 +1520,7 @@ void Match::setupLua(string setupScript) {
     lua_register(L, "putFromTopToBottom", wrap_putFromTopToBottom);
     lua_register(L, "getLastRoll", wrap_getLastRoll);
     lua_register(L, "_popRollStack", wrap_popRollStack);
+    lua_register(L, "getStack", wrap_getStack);
 
     //  TODO add state checking after some functions
 
@@ -1464,7 +1545,7 @@ void Match::setupLua(string setupScript) {
     this->execScript(setupScript);
     std::cout << "Loading base script" << std::endl;
     // setup script
-    this->execScript("LOOT_DECK = \"" + LOOT_DECK + "\"\nTREASURE_DECK = \"" + TREASURE_DECK + "\"\nMONSTER_DECK = \"" + MONSTER_DECK + "\"\nCARD = \"" + CARD_TARGET + "\"\nROLL = \"" + ROLL_TARGET + "\"\nPLAYER = \"" + PLAYER_TARGET + "\"function _startTurnLoot(host)\n\tlocal owner = getTopOwner(host)\nlootCards(host, owner[\"id\"], owner[\"startTurnLootAmount\"])\nend");
+    this->execScript("LOOT_DECK = \"" + LOOT_DECK + "\"\nTREASURE_DECK = \"" + TREASURE_DECK + "\"\nMONSTER_DECK = \"" + MONSTER_DECK + "\"\nCARD = \"" + CARD_TARGET + "\"\nSTACK = \"" + STACK_MEMBER_TARGET + "\"\nPLAYER = \"" + PLAYER_TARGET + "\"\nROLL = \"" + ROLL_TYPE + "\"\nfunction _startTurnLoot(host)\n\tlocal owner = getTopOwner(host)\nlootCards(host, owner[\"id\"], owner[\"startTurnLootAmount\"])\nend");
     
     std::cout << "All scripts loaded!" << std::endl;
 }
@@ -1777,12 +1858,12 @@ void Match::triggerLastEffectType() {
 
 void Match::pushToStack(StackEffect* effect) {
     this->_stack.push_back(effect);
-    updateAllPlayers();
 }
 
 void Match::resolveStack() {
     // while the stack isn't empty
     while (!this->_stack.empty()) {
+        updateAllPlayers();
         this->resolveTop();
     }
 }

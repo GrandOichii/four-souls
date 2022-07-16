@@ -19,6 +19,8 @@ struct PlayerBoardState {
     int playableCount;
     int purchaseCount;
     int treasurePrice;
+    int id;
+    string name; 
 
     CardState playerCard;
     std::vector<CardState> board;
@@ -35,7 +37,7 @@ class Player {
 private:
     CardWrapper* _characterCard;
     CharacterCard* _characterCardOrig;
-    std::string _name;
+    string _name;
 
     int _maxHealth;
     int _health;

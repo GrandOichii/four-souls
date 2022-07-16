@@ -599,7 +599,7 @@ public:
     }
 
     void draw() {
-        // return;
+        return;
         // draw player separators
         this->drawLine(
             this->_sideBoardX + this->_boardWidth / 2, 
@@ -781,6 +781,8 @@ public:
             tex = this->_assets->getMessage(std::to_string(space.soulCount), SDL_Color{255, 255, 255, 0}, 48);
             drawTexture(tex, pX + 10, pY + 10 + (48 + 2) * 3);
             SDL_DestroyTexture(tex);
+
+
         }
     }
 
@@ -891,11 +893,12 @@ class ClientWrapper {
 private:
     bool _waitingResponse = false;
     PollType _lastRequestType;
-    string _lastChoiceType = "";
+
     vector<int> _allowedCards;
+    vector<int> _allowedPlayers;
+    vector<int> _allowedStackMembers;
 
     SDL_Texture* _lastTextTex = nullptr;
-    string _lastText = "";
     
     string _host;
     Client* _c;
@@ -914,6 +917,7 @@ private:
 
     int _sideBoardX;
 
+    int _boardStart;
     int _wWidth;
     int _wHeight;
     int _stackX;
@@ -931,8 +935,6 @@ private:
     int _monsterDeckX;
     int _monsterDeckY;
     int _monsterDiscardX;
-
-    std::thread _gameMatchThread;
 
     int _playerSpaces[4][2];
     std::pair<int, int> _cardSize;
@@ -955,6 +957,9 @@ public:
         _title(title),
         _fullscreen(fullscreen)
     {
+        _allowedCards.clear();
+        _allowedPlayers.clear();
+        _allowedStackMembers.clear();
         this->_game = new Game("game");
 
         if (SDL_Init(SDL_INIT_EVERYTHING) != 0) {
@@ -980,22 +985,22 @@ public:
         auto stackWidth = 150;
         this->_stackX = this->_wWidth - stackWidth;
 
-        auto boardStart = 24;
+        this->_boardStart = 24;
 
         this->_boardWidth = this->_stackX - 1 - this->_sideBoardX;
-        this->_boardHeight = this->_wHeight - boardStart;
+        this->_boardHeight = this->_wHeight - _boardStart;
 
         this->_playerSpaces[0][0] = this->_sideBoardX;
-        this->_playerSpaces[0][1] = boardStart + _boardHeight / 2 + 1;
+        this->_playerSpaces[0][1] = _boardStart + _boardHeight / 2 + 1;
 
         this->_playerSpaces[1][0] = this->_sideBoardX;
-        this->_playerSpaces[1][1] = boardStart;
+        this->_playerSpaces[1][1] = _boardStart;
 
         this->_playerSpaces[2][0] = this->_sideBoardX + _boardWidth / 2 + 1;
-        this->_playerSpaces[2][1] = boardStart;
+        this->_playerSpaces[2][1] = _boardStart;
 
         this->_playerSpaces[3][0] = this->_sideBoardX + _boardWidth / 2 + 1;
-        this->_playerSpaces[3][1] = boardStart + _boardHeight / 2 + 1;
+        this->_playerSpaces[3][1] = _boardStart + _boardHeight / 2 + 1;
 
         this->_assets = new AssetsManager(this->_ren, "font/font.ttf");
         auto allCards = this->_game->getAllCards();
@@ -1046,6 +1051,8 @@ public:
 
     void getActionCalc() {
         _allowedCards.clear();
+        _allowedPlayers.clear();
+        _allowedStackMembers.clear();
         auto me = _state.boards[_state.priorityI];
         _waitingResponse = true;
         // check character card
@@ -1062,21 +1069,49 @@ public:
             for (const auto& value : _state.shop)
                 _allowedCards.push_back(value.id);
         // check monsters
+        //  TODO
     }
 
     void promptCalc(nlohmann::json j) {
+        _allowedCards.clear();
+        _allowedPlayers.clear();
+        _allowedStackMembers.clear();
         _waitingResponse = true;
-        _lastText = j["prompt"]["text"];
-        _lastChoiceType = j["prompt"]["choiceType"];
+
         std::vector<int> choices;
-        std::cout << "LAST" << std::endl;
-        std::cout << _lastText << std::endl;
-        std::cout << _lastChoiceType << std::endl;
-        for (const auto& [key, value] : j["prompt"]["choices"].items()) {
-            choices.push_back(value);
-            std::cout << value << " ";
+        for (const auto& [key, value] : j["prompt"]["choices"].items()) choices.push_back(value);
+        // last text texture
+        this->_lastTextTex = _assets->getMessage(j["prompt"]["text"], SDL_Color{255, 0, 0, 0}, _boardStart);
+        auto lastChoiceType = j["prompt"]["choiceType"];
+        if (lastChoiceType == PLAYER_TARGET) {
+            _allowedPlayers = choices;
+            std::cout << "PLAYERS " << _allowedPlayers.size() << std::endl;
+            return;
         }
-        std::cout << std::endl;
+        if (lastChoiceType == CARD_TARGET) {
+            _allowedCards = choices;
+            return;
+        }
+        if (lastChoiceType == STACK_MEMBER_TARGET) {
+            // int rollI = 0;
+            // for (const auto& i : choices)
+            //     std::cout << i << " ";
+            // std::cout << std::endl;
+            _allowedStackMembers = choices;
+            // for (int i = 0; i < _state.stack.size(); i++) {
+            //     if (_state.stack[i].type != ROLL_TYPE) continue;
+            //     rollI++;
+            //     bool add = false;
+            //     for (const auto& c : choices)
+            //         if (c == rollI)
+            //             add = true;
+            //     if (!add) continue;
+            //     _allowedStackMembers.push_back(i);
+            // }
+            return;
+        }
+        //  TODO items in shop
+        //  TODO monsters
     }
 
     void calcAllowedCards(nlohmann::json j) {
@@ -1162,9 +1197,50 @@ public:
         SDL_RenderClear(_ren);
     }
 
-    void onClick(CardState card) {
+    void sendAction(PlayerBoardState& state) {
+        message<PollType> reply;
+        reply << std::to_string(state.id);
+        _c->Send(reply);
+        SDL_DestroyTexture(_lastTextTex);
+        _lastTextTex = nullptr;
+    }
+
+    void onClick(PlayerBoardState state) {
         if (!_waitingResponse) return;
-        std::cout << card.cardName << "\t" << card.id << std::endl;
+        switch (_lastRequestType) {
+        case PollType::Prompt:
+            sendAction(state);
+            break;
+        default:
+            throw std::runtime_error("attempted to send player while no prompt was given");
+            break;
+        }
+        _waitingResponse = false;
+    }
+
+    void sendAction(int i) {
+        message<PollType> reply;
+        reply << std::to_string(i);
+        _c->Send(reply);
+        SDL_DestroyTexture(_lastTextTex);
+        _lastTextTex = nullptr;
+    }
+
+    void onClick(int i) {
+        if (!_waitingResponse) return;
+        std::cout << "CLICKED" << std::endl;
+        switch (_lastRequestType) {
+        case PollType::Prompt:
+            sendAction(i);
+            break;
+        default:
+            throw std::runtime_error("attempted to send stack index while no prompt was given");
+            break;
+        }
+        _waitingResponse = false;
+    }
+
+    void sendAction(CardState& card) {
         message<PollType> reply;
         switch (card.zone) {
         case Zones::Unknown:
@@ -1203,7 +1279,34 @@ public:
             break;
         }
         _c->Send(reply);
+    }
+    
+    void answerPrompt(CardState& card) {
+        message<PollType> reply;
+        reply << std::to_string(card.id);
+        _c->Send(reply);
+        SDL_DestroyTexture(_lastTextTex);
+        _lastTextTex = nullptr;
+    }
+
+    void onClick(CardState card) {
+        if (!_waitingResponse) return;
+        std::cout << card.cardName << "\t" << card.id << std::endl;
+        switch (_lastRequestType) {
+        case PollType::GetAction:
+            this->sendAction(card);
+            break;
+        case PollType::Prompt:
+            this->answerPrompt(card);
+            break;
+        default:
+            break;
+        }
         _waitingResponse = false;
+    }
+
+    void drawStackMember(StackMemberState& member, int x, int y) {
+        //  TODO
     }
 
     void drawCard(CardState& card, int angle, int x, int y) {
@@ -1243,15 +1346,15 @@ public:
         // draw player separators
         this->drawLine(
             this->_sideBoardX + this->_boardWidth / 2,
-            0,
+            this->_boardStart,
             this->_sideBoardX + this->_boardWidth / 2,
             this->_boardHeight - 1,
             SDL_Color{ 255, 0, 0, 0 });
         this->drawLine(
             this->_sideBoardX,
-            this->_boardHeight / 2,
+            this->_boardStart + this->_boardHeight / 2,
             this->_sideBoardX + this->_boardWidth - 1,
-            this->_boardHeight / 2,
+            this->_boardStart + this->_boardHeight / 2,
             SDL_Color{ 255, 0, 0, 0 });
 
         // draw boards
@@ -1260,6 +1363,11 @@ public:
         this->drawSideBoard();
         // draw stack
         this->drawStack();
+
+        // draw top text
+        if (_lastTextTex) {
+            drawTexture(_lastTextTex, _sideBoardX, 0);
+        }
     }
 
     void drawSideBoard() {
@@ -1364,6 +1472,8 @@ public:
             auto space = _state.boards[i];
             int pX = _playerSpaces[i][0];
             int pY = _playerSpaces[i][1];
+            int x = pX;
+            int y = pY;
             int lootX = pX + 200;
             int looyY = pY + 10;
             if (i == _state.currentI)
@@ -1422,6 +1532,30 @@ public:
             tex = this->_assets->getMessage(std::to_string(space.soulCount), SDL_Color{ 255, 255, 255, 0 }, 48);
             drawTexture(tex, pX + 10, pY + 10 + (48 + 2) * 3);
             SDL_DestroyTexture(tex);
+
+            // draw name
+            SDL_Texture* nameTex = _assets->getMessage(space.name, SDL_Color{0, 255, 255, 0}, 24);
+            auto size = getSize(nameTex);
+            drawRect(x, y, size.first, size.second, SDL_Color{200, 200, 200, 0}, true);
+            int w = size.first;
+            int h = size.second;
+            drawTexture(nameTex, x, y);
+            SDL_DestroyTexture(nameTex);
+            bool flag = false;
+            for (const auto& id : _allowedPlayers)
+                if (id == space.id)
+                    flag = true;
+            if (!flag) continue;
+            int mx, my;
+            auto s = SDL_GetMouseState(&mx, &my);
+            if (mx >= x && my >= y && mx <= x + w && my <= h+ y) {
+                auto color = (s&1) ? SDL_Color{255, 0, 0, 0} : SDL_Color{0, 255, 0, 200};
+                this->drawRect(x, y, w, h, color, false);
+                this->drawRect(x+1, y+1, w-2, h-2, color, false);
+                if (s&1) {
+                    onClick(space);                
+                }
+            }
         }
     }
 
@@ -1430,18 +1564,40 @@ public:
         int yOffset = 10;
         int x = _stackX + 10;
         int y = yOffset;
+        int stackI = -1;
         for (auto& si : _state.stack) {
+            ++stackI;
             if (si.isCard) {
                 this->drawCard(si.card, 0, x, y);
             }
             else {
+                // draw the texture
                 drawRect(x, y, _cardSize.first, _cardSize.second, SDL_Color{ 0, 0, 255, 0 }, true);
                 auto lines = str::split(si.message, "\n");
                 for (int i = 0; i < lines.size(); i++) {
                     auto tex = _assets->getMessage(lines[i], SDL_Color{ 200, 200, 100, 0 }, 24);
                     drawTexture(tex, x + 4, y + 4 + 24 * i);
                     SDL_DestroyTexture(tex);
-
+                }
+                // if (si.type != ROLL_TYPE) continue;
+                bool flag = false;
+                for (const auto& i : _allowedStackMembers) {
+                    if (i == stackI)
+                        flag = true;
+                }
+                if (flag) {
+                    int mx, my;
+                    auto s = SDL_GetMouseState(&mx, &my);
+                    int w = _cardSize.first;
+                    int h = _cardSize.second;
+                    if (mx >= x && my >= y && mx <= x + w && my <= h+ y) {
+                        auto color = (s&1) ? SDL_Color{255, 0, 0, 0} : SDL_Color{0, 255, 0, 200};
+                        this->drawRect(x, y, w, h, color, false);
+                        this->drawRect(x+1, y+1, w-2, h-2, color, false);
+                        if (s&1) {
+                            onClick(stackI);                
+                        }
+                    }
                 }
             }
             y += _cardSize.second + yOffset;
@@ -1465,7 +1621,12 @@ public:
         dstrect.h = size.second;
         dstrect.x = x;
         dstrect.y = y;
-        SDL_RenderCopyEx(_ren, texture, nullptr, &dstrect, angle, NULL, SDL_FLIP_NONE);
+        SDL_Point center;
+        center.x = 0;
+        center.y = 0;
+        if (angle == 90) dstrect.x += size.second;
+        if (angle == -90) dstrect.y += size.first;
+        SDL_RenderCopyEx(_ren, texture, nullptr, &dstrect, angle, &center, SDL_FLIP_NONE);
     }
 
     void drawRect(int x, int y, int width, int height, SDL_Color color, bool fill) {
@@ -1493,6 +1654,7 @@ int main() {
     auto wrapper = new ClientWrapper(host, "four-souls-client", "game", false);
     wrapper->start();
     delete wrapper;
+    return 0;
 }
 
 int ma1in(int argc, char* argv[]) {

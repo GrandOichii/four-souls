@@ -227,6 +227,8 @@ PlayerBoardState Player::getState() {
     result.purchaseCount = _purchaseCount;
     result.health = _health;
     result.treasurePrice = _treasurePrice;
+    result.id = _id;
+    result.name = _name;
     result.maxHealth = maxHealth();
     result.blueHealth = _blueHealth;
     result.soulCount = _soulCount;

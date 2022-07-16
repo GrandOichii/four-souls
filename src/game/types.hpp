@@ -24,6 +24,7 @@ const string ACTION_ACTIVATE_CHARACTER_CARD = "activate_character";
 
 const string LOOT_TYPE = "loot";
 const string PLAY_LOOT_CARD_TYPE = "loot_card";
+const string STACK_MEMBER_TYPE = "stack_member";
 const string ROLL_TYPE = "roll";
 const string DEATH_TYPE = "death";
 const string TRIGGER_TYPE = "trigger";
@@ -37,7 +38,7 @@ const string MONSTER_DECK = "monster";
 
 const string PLAYER_TARGET = "player";
 const string CARD_TARGET = "card";
-const string ROLL_TARGET = "roll";
+const string STACK_MEMBER_TARGET = "stack_member";
 const string MONSTER_TARGET = "monster";
 
 const string RESPONSE_CANCEL = "$CANCEL";

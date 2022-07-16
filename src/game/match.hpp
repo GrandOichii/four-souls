@@ -30,24 +30,26 @@ static const string CARD_INFO_FILE = "card.json";
 const int MIN_PLAYER_COUNT = 2;
 const int MAX_PLAYER_COUNT = 4;
 const int SOULS_TO_WIN = 4;
-const int STARTING_COIN_AMOUNT = 10;
+const int STARTING_COIN_AMOUNT = 100;
 const int STARTING_LOOT_AMOUNT = 3;
 const int STARTING_SHOP_SIZE = 2;
 const int STARTING_MONSTERS_AMOUNT = 2;
 const int STARTING_TREASURE_PRICE = 10;
 const int STARTING_ATTACK_COUNT = 1;
 const int STARTING_PLAYABLE_COUNT = 1;
-const int STARTING_PURCHASE_COUNT = 1;
+const int STARTING_PURCHASE_COUNT = 3;
 
 struct StackMemberState {
     string message;
     bool isCard;
     CardState card;
+    string type;
 };
-
+struct RollEventState;
 struct MatchState {
     vector<PlayerBoardState> boards;
     vector<StackMemberState> stack;
+    vector<RollEventState> rollStack;
     int currentI;
     int priorityI;
     int currentID;
@@ -74,13 +76,14 @@ struct MatchState {
 
 struct StackEffect {
     string funcName;
-    Player* player;
-    CardWrapper* cardW;
+    Player* player = nullptr;
+    CardWrapper* cardW = nullptr;
     string type;
     bool resolve = true;
 
     StackEffect(string funcName, Player* player, CardWrapper* card, string effect);
     StackEffect();
+    void pushTable(lua_State* L);
     StackMemberState getState();
 };
 
@@ -96,6 +99,12 @@ struct DamageTrigger {
         l_pushtablenumber(L, "id", (float)this->id);
         l_pushtablenumber(L, "amount", (float)this->amount);
     }
+};
+
+struct RollEventState {
+    int value;
+    bool isCombatRoll;
+    int ownerID;
 };
 
 struct RollEvent {
@@ -121,7 +130,14 @@ struct RollEvent {
         l_pushtablenumber(L, "value", value);
         l_pushtablenumber(L, "ownerID", owner->id());
         l_pushtableboolean(L, "isCombatRoll", isCombatRoll);
-        std::cout << "TABLE PUSHED" <<std::endl;
+    }
+
+    RollEventState getState() {
+        RollEventState result;
+        result.value = value;
+        result.isCombatRoll = isCombatRoll;
+        result.ownerID = owner->id();
+        return result;
     }
 };
 
@@ -289,6 +305,7 @@ public:
     static int wrap_addPlayableCount(lua_State* L);
     static int wrap_tapCard(lua_State* L);
     static int wrap_rechargeCard(lua_State* L);
+    static int wrap_getStack(lua_State* L);
     static int wrap_getDamageEvent(lua_State* L);
     static int wrap_popTarget(lua_State* L);
     static int wrap_pushTarget(lua_State* L);
