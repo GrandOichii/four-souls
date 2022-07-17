@@ -148,6 +148,11 @@ struct RewardEvent {
     Player* killer = nullptr;
 };
 
+struct DeathEvent {
+    string type;
+    int id;
+};
+
 class Match {
 private:
     // config
@@ -160,8 +165,11 @@ private:
     int _startingAttackCount;
     int _startingPlayableCount;
     int _startingPurchaseCount;
+    int _perDeathCoins;
+    int _perDeathLoot;
+    int _perDeathCoinsItems;
 
-
+    bool _turnEnd = false;
     int _lastID = 0;
     bool _running = false;
     lua_State *L;
@@ -309,12 +317,14 @@ private:
     };
 
     std::stack<DamageTrigger> _damageStack;
+    std::vector<DeathEvent> _deathStack;
     std::vector<std::pair<string, int>> _targetStack;
 
     std::vector<CardWrapper*> _allWrappers;
 public:
     Match(nlohmann::json config);
     ~Match();
+    void killPlayer(int id);
     void killMonster();
     void updateAllPlayers();
     CardWrapper* addWrapper(ScriptCard* card);
@@ -337,6 +347,7 @@ public:
     void pushDamageEvent(DamageTrigger event);
     void refillDeadMonsters();
     //  TODO add wrap_popBonusCards, inside of it call refillDeadMonsters
+    static int wrap_popDeathStack(lua_State* L);
     static int wrap_popRewardsStack(lua_State* L);
     static int wrap_incAdditionalCoins(lua_State* L);
     static int wrap_decAdditionalCoins(lua_State* L);
@@ -428,4 +439,5 @@ public:
     void log(string message, bool wait=true);
     MatchState getState();
     int newCardID();
+    void pushDeathEvent(string type, int id);
 };

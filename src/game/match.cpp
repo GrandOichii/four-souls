@@ -282,6 +282,9 @@ Match::Match(nlohmann::json config) {
     this->rng.seed(rand());
 
     this->_logWait = config.contains("logWait") ? (int)config["logWait"] : 0;
+    this->_perDeathCoins = config.contains("perDeathCoins") ? (int)config["perDeathCoins"] : 1;
+    this->_perDeathLoot = config.contains("perDeathLoot") ? (int)config["perDeathLoot"] : 1;
+    this->_perDeathCoinsItems = config.contains("perDeathCoinsItems") ? (int)config["perDeathCoinsItems"] : 1;
     this->_startingLootAmount = config.contains("startingLootCount") ? (int)config["startingLootCount"] : 3;
     this->_startingCoinAmount = config.contains("startingCoinCount") ? (int)config["startingCoinCount"] : 3;
     this->_startingShopSize = config.contains("startingShopSize") ? (int)config["startingShopSize"]: 2;
@@ -306,6 +309,7 @@ int Match::dealDamage(string tgtType, int tgtID, int amount) {
         Player* target = this->playerWithID(tgtID);
         int dealt = target->dealDamage(amount);
         this->log(target->name() + " is dealt " + std::to_string(dealt) + " damage");
+        if (!target->health()) pushDeathEvent(PLAYER_TYPE, target->id());
         return dealt;
     }
     if (tgtType == MONSTER_TYPE) {
@@ -1190,6 +1194,18 @@ int Match::wrap_popRollStack(lua_State* L) {
     return 0;
 }
 
+int Match::wrap_popDeathStack(lua_State* L) {
+    stackSizeIs(L, 1);
+    auto match = getTopMatch(L, 1);
+    auto event = match->_deathStack.back();
+    match->_deathStack.pop_back();
+    if (event.type == PLAYER_TYPE) {
+        match->killPlayer(event.id);
+    }
+    //  TODO? do something with the monster
+    return 0;
+}
+
 int Match::wrap_incAdditionalCoins(lua_State* L) {
     if (lua_gettop(L) != 2) {
         lua_err(L);
@@ -1683,6 +1699,7 @@ void Match::setupLua(string setupScript) {
     // connect common libs
     luaL_openlibs(L);
     // connect functions
+    lua_register(L, "_popDeathStack", wrap_popDeathStack);
     lua_register(L, "_popRewardsStack", wrap_popRewardsStack);
     lua_register(L, "getOwner", wrap_getOwner);
     lua_register(L, "incAdditionalCoins", wrap_incAdditionalCoins);
@@ -1763,8 +1780,21 @@ void Match::setupLua(string setupScript) {
     this->execScript(setupScript);
     std::cout << "Loading base script" << std::endl;
     // setup script
-    this->execScript("LOOT_DECK = \"" + LOOT_DECK + "\"\nTREASURE_DECK = \"" + TREASURE_DECK + "\"\nMONSTER_DECK = \"" + MONSTER_DECK + "\"\nCARD = \"" + CARD_TARGET + "\"\nSTACK = \"" + STACK_MEMBER_TARGET + "\"\nPLAYER = \"" + PLAYER_TARGET + "\"\nROLL = \"" + ROLL_TYPE + "\"\nfunction _startTurnLoot(host)\n\tlocal owner = getTopOwner(host)\nlootCards(host, owner[\"id\"], owner[\"startTurnLootAmount\"])\nend");
-    
+    this->execScript("LOOT_DECK = \"" + LOOT_DECK + "\"\nTREASURE_DECK = \"" + TREASURE_DECK + "\"\nMONSTER_DECK = \"" + MONSTER_DECK + "\"\nCARD = \"" + CARD_TARGET + "\"\nSTACK = \"" + STACK_MEMBER_TARGET + "\"\nPLAYER = \"" + PLAYER_TARGET + "\"\nROLL = \"" + ROLL_TYPE + "\"\nfunction _startTurnLoot(host)\n\tlocal owner = getTopOwner(host)\nlootCards(host, owner[\"id\"], owner[\"startTurnLootAmount\"])\nend\n\nfunction _deathPenalty(host, player)"
+    "\nlocal amount = " + std::to_string(this->_perDeathLoot).c_str() + ""
+    "\nlocal ownerID = player['id']"
+    "\nif #player[\"hand\"] < amount then"
+    "\n    return"
+    "\nend"
+    "\nlocal message = \"Choose a card to discard\""
+    "\nif amount > 1 then"
+    "\n    message = \"Choose \"..amount..\" cards to discard\""
+    "\nend"
+    "\nlocal cardIDs = requestCardsInHand(host, ownerID, ownerID, message, amount)"
+    "\nfor _, cid in ipairs(cardIDs) do"
+    "\n    discardLoot(host, ownerID, cid)"
+    "\nend"
+    "\nend");
     std::cout << "All scripts loaded!" << std::endl;
 }
 
@@ -1981,7 +2011,7 @@ void Match::turn() {
     this->log(_activePlayer->name() + "'s main phase");
     string response = "";
     auto state = this->getState();
-    while ((response = this->_activePlayer->promptAction(state)) != ACTION_PASS || _isAttackPhase) {
+    while (!_turnEnd && ((response = this->_activePlayer->promptAction(state)) != ACTION_PASS || _isAttackPhase)) {
         std::cout << "\t" << _activePlayer->name() << ": " << response << std::endl;
         this->executePlayerAction(_activePlayer, response);
         if (_isAttackPhase) this->rollAttack();
@@ -2003,6 +2033,7 @@ void Match::turn() {
     // all silent end of turn effects
     this->execEOTDefers();
     this->resetEOT();
+    _turnEnd = false;
 }
 
 void Match::resetEOT() {
@@ -2245,9 +2276,38 @@ void Match::refillDeadMonsters() {
         _monsters[i].push_back(newM);
         _monsterDataArr[i] = ((MonsterCard*)newM->card())->data();
         //  TODO push monster death to stack (? before or after removing it from the board)
-
+        pushDeathEvent(MONSTER_TYPE, w->id());
     }
     if (hasBonus) {
         //  TODO push function of bonus card
     }
+}
+
+void Match::pushDeathEvent(string type, int id) {
+    _deathStack.push_back(DeathEvent{type, id});
+    pushToStack(new StackEffect(
+        "_popDeathStack",
+        _activePlayer, //  TODO ???
+        nullptr,
+        DEATH_TYPE
+    ));
+    this->triggerLastEffectType();
+}
+
+void Match::killPlayer(int id) {
+    auto player = playerWithID(id);
+    if (player == _activePlayer) _turnEnd = true;
+    if (player->coinCount()) player->removeCoins(this->_perDeathCoins);
+    lua_getglobal(L, "_deathPenalty");
+    if (!lua_isfunction(L, -1)) {
+        throw std::runtime_error("unknown function: _deathPenalty");
+    }
+    lua_pushlightuserdata(L, this);
+    player->pushTable(L);
+    int r = lua_pcall(L, 2, 0, 0);
+    if (r != LUA_OK) {
+        throw std::runtime_error("failed to call death penalty function");
+    }    // force player to discard card
+    // force player to discard a coin
+    // force player to destroy one of his items
 }
