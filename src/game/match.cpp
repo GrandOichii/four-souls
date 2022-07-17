@@ -190,8 +190,6 @@ json MatchState::toJson() {
     result["monsters"] = cardVectorToJson(monsters);
     return result;
 }
-
-
 static Match* getTopMatch(lua_State* L, int pos) {
     if (!lua_isuserdata(L, pos)) {
         dumpstack(L);
@@ -299,6 +297,28 @@ Match::~Match() {
     lua_close(this->L);
 }
 
+int Match::dealDamage(string tgtType, int tgtID, int amount) {
+    if (tgtType == PLAYER_TYPE) {
+        Player* target = this->playerWithID(tgtID);
+        int dealt = target->dealDamage(amount);
+        this->log(target->name() + " is dealt " + std::to_string(dealt) + " damage");
+        return dealt;
+    }
+    if (tgtType == MONSTER_TYPE) {
+        auto monsterW = this->cardWithID(tgtID);
+        auto card = monsterW->card();
+        int pileI = -1;
+        for (int i = 0; i < _monsters.size(); i++)
+            if (_monsters[i].back() == monsterW)
+                pileI = i;
+        if (pileI == -1) throw std::runtime_error("attempted to deal damage to a non-active monster (id: " + std::to_string(monsterW->id()) + ", name: " + card->name());
+        int dealt = _monsterDataArr[pileI]->dealDamage(amount);
+        this->log(card->name() + " is dealt " + std::to_string(dealt) + " damage");
+        return dealt;
+    }
+    throw std::runtime_error("no damage was dealt, target: (" + tgtType + ", " + std::to_string(tgtID) + ")");
+}
+
 void Match::addToLootDiscard(CardWrapper* wrapper) {
     this->_lootDiscard.push_back(wrapper);
     wrapper->setOwner(nullptr);
@@ -399,6 +419,15 @@ vector<CardWrapper*> Match::getTopMonsterCards(int amount) {
         amount--;
     }
     return cards;
+}
+
+void Match::pushDamageEvent(DamageTrigger event) {
+    this->_damageStack.push(event);
+    event.shelfLife = this->applyTriggers(DAMAGE_TRIGGER);
+    if (!event.shelfLife) {
+        std::cout << "No damage triggers, popping damage stack" << std::endl;
+        this->_damageStack.pop();
+    }
 }
 
 void Match::pushPlayers(lua_State* L) {
@@ -525,40 +554,25 @@ int Match::wrap_dealDamage(lua_State* L) {
     stackSizeIs(L, 6);
     auto match = getTopMatch(L, 1);
     auto srcType = getTopString(L, 2);
-    auto sid = getTopNumber(L, 3);
+    auto srcID = getTopNumber(L, 3);
     auto tgtType = getTopString(L, 4);
-    auto tid = getTopNumber(L, 5);
+    auto tgtID = getTopNumber(L, 5);
     auto amount = getTopNumber(L, 6);
 
-    int dealt = -1;
-    if (tgtType == PLAYER_TYPE) {
-        Player* target = match->playerWithID(tid);
-        dealt = target->dealDamage(amount);
-        match->log(target->name() + " is dealt " + std::to_string(amount) + " damage");
-    }
-    if (tgtType == MONSTER_TYPE) {
-        //  TODO
-    }
-    if (dealt == -1) throw std::runtime_error("no damage was dealt (src: (" + srcType + ", " + std::to_string(sid) + "), target: (" + tgtType + ", " + std::to_string(tid) + ")");
+    int dealt = match->dealDamage(tgtType, tgtID, amount);
     if (!dealt) return 0;
-    // trigger all "dealt damage" triggers
+
     DamageTrigger trigger{
         srcType,
-        sid,
+        srcID,
 
         tgtType,
-        tid,
+        tgtID,
 
         amount,
         -1
     };
-    match->_damageStack.push(trigger);
-    // trigger.shelf
-    trigger.shelfLife = match->applyTriggers(DAMAGE_TRIGGER);
-    if (!trigger.shelfLife) {
-        std::cout << "No damage triggers, popping damage stack" << std::endl;
-        match->_damageStack.pop();
-    }
+    match->pushDamageEvent(trigger);
     return 0;
 }
 
@@ -1072,21 +1086,58 @@ int Match::wrap_pushRollEvent(lua_State* L) {
     return 0;
 }
 
+int Match::wrap_dealCombatDamage(lua_State* L) {
+    stackSizeIs(L, 1);
+    auto match = getTopMatch(L, 1);
+    auto& event = match->_lastCombatDamageEvent;
+    //  TODO check if monster is source to deal damage
+    match->dealDamage(event.targetType, event.targetID, event.amount);
+    auto monsterData = match->_monsterDataArr[match->_lastMonsterIndex];
+    match->_isAttackPhase = match->_activePlayer->health() && monsterData->health();
+    match->pushDamageEvent(event);
+    return 0;
+}
+
 int Match::wrap_popRollStack(lua_State* L) {
-    if (lua_gettop(L) != 1) {
-        lua_err(L);
-        exit(1);
-    }
-    auto match = static_cast<Match*>(lua_touserdata(L, 1));
+    stackSizeIs(L, 1);
+    auto match = getTopMatch(L, 1);
     auto roll = match->_rollStack.back();
     match->_lastRoll = roll.value;
     match->_lastRollOwnerID = roll.owner->id();
     match->_rollStack.pop_back();
     if (!roll.isCombatRoll) return 0;
+    auto monsterW = match->_monsters[match->_lastMonsterIndex].back();
     auto monsterData = match->_monsterDataArr[match->_lastMonsterIndex];
     match->log( "Attack roll " + std::to_string(roll.value) + " vs " + std::to_string(monsterData->roll()));
-    match->_isAttackPhase = match->_activePlayer->health() || monsterData->health();
-    // std::cout << "HANDLING COMBAT ROLL " << monsterData-> << std::endl;
+    auto srcType = PLAYER_TYPE;
+    auto srcID = match->_activePlayer->id();
+    auto tgtType = MONSTER_TYPE;
+    auto tgtID = monsterW->id();
+    auto amount = match->_activePlayer->attack();
+    if (roll.value < monsterData->roll()) {
+        srcType = MONSTER_TYPE;
+        srcID = monsterW->id();
+        tgtType = PLAYER_TYPE;
+        tgtID = match->_activePlayer->id();
+        amount = monsterData->power();
+    }
+    DamageTrigger event{
+        srcType,
+        srcID,
+
+        tgtType,
+        tgtID,
+
+        amount,
+        -1
+    };
+    match->_lastCombatDamageEvent = event;
+    match->pushToStack(new StackEffect(
+        "_dealCombatDamage",
+        match->_activePlayer, 
+        nullptr,
+        COMBAT_DAMAGE_TYPE
+    ));
     return 0;
 }
 
@@ -1630,6 +1681,7 @@ void Match::setupLua(string setupScript) {
     lua_register(L, "pushRollEvent", wrap_pushRollEvent);
     lua_register(L, "putFromTopToBottom", wrap_putFromTopToBottom);
     lua_register(L, "getLastRoll", wrap_getLastRoll);
+    lua_register(L, "_dealCombatDamage", wrap_dealCombatDamage);
     lua_register(L, "_popRollStack", wrap_popRollStack);
     lua_register(L, "getStack", wrap_getStack);
     lua_register(L, "_attackMonster", wrap_attackMonster);
@@ -1902,6 +1954,7 @@ void Match::turn() {
 void Match::resetEOT() {
     for (auto& p : _players)
         p->resetEOT();
+    healMonsters();
 }
 
 void Match::executePlayerAction(Player* player, string action) {
@@ -2048,6 +2101,12 @@ MatchState Match::getState() {
             if (_lastMonsterIndex != -1) monsterName = _monsters[_lastMonsterIndex].back()->card()->name();
             s.message = "Attacking\n" + monsterName;
         }
+        if (si->type == COMBAT_DAMAGE_TYPE) {
+            s.message = "Combat\ndamage to\n";
+            if (_lastCombatDamageEvent.targetType == PLAYER_TYPE) 
+                s.message += _activePlayer->name();
+            else s.message += _monsters[_lastMonsterIndex].back()->card()->name();
+        }
         result.stack.push_back(s);
 
         //  TODO DEATH_TYPE = "death";
@@ -2112,12 +2171,7 @@ void Match::rollAttack() {
     ));
 }
 
-// auto monsterW = _monsters[_lastMonsterIndex].back();
-// auto monster = (MonsterCard*)monsterW->card();
-// std::cout << _activePlayer->name() << " is attacking " << monster->name() << std::endl;
-// while (1) {
-    
-//     this->applyTriggers(ROLL_TYPE);
-//     this->resolveStack();
-//     std::cout << "ATTACK ROLL " << _lastRoll << std::endl;
-// }
+void Match::healMonsters() {
+    for (const auto& data : _monsterDataArr)
+        data->fullHeal();
+}

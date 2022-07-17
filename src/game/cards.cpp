@@ -112,8 +112,32 @@ int MonsterData::roll() {
     return _baseRoll;
 }
 
+int MonsterData::power() {
+    //  TODO
+    return _basePower;
+}
+
 bool MonsterData::health() {
     return _health;
+}
+
+int MonsterData::maxHealth() {
+    //  TODO
+    return _maxHealth;
+}
+
+void MonsterData::fullHeal() {
+    _health = maxHealth();
+}
+
+int MonsterData::dealDamage(int amount) {
+    _blueHealth -= amount;
+    if (_blueHealth >= 0) return 0;
+    amount = -_blueHealth;
+    _blueHealth = 0;
+    _health -= amount;
+    if (_health < 0) _health = 0;
+    return amount;
 }
 
 MonsterCard::MonsterCard(string dir, json j) :

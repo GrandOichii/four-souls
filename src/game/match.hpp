@@ -186,6 +186,7 @@ private:
     std::deque<CardWrapper*> _monsterDiscard;
     std::vector<std::vector<CardWrapper*>> _monsters;
     std::vector<MonsterData*> _monsterDataArr;
+    DamageTrigger _lastCombatDamageEvent;
     int _lastMonsterIndex = -2;
     bool _isAttackPhase = false;
 
@@ -321,8 +322,10 @@ public:
     vector<CardWrapper*> getTopTreasureCards(int amount);
     vector<CardWrapper*> getTopMonsterCards(int amount);
     bool requestPayCost(string costFuncName, Player* player);
+    int dealDamage(string tgtType, int tgtID, int amount);
     void triggerLastEffectType();
     void pushPlayers(lua_State* L);
+    void pushDamageEvent(DamageTrigger event);
     static int wrap_incAdditionalCoins(lua_State* L);
     static int wrap_decAdditionalCoins(lua_State* L);
     static int wrap_getRollStack(lua_State* L);
@@ -348,6 +351,7 @@ public:
     static int wrap_getPlayers(lua_State* L);
     static int wrap_getOwner(lua_State *L);
     static int wrap_dealDamage(lua_State *L);
+    static int wrap_dealCombatDamage(lua_State *L);
     static int wrap_playTopLootCard(lua_State *L);
     static int wrap_incAttackCount(lua_State *L);
     static int wrap_lootCards(lua_State *L);
@@ -373,6 +377,7 @@ public:
     static int wrap_decTreasureCost(lua_State* L);
     static int wrap_getTopOwner(lua_State* L);
     static int wrap_attackMonster(lua_State* L);
+    void healMonsters();
     void rollAttack();
     void resetEOT();
     void addCardToBoard(CardWrapper* card, Player* owner);

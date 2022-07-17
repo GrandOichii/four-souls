@@ -26,6 +26,7 @@ const string LOOT_TYPE = "loot";
 const string PLAY_LOOT_CARD_TYPE = "loot_card";
 const string STACK_MEMBER_TYPE = "stack_member";
 const string ROLL_TYPE = "roll";
+const string COMBAT_DAMAGE_TYPE = "combat_damage";
 const string DEATH_TYPE = "death";
 const string TRIGGER_TYPE = "trigger";
 const string BUY_TREASURE_TYPE = "buy_treasure";

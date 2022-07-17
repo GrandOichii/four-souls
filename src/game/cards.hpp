@@ -108,6 +108,10 @@ public:
     MonsterDataState getState();
     int roll();
     bool health();
+    int power();
+    int dealDamage(int amount);
+    void fullHeal();
+    int maxHealth();
 };
 
 class MonsterCard : public ScriptCard {
