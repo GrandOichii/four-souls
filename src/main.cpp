@@ -1304,6 +1304,15 @@ public:
         _waitingResponse = false;
     }
 
+    string buyTreasureReply(CardState& card) {
+        for (int i = 0; i < _state.shop.size(); i++) {
+            if (card.id == _state.shop[i].id) {
+                return string("buy_treasure ") + std::to_string(i);
+            }
+        }
+        throw std::runtime_error("can't decide index of treasure " + card.cardName + " (id: " + std::to_string(card.id) + ")");
+    }
+
     void sendAction(CardState& card) {
         message<PollType> reply;
         switch (card.zone) {
@@ -1324,7 +1333,8 @@ public:
             break;
         case Zones::Shop:
             //  TODO choose the treasure
-            reply << string("buy_treasure 0");
+            reply << buyTreasureReply(card);
+            // reply << string("buy_treasure 0");
             break;
         case Zones::Stack:
             //  TODO
@@ -1740,7 +1750,7 @@ public:
     }
 };
 
-int m1ain() {
+int main() {
     string host = "localhost";
 
     std::cout << "Enter host (" << host << "): ";
@@ -1754,7 +1764,7 @@ int m1ain() {
     return 0;
 }
 
-int main(int argc, char* argv[]) {
+int m1ain(int argc, char* argv[]) {
     srand(time(0));
     // srand(1);
     BOTS = atoi(argv[1]);
