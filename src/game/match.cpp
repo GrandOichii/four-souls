@@ -306,14 +306,31 @@ int Match::dealDamage(string tgtType, int tgtID, int amount) {
     }
     if (tgtType == MONSTER_TYPE) {
         auto monsterW = this->cardWithID(tgtID);
-        auto card = monsterW->card();
+        auto card = (MonsterCard*)monsterW->card();
         int pileI = -1;
         for (int i = 0; i < _monsters.size(); i++)
             if (_monsters[i].back() == monsterW)
                 pileI = i;
+        //  TODO replace this with a fizzle
         if (pileI == -1) throw std::runtime_error("attempted to deal damage to a non-active monster (id: " + std::to_string(monsterW->id()) + ", name: " + card->name());
-        int dealt = _monsterDataArr[pileI]->dealDamage(amount);
+        auto data = _monsterDataArr[pileI];
+        int dealt = data->dealDamage(amount);
         this->log(card->name() + " is dealt " + std::to_string(dealt) + " damage");
+        auto health = data->health();
+        std::cout << "HEALTH " << health << std::endl;
+        if (health) return dealt;
+        _isAttackPhase = false;
+        this->log(card->name() + " dies!");
+        _rewardsStack.push(RewardEvent{
+            monsterW,
+            _activePlayer //  TODO should always be active player (not sure)
+        });
+        pushToStack(new StackEffect(
+            "_popRewardsStack",
+            _activePlayer,
+            monsterW,
+            REWARDS_TYPE
+        ));
         return dealt;
     }
     throw std::runtime_error("no damage was dealt, target: (" + tgtType + ", " + std::to_string(tgtID) + ")");
@@ -463,6 +480,26 @@ bool Match::requestPayCost(string costFuncName, Player* player) {
     }
     return (bool)lua_toboolean(L, -1);
 
+}
+
+int Match::wrap_popRewardsStack(lua_State* L) {
+    stackSizeIs(L, 1);
+    auto match = getTopMatch(L, 1);
+    auto rewardsEvent = match->_rewardsStack.top();
+    match->_rewardsStack.pop();
+    auto funcName = ((MonsterCard*)rewardsEvent.monsterW->card())->rewardsFuncName();
+    lua_getglobal(L, funcName.c_str());
+    if (!lua_isfunction(L, -1)) {
+        throw std::runtime_error("unknown function: " + funcName);
+    }
+    lua_pushlightuserdata(L, match);
+    rewardsEvent.monsterW->pushTable(L);
+    rewardsEvent.killer->pushTable(L);
+    int r = lua_pcall(L, 3, 0, 0);
+    if (r != LUA_OK) {
+        throw std::runtime_error("failed to execute rewards function");
+    }
+    return 0;
 }
 
 int Match::wrap_getTopOwner(lua_State* L) {
@@ -1091,9 +1128,10 @@ int Match::wrap_dealCombatDamage(lua_State* L) {
     auto match = getTopMatch(L, 1);
     auto& event = match->_lastCombatDamageEvent;
     //  TODO check if monster is source to deal damage
-    match->dealDamage(event.targetType, event.targetID, event.amount);
     auto monsterData = match->_monsterDataArr[match->_lastMonsterIndex];
-    match->_isAttackPhase = match->_activePlayer->health() && monsterData->health();
+    match->dealDamage(event.targetType, event.targetID, event.amount);
+    if (match->_isAttackPhase)
+        match->_isAttackPhase = match->_activePlayer->health();
     match->pushDamageEvent(event);
     return 0;
 }
@@ -1634,6 +1672,7 @@ void Match::setupLua(string setupScript) {
     // connect common libs
     luaL_openlibs(L);
     // connect functions
+    lua_register(L, "_popRewardsStack", wrap_popRewardsStack);
     lua_register(L, "getOwner", wrap_getOwner);
     lua_register(L, "incAdditionalCoins", wrap_incAdditionalCoins);
     lua_register(L, "decAdditionalCoins", wrap_decAdditionalCoins);
@@ -1694,6 +1733,10 @@ void Match::setupLua(string setupScript) {
         this->execScript(w->card()->script());
     }
     for (const auto& w : _treasureDeck) {
+        std::cout << "Loading script for " << w->card()->name() << std::endl;
+        this->execScript(w->card()->script());
+    }
+    for (const auto& w : _monsterDeck) {
         std::cout << "Loading script for " << w->card()->name() << std::endl;
         this->execScript(w->card()->script());
     }

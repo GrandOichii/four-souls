@@ -142,6 +142,11 @@ struct RollEvent {
     }
 };
 
+struct RewardEvent {
+    CardWrapper* monsterW = nullptr;
+    Player* killer = nullptr;
+};
+
 class Match {
 private:
     // config
@@ -189,6 +194,7 @@ private:
     DamageTrigger _lastCombatDamageEvent;
     int _lastMonsterIndex = -2;
     bool _isAttackPhase = false;
+    std::stack<RewardEvent> _rewardsStack;
 
     // StackEffect _lastStack;
     std::vector<StackEffect*> _stack;
@@ -307,6 +313,7 @@ private:
 public:
     Match(nlohmann::json config);
     ~Match();
+    void killMonster();
     void updateAllPlayers();
     CardWrapper* addWrapper(ScriptCard* card);
     void addToLootDiscard(CardWrapper* card);
@@ -326,6 +333,7 @@ public:
     void triggerLastEffectType();
     void pushPlayers(lua_State* L);
     void pushDamageEvent(DamageTrigger event);
+    static int wrap_popRewardsStack(lua_State* L);
     static int wrap_incAdditionalCoins(lua_State* L);
     static int wrap_decAdditionalCoins(lua_State* L);
     static int wrap_getRollStack(lua_State* L);

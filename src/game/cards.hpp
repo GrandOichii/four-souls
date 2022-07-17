@@ -104,7 +104,7 @@ private:
     int _blueHealth;
     int _maxHealth;
 public:
-    MonsterData(json j);
+    MonsterData(int health, int roll, int power);
     MonsterDataState getState();
     int roll();
     bool health();
@@ -116,12 +116,18 @@ public:
 
 class MonsterCard : public ScriptCard {
 private:
+    int _baseHealth;
+    int _basePower;
+    int _baseRoll;
+
     MonsterData* _data = nullptr;
     string _rewardsFuncName;
 public:
     MonsterCard(string dir, json j);
     ~MonsterCard();
+    string rewardsFuncName();
     MonsterData* data();
+    void resetData();
 };
 
 struct CardState {

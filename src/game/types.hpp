@@ -24,6 +24,7 @@ const string ACTION_ACTIVATE_CHARACTER_CARD = "activate_character";
 
 const string LOOT_TYPE = "loot";
 const string PLAY_LOOT_CARD_TYPE = "loot_card";
+const string REWARDS_TYPE = "rewards";
 const string STACK_MEMBER_TYPE = "stack_member";
 const string ROLL_TYPE = "roll";
 const string COMBAT_DAMAGE_TYPE = "combat_damage";
