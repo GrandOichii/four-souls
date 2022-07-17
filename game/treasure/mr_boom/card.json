@@ -1,0 +1,12 @@
+{
+    "name": "Mr Boom",
+    "text": "{T}: Deal 1 damage to a monster.",
+    "image": "image.bmp",
+    "script": "script.lua",
+    "abilities": [
+        {
+            "cost": "MrBoom_cost",
+            "ability": "MrBoom_tap"
+        }
+    ]
+}

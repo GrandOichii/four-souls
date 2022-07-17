@@ -1,0 +1,10 @@
+{
+    "name": "Lazarus",
+    "health": 2,
+    "attack": 1,
+    "item": "lazarus_rags",
+    "image": "image.bmp",
+    "text": "{T}: Play an additional loot card this turn.\nStarting item: The D6",
+    "script": "script.lua",
+    "use": "Lazarus_tap"
+}

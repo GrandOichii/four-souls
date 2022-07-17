@@ -57,10 +57,7 @@ function Common_TargetOpponent(host, cardInfo)
 end
 
 function Common_Tap(host)
-
     local card = this(host)
-
-    print('id'..card["id"])
     if card["tapped"] then
         return false
     end
@@ -155,6 +152,11 @@ function Common_RemoveCounter(host)
     return true
 end
 
+function Common_LastDeath(host)
+    local deathStack = getDeathStack(host)
+    return deathStack[#deathStack]
+end
+
 -- function Common_HasCounter()
     
 -- end
@@ -182,6 +184,12 @@ function Common_TargetTappedCard(host, ownerID)
     end
     pushTarget(host, choiceId, CARD)
     return true
+end
+
+function Common_PostDeathOwnerDied(host, cardID)
+    local owner = getOwner(host, cardID)
+    local death = getLastDeath(host)
+    return  death["type"] == PLAYER and death["id"] == owner["id"]
 end
 
 function Common_OwnerDamaged(host, cardID)
@@ -224,3 +232,27 @@ function Common_DamageAllPlayers(host, amount)
 end
 
 -- monsters
+
+function Common_TargetMonster(host, ownerID)
+    local monsters = getActiveMonsters(host)
+    local ids = {}
+    for i, p in ipairs(monsters) do
+        ids[i] = p["id"]
+        print('mid: '..p['id'])
+    end
+    local choiceId, payed = requestChoice(host, ownerID, "Choose a monster", MONSTER, ids)
+    if not payed then return false end
+    pushTarget(host, choiceId, MONSTER)
+    return true
+end
+
+function Common_popMonsterTarget(host)
+    local target = popTarget(host)
+    local monsters = getActiveMonsters(host)
+    for _, monster in ipairs(monsters) do
+        if target["id"] == monster["id"] then
+            return monster, true
+        end
+    end
+    return {}, false
+end

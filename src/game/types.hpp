@@ -29,6 +29,7 @@ const string STACK_MEMBER_TYPE = "stack_member";
 const string ROLL_TYPE = "roll";
 const string COMBAT_DAMAGE_TYPE = "combat_damage";
 const string DEATH_TYPE = "death";
+const string AFTER_DEATH_TYPE = "after_death";
 const string TRIGGER_TYPE = "trigger";
 const string BUY_TREASURE_TYPE = "buy_treasure";
 const string ATTACK_MONSTER_TYPE = "attack";

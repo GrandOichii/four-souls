@@ -151,6 +151,12 @@ struct RewardEvent {
 struct DeathEvent {
     string type;
     int id;
+
+    void pushTable(lua_State* L) {
+        lua_newtable(L);
+        l_pushtablestring(L, "type", type.c_str());
+        l_pushtablenumber(L, "id", id);
+    }
 };
 
 class Match {
@@ -318,6 +324,7 @@ private:
 
     std::stack<DamageTrigger> _damageStack;
     std::vector<DeathEvent> _deathStack;
+    DeathEvent _lastDeath;
     std::vector<std::pair<string, int>> _targetStack;
 
     std::vector<CardWrapper*> _allWrappers;
@@ -348,6 +355,7 @@ public:
     void refillDeadMonsters();
     //  TODO add wrap_popBonusCards, inside of it call refillDeadMonsters
     static int wrap_popDeathStack(lua_State* L);
+    static int wrap_getLastDeath(lua_State* L);
     static int wrap_popRewardsStack(lua_State* L);
     static int wrap_incAdditionalCoins(lua_State* L);
     static int wrap_decAdditionalCoins(lua_State* L);
@@ -374,6 +382,8 @@ public:
     static int wrap_getPlayers(lua_State* L);
     static int wrap_getOwner(lua_State *L);
     static int wrap_dealDamage(lua_State *L);
+    static int wrap_getActiveMonsters(lua_State* L);
+    static int wrap_getDeathStack(lua_State* L);
     static int wrap_dealCombatDamage(lua_State *L);
     static int wrap_playTopLootCard(lua_State *L);
     static int wrap_incAttackCount(lua_State *L);

@@ -1102,6 +1102,10 @@ public:
             _allowedStackMembers = choices;
             return;
         }
+        if (lastChoiceType == MONSTER_TARGET) {
+            _allowedCards = choices;
+            return;
+        }
         //  TODO items in shop
         //  TODO monsters
     }
