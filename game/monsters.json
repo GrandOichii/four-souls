@@ -1,8 +1,27 @@
 {
     "back": "images/monster_card_back.bmp",
-    "cards": [
-        "monsters/dip",
-        "monsters/pooter",
-        "monsters/gurdy_jr"
-    ]
+    "cards": {
+        "monsters": [
+            "monsters/dip",
+            "monsters/clotty",
+            "monsters/cod_worm",
+            "monsters/conjoined_fatty",
+            "monsters/fat_bat",
+            "monsters/fly",
+            "monsters/fatty",
+            "monsters/leech",
+            "monsters/red_host",
+            "monsters/spider",
+            "monsters/squirt",
+            "monsters/trite",
+            "monsters/charger",
+            "monsters/nerve_ending",
+            "monsters/pooter",
+            "monsters/gurdy_jr"
+        ],
+        "bonus": [
+            
+        ]
+
+    }
 }

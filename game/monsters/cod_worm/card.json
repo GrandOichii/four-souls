@@ -1,0 +1,11 @@
+{
+    "name": "Cod Worm",
+    "text": "",
+    "image": "image.bmp",
+    "script": "script.lua",
+
+    "health": 1,
+    "roll": 6,
+    "power": 0,
+    "rewards": "CodWorm_rewards"
+}

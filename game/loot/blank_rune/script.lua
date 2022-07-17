@@ -3,11 +3,15 @@ function BlankRune_cost(host, cardInfo)
 end
 
 function BlankRune_use(host)
+    local owner = getTopOwner(host)
+    local dealDamageF = function(host, targetID, amount)
+        dealDamage(host, PLAYER, owner["id"], PLAYER, targetID, amount)
+    end
 
     local d = {
         addCoins,
         lootCards,
-        dealDamage,
+        dealDamageF,
         addCoins,
         lootCards,
         addCoins

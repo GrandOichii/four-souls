@@ -54,6 +54,7 @@ struct MatchState {
 
     vector<CardState> shop;
     vector<CardState> monsters; // turn monsters into card wrappers also
+    vector<MonsterDataState> monsterDataArr;
 
     void pushTable(lua_State* L) const;
     
@@ -77,15 +78,26 @@ struct StackEffect {
 };
 
 struct DamageTrigger {
+    string sourceType;
+    int sourceID;
+
     string targetType;
-    int id;
+    int targetID;
+    // string targetType;
+    // int id;
+    //  TODO change to: source - (type, id), target - (type, id)
+    
     int amount;
     int shelfLife;
 
     void pushTable(lua_State* L) {
         lua_newtable(L);
-        l_pushtablestring(L, "type", this->targetType);
-        l_pushtablenumber(L, "id", (float)this->id);
+        l_pushtablestring(L, "sourceType", this->sourceType);
+        l_pushtablenumber(L, "sourceID", (float)this->sourceID);
+
+        l_pushtablestring(L, "targetType", this->targetType);
+        l_pushtablenumber(L, "targetID", (float)this->targetID);
+
         l_pushtablenumber(L, "amount", (float)this->amount);
     }
 };
@@ -156,7 +168,7 @@ private:
     int _nextI;
     int _priorityI;
     bool _isMainPhase;
-    Player* _activePlayer;
+    Player* _activePlayer = nullptr;
 
     int _lastRoll = -1;
     int _lastRollOwnerID = -1;
@@ -172,7 +184,10 @@ private:
 
     std::deque<CardWrapper*> _monsterDeck;
     std::deque<CardWrapper*> _monsterDiscard;
-    std::vector<CardWrapper*> _monsters;
+    std::vector<std::vector<CardWrapper*>> _monsters;
+    std::vector<MonsterData*> _monsterDataArr;
+    int _lastMonsterIndex = -2;
+    bool _isAttackPhase = false;
 
     // StackEffect _lastStack;
     std::vector<StackEffect*> _stack;
@@ -180,6 +195,9 @@ private:
     std::stack<StackEffect*> _eotDeferredTriggers;
 
     std::map<string, std::function<void(Player*, std::vector<string>)>> _actionMap = {
+        {ACTION_PASS, [this](Player* player, std::vector<string> args) {
+            this->log(this->_activePlayer->name() + " tried to pass the turn, but is in combat");
+        }},
         {ACTION_PLAY_LOOT, [this](Player* player, std::vector<string> args){
             auto cardID = std::stoi(args[1].c_str());
             auto cardW = this->cardWithID(cardID);
@@ -254,6 +272,19 @@ private:
             this->log(player->name() + " activates his characted card");
             this->triggerLastEffectType();
             // std::cout << "PLAYING " << ->card()->useFuncName() << std::endl;
+        }},
+        {ACTION_ATTACK_MONSTER, [this](Player* player, std::vector<string> args) {
+            this->_lastMonsterIndex = std::stoi(args[1].c_str());
+            //  TODO add -1
+            player->decMonsterAttackAmount();
+            // std::cout << "Player " << player->name() << " is attacking " << monster->name() << std::endl;
+            this->pushToStack(new StackEffect(
+                "_attackMonster",
+                player,
+                nullptr,
+                ATTACK_MONSTER_TYPE
+            ));
+            this->triggerLastEffectType();
         }}
     };
 
@@ -341,6 +372,8 @@ public:
     static int wrap_incTreasureCost(lua_State* L);
     static int wrap_decTreasureCost(lua_State* L);
     static int wrap_getTopOwner(lua_State* L);
+    static int wrap_attackMonster(lua_State* L);
+    void rollAttack();
     void resetEOT();
     void addCardToBoard(CardWrapper* card, Player* owner);
     void removeFromShop(CardWrapper* card);
@@ -353,6 +386,7 @@ public:
     void execEnter(CardWrapper* w, Player* owner);
     void execFunc(string funcName);
     bool execCheck(string funcName, CardWrapper* card);
+    // void execRewards(string funcName);
     void addToCharacterPool(CharacterCard* card);
     void addPlayer(Player* player);
     std::vector<CharacterCard*> getAvailableCharacters();

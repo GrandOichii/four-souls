@@ -17,7 +17,7 @@ const string CARD_TYPE_TREASURE = "treasure";
 const string CARD_TYPE_MONSTER = "monster";
 
 const string ACTION_PLAY_LOOT = "play_loot"; // [0] - the index of the card 
-const string ACTION_ATTACK_MONSTER = "attack_monster"; // [0] - the index of the card being attacked, if -1 then the top
+const string ACTION_ATTACK_MONSTER = "attack"; // [0] - the index of the card being attacked, if -1 then the top
 const string ACTION_BUY_TREASURE = "buy_treasure"; // [0] - the index of the card being purchased, if -1 then the top
 const string ACTION_ACTIVATE_CARD = "activate";
 const string ACTION_ACTIVATE_CHARACTER_CARD = "activate_character";
@@ -29,6 +29,7 @@ const string ROLL_TYPE = "roll";
 const string DEATH_TYPE = "death";
 const string TRIGGER_TYPE = "trigger";
 const string BUY_TREASURE_TYPE = "buy_treasure";
+const string ATTACK_MONSTER_TYPE = "attack";
 const string ACTIVATE_ITEM_TYPE = "activate";
 const string ACTIVATE_CHARACTER_TYPE = "activate_character";
 
@@ -40,6 +41,10 @@ const string PLAYER_TARGET = "player";
 const string CARD_TARGET = "card";
 const string STACK_MEMBER_TARGET = "stack_member";
 const string MONSTER_TARGET = "monster";
+
+const string PLAYER_TYPE = "player";
+const string MONSTER_TYPE = "monster";
+const string CARD_TYPE = "card";
 
 const string RESPONSE_CANCEL = "$CANCEL";
 const string RESPONSE_FIRST = "$FIRST";

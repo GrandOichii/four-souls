@@ -2,5 +2,9 @@
     "name": "Pooter",
     "text": "",
     "image": "image.bmp",
-    "script": "script.lua"
+    "script": "script.lua",
+    "health": 2,
+    "roll": 3,
+    "power": 1,
+    "rewards": "Pooter_rewards"
 }

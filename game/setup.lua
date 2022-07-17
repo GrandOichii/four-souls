@@ -1,5 +1,7 @@
 math.randomseed( os.time() )
 
+-- treasure / loot
+
 function Common_TargetPlayer(host, cardInfo)
     local ownerID = cardInfo["ownerID"]
     local players = getPlayers(host)
@@ -185,7 +187,7 @@ end
 function Common_OwnerDamaged(host, cardID)
     local owner = getOwner(host, cardID)
     local damageEvent = getDamageEvent(host)
-    return damageEvent["type"] == PLAYER and damageEvent["id"] == owner["id"]
+    return damageEvent["targetType"] == PLAYER and damageEvent["targetID"] == owner["id"]
 end
 
 function Common_OwnersTurn(host, cardID)
@@ -194,10 +196,10 @@ function Common_OwnersTurn(host, cardID)
     return owner["id"] == currentPlayer["id"]
 end
 
-function Common_PayOneLife(host, ownerID)
-    dealDamage(host, ownerID, 1)
-    return true
-end
+-- function Common_PayOneLife(host, ownerID)
+--     dealDamage(host, ownerID, 1)
+--     return true
+-- end
 
 function Common_AllPlayersLoot(host, amount)
     local players = getPlayers(host)
@@ -214,8 +216,11 @@ function Common_AllPlayersAddCoins(host, amount)
 end
 
 function Common_DamageAllPlayers(host, amount)
+    local owner = getTopOwner(host)
     local players = getPlayers(host)
     for _, player in ipairs(players) do
-        dealDamage(host, player["id"], amount)
+        dealDamage(host, PLAYER, owner["id"], PLAYER, player["id"], amount)
     end
 end
+
+-- monsters

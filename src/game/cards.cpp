@@ -89,21 +89,44 @@ int CharacterCard::attack() { return _attack; }
 int CharacterCard::health() { return _health; }
 ScriptCard* CharacterCard::startingItem() { return _startingItem; }
 
+MonsterData::MonsterData(json j) {
+    _health = j["health"];
+    _maxHealth = _health;
+    _blueHealth = 0;
+    _baseRoll = j["roll"];
+    _basePower = j["power"];
+}
+
+MonsterDataState MonsterData::getState() {
+    MonsterDataState result;
+    //  TODO
+    result.health = _health;
+    result.roll = _baseRoll;
+    result.power = _basePower;
+    result.blueHealth = _blueHealth;
+    return result;
+}
+
+int MonsterData::roll() {
+    //  TODO
+    return _baseRoll;
+}
+
+bool MonsterData::health() {
+    return _health;
+}
+
 MonsterCard::MonsterCard(string dir, json j) :
     ScriptCard(dir, j, true)
 {
-    //  TODO
+    _data = new MonsterData(j);
 }
 
-// string toJson(const CardState& state) {
-//     string result = "{";
-//     addValue(result, "active", state.active);
-//     addValue(result, "id", state.id);
-//     addValue(result, "cardName", state.cardName);
-//     addValue(result, "counters", state.counters, true);
-//     result += "}";
-//     return result;
-// }
+MonsterCard::~MonsterCard() {
+    delete _data;
+}
+
+MonsterData* MonsterCard::data() { return _data; }
 
 CardWrapper::CardWrapper(ScriptCard* card, int id) :
     _card(card),

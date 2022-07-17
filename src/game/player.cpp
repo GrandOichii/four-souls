@@ -115,6 +115,11 @@ void Player::recharge() {
     this->rechargeCards();
 }
 
+void Player::decMonsterAttackAmount() {
+    --this->_attackCount;
+}
+
+
 void Player::pushTable(lua_State* L) {
     lua_newtable(L);
     // push general info
@@ -125,6 +130,7 @@ void Player::pushTable(lua_State* L) {
     l_pushtablenumber(L, "souls", (float)this->_soulCount);
     l_pushtablenumber(L, "playableCount", (float)_playableCount);
     l_pushtablenumber(L, "purchaseCount", (float)_purchaseCount);
+    l_pushtablenumber(L, "attackCount", (float)_attackCount);
     l_pushtablenumber(L, "treasurePrice", _treasurePrice);
     l_pushtableboolean(L, "characterActive", _characterActive);
     // push cards in hand
@@ -221,6 +227,7 @@ PlayerBoardState Player::getState() {
     result.coinCount = _coinCount;
     result.playableCount = _playableCount;
     result.purchaseCount = _purchaseCount;
+    result.attackCount = _attackCount;
     result.health = _health;
     result.treasurePrice = _treasurePrice;
     result.id = _id;

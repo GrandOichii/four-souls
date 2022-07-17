@@ -1,0 +1,11 @@
+{
+    "name": "Fly",
+    "text": "",
+    "image": "image.bmp",
+    "script": "script.lua",
+
+    "health": 1,
+    "roll": 2,
+    "power": 1,
+    "rewards": "Fly_rewards"
+}

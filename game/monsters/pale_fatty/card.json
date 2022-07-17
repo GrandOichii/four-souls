@@ -1,0 +1,11 @@
+{
+    "name": "Pale Fatty",
+    "text": "",
+    "image": "image.bmp",
+    "script": "script.lua",
+    
+    "health": 4,
+    "roll": 3,
+    "power": 1,
+    "rewards": "PaleFatty_rewards"
+}

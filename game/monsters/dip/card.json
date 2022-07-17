@@ -2,5 +2,9 @@
     "name": "Dip",
     "text": "",
     "image": "image.bmp",
-    "script": "script.lua"
+    "script": "script.lua",
+    "health": 1,
+    "roll": 4,
+    "power": 1,
+    "rewards": "Dip_rewards"
 }

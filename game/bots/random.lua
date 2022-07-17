@@ -5,7 +5,13 @@
     
 -- end
 
-local lastActivation = ""
+-- local maxActivations = 3
+-- local lastActivations = {}
+
+local lastActivation = ''
+-- function AddLastActivation(activation)
+--     if #maxActivations
+-- end
 
 function Bot_PromptAction(me, state)
     if me["id"] == state["currentID"] and state["isMain"] then
@@ -13,7 +19,7 @@ function Bot_PromptAction(me, state)
         local lootCards = me["hand"]
         if #lootCards ~= 0 then
             if me["playableCount"] ~= 0 then
-                return "play_loot " .. lootCards[1]["id"]    
+                return "play_loot " .. lootCards[1]["id"]
             end
             if me["characterActive"] then
                 return "activate_character"
@@ -22,6 +28,9 @@ function Bot_PromptAction(me, state)
         if me["purchaseCount"] ~= 0 and me["coins"] >= me["treasurePrice"] then
             return "buy_treasure -1"
         end
+        -- if me["attackCount"] ~= 0 then
+        --     return "attack 0"
+        -- end
         local trinkets = me["board"]
         for _, trinket in pairs(trinkets) do
             if not trinket["passive"] and not trinket["tapped"] then
@@ -30,6 +39,7 @@ function Bot_PromptAction(me, state)
                     lastActivation = response
                     return response
                 end
+                return "$PASS"
             end
         end
         return "$PASS"

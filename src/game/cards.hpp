@@ -89,11 +89,35 @@ public:
     ScriptCard* startingItem();
 };
 
+struct MonsterDataState {
+    int health;
+    int roll;
+    int power;
+    int blueHealth;
+};
+
+class MonsterData {
+private:
+    int _basePower;
+    int _baseRoll;
+    int _health;
+    int _blueHealth;
+    int _maxHealth;
+public:
+    MonsterData(json j);
+    MonsterDataState getState();
+    int roll();
+    bool health();
+};
+
 class MonsterCard : public ScriptCard {
 private:
-
+    MonsterData* _data = nullptr;
+    string _rewardsFuncName;
 public:
     MonsterCard(string dir, json j);
+    ~MonsterCard();
+    MonsterData* data();
 };
 
 struct CardState {

@@ -29,7 +29,8 @@ void Game::loadMonsterCards(string dir) {
     auto j = fs::readJS(fs::join(dir, MONSTER_CARDS_FILE));
     this->_monsterCardBackPath = fs::join(dir, j["back"]);
     auto jcards = j["cards"];
-    for (const auto& jj : jcards.items()) {
+    auto mcards = jcards["monsters"];
+    for (const auto& jj : mcards.items()) {
         string tdir = fs::join(dir, jj.value());
         auto jjj = fs::readJS(fs::join(tdir, CARD_INFO_FILE));
         this->_monsterCards.push_back(new MonsterCard(tdir, jjj));

@@ -10,5 +10,5 @@ function MomsRazor_trigger(host, me)
     if choice == "No" then
         return
     end
-    dealDamage(host, pid, 1)
+    dealDamage(host, PLAYER, owner["id"], PLAYER, pid, 1)
 end

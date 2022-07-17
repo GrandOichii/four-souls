@@ -18,6 +18,7 @@ struct PlayerBoardState {
     int attack;
     int playableCount;
     int purchaseCount;
+    int attackCount;
     int treasurePrice;
     int id;
     string name; 
@@ -95,6 +96,8 @@ public:
     void setPurchaseCount(int amount);
     void decPurchaseAmount();
     void incPurchaseAmount();
+
+    void decMonsterAttackAmount();
 
     void incMaxAttackCount();
     void decMaxAttackCount();

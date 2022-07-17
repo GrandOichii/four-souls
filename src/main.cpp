@@ -580,6 +580,7 @@ public:
 
     void draw() {
         // return;
+
         // draw player separators
         this->drawLine(
             this->_sideBoardX + this->_boardWidth / 2, 
@@ -634,10 +635,21 @@ public:
         this->drawTexture(_lastMonsterDiscardCountTex, _monsterDiscardX + 10, _monsterDeckY + 10);
         // draw monster slots
         auto y = _monsterDeckY + _cardSize.second;
-        for (const auto& card : state.monsters) {
+        for (int i = 0; i < state.monsters.size(); i++) {
+
+            auto card = state.monsters[i];
             this->drawTexture(this->_assets->getCard(card.cardName),_monsterDiscardX + 20, y, -90);
-            // auto tex = this->_assets->getCard(name);
-            // this->drawTexture(tex, _monsterDiscardX + 20, y, -90);
+
+            auto data = state.monsterDataArr[i];
+            auto health = data.health;
+            auto tex = _assets->getMessage(std::to_string(health), SDL_Color{255, 0, 0, 0}, 48);
+            drawTexture(tex, _monsterDiscardX + 30, y + 30);
+            if (data.blueHealth) {
+                auto btex = _assets->getMessage("+" + std::to_string(data.blueHealth), SDL_Color{255, 0, 0, 0}, 48);
+                drawTexture(btex, _monsterDiscardX + 30 + getSize(tex).first, y + 30);
+                SDL_DestroyTexture(btex);
+            }
+            SDL_DestroyTexture(tex);
             y += _cardSize.first + 3;
         }
     }
@@ -1476,12 +1488,20 @@ public:
         this->drawTexture(_lastMonsterDiscardCountTex, _monsterDiscardX + 10, _monsterDeckY + 10);
         // draw monster slots
         auto y = _monsterDeckY + _cardSize.second;
-        for (auto& card : _state.monsters) {
+        for (int i = 0; i < _state.monsters.size(); i++) {
+            auto card = _state.monsters[i];
             this->drawCard(card, -90, _monsterDiscardX + 20, y);
-            int mx, my;
-            SDL_GetMouseState(&mx, &my);
-            // auto tex = this->_assets->getCard(name);
-            // this->drawTexture(tex, _monsterDiscardX + 20, y, -90);
+            
+            auto data = _state.monsterDataArr[i];
+            auto health = data.health;
+            auto tex = _assets->getMessage(std::to_string(health), SDL_Color{255, 0, 0, 0}, 48);
+            drawTexture(tex, _monsterDiscardX + 30, y + 30);
+            if (data.blueHealth) {
+                auto btex = _assets->getMessage("+" + std::to_string(data.blueHealth), SDL_Color{255, 0, 0, 0}, 48);
+                drawTexture(btex, _monsterDiscardX + 30 + getSize(tex).first, y + 30);
+                SDL_DestroyTexture(btex);
+            }
+            SDL_DestroyTexture(tex);
             y += _cardSize.first + 3;
         }
     }
@@ -1720,7 +1740,7 @@ public:
     }
 };
 
-int main() {
+int m1ain() {
     string host = "localhost";
 
     std::cout << "Enter host (" << host << "): ";
@@ -1734,7 +1754,7 @@ int main() {
     return 0;
 }
 
-int ma1in(int argc, char* argv[]) {
+int main(int argc, char* argv[]) {
     srand(time(0));
     // srand(1);
     BOTS = atoi(argv[1]);

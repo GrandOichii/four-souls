@@ -18,7 +18,7 @@ function DarkBum_trigger(host)
         return
     end
     if roll == 5 or roll == 6 then
-        dealDamage(host, owner["id"], 1)
+        dealDamage(host, PLAYER, owner["id"], PLAYER, owner["id"], 1)
         return
     end
 end

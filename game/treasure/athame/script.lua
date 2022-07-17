@@ -1,8 +1,7 @@
---  TODO untested
 --  TODO? maybe move the player targeting to the Athame_force function
 
 function Athame_cost(host, cardInfo)
-    return Common_TargetPlayer(host, cardInfo) and Common_Discard(host, cardInfo["id"], 1)
+    return Common_TargetPlayer(host, cardInfo) and Common_Discard(host, cardInfo["ownerID"], 1)
 end
 
 function Athame_force(host)

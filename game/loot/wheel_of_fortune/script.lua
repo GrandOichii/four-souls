@@ -10,7 +10,7 @@ function WheelOfFortune_use(host)
         return
     end
     if roll == 2 then
-        dealDamage(host, owner["id"], 2)
+        dealDamage(host, PLAYER, owner["id"], PLAYER, owner["id"], 2)
         return
     end
     if roll == 3 then

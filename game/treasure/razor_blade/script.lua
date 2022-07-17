@@ -5,6 +5,7 @@ function RazorBlade_cost(host, cardInfo)
 end
 
 function RazorBlade_tap(host)
+    local owner = getTopOwner(host)
     local target = popTarget(host)
-    dealDamage(host, target["id"], 1)
+    dealDamage(host, PLAYER, owner["id"], PLAYER, target["id"], 1)
 end

@@ -1,0 +1,11 @@
+{
+    "name": "Leech",
+    "text": "",
+    "image": "image.bmp",
+    "script": "script.lua",
+
+    "health": 1,
+    "roll": 4,
+    "power": 2,
+    "rewards": "Leech_rewards"
+}

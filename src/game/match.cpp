@@ -36,12 +36,22 @@ static PlayerBoardState playerFromJson(json j) {
     result.health = j["health"];
     result.playableCount = j["playableCount"];
     result.purchaseCount = j["purchaseCount"];
+    result.attackCount = j["attackCount"];
     result.id = j["id"];
     result.name = j["name"];
 
     result.playerCard = cardFromJson(j["playerCard"]);
     result.board = cardVectorFromJson(j["board"]);
     result.hand = cardVectorFromJson(j["hand"]);
+    return result;
+}
+
+static MonsterDataState monsterDataFromJson(json j) {
+    MonsterDataState result;
+    result.roll = j["roll"];
+    result.power = j["power"];
+    result.health = j["health"];
+    result.blueHealth = j["blueHealth"];
     return result;
 }
 
@@ -70,6 +80,8 @@ MatchState::MatchState(nlohmann::json j){
         stack.push_back(stackMemberFromJson(value));
     for (const auto& [key, value] : j["rollStack"].items())
         rollStack.push_back(rollStackMemberFromJson(value));
+    for (const auto& [key, value] : j["monsterData"].items())
+        monsterDataArr.push_back(monsterDataFromJson(value));
     currentI = j["currentI"];
     priorityI = j["priorityI"];
     currentID = j["currentID"];
@@ -91,6 +103,15 @@ static json cardToJson(const CardState& card) {
     result["id"] = card.id;
     result["counters"] = card.counters;
     result["zone"] = card.zone;
+    return result;
+}
+
+static json monsterDataToJson(const MonsterDataState& data) {
+    json result;
+    result["health"] = data.health;
+    result["power"] = data.power;
+    result["roll"] = data.roll;
+    result["blueHealth"] = data.blueHealth;
     return result;
 }
 
@@ -131,6 +152,7 @@ static json playerToJson(const PlayerBoardState& player) {
     result["attack"] = player.attack;
     result["playableCount"] = player.playableCount;
     result["purchaseCount"] = player.purchaseCount;
+    result["attackCount"] = player.attackCount;
     result["id"] = player.id;
     result["name"] = player.name;
 
@@ -151,6 +173,9 @@ json MatchState::toJson() {
     result["rollStack"] = json::array();
     for (const auto& member : rollStack)
         result["rollStack"].push_back(rollStackMemberToJson(member));
+    result["monsterData"] = json::array();
+    for (const auto& data : monsterDataArr)
+        result["monsterData"].push_back(monsterDataToJson(data));
     result["currentI"] = currentI;
     result["priorityI"] = priorityI;
     result["currentID"] = currentID;
@@ -164,6 +189,37 @@ json MatchState::toJson() {
     result["shop"] = cardVectorToJson(shop);
     result["monsters"] = cardVectorToJson(monsters);
     return result;
+}
+
+
+static Match* getTopMatch(lua_State* L, int pos) {
+    if (!lua_isuserdata(L, pos)) {
+        dumpstack(L);
+        throw std::runtime_error("position at " + std::to_string(pos) + " of lua stack is not pointer to match");
+    }
+    return static_cast<Match*>(lua_touserdata(L, pos));
+}
+
+static string getTopString(lua_State* L, int pos) {
+    if (!lua_isstring(L, pos)) {
+        dumpstack(L);
+        throw std::runtime_error("position at " + std::to_string(pos) + " of lua stack is not string");
+    }
+    return (string)lua_tostring(L, pos);
+}
+
+static int getTopNumber(lua_State* L, int pos) {
+    if (!lua_isnumber(L, pos)) {
+        dumpstack(L);
+        throw std::runtime_error("position at " + std::to_string(pos) + " of lua stack is not number");
+    }
+    return (int)lua_tonumber(L, pos);
+}
+
+static void stackSizeIs(lua_State* L, int size) {
+    if (lua_gettop(L) == size) return;
+    dumpstack(L);
+    throw std::runtime_error("expected lua stack size to be " + std::to_string(size) + ", but it is " + std::to_string(lua_gettop(L)));
 }
 
 static void pushCards(vector<CardWrapper*> cards, lua_State* L) {
@@ -381,11 +437,8 @@ bool Match::requestPayCost(string costFuncName, Player* player) {
 }
 
 int Match::wrap_getTopOwner(lua_State* L) {
-    if (lua_gettop(L) != 1) {
-        lua_err(L);
-        exit(1);
-    }
-    auto match = static_cast<Match*>(lua_touserdata(L, 1));
+    stackSizeIs(L, 1);
+    auto match = getTopMatch(L, 1);
     auto last = match->_stack.back();
     last->player->pushTable(L);
     return 1;
@@ -469,29 +522,33 @@ int Match::wrap_addBlueHealth(lua_State* L) {
 }
 
 int Match::wrap_dealDamage(lua_State* L) {
-    if (lua_gettop(L) != 3) {
-        lua_err(L);
-        exit(1);
+    stackSizeIs(L, 6);
+    auto match = getTopMatch(L, 1);
+    auto srcType = getTopString(L, 2);
+    auto sid = getTopNumber(L, 3);
+    auto tgtType = getTopString(L, 4);
+    auto tid = getTopNumber(L, 5);
+    auto amount = getTopNumber(L, 6);
+
+    int dealt = -1;
+    if (tgtType == PLAYER_TYPE) {
+        Player* target = match->playerWithID(tid);
+        dealt = target->dealDamage(amount);
+        match->log(target->name() + " is dealt " + std::to_string(amount) + " damage");
     }
-    auto match = static_cast<Match*>(lua_touserdata(L, 1));
-    if (!lua_isnumber(L, 2)) {
-        lua_err(L);
-        exit(1);
+    if (tgtType == MONSTER_TYPE) {
+        //  TODO
     }
-    auto pid = (int)lua_tonumber(L, 2);
-    if (!lua_isnumber(L, 3)) {
-        lua_err(L);
-        exit(1);
-    }
-    auto amount = (int)lua_tonumber(L, 3);
-    Player* player = match->playerWithID(pid);
-    int dealt = player->dealDamage(amount);
+    if (dealt == -1) throw std::runtime_error("no damage was dealt (src: (" + srcType + ", " + std::to_string(sid) + "), target: (" + tgtType + ", " + std::to_string(tid) + ")");
     if (!dealt) return 0;
-    match->log(player->name() + " is dealt " + std::to_string(amount) + " damage");
     // trigger all "dealt damage" triggers
     DamageTrigger trigger{
-        PLAYER_TARGET,
-        pid,
+        srcType,
+        sid,
+
+        tgtType,
+        tid,
+
         amount,
         -1
     };
@@ -1021,9 +1078,15 @@ int Match::wrap_popRollStack(lua_State* L) {
         exit(1);
     }
     auto match = static_cast<Match*>(lua_touserdata(L, 1));
-    match->_lastRoll = match->_rollStack.back().value;
-    match->_lastRollOwnerID = match->_rollStack.back().owner->id();
+    auto roll = match->_rollStack.back();
+    match->_lastRoll = roll.value;
+    match->_lastRollOwnerID = roll.owner->id();
     match->_rollStack.pop_back();
+    if (!roll.isCombatRoll) return 0;
+    auto monsterData = match->_monsterDataArr[match->_lastMonsterIndex];
+    match->log( "Attack roll " + std::to_string(roll.value) + " vs " + std::to_string(monsterData->roll()));
+    match->_isAttackPhase = match->_activePlayer->health() || monsterData->health();
+    // std::cout << "HANDLING COMBAT ROLL " << monsterData-> << std::endl;
     return 0;
 }
 
@@ -1447,6 +1510,16 @@ int Match::wrap_getRollStack(lua_State* L) {
     return 1;
 }
 
+int Match::wrap_attackMonster(lua_State* L) {
+    if (lua_gettop(L) != 1) {
+        lua_err(L);
+        exit(1);
+    }
+    auto match = static_cast<Match*>(lua_touserdata(L, 1));
+    match->_isAttackPhase = true;
+    return 0;
+}
+
 void Match::addCardToBoard(CardWrapper* w, Player* owner) {
     owner->addToBoard(w);
     this->execEnter(w, owner);
@@ -1559,6 +1632,7 @@ void Match::setupLua(string setupScript) {
     lua_register(L, "getLastRoll", wrap_getLastRoll);
     lua_register(L, "_popRollStack", wrap_popRollStack);
     lua_register(L, "getStack", wrap_getStack);
+    lua_register(L, "_attackMonster", wrap_attackMonster);
 
     //  TODO add state checking after some functions
 
@@ -1605,8 +1679,7 @@ void Match::execFunc(string funcName) {
     this->log("Executing function " + funcName);
     lua_getglobal(L, funcName.c_str());
     if (!lua_isfunction(L, -1)) {
-        lua_err(L);
-        exit(1);
+        throw std::runtime_error("unknown function: " + funcName);
     }
     lua_pushlightuserdata(L, this);
     int r = lua_pcall(L, 1, 0, 0);
@@ -1740,8 +1813,12 @@ void Match::start() {
         _shop.push_back(c);
     // setup monsters
     auto mcards = getTopMonsterCards(_startingMonstersAmount);
-    for (const auto& c : mcards)
-        _monsters.push_back(c);
+    for (const auto& c : mcards) {
+        vector<CardWrapper*> pile;
+        pile.push_back(c);
+        _monsters.push_back(pile);
+        _monsterDataArr.push_back(((MonsterCard*)c->card())->data());
+    }
     this->_currentI = 0;
 
     this->_priorityI = this->_currentI;
@@ -1798,10 +1875,11 @@ void Match::turn() {
     this->log(_activePlayer->name() + "'s main phase");
     string response = "";
     auto state = this->getState();
-    while ((response = this->_activePlayer->promptAction(state)) != ACTION_PASS) {
+    while ((response = this->_activePlayer->promptAction(state)) != ACTION_PASS || _isAttackPhase) {
         std::cout << "\t" << _activePlayer->name() << ": " << response << std::endl;
         this->executePlayerAction(_activePlayer, response);
         this->resolveStack();
+        if (_isAttackPhase) this->rollAttack();
         state = this->getState();
     }
     _isMainPhase = false;
@@ -1942,7 +2020,7 @@ void Match::log(string message, bool wait) {
     std::cout << " - " << message << std::endl;
     if (wait) {
         // std::this_thread::sleep_for(std::chrono::seconds(1));
-        std::this_thread::sleep_for(std::chrono::milliseconds(150));
+        std::this_thread::sleep_for(std::chrono::milliseconds(200));
     }
 }
 
@@ -1965,12 +2043,19 @@ MatchState Match::getState() {
             if (_lastTreasureIndex != -1) cardName = _shop[_lastTreasureIndex]->card()->name();
             s.message = "Buying\n" + cardName;
         }
+        if (si->type == ATTACK_MONSTER_TYPE) {
+            string monsterName = "top monster";
+            if (_lastMonsterIndex != -1) monsterName = _monsters[_lastMonsterIndex].back()->card()->name();
+            s.message = "Attacking\n" + monsterName;
+        }
         result.stack.push_back(s);
 
         //  TODO DEATH_TYPE = "death";
     }
     result.currentI = _currentI;
-    result.currentID = _activePlayer->id();
+
+    if (_activePlayer) result.currentID = _activePlayer->id();
+    
     result.priorityI = _priorityI;
     result.isMain = _isMainPhase && _stack.empty() && _priorityI == _currentI;
 
@@ -1998,9 +2083,12 @@ MatchState Match::getState() {
         result.monsterDiscard.push_back(s);
     }
     for (const auto& w : _monsters) {
-        auto s = w->getState();
+        auto s = w.back()->getState();
         s.zone = Zones::ActiveMonsters;
         result.monsters.push_back(s);
+    }
+    for (const auto& data : _monsterDataArr) {
+        result.monsterDataArr.push_back(data->getState());
     }
     return result;
 }
@@ -2008,3 +2096,28 @@ MatchState Match::getState() {
 int Match::newCardID() {
     return ++_lastID;
 }
+
+void Match::rollAttack() {
+    RollEvent p(
+        _activePlayer,
+        true
+    );
+    this->log(_activePlayer->name() + " rolls a " + std::to_string(p.value));
+    this->_rollStack.push_back(p);
+    this->pushToStack(new StackEffect(
+        "_popRollStack",
+        _activePlayer, 
+        nullptr,
+        ROLL_TYPE
+    ));
+}
+
+// auto monsterW = _monsters[_lastMonsterIndex].back();
+// auto monster = (MonsterCard*)monsterW->card();
+// std::cout << _activePlayer->name() << " is attacking " << monster->name() << std::endl;
+// while (1) {
+    
+//     this->applyTriggers(ROLL_TYPE);
+//     this->resolveStack();
+//     std::cout << "ATTACK ROLL " << _lastRoll << std::endl;
+// }

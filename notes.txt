@@ -5,15 +5,30 @@
 - implement:
     -- disable opponents hands in client
     -- treasure buying in client
-    -- discard number in client
     -- add choice stack (acts the same as the damage stack)
     -- discard view in client (treasure, loot and discard)
-    -- simple choice to client
-    -- card choice in client
-    -- card discarding
+    -- 
     -- card destruction
     -- card leave - arguments: host, me(the card being destroyed), owner(the owner of the destroyed card)
     -- player deaths
     -- monsters
     -- bonus souls
     -- card parser (?)
+
+- monsters:
+    -- have health, dice roll to hit and power
+    -- some have death triggers
+    -- some need to know who killed them
+    -- need some way to remember death roll
+    -- have on damage triggers
+    -- have special dice handlers (use the stack?)
+    -- may force the player to attack again (the monster deck / any monster)
+    -- some monsters can't be attacked
+    -- some monsters have to know when other monsters die
+    -- monsters can kill themselves
+    -- monsters can buff other monsters
+    -- monsters can check if their health is low
+    -- monsters can heal
+    -- monsters can place other monsters into attacking slots
+
+    -- have rewards

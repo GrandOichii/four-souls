@@ -3,6 +3,7 @@ package main
 import (
 	"encoding/json"
 	"os"
+	"strconv"
 
 	"github.com/GrandOichii/colorwrapper"
 	"github.com/go-rod/rod"
@@ -13,22 +14,26 @@ import (
 type Card struct {
 	Name string `json:"name"`
 	Text string `json:"text"`
+
+	Health int `json:"health"`
+	Roll   int `json:"roll"`
+	Power  int `json:"power"`
 }
 
 // https://foursouls.com/card-search/?card_type=loot
 const URL = "https://foursouls.com"
 const cardSearchURL = URL + "/card-search/?card_type="
 
-const resulPath = "result.json"
+const resulPath = "result-monsters.json"
 
 var result = map[string][]Card{}
 
 var cardTypes = []string{
-	"loot",
+	// "loot",
 	// "character",
 	// "eternal",
 	// "treasure",
-	// "monster",
+	"monster",
 }
 
 func checkErr(err error) {
@@ -109,6 +114,7 @@ func scrapePage(browser *rod.Browser, href string) Card {
 	err = page.WaitLoad()
 	checkErr(err)
 
+	// for monsters
 	el, err := page.Element(".cardpage")
 	checkErr(err)
 
@@ -117,14 +123,33 @@ func scrapePage(browser *rod.Browser, href string) Card {
 	name, err := nameEl.Text()
 	checkErr(err)
 
-	textEl, err := el.Element(".effectOutcome")
+	el, err = page.Element(".StatTable")
 	checkErr(err)
-	text, err := textEl.Text()
+
+	el, err = el.Element("tbody")
 	checkErr(err)
+
+	stat, err := el.Element("tr")
+	checkErr(err)
+	health, err := strconv.Atoi(stat.MustElement(".value").MustText())
+
+	stat, err = stat.Next()
+	checkErr(err)
+	roll, err := strconv.Atoi(stat.MustElement(".value").MustText())
+
+	stat, err = stat.Next()
+	checkErr(err)
+	power, err := strconv.Atoi(stat.MustElement(".value").MustText())
+	// textEl, err := el.Element(".effectOutcome")
+	// checkErr(err)
+	// text, err := textEl.Text()
+	// checkErr(err)
 
 	result := Card{}
 	result.Name = name
-	result.Text = text
+	result.Health = health
+	result.Roll = roll
+	result.Power = power
 	colorwrapper.Printf("cyan", "Card %s scraped\n", result.Name)
 	return result
 }
