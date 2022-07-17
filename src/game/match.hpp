@@ -333,6 +333,8 @@ public:
     void triggerLastEffectType();
     void pushPlayers(lua_State* L);
     void pushDamageEvent(DamageTrigger event);
+    void refillDeadMonsters();
+    //  TODO add wrap_popBonusCards, inside of it call refillDeadMonsters
     static int wrap_popRewardsStack(lua_State* L);
     static int wrap_incAdditionalCoins(lua_State* L);
     static int wrap_decAdditionalCoins(lua_State* L);

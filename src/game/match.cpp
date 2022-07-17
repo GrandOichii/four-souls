@@ -317,7 +317,6 @@ int Match::dealDamage(string tgtType, int tgtID, int amount) {
         int dealt = data->dealDamage(amount);
         this->log(card->name() + " is dealt " + std::to_string(dealt) + " damage");
         auto health = data->health();
-        std::cout << "HEALTH " << health << std::endl;
         if (health) return dealt;
         _isAttackPhase = false;
         this->log(card->name() + " dies!");
@@ -499,6 +498,7 @@ int Match::wrap_popRewardsStack(lua_State* L) {
     if (r != LUA_OK) {
         throw std::runtime_error("failed to execute rewards function");
     }
+   match->refillDeadMonsters();
     return 0;
 }
 
@@ -597,6 +597,7 @@ int Match::wrap_dealDamage(lua_State* L) {
     auto amount = getTopNumber(L, 6);
 
     int dealt = match->dealDamage(tgtType, tgtID, amount);
+    std::cout << "DEALT " << dealt;
     if (!dealt) return 0;
 
     DamageTrigger trigger{
@@ -1129,7 +1130,8 @@ int Match::wrap_dealCombatDamage(lua_State* L) {
     auto& event = match->_lastCombatDamageEvent;
     //  TODO check if monster is source to deal damage
     auto monsterData = match->_monsterDataArr[match->_lastMonsterIndex];
-    match->dealDamage(event.targetType, event.targetID, event.amount);
+    int dealt = match->dealDamage(event.targetType, event.targetID, event.amount);
+    if (!dealt) return 0;
     if (match->_isAttackPhase)
         match->_isAttackPhase = match->_activePlayer->health();
     match->pushDamageEvent(event);
@@ -2217,4 +2219,25 @@ void Match::rollAttack() {
 void Match::healMonsters() {
     for (const auto& data : _monsterDataArr)
         data->fullHeal();
+}
+
+void Match::refillDeadMonsters() {
+    bool hasBonus = false;
+    for (int i = 0; i < _monsters.size(); i++) {
+        if (_monsterDataArr[i]->health()) continue;
+        auto w = _monsters[i].back();
+        ((MonsterCard*)w->card())->resetData();
+        _monsters[i].pop_back();
+        _monsterDiscard.push_back(w);
+        if (_monsters[i].size()) continue;
+        auto newM = _monsterDeck.back();
+        _monsterDeck.pop_back();
+        _monsters[i].push_back(newM);
+        _monsterDataArr[i] = ((MonsterCard*)newM->card())->data();
+        //  TODO push monster death to stack (? before or after removing it from the board)
+
+    }
+    if (hasBonus) {
+        //  TODO push function of bonus card
+    }
 }
