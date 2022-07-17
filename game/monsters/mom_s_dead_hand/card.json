@@ -1,0 +1,10 @@
+{
+    "name": "Mom\u2019s Dead Hand",
+    "text": "",
+    "image": "image.bmp",
+    "script": "script.lua",
+    "health": 2,
+    "roll": 5,
+    "power": 1,
+    "rewards": "MomsDeadHand_rewards"
+}

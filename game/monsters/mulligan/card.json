@@ -1,0 +1,10 @@
+{
+    "name": "Mulligan",
+    "text": "",
+    "image": "image.bmp",
+    "script": "script.lua",
+    "health": 1,
+    "roll": 3,
+    "power": 1,
+    "rewards": "Mulligan_rewards"
+}

@@ -1,0 +1,10 @@
+{
+    "name": "Satan!",
+    "text": "",
+    "image": "image.bmp",
+    "script": "script.lua",
+    "health": 6,
+    "roll": 4,
+    "power": 2,
+    "rewards": "Satan_rewards"
+}

@@ -3,9 +3,8 @@
     "text": "",
     "image": "image.bmp",
     "script": "script.lua",
-
-    "health": 1,
-    "roll": 6,
+    "health": 2,
+    "roll": 5,
     "power": 0,
     "rewards": "CodWorm_rewards"
 }

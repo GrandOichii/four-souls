@@ -1,0 +1,10 @@
+{
+    "name": "Mom!",
+    "text": "",
+    "image": "image.bmp",
+    "script": "script.lua",
+    "health": 5,
+    "roll": 4,
+    "power": 2,
+    "rewards": "Mom_rewards"
+}

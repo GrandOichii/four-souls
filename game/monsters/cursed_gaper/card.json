@@ -1,0 +1,10 @@
+{
+    "name": "Cursed Gaper",
+    "text": "",
+    "image": "image.bmp",
+    "script": "script.lua",
+    "health": 2,
+    "roll": 4,
+    "power": 1,
+    "rewards": "CursedGaper_rewards"
+}

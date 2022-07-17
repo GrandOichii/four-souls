@@ -2,8 +2,10 @@ package main
 
 import (
 	"encoding/json"
+	"fmt"
 	"os"
 	"strconv"
+	"strings"
 
 	"github.com/GrandOichii/colorwrapper"
 	"github.com/go-rod/rod"
@@ -22,7 +24,9 @@ type Card struct {
 
 // https://foursouls.com/card-search/?card_type=loot
 const URL = "https://foursouls.com"
-const cardSearchURL = URL + "/card-search/?card_type="
+const pageStart = 1
+const pageEnd = 7
+const cardSearchURL = URL + "/card-search/page/%d/?card_type="
 
 const resulPath = "result-monsters.json"
 
@@ -77,10 +81,17 @@ func main() {
 }
 
 func scrapeCards(browser *rod.Browser, cardType string) {
-	url := cardSearchURL + cardType
+	for i := pageStart; i <= pageEnd; i++ {
+		scrapePageN(browser, cardType, i)
+	}
+
+}
+
+func scrapePageN(browser *rod.Browser, cardType string, pageN int) {
 	page, err := browser.Page(proto.TargetCreateTarget{})
 	checkErr(err)
 	defer page.Close()
+	url := fmt.Sprintf(cardSearchURL, pageN) + cardType
 
 	err = page.Navigate(url)
 	checkErr(err)
@@ -100,6 +111,10 @@ func scrapeCards(browser *rod.Browser, cardType string) {
 
 		card := scrapePage(browser, *href)
 		result[cardType] = append(result[cardType], card)
+		data, err := json.MarshalIndent(result, "", "\t")
+		checkErr(err)
+		err = os.WriteFile(resulPath, data, 0755)
+		checkErr(err)
 	}
 }
 
@@ -122,8 +137,8 @@ func scrapePage(browser *rod.Browser, href string) Card {
 	checkErr(err)
 	name, err := nameEl.Text()
 	checkErr(err)
-
-	el, err = page.Element(".StatTable")
+	// div[data-name=\"LinkArea\"]
+	el, err = page.Element("table[id=\"StatTable\"]")
 	checkErr(err)
 
 	el, err = el.Element("tbody")
@@ -131,15 +146,15 @@ func scrapePage(browser *rod.Browser, href string) Card {
 
 	stat, err := el.Element("tr")
 	checkErr(err)
-	health, err := strconv.Atoi(stat.MustElement(".value").MustText())
+	health, err := strconv.Atoi(strings.Trim(stat.MustElement(".value").MustText(), " :"))
 
 	stat, err = stat.Next()
 	checkErr(err)
-	roll, err := strconv.Atoi(stat.MustElement(".value").MustText())
+	roll, err := strconv.Atoi(strings.Trim(stat.MustElement(".value").MustText(), " :"))
 
 	stat, err = stat.Next()
 	checkErr(err)
-	power, err := strconv.Atoi(stat.MustElement(".value").MustText())
+	power, err := strconv.Atoi(strings.Trim(stat.MustElement(".value").MustText(), " :"))
 	// textEl, err := el.Element(".effectOutcome")
 	// checkErr(err)
 	// text, err := textEl.Text()
@@ -151,6 +166,7 @@ func scrapePage(browser *rod.Browser, href string) Card {
 	result.Roll = roll
 	result.Power = power
 	colorwrapper.Printf("cyan", "Card %s scraped\n", result.Name)
+
 	return result
 }
 

@@ -1,0 +1,10 @@
+{
+    "name": "Pestilence",
+    "text": "",
+    "image": "image.bmp",
+    "script": "script.lua",
+    "health": 4,
+    "roll": 4,
+    "power": 1,
+    "rewards": "Pestilence_rewards"
+}

@@ -1,0 +1,599 @@
+{
+	"monster": [
+		{
+			"name": "BIG SPIDER",
+			"text": "",
+			"health": 3,
+			"roll": 4,
+			"power": 1
+		},
+		{
+			"name": "BLACK BONY",
+			"text": "",
+			"health": 3,
+			"roll": 4,
+			"power": 1
+		},
+		{
+			"name": "BOOM FLY",
+			"text": "",
+			"health": 1,
+			"roll": 4,
+			"power": 1
+		},
+		{
+			"name": "CLOTTY",
+			"text": "",
+			"health": 2,
+			"roll": 3,
+			"power": 1
+		},
+		{
+			"name": "COD WORM",
+			"text": "",
+			"health": 2,
+			"roll": 5,
+			"power": 0
+		},
+		{
+			"name": "CONJOINED FATTY",
+			"text": "",
+			"health": 4,
+			"roll": 3,
+			"power": 2
+		},
+		{
+			"name": "DANK GLOBIN",
+			"text": "",
+			"health": 2,
+			"roll": 4,
+			"power": 2
+		},
+		{
+			"name": "DELIRIUM",
+			"text": "",
+			"health": 5,
+			"roll": 4,
+			"power": 3
+		},
+		{
+			"name": "DINGA",
+			"text": "",
+			"health": 3,
+			"roll": 3,
+			"power": 1
+		},
+		{
+			"name": "DIP",
+			"text": "",
+			"health": 1,
+			"roll": 4,
+			"power": 1
+		},
+		{
+			"name": "DOPLE",
+			"text": "",
+			"health": 2,
+			"roll": 4,
+			"power": 2
+		},
+		{
+			"name": "EVIL TWIN",
+			"text": "",
+			"health": 3,
+			"roll": 5,
+			"power": 2
+		},
+		{
+			"name": "FAT BAT",
+			"text": "",
+			"health": 3,
+			"roll": 5,
+			"power": 1
+		},
+		{
+			"name": "FATTY",
+			"text": "",
+			"health": 4,
+			"roll": 2,
+			"power": 1
+		},
+		{
+			"name": "FLY",
+			"text": "",
+			"health": 1,
+			"roll": 2,
+			"power": 1
+		},
+		{
+			"name": "GREEDLING",
+			"text": "",
+			"health": 2,
+			"roll": 5,
+			"power": 1
+		},
+		{
+			"name": "HANGER",
+			"text": "",
+			"health": 2,
+			"roll": 4,
+			"power": 2
+		},
+		{
+			"name": "HOPPER",
+			"text": "",
+			"health": 2,
+			"roll": 3,
+			"power": 1
+		},
+		{
+			"name": "HORF",
+			"text": "",
+			"health": 1,
+			"roll": 4,
+			"power": 1
+		},
+		{
+			"name": "KEEPER HEAD",
+			"text": "",
+			"health": 2,
+			"roll": 4,
+			"power": 1
+		},
+		{
+			"name": "LEAPER",
+			"text": "",
+			"health": 2,
+			"roll": 4,
+			"power": 1
+		},
+		{
+			"name": "LEECH",
+			"text": "",
+			"health": 1,
+			"roll": 4,
+			"power": 2
+		},
+		{
+			"name": "MOM’S DEAD HAND",
+			"text": "",
+			"health": 2,
+			"roll": 5,
+			"power": 1
+		},
+		{
+			"name": "MOM’S EYE",
+			"text": "",
+			"health": 1,
+			"roll": 4,
+			"power": 2
+		},
+		{
+			"name": "MOM’S HAND",
+			"text": "",
+			"health": 2,
+			"roll": 4,
+			"power": 1
+		},
+		{
+			"name": "MULLIBOOM",
+			"text": "",
+			"health": 1,
+			"roll": 2,
+			"power": 0
+		},
+		{
+			"name": "MULLIGAN",
+			"text": "",
+			"health": 1,
+			"roll": 3,
+			"power": 1
+		},
+		{
+			"name": "PALE FATTY",
+			"text": "",
+			"health": 4,
+			"roll": 3,
+			"power": 1
+		},
+		{
+			"name": "POOTER",
+			"text": "",
+			"health": 2,
+			"roll": 3,
+			"power": 1
+		},
+		{
+			"name": "PORTAL",
+			"text": "",
+			"health": 2,
+			"roll": 4,
+			"power": 1
+		},
+		{
+			"name": "PSY HORF",
+			"text": "",
+			"health": 1,
+			"roll": 5,
+			"power": 1
+		},
+		{
+			"name": "RAGE CREEP",
+			"text": "",
+			"health": 1,
+			"roll": 5,
+			"power": 1
+		},
+		{
+			"name": "RED HOST",
+			"text": "",
+			"health": 2,
+			"roll": 3,
+			"power": 2
+		},
+		{
+			"name": "RING OF FLIES",
+			"text": "",
+			"health": 3,
+			"roll": 3,
+			"power": 1
+		},
+		{
+			"name": "SPIDER",
+			"text": "",
+			"health": 1,
+			"roll": 4,
+			"power": 1
+		},
+		{
+			"name": "SQUIRT",
+			"text": "",
+			"health": 2,
+			"roll": 3,
+			"power": 1
+		},
+		{
+			"name": "STONEY",
+			"text": "",
+			"health": 3,
+			"roll": 0,
+			"power": 0
+		},
+		{
+			"name": "SWARM OF FLIES",
+			"text": "",
+			"health": 5,
+			"roll": 2,
+			"power": 1
+		},
+		{
+			"name": "TRITE",
+			"text": "",
+			"health": 1,
+			"roll": 5,
+			"power": 1
+		},
+		{
+			"name": "WIZOOB",
+			"text": "",
+			"health": 3,
+			"roll": 5,
+			"power": 1
+		},
+		{
+			"name": "CURSED FATTY",
+			"text": "",
+			"health": 4,
+			"roll": 2,
+			"power": 1
+		},
+		{
+			"name": "CURSED GAPER",
+			"text": "",
+			"health": 2,
+			"roll": 4,
+			"power": 1
+		},
+		{
+			"name": "CURSED HORF",
+			"text": "",
+			"health": 1,
+			"roll": 4,
+			"power": 1
+		},
+		{
+			"name": "CURSED KEEPER HEAD",
+			"text": "",
+			"health": 2,
+			"roll": 4,
+			"power": 1
+		},
+		{
+			"name": "CURSED MOM’S HAND",
+			"text": "",
+			"health": 2,
+			"roll": 4,
+			"power": 1
+		},
+		{
+			"name": "CURSED PSY HORF",
+			"text": "",
+			"health": 1,
+			"roll": 5,
+			"power": 1
+		},
+		{
+			"name": "HOLY DINGA",
+			"text": "",
+			"health": 3,
+			"roll": 3,
+			"power": 1
+		},
+		{
+			"name": "HOLY DIP",
+			"text": "",
+			"health": 1,
+			"roll": 4,
+			"power": 1
+		},
+		{
+			"name": "HOLY KEEPER HEAD",
+			"text": "",
+			"health": 2,
+			"roll": 4,
+			"power": 1
+		},
+		{
+			"name": "HOLY MOM’S EYE",
+			"text": "",
+			"health": 1,
+			"roll": 4,
+			"power": 2
+		},
+		{
+			"name": "HOLY SQUIRT",
+			"text": "",
+			"health": 2,
+			"roll": 3,
+			"power": 1
+		},
+		{
+			"name": "CARRION QUEEN",
+			"text": "",
+			"health": 3,
+			"roll": 4,
+			"power": 1
+		},
+		{
+			"name": "CHUB",
+			"text": "",
+			"health": 4,
+			"roll": 3,
+			"power": 1
+		},
+		{
+			"name": "CONQUEST",
+			"text": "",
+			"health": 2,
+			"roll": 3,
+			"power": 1
+		},
+		{
+			"name": "DADDY LONG LEGS",
+			"text": "",
+			"health": 4,
+			"roll": 4,
+			"power": 1
+		},
+		{
+			"name": "DARK ONE",
+			"text": "",
+			"health": 3,
+			"roll": 4,
+			"power": 1
+		},
+		{
+			"name": "DEATH",
+			"text": "",
+			"health": 3,
+			"roll": 4,
+			"power": 2
+		},
+		{
+			"name": "ENVY",
+			"text": "",
+			"health": 2,
+			"roll": 5,
+			"power": 1
+		},
+		{
+			"name": "FAMINE",
+			"text": "",
+			"health": 2,
+			"roll": 3,
+			"power": 1
+		},
+		{
+			"name": "GEMINI",
+			"text": "",
+			"health": 3,
+			"roll": 4,
+			"power": 1
+		},
+		{
+			"name": "GLUTTONY",
+			"text": "",
+			"health": 4,
+			"roll": 3,
+			"power": 1
+		},
+		{
+			"name": "GREED",
+			"text": "",
+			"health": 3,
+			"roll": 4,
+			"power": 1
+		},
+		{
+			"name": "GURDY",
+			"text": "",
+			"health": 5,
+			"roll": 4,
+			"power": 1
+		},
+		{
+			"name": "GURDY JR.",
+			"text": "",
+			"health": 2,
+			"roll": 5,
+			"power": 1
+		},
+		{
+			"name": "LARRY JR.",
+			"text": "",
+			"health": 4,
+			"roll": 3,
+			"power": 1
+		},
+		{
+			"name": "LITTLE HORN",
+			"text": "",
+			"health": 2,
+			"roll": 6,
+			"power": 1
+		},
+		{
+			"name": "LUST",
+			"text": "",
+			"health": 2,
+			"roll": 4,
+			"power": 1
+		},
+		{
+			"name": "MASK OF INFAMY",
+			"text": "",
+			"health": 4,
+			"roll": 4,
+			"power": 1
+		},
+		{
+			"name": "MEGA FATTY",
+			"text": "",
+			"health": 3,
+			"roll": 3,
+			"power": 1
+		},
+		{
+			"name": "MONSTRO",
+			"text": "",
+			"health": 4,
+			"roll": 4,
+			"power": 1
+		},
+		{
+			"name": "PEEP",
+			"text": "",
+			"health": 3,
+			"roll": 4,
+			"power": 1
+		},
+		{
+			"name": "PESTILENCE",
+			"text": "",
+			"health": 4,
+			"roll": 4,
+			"power": 1
+		},
+		{
+			"name": "PIN",
+			"text": "",
+			"health": 2,
+			"roll": 4,
+			"power": 1
+		},
+		{
+			"name": "PRIDE",
+			"text": "",
+			"health": 2,
+			"roll": 4,
+			"power": 1
+		},
+		{
+			"name": "RAG MAN",
+			"text": "",
+			"health": 2,
+			"roll": 3,
+			"power": 2
+		},
+		{
+			"name": "SCOLEX",
+			"text": "",
+			"health": 3,
+			"roll": 5,
+			"power": 1
+		},
+		{
+			"name": "SLOTH",
+			"text": "",
+			"health": 3,
+			"roll": 4,
+			"power": 1
+		},
+		{
+			"name": "THE BLOAT",
+			"text": "",
+			"health": 4,
+			"roll": 4,
+			"power": 2
+		},
+		{
+			"name": "THE DUKE OF FLIES",
+			"text": "",
+			"health": 4,
+			"roll": 3,
+			"power": 1
+		},
+		{
+			"name": "THE HAUNT",
+			"text": "",
+			"health": 3,
+			"roll": 4,
+			"power": 1
+		},
+		{
+			"name": "THE LAMB",
+			"text": "",
+			"health": 6,
+			"roll": 3,
+			"power": 0
+		},
+		{
+			"name": "WAR",
+			"text": "",
+			"health": 3,
+			"roll": 3,
+			"power": 1
+		},
+		{
+			"name": "WRATH",
+			"text": "",
+			"health": 3,
+			"roll": 3,
+			"power": 1
+		},
+		{
+			"name": "MOM!",
+			"text": "",
+			"health": 5,
+			"roll": 4,
+			"power": 2
+		},
+		{
+			"name": "SATAN!",
+			"text": "",
+			"health": 6,
+			"roll": 4,
+			"power": 2
+		}
+	]
+}

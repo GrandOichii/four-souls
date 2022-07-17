@@ -1,0 +1,10 @@
+{
+    "name": "Gemini",
+    "text": "",
+    "image": "image.bmp",
+    "script": "script.lua",
+    "health": 3,
+    "roll": 4,
+    "power": 1,
+    "rewards": "Gemini_rewards"
+}

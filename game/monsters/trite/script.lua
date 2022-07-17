@@ -1,3 +1,3 @@
 function Trite_rewards(host, me, killer)
-    lootCards(host, killer["id"], 2)
+	--  TODO
 end

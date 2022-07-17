@@ -1,0 +1,10 @@
+{
+    "name": "Holy Mom\u2019s Eye",
+    "text": "",
+    "image": "image.bmp",
+    "script": "script.lua",
+    "health": 1,
+    "roll": 4,
+    "power": 2,
+    "rewards": "HolyMomsEye_rewards"
+}

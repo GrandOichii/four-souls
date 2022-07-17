@@ -1,0 +1,10 @@
+{
+    "name": "Holy Dinga",
+    "text": "",
+    "image": "image.bmp",
+    "script": "script.lua",
+    "health": 3,
+    "roll": 3,
+    "power": 1,
+    "rewards": "HolyDinga_rewards"
+}

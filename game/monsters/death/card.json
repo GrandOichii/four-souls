@@ -1,0 +1,10 @@
+{
+    "name": "Death",
+    "text": "",
+    "image": "image.bmp",
+    "script": "script.lua",
+    "health": 3,
+    "roll": 4,
+    "power": 2,
+    "rewards": "Death_rewards"
+}
