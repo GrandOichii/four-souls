@@ -94,6 +94,7 @@ MatchState::MatchState(nlohmann::json j){
     monsterDiscard = cardVectorFromJson(j["monsterDiscard"]);
     shop = cardVectorFromJson(j["shop"]);
     monsters = cardVectorFromJson(j["monsters"]);
+    isCombat = j["isCombat"];
 }
 
 static json cardToJson(const CardState& card) {
@@ -188,8 +189,10 @@ json MatchState::toJson() {
     result["monsterDiscard"] = cardVectorToJson(monsterDiscard);
     result["shop"] = cardVectorToJson(shop);
     result["monsters"] = cardVectorToJson(monsters);
+    result["isCombat"] = isCombat;
     return result;
 }
+
 static Match* getTopMatch(lua_State* L, int pos) {
     if (!lua_isuserdata(L, pos)) {
         dumpstack(L);
@@ -319,6 +322,7 @@ int Match::dealDamage(string tgtType, int tgtID, int amount) {
         auto health = data->health();
         if (health) return dealt;
         _isAttackPhase = false;
+        _lastMonsterIndex = -2;
         this->log(card->name() + " dies!");
         _rewardsStack.push(RewardEvent{
             monsterW,
@@ -1129,11 +1133,14 @@ int Match::wrap_dealCombatDamage(lua_State* L) {
     auto match = getTopMatch(L, 1);
     auto& event = match->_lastCombatDamageEvent;
     //  TODO check if monster is source to deal damage
+    if (match->_lastMonsterIndex == -2) return 0;
     auto monsterData = match->_monsterDataArr[match->_lastMonsterIndex];
     int dealt = match->dealDamage(event.targetType, event.targetID, event.amount);
     if (!dealt) return 0;
-    if (match->_isAttackPhase)
+    if (match->_isAttackPhase) {
         match->_isAttackPhase = match->_activePlayer->health();
+        if (!match->_isAttackPhase) match->_lastMonsterIndex = -2;
+    }
     match->pushDamageEvent(event);
     return 0;
 }
@@ -1146,6 +1153,7 @@ int Match::wrap_popRollStack(lua_State* L) {
     match->_lastRollOwnerID = roll.owner->id();
     match->_rollStack.pop_back();
     if (!roll.isCombatRoll) return 0;
+    if (match->_lastMonsterIndex == -2) return 0;
     auto monsterW = match->_monsters[match->_lastMonsterIndex].back();
     auto monsterData = match->_monsterDataArr[match->_lastMonsterIndex];
     match->log( "Attack roll " + std::to_string(roll.value) + " vs " + std::to_string(monsterData->roll()));
@@ -2194,6 +2202,7 @@ MatchState Match::getState() {
     for (const auto& data : _monsterDataArr) {
         result.monsterDataArr.push_back(data->getState());
     }
+    result.isCombat = _isAttackPhase;
     return result;
 }
 

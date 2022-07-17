@@ -1068,11 +1068,14 @@ public:
             for (const auto& value : me.hand)
                 _allowedCards.push_back(value.id);
         // check treasure
-        if (me.purchaseCount && me.coinCount >= me.treasurePrice && _state.stack.size() == 0)
+        if (me.purchaseCount && !_state.isCombat && me.coinCount >= me.treasurePrice && _state.stack.size() == 0)
             for (const auto& value : _state.shop)
                 _allowedCards.push_back(value.id);
         // check monsters
-        //  TODO
+        if (me.attackCount && _state.stack.size() == 0) {
+            for (const auto& value : _state.monsters)
+                _allowedCards.push_back(value.id);
+        }
     }
 
     void clearSimpleChoiceTextures() {
@@ -1313,6 +1316,15 @@ public:
         throw std::runtime_error("can't decide index of treasure " + card.cardName + " (id: " + std::to_string(card.id) + ")");
     }
 
+    string attackMonsterReply(CardState& card) {
+         for (int i = 0; i < _state.monsters.size(); i++) {
+            if (card.id == _state.monsters[i].id) {
+                return string("attack ") + std::to_string(i);
+            }
+        }
+        throw std::runtime_error("can't decide index of monster " + card.cardName + " (id: " + std::to_string(card.id) + ")");
+    }
+
     void sendAction(CardState& card) {
         message<PollType> reply;
         switch (card.zone) {
@@ -1332,9 +1344,7 @@ public:
             reply << ACTION_ACTIVATE_CHARACTER_CARD;
             break;
         case Zones::Shop:
-            //  TODO choose the treasure
             reply << buyTreasureReply(card);
-            // reply << string("buy_treasure 0");
             break;
         case Zones::Stack:
             //  TODO
@@ -1349,7 +1359,7 @@ public:
             //  TODO show the player the discard pile
             break;
         case Zones::ActiveMonsters:
-            //  TODO attack the clicked monster
+            reply << attackMonsterReply(card);
             break;
         }
         _c->Send(reply);
@@ -1764,7 +1774,7 @@ int main() {
     return 0;
 }
 
-int m1ain(int argc, char* argv[]) {
+int mai1n(int argc, char* argv[]) {
     srand(time(0));
     // srand(1);
     BOTS = atoi(argv[1]);

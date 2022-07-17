@@ -55,6 +55,7 @@ struct MatchState {
     vector<CardState> shop;
     vector<CardState> monsters; // turn monsters into card wrappers also
     vector<MonsterDataState> monsterDataArr;
+    bool isCombat;
 
     void pushTable(lua_State* L) const;
     
