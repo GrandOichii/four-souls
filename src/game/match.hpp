@@ -151,6 +151,7 @@ struct RewardEvent {
 class Match {
 private:
     // config
+    int _logWait;
     int _startingLootAmount;
     int _startingCoinAmount;
     int _startingShopSize;

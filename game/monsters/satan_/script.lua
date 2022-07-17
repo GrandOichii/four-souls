@@ -1,3 +1,5 @@
 function Satan_rewards(host, me, killer)
-	--  TODO
+	plusOneTreasure(host, killer["id"])
+	plusOneTreasure(host, killer["id"])
+	addSouls(host, killer["id"], 2)
 end

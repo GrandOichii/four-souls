@@ -1,0 +1,11 @@
+{
+    "name": "Charger",
+    "text": "",
+    "image": "image.bmp",
+    "script": "script.lua",
+
+    "health": 1,
+    "roll": 5,
+    "power": 1,
+    "rewards": "Charger_rewards"
+}

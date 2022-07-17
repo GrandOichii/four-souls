@@ -1,3 +1,4 @@
 function Delirium_rewards(host, me, killer)
-	--  TODO
+	plusOneTreasure(host, killer["id"])
+	plusOneTreasure(host, killer["id"])
 end

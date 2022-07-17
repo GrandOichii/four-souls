@@ -1,3 +1,3 @@
 function EvilTwin_rewards(host, me, killer)
-	--  TODO
+	plusOneTreasure(host, killer["id"])
 end

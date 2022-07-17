@@ -1760,7 +1760,7 @@ public:
     }
 };
 
-int main() {
+int mai1n() {
     string host = "localhost";
 
     std::cout << "Enter host (" << host << "): ";
@@ -1774,7 +1774,7 @@ int main() {
     return 0;
 }
 
-int mai1n(int argc, char* argv[]) {
+int main(int argc, char* argv[]) {
     srand(time(0));
     // srand(1);
     BOTS = atoi(argv[1]);

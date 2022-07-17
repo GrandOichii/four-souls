@@ -3,6 +3,7 @@
     "text": "",
     "image": "image.bmp",
     "script": "script.lua",
+    
     "health": 4,
     "roll": 3,
     "power": 1,

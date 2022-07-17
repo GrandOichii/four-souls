@@ -1,3 +1,4 @@
 function Lust_rewards(host, me, killer)
-	--  TODO
+	lootCards(host, killer["id"], 2)
+	addSouls(host, killer["id"], 1)
 end

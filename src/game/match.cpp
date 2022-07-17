@@ -281,6 +281,7 @@ void MatchState::pushTable(lua_State* L) const {
 Match::Match(nlohmann::json config) {
     this->rng.seed(rand());
 
+    this->_logWait = config.contains("logWait") ? (int)config["logWait"] : 0;
     this->_startingLootAmount = config.contains("startingLootCount") ? (int)config["startingLootCount"] : 3;
     this->_startingCoinAmount = config.contains("startingCoinCount") ? (int)config["startingCoinCount"] : 3;
     this->_startingShopSize = config.contains("startingShopSize") ? (int)config["startingShopSize"]: 2;
@@ -1983,8 +1984,8 @@ void Match::turn() {
     while ((response = this->_activePlayer->promptAction(state)) != ACTION_PASS || _isAttackPhase) {
         std::cout << "\t" << _activePlayer->name() << ": " << response << std::endl;
         this->executePlayerAction(_activePlayer, response);
-        this->resolveStack();
         if (_isAttackPhase) this->rollAttack();
+        this->resolveStack();
         state = this->getState();
     }
     _isMainPhase = false;
@@ -2126,7 +2127,7 @@ void Match::log(string message, bool wait) {
     std::cout << " - " << message << std::endl;
     if (wait) {
         // std::this_thread::sleep_for(std::chrono::seconds(1));
-        std::this_thread::sleep_for(std::chrono::milliseconds(200));
+        std::this_thread::sleep_for(std::chrono::milliseconds(this->_logWait));
     }
 }
 

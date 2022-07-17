@@ -1,3 +1,3 @@
 function Leech_rewards(host, me, killer)
-	--  TODO
+    lootCards(me, killer["id"], 1)
 end

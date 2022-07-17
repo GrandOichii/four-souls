@@ -1,3 +1,3 @@
 function Dople_rewards(host, me, killer)
-	--  TODO
+	addCoins(host, killer["id"], 7)
 end

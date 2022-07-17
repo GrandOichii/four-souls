@@ -1,6 +1,6 @@
 {
     "back": "images/treasure_card_back.bmp",
-    "cards": [
+    "card1s": [
         "treasure/moms_box",      
         "treasure/razor_blade",
         "treasure/razor_blade",
@@ -17,7 +17,7 @@
         "treasure/lard",
         "treasure/razor_blade"
     ],
-    "card1s": [
+    "cards": [
         "treasure/guppys_tail",      
         "treasure/moms_box",      
         "treasure/eye_of_greed",

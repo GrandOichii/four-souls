@@ -1,3 +1,3 @@
 function RedHost_rewards(host, me, killer)
-	--  TODO
+    addCoins(host, killer["id"], 5)
 end

@@ -1,3 +1,5 @@
+--  TODO
+
 function Dip_rewards(host, me, killer)
-	--  TODO
+    addCoins(host, killer["id"], 1)
 end

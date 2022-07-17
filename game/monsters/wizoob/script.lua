@@ -1,3 +1,3 @@
 function Wizoob_rewards(host, me, killer)
-	--  TODO
+	lootCards(host, killer["id"], 3)
 end

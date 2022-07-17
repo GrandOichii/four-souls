@@ -1,3 +1,4 @@
 function LarryJr_rewards(host, me, killer)
-	--  TODO
+	addCoins(host, killer["id"], 6)
+	addSouls(host, killer["id"], 1)
 end

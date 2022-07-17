@@ -1,3 +1,3 @@
 function CursedMomsHand_rewards(host, me, killer)
-	--  TODO
+	addCoins(host, killer["id"], 4)
 end

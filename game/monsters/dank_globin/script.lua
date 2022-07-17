@@ -1,3 +1,3 @@
 function DankGlobin_rewards(host, me, killer)
-	--  TODO
+	lootCards(host, killer["id"], 2)
 end

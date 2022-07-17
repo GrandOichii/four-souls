@@ -1,3 +1,4 @@
 function RagMan_rewards(host, me, killer)
-	--  TODO
+	lootCards(host, killer["id"], 3)
+	addSouls(host, killer["id"], 1)
 end

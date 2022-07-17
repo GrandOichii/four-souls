@@ -1,3 +1,4 @@
 function DarkOne_rewards(host, me, killer)
-	--  TODO
+	plusOneTreasure(host, killer["id"])
+	addSouls(host, killer["id"], 1)
 end
