@@ -177,7 +177,7 @@ void Player::setPurchaseCount(int amount) {
 }
 
 void Player::decPurchaseAmount() { --_purchaseCount; }
-void Player::incPurchaseAmount() { --_purchaseCount; }
+void Player::incPurchaseAmount() { ++_purchaseCount; }
 
 int Player::coinCount() { return _coinCount; }
 void Player::addCoins(int amount) { this->_coinCount += amount + _additionalCoins; }
@@ -306,21 +306,17 @@ static const char* PROMPT_RESPONSE_FUNC = "Bot_PromptResponse";
 static const char* PROMPT_SIMPLE_RESPONSE_FUNC = "Bot_PromptSimpleResponse";
 
 string BotPlayer::promptAction(MatchState& state) {
-    // if (_actions.empty()) return ACTION_PASS;
-    // auto result = _actions.top();
-    // if (result == "mainWait") {
-    //     if (!isMyMain) return ACTION_PASS;
-    //     _actions.pop();
-    //     result = _actions.top();
-    // }
-    // _actions.pop();
     lua_getglobal(L, PROMPT_ACTION_FUNC);
     if (!lua_isfunction(L, -1)) throw std::runtime_error("bot doesn't have action prompt script");
     // lua_pushlightuserdata(L, this);
     this->pushTable(L);
     state.pushTable(L);
     int r = lua_pcall(L, 2, 1, 0);
-    if (r != LUA_OK) throw std::runtime_error("bot action prompt script failed");
+    if (r != LUA_OK) {
+        string errormsg = lua_tostring(L, -1);
+        std::cout << "LUA ERR:" << errormsg << std::endl;
+        throw std::runtime_error("bot action prompt script failed");
+    }
     if (!lua_isstring(L, -1)) throw std::runtime_error("bot action prompt didn't return a string");
     return (string)lua_tostring(L, -1);
 }
@@ -334,8 +330,30 @@ void BotPlayer::updateEndMatch(MatchState& state, int winnerID) {
 }
 
 string BotPlayer::promptResponse(MatchState& state, string text, string choiceType, vector<int> choices) {
-    //  TODO
-    return "$FIRST";
+    lua_getglobal(L, PROMPT_RESPONSE_FUNC);
+    if (!lua_isfunction(L, -1)) throw std::runtime_error("bot doesn't have action prompt script");
+    // lua_pushlightuserdata(L, this);
+    this->pushTable(L);
+    state.pushTable(L);
+    lua_pushstring(L, text.c_str());
+    lua_pushstring(L, choiceType.c_str());
+    auto size = choices.size();
+    lua_createtable(L, size, 0);
+    for (int i = 0; i < size; i++) {
+        lua_pushnumber(L, i+1);
+        lua_pushnumber(L, choices[i]);
+        lua_settable(L, -3);
+    }
+    int r = lua_pcall(L, 5, 1, 0);
+    if (r != LUA_OK) {
+        string errormsg = lua_tostring(L, -1);
+        std::cout << "LUA ERR:" << errormsg << std::endl;
+        throw std::runtime_error("bot action prompt script failed");
+    }
+    if (!lua_isstring(L, -1)) throw std::runtime_error("bot action prompt didn't return a string");
+    auto result = (string)lua_tostring(L, -1);
+    std::cout << "BOT RESPONSE " << result << std::endl;
+    return (string)lua_tostring(L, -1);
 }
 
 string BotPlayer::promptSimpleResponse(MatchState& state, string text, vector<string> choices) {

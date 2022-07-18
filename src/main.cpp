@@ -1294,7 +1294,7 @@ public:
             this->toggleFullscreen();
             return;
         case SDLK_SPACE:
-            if (!_waitingResponse) return;
+            if (!_waitingResponse || _lastRequestType != PollType::GetAction) return;
             message<PollType> reply;
             reply << ACTION_PASS;
             _c->Send(reply);
