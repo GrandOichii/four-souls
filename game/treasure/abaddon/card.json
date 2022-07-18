@@ -1,0 +1,14 @@
+{
+    "name": "Abaddon",
+    "text": "+5a.\nEach time you take damage from a monster, you die.",
+    "image": "image.bmp",
+    "script": "script.lua",
+    "enter": "Abaddon_enter",
+    "leave": "Abaddon_leave",
+    "on": {
+        "damage": {
+            "check": "Abaddon_trigger_check",
+            "effect": "Abaddon_trigger"
+        }
+    }
+}

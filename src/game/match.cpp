@@ -329,20 +329,25 @@ int Match::dealDamage(string tgtType, int tgtID, int amount) {
         if (health) return dealt;
         _isAttackPhase = false;
         _lastMonsterIndex = -2;
-        this->log(card->name() + " dies!");
-        _rewardsStack.push(RewardEvent{
-            monsterW,
-            _activePlayer //  TODO should always be active player (not sure)
-        });
-        pushToStack(new StackEffect(
-            "_popRewardsStack",
-            _activePlayer,
-            monsterW,
-            REWARDS_TYPE
-        ));
+        this->killMonster(monsterW);
         return dealt;
     }
     throw std::runtime_error("no damage was dealt, target: (" + tgtType + ", " + std::to_string(tgtID) + ")");
+}
+
+void Match::killMonster(CardWrapper* w) {
+    auto card = (MonsterCard*)w->card();
+    this->log(card->name() + " dies!");
+    _rewardsStack.push(RewardEvent{
+        w,
+        _activePlayer //  TODO should always be active player (not sure)
+    });
+    pushToStack(new StackEffect(
+        "_popRewardsStack",
+        _activePlayer,
+        w,
+        REWARDS_TYPE
+    ));
 }
 
 void Match::addToLootDiscard(CardWrapper* wrapper) {
@@ -1139,6 +1144,7 @@ int Match::wrap_dealCombatDamage(lua_State* L) {
     auto& event = match->_lastCombatDamageEvent;
     //  TODO check if monster is source to deal damage
     if (match->_lastMonsterIndex == -2) return 0;
+    if (match->_turnEnd) return 0;
     auto monsterData = match->_monsterDataArr[match->_lastMonsterIndex];
     int dealt = match->dealDamage(event.targetType, event.targetID, event.amount);
     if (!dealt) return 0;
@@ -1358,6 +1364,45 @@ int Match::wrap_getStack(lua_State* L) {
         lua_settable(L, -3);
     }
     return 1;
+}
+
+int Match::wrap_incAttack(lua_State* L) {
+    stackSizeIs(L, 3);
+    auto match = getTopMatch(L, 1);
+    auto pid = getTopNumber(L, 2);
+    auto amount = getTopNumber(L, 3);
+    auto player = match->playerWithID(pid);
+    player->incAttack(amount);
+    return 0;
+}
+
+int Match::wrap_decAttack(lua_State* L) {
+    stackSizeIs(L, 3);
+    auto match = getTopMatch(L, 1);
+    auto pid = getTopNumber(L, 2);
+    auto amount = getTopNumber(L, 3);
+    auto player = match->playerWithID(pid);
+    player->decAttack(amount);
+    return 0;
+}
+
+int Match::wrap_killEntity(lua_State* L) {
+    stackSizeIs(L, 3);
+    auto match = getTopMatch(L, 1);
+    auto type = getTopString(L, 2);
+    auto id = getTopNumber(L, 3);
+    if (type == PLAYER_TYPE) {
+        match->killPlayer(id);
+        return 0;
+    }
+    if (type == MONSTER_TYPE) {
+        for (const auto& pile : match->_monsters) {
+            if (pile.back()->id() != id) continue;
+            match->killMonster(pile.back());
+            return 0;
+        }
+    }
+    throw std::runtime_error("can't kill entity with id " + std::to_string(id) + " with unknown type " + type);
 }
 
 int Match::wrap_topCardsOf(lua_State* L) {
@@ -1767,6 +1812,9 @@ void Match::setupLua(string setupScript) {
     luaL_openlibs(L);
     // connect functions
     lua_register(L, "destroyCard", wrap_destroyCard);
+    lua_register(L, "incAttack", wrap_incAttack);
+    lua_register(L, "decAttack", wrap_decAttack);
+    lua_register(L, "killEntity", wrap_killEntity);
     lua_register(L, "_popDeathStack", wrap_popDeathStack);
     lua_register(L, "getLastDeath", wrap_getLastDeath);
     lua_register(L, "_popRewardsStack", wrap_popRewardsStack);
@@ -2103,15 +2151,17 @@ void Match::turn() {
     this->log(_activePlayer->name() + "'s main phase");
     string response = "";
     auto state = this->getState();
-    while (!_turnEnd && ((response = this->_activePlayer->promptAction(state)) != ACTION_PASS || _isAttackPhase)) {
+    while (!_turnEnd && (response != ACTION_PASS || _isAttackPhase)) {
+        if (_isAttackPhase) this->rollAttack();
+        response = this->_activePlayer->promptAction(state);
         std::cout << "\t" << _activePlayer->name() << ": " << response << std::endl;
         this->executePlayerAction(_activePlayer, response);
-        if (_isAttackPhase) this->rollAttack();
         this->resolveStack();
         if (_winner) return;
         state = this->getState();
     }
     _isMainPhase = false;
+    _isAttackPhase = false;
     this->log("End of " + this->_activePlayer->name() + "'s turn");
 
     // end of turn

@@ -8,7 +8,5 @@ function D20_tap(host)
     if not chose then
         return
     end
-    owner = getOwner(host, targetID)
-    destroyCard(host, targetID)
-    plusOneTreasure(host, owner.id)
+    Common_Reroll(host, targetID)
 end

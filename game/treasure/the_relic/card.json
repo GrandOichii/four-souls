@@ -1,0 +1,12 @@
+{
+    "name": "The Relic",
+    "text": "When anyone rolls a 1, loot 1.",
+    "image": "image.bmp",
+    "script": "script.lua",
+    "on": {
+        "roll": {
+            "check": "TheRelic_trigger_check",
+            "effect": "TheRelic_trigger"
+        }
+    }
+}

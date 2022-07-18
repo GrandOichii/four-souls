@@ -199,12 +199,31 @@ function Common_TargetTappedCard(host, ownerID)
     if #ids == 0 then
         return false
     end
-    local choiceId, payed = requestChoice(host, ownerID, "Choose a card to untap", CARD, ids)
+    local choiceId, payed = requestChoice(host, ownerID, "Choose a tapped card", CARD, ids)
     if not payed then
         return false
     end
     pushTarget(host, choiceId, CARD)
     return true
+end
+
+function Common_ChooseTappedCard(host, ownerID, haveToBeOwnedByOwner)
+    local players = getPlayers(host)
+    local cardIDs = {}
+    for _, player in ipairs(players) do
+        if player.id == ownerID or not haveToBeOwnedByOwner then
+            for _, card in ipairs(player.board) do
+                if card.tapped then
+                    cardIDs[#cardIDs+1] = card.id
+                end
+            end
+        end
+    end
+    if #cardIDs == 0 then
+        return -1, false
+    end
+    local choiceId, _ = requestChoice(host, ownerID, "Choose a tapped card", CARD, cardIDs)
+    return choiceId
 end
 
 function Common_PostDeathOwnerDied(host, cardID)
@@ -289,4 +308,10 @@ function Common_ChooseNonEternalCard(host, ownerID)
     end
     local choice, _ = requestChoice(host, ownerID, 'Choose card', CARD, cardIDs)
     return choice, true
+end
+
+function Common_Reroll(host, cardID)
+    local owner = getOwner(host, cardID)
+    destroyCard(host, cardID)
+    plusOneTreasure(host, owner.id)
 end

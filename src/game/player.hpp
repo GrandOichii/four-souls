@@ -149,6 +149,9 @@ public:
     void tempIncMaxLife(int amount);
     void decMaxLife(int amount);
 
+    void incAttack(int amount);
+    void decAttack(int amount);
+
     void addSouls(int amount);
 
     void resetEOT();

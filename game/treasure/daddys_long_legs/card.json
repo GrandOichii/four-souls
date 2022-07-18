@@ -1,0 +1,13 @@
+{
+    "name": "Daddy's Long Legs",
+    "text": "At the start of your turn deal 1 damage to a player of monster of your choosing.",
+    "image": "image.bmp",
+    "script": "script.lua",
+
+    "on": {
+        "turn_start": {
+            "check": "DaddysLongLegs_trigger_check",
+            "effect": "DaddysLongLegs_trigger"
+        }
+    }
+}

@@ -334,7 +334,7 @@ public:
     Match(nlohmann::json config);
     ~Match();
     void killPlayer(int id);
-    void killMonster();
+    void killMonster(CardWrapper* w);
     void updateAllPlayers();
     void updateAllPlayersEndMatch();
     CardWrapper* addWrapper(ScriptCard* card);
@@ -403,9 +403,12 @@ public:
     static int wrap_discardLoot(lua_State* L);
     static int wrap_plusOneTreasure(lua_State* L);
     static int wrap_incMaxLife(lua_State* L);
+    static int wrap_decMaxLife(lua_State* L);
+    static int wrap_incAttack(lua_State* L);
+    static int wrap_decAttack(lua_State* L);
+    static int wrap_killEntity(lua_State* L);
     static int wrap_tempIncMaxLife(lua_State* L);
     static int wrap_tempIncAttack(lua_State* L);
-    static int wrap_decMaxLife(lua_State* L);
     static int wrap_topCardsOf(lua_State* L);
     static int wrap_getCurrentPlayer(lua_State* L);
     static int wrap_addSouls(lua_State* L);

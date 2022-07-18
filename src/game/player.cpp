@@ -51,6 +51,14 @@ int Player::dealDamage(int amount) {
     return amount;
 }
 
+void Player::incAttack(int amount) {
+    _attack += amount;
+}
+
+void Player::decAttack(int amount) {
+    _attack -= amount;
+}
+
 void Player::incMaxAttackCount() {
     _maxAttackCount++;
     _attackCount++;

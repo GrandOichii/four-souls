@@ -1,0 +1,12 @@
+{
+    "name": "9 Volt",
+    "text": "Recharge up to 2 of yout active items at the end of your turn.",
+    "image": "image.bmp",
+    "script": "script.lua",
+    "on": {
+        "turn_end": {
+            "check": "NineVolt_trigger_check",
+            "effect": "NineVolt_trigger"
+        }
+    }
+}

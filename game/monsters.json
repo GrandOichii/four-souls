@@ -2,6 +2,21 @@
     "back": "images/monster_card_back.bmp",
     "cards": {
         "monsters": [
+            "monsters/leech",
+            "monsters/leech",
+            "monsters/leech",
+            "monsters/leech",
+            "monsters/leech",
+            "monsters/leech",
+            "monsters/leech",
+            "monsters/leech",
+            "monsters/leech",
+            "monsters/leech",
+            "monsters/leech",
+            "monsters/leech",
+            "monsters/leech"
+        ],
+        "monster1s": [
             "monsters/big_spider",
             "monsters/black_bony",
             "monsters/boom_fly",
