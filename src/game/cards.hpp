@@ -73,6 +73,7 @@ public:
     string leaveFuncName();
     std::vector<ActivatedAbility> abilities();
     bool isTrinket();
+    bool isEternal();
     bool goesToBottom();
     string costFuncName();
 };

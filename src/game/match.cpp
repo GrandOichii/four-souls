@@ -532,6 +532,7 @@ int Match::wrap_getOwner(lua_State *L) {
     }
     auto cid = (int)lua_tonumber(L, 2);
     auto w = match->cardWithID(cid);
+    std::cout << "FINDING OWNER FOR " << w->card()->name() << std::endl;
     if (!w->owner()) std::cout << "FIX ME ALREADY" << std::endl;
     w->owner()->pushTable(L);
     return 1;
@@ -553,8 +554,6 @@ int Match::wrap_setRollValue(lua_State* L) {
         exit(1);
     }
     auto value = (int)lua_tonumber(L, 3);
-    // std::
-    std::cout << "ROLL ID " << rid << std::endl;
     int rc = 0;
     for (int i = 0; i < rid; i++) {
         if (match->_stack[i]->type != ROLL_TYPE) continue;
@@ -572,7 +571,7 @@ int Match::wrap_setRollValue(lua_State* L) {
     0 roll
     */
     match->_rollStack[rc].value = value;
-    std::cout << "NEW VALUE " << match->_rollStack[rc].value << std::endl;
+    std::cout << "NEW ROLL VALUE " << match->_rollStack[rc].value << std::endl;
     return 0;
 }
 
@@ -607,7 +606,6 @@ int Match::wrap_dealDamage(lua_State* L) {
     auto amount = getTopNumber(L, 6);
 
     int dealt = match->dealDamage(tgtType, tgtID, amount);
-    std::cout << "DEALT " << dealt;
     if (!dealt) return 0;
 
     DamageTrigger trigger{
@@ -740,7 +738,6 @@ int Match::wrap_requestChoice(lua_State* L) {
         lua_pop(L, 1);
     }
     Player* player = match->playerWithID(pid);
-    std::cout << choices.size() << std::endl;
     auto state = match->getState();
     auto response = player->promptResponse(state, text, choiceType, choices);
     
@@ -865,9 +862,7 @@ int Match::wrap_requestSimpleChoice(lua_State* L) {
     }
     auto state = match->getState();
     auto response = player->promptSimpleResponse(state, text, choices);
-    std::cout << response << std::endl;
     if (response == RESPONSE_FIRST) response = choices[0];
-    std::cout << response << std::endl;
     lua_pushstring(L, response.c_str());
     return 1;
 }
@@ -999,7 +994,6 @@ int Match::wrap_buyItem(lua_State* L) {
     auto match = static_cast<Match*>(lua_touserdata(L, 1));
     CardWrapper* w = nullptr;
     auto top = match->getTopTreasureCard();
-    std::cout << top->card()->name() << std::endl;
     if (top) match->_treasureDeck.pop_back(); //  TODO fix
     int lti = match->_lastTreasureIndex;
 
@@ -1218,6 +1212,28 @@ int Match::wrap_getLastDeath(lua_State* L) {
     auto match = getTopMatch(L, 1);
     match->_lastDeath.pushTable(L);
     return 1;
+}
+
+int Match::wrap_destroyCard(lua_State* L) {
+    stackSizeIs(L, 2);
+    auto match = getTopMatch(L, 1);
+    auto cardID = getTopNumber(L, 2);
+    auto card = match->cardWithID(cardID);
+    for (const auto& player : match->_players) {
+        for (const auto& bcard : player->board()) {
+            if (bcard != card) continue;
+            // destroy card
+            //  TODO sort loot cards and treasure cards
+            player->removeFromBoard(card);
+            match->_treasureDiscard.push_back(card);
+            card->setOwner(nullptr);
+            match->execLeave(card, player);
+            return 0;
+        }
+    }
+    // card is already gone
+    match->log("WARNING: failed to remove non-existing card " + card->card()->name() + " from board");
+    return 0;
 }
 
 int Match::wrap_incAdditionalCoins(lua_State* L) {
@@ -1725,11 +1741,32 @@ void Match::execEnter(CardWrapper* w, Player* owner) {
     }
 }
 
+void Match::execLeave(CardWrapper* w, Player* owner) {
+    auto funcName = w->card()->leaveFuncName();
+    if (!funcName.size()) return;
+
+    this->log("Executing leave function " + funcName);
+    lua_getglobal(L, funcName.c_str());
+    if (!lua_isfunction(L, -1)) {
+        lua_err(L);
+        exit(1);
+    }
+    lua_pushlightuserdata(L, this);
+    w->pushTable(L);
+    owner->pushTable(L);
+    int r = lua_pcall(L, 3, 0, 0);
+    if (r != LUA_OK) {
+        lua_err(this->L);
+        exit(1);
+    }
+}
+
 void Match::setupLua(string setupScript) {
     this->L = luaL_newstate();
     // connect common libs
     luaL_openlibs(L);
     // connect functions
+    lua_register(L, "destroyCard", wrap_destroyCard);
     lua_register(L, "_popDeathStack", wrap_popDeathStack);
     lua_register(L, "getLastDeath", wrap_getLastDeath);
     lua_register(L, "_popRewardsStack", wrap_popRewardsStack);
@@ -1828,6 +1865,21 @@ void Match::setupLua(string setupScript) {
     "\nfor _, cid in ipairs(cardIDs) do"
     "\n    discardLoot(host, ownerID, cid)"
     "\nend"
+    "\nif #player['board'] == 1 then"
+    "\n    return"
+    "\nend"
+    "\ncardIDs = {}"
+    "\nfor _, card in ipairs(player['board']) do"
+    "\n    if not card['isEternal'] then"
+    "\n        cardIDs[#cardIDs+1] = card['id']"
+    "\n    end"
+    "\nend"
+    "\nif #cardIDs == 1 then"
+    "\n    destroyCard(host, cardIDs[1])"
+    "\n    return"
+    "\nend"
+    "\nlocal choice, payed = requestChoice(host, ownerID, 'Choose a card to destroy', CARD, cardIDs)"
+    // "\ndestroyCard(host, choice)"
     "\nend");
     std::cout << "All scripts loaded!" << std::endl;
 }
@@ -2296,6 +2348,7 @@ void Match::rollAttack() {
         nullptr,
         ROLL_TYPE
     ));
+    applyTriggers(ROLL_TYPE);
 }
 
 void Match::healMonsters() {
@@ -2347,6 +2400,7 @@ void Match::killPlayer(int id) {
     player->pushTable(L);
     int r = lua_pcall(L, 2, 0, 0);
     if (r != LUA_OK) {
+        lua_err(L);
         throw std::runtime_error("failed to call death penalty function");
     }
     this->applyTriggers(AFTER_DEATH_TYPE);

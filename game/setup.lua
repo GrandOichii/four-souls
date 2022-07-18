@@ -274,3 +274,19 @@ function Common_popMonsterTarget(host)
     local target = popTarget(host)
     return Common_MonsterWithID(host, target["id"])
 end
+
+function Common_ChooseNonEternalCard(host, ownerID)
+    local cardIDs = {}
+    for _, player in ipairs(getPlayers(host)) do
+        for _, card in ipairs(player.board) do
+            if not card.isEternal then
+                cardIDs[#cardIDs+1] = card.id
+            end
+        end
+    end
+    if #cardIDs == 0 then
+        return {}, false
+    end
+    local choice, _ = requestChoice(host, ownerID, 'Choose card', CARD, cardIDs)
+    return choice, true
+end

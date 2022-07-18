@@ -73,6 +73,7 @@ string ScriptCard::leaveFuncName() { return _leaveFuncName; }
 
 string ScriptCard::costFuncName() { return _costFuncName; }
 bool ScriptCard::isTrinket() { return _isTrinket; }
+bool ScriptCard::isEternal() { return _isEternal; }
 bool ScriptCard::goesToBottom() { return _goesToBottom; }
 
 CharacterCard::CharacterCard(string dir, json j) : 
@@ -187,6 +188,7 @@ void CardWrapper::pushTable(lua_State* L) {
     l_pushtablenumber(L, "counters", (float)_counters);
     l_pushtableboolean(L, "tapped", _tapped);
     l_pushtableboolean(L, "passive", !_card->abilities().size());
+    l_pushtableboolean(L, "isEternal", _card->isEternal());
 }
 
 CardState CardWrapper::getState() {

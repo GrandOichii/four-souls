@@ -143,6 +143,7 @@ public:
 
     PlayerBoardState getState();
     void addToBoard(CardWrapper* w);
+    void removeFromBoard(CardWrapper* w);
 
     void incMaxLife(int amount);
     void tempIncMaxLife(int amount);

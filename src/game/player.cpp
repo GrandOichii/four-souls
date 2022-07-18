@@ -202,6 +202,16 @@ void Player::addToBoard(CardWrapper* w) {
     w->setOwner(this);
 }
 
+void Player::removeFromBoard(CardWrapper *w) {
+    for (auto it = _board.begin(); it != _board.end(); it++) {
+        if (*it == w) {
+            _board.erase(it);
+            return;
+        }
+    }
+    throw std::runtime_error("player " + _name + " doesn't have a card with id " + std::to_string(w->id()) + " on his board");
+}
+
 void Player::incMaxLife(int amount) {
     _maxHealth += amount;
     _health += amount;

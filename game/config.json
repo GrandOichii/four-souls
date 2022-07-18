@@ -1,6 +1,6 @@
 {
     "logWait": 0,
     "soulsToWin": 4,
-    "startingCoinCount": 10,
+    "startingCoinCount": 100,
     "startingPurchaseCount": 1
 }

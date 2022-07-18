@@ -375,6 +375,7 @@ public:
     static int wrap_rechargeCard(lua_State* L);
     static int wrap_getStack(lua_State* L);
     static int wrap_getDamageEvent(lua_State* L);
+    static int wrap_destroyCard(lua_State* L);
     static int wrap_popTarget(lua_State* L);
     static int wrap_pushTarget(lua_State* L);
     static int wrap_addCounters(lua_State* L);
@@ -425,9 +426,9 @@ public:
     static void lua_err(lua_State *L);
     void execScript(string script);
     void execEnter(CardWrapper* w, Player* owner);
+    void execLeave(CardWrapper* w, Player* owner);
     void execFunc(string funcName);
     bool execCheck(string funcName, CardWrapper* card);
-    // void execRewards(string funcName);
     void addToCharacterPool(CharacterCard* card);
     void addPlayer(Player* player);
     std::vector<CharacterCard*> getAvailableCharacters();

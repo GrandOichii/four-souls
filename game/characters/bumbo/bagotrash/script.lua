@@ -22,7 +22,7 @@ function Bagotrash_pay(host)
     end
     if choice == choice3 then
         local target = Common_ChoosePlayer(host, owner["id"])
-        dealDamage(host, PLAYER, owner["id"], PLAYER, target["id"], 1)
+        dealDamage(host, PLAYER, owner["id"], PLAYER, target, 1)
         return
     end
     addPlayableCount(host, owner["id"])

@@ -1455,10 +1455,6 @@ public:
         _waitingResponse = false;
     }
 
-    // void drawStackMember(StackMemberState& member, int x, int y) {
-    //     //  TODO
-    // }
-
     void drawCard(CardState& card, int angle, int x, int y) {
         this->drawTexture(this->_assets->getCard(card.cardName), x, y, angle);
         auto tex = _assets->getMessage("[" + std::to_string(card.id) + "]", SDL_Color{ 255, 0, 255, 0 }, 24);
