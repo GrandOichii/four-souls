@@ -153,6 +153,8 @@ enum PollType : uint8_t {
     ServerMessage,
 
     // server - client
+    Setup,
+    UpdateWinner,
     Update,
     GetAction,
     Prompt,
@@ -232,7 +234,15 @@ public:
         Player(name, card, id),
         _server(server),
         _conn(conn)
-    {}
+    {
+        message<PollType> msg;
+        msg.header.id = PollType::Setup;
+        nlohmann::json j;
+        j["id"] = id;
+        string s = j.dump();
+        msg << s;
+        _server->MessageClient(_conn, msg);
+    }
 
     ~ConnectedPlayer() {
 
@@ -255,6 +265,16 @@ public:
         message<PollType> msg;
         msg.header.id = PollType::Update;
         string s = state.toJson().dump();
+        msg << s;
+        _server->MessageClient(_conn, msg);   
+    }
+
+    void updateEndMatch(MatchState& state, int winnerID) {
+        message<PollType> msg;
+        msg.header.id = PollType::UpdateWinner;
+        auto j = state.toJson();
+        j["winnerID"] = winnerID;
+        string s = j.dump();
         msg << s;
         _server->MessageClient(_conn, msg);   
     }
@@ -883,6 +903,7 @@ public:
 
 class ClientWrapper {
 private:
+    int _myID;
     bool _waitingResponse = false;
     PollType _lastRequestType;
 
@@ -1172,6 +1193,24 @@ public:
 
     void calcAllowedCards(nlohmann::json j) {
         if (_lastRequestType == PollType::Update) return;
+        if (_lastRequestType == PollType::UpdateWinner) {
+            auto winnerID = j["winnerID"];
+            string message = "";
+            SDL_Color color;
+            if (winnerID == _myID) {
+                message = "You won!";
+                color = SDL_Color{0, 255, 0, 0};
+            } else {
+                string winnerName = "_err_";
+                for (const auto& board : _state.boards)
+                    if (board.id == winnerID)
+                        winnerName = board.name;
+                message = "You lost! (Winner: " + winnerName + ")";
+                color = SDL_Color{255, 0, 0, 0};
+            }
+            std::cout << "WINNER " << winnerID << std::endl;
+            _lastTextTex = _assets->getMessage(message, color, 24);
+        }
         _allowedCards.clear();
         _allowedPlayers.clear();
         _allowedStackMembers.clear();
@@ -1209,6 +1248,10 @@ public:
                 string jstate;
                 msg >> jstate;
                 auto j = nlohmann::json::parse(jstate);
+                if (msg.header.id == PollType::Setup) {
+                    _myID = j["id"];
+                    continue;
+                }
                 _state = MatchState(j);
                 _hasState = true;
                 _lastRequestType = msg.header.id;

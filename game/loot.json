@@ -1,6 +1,6 @@
 {
     "back": "images/loot_card_back.bmp",
-    "cards": {
+    "card1s": {
         "basic": {
             "loot/red_pills": 0
         },
@@ -8,7 +8,7 @@
             "loot/blood_penny": 40
         }
     },
-    "card1s": {
+    "cards": {
         "basic": {
             "loot/one_cent": 2,
             "loot/two_cents": 6,

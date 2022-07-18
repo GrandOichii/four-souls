@@ -329,6 +329,10 @@ void BotPlayer::update(MatchState& state) {
     
 }
 
+void BotPlayer::updateEndMatch(MatchState& state, int winnerID) {
+    
+}
+
 string BotPlayer::promptResponse(MatchState& state, string text, string choiceType, vector<int> choices) {
     //  TODO
     return "$FIRST";

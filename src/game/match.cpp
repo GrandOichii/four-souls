@@ -282,6 +282,7 @@ Match::Match(nlohmann::json config) {
     this->rng.seed(rand());
 
     this->_logWait = config.contains("logWait") ? (int)config["logWait"] : 0;
+    this->_soulsToWin = config.contains("soulsToWin") ? (int)config["soulsToWin"] : 4;
     this->_perDeathCoins = config.contains("perDeathCoins") ? (int)config["perDeathCoins"] : 1;
     this->_perDeathLoot = config.contains("perDeathLoot") ? (int)config["perDeathLoot"] : 1;
     this->_perDeathCoinsItems = config.contains("perDeathCoinsItems") ? (int)config["perDeathCoinsItems"] : 1;
@@ -921,6 +922,10 @@ int Match::wrap_addSouls(lua_State* L) {
     auto amount = (int)lua_tonumber(L, 3);
     Player* player = match->playerWithID(pid);
     player->addSouls(amount);
+    if (player->soulCount() == match->_soulsToWin) {
+        match->_winner = player;
+        match->updateAllPlayersEndMatch();
+    }
     return 0;
 }
 
@@ -1989,14 +1994,18 @@ void Match::start() {
     this->_priorityI = this->_currentI;
     this->_running = true;
 
-    int c = 30;
-    while (this->_running) {
+    while (!this->_winner) {
         this->calcNext();
         this->turn();
         this->passTurn();
-        c--;
-        if (!c) break;
-    }   
+    }
+}
+
+void Match::updateAllPlayersEndMatch() {
+    for (auto& player : _players) {
+        auto state = this->getState();
+        player->updateEndMatch(state, _winner->id());
+    }
 }
 
 void Match::passTurn() {
@@ -2030,10 +2039,12 @@ void Match::turn() {
     // apply all <start of turn> triggers, then resolve stack
     this->applyTriggers(TURN_START_TRIGGER);
     this->resolveStack();
+    if (_winner) return;
 
     // add loot 1 to stack, then resolve stack
     this->currentPlayerLoot();
     this->resolveStack();
+    if (_winner) return;
 
     // main step
     _isMainPhase = true;
@@ -2045,6 +2056,7 @@ void Match::turn() {
         this->executePlayerAction(_activePlayer, response);
         if (_isAttackPhase) this->rollAttack();
         this->resolveStack();
+        if (_winner) return;
         state = this->getState();
     }
     _isMainPhase = false;
@@ -2055,12 +2067,14 @@ void Match::turn() {
     this->applyTriggers(TURN_END_TRIGGER);
     this->pushEOTDeferredTriggers();
     this->resolveStack();
+    if (_winner) return;
 
     _activePlayer->setPlayableCount(0);
     _activePlayer->setPurchaseCount(0);
 
     // all silent end of turn effects
     this->execEOTDefers();
+    if (_winner) return;
     this->resetEOT();
     _turnEnd = false;
 }
@@ -2136,6 +2150,7 @@ void Match::resolveStack() {
     while (!this->_stack.empty()) {
         updateAllPlayers();
         this->resolveTop();
+        if (_winner) break;
     }
 }
 
@@ -2167,9 +2182,6 @@ void Match::resolveTop() {
         return;
     } while (last != this->_priorityI);
     // resolve the ability
-    // std::cout << "LAST STACK SET TO " << effect.funcName << std::endl;
-    // this->_lastStack = effect;
-    // std::cout << "STACK SIZE " << this->_stack;
     if (effect->resolve) this->execFunc(effect->funcName);
     _stack.erase(std::find(_stack.begin(), _stack.end(), effect));
     delete effect;

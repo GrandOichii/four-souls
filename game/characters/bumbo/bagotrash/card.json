@@ -1,0 +1,12 @@
+{
+    "name": "Bag-o-trash",
+    "text": "($) Pay 4c and choose 1:\nLoot 1.\nDeal 1 damage to a monster or a player.\nPlay an additional loot card this turn.",
+    "image": "image.bmp",
+    "script": "script.lua",
+    "abilities": [
+        {
+            "cost": "Bagotrash_cost",
+            "ability": "Bagotrash_pay"
+        }
+    ]
+}

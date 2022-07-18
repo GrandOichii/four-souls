@@ -1,0 +1,16 @@
+{
+    "name": "Dark Arts",
+    "text": "When anyone rolls a 6, gain 3c.\nEach time another player dies, loot 2.",
+    "image": "image.bmp",
+    "script": "script.lua",
+    "on": {
+        "roll": {
+            "check": "DarkArts_roll_trigger_check",
+            "effect": "DarkArts_roll_trigger"
+        },
+        "death": {
+            "check": "DarkArts_death_trigger_check",
+            "effect": "DarkArts_death_trigger"
+        }
+    }
+}

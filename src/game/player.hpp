@@ -117,6 +117,7 @@ public:
     int dealDamage(int amount);
 
     virtual void update(MatchState& state) = 0;
+    virtual void updateEndMatch(MatchState& state, int winnerID) = 0;
     virtual string promptAction(MatchState& state) = 0;
     virtual string promptResponse(MatchState& state, string text, string choiceType, vector<int> choices) = 0;
     virtual string promptSimpleResponse(MatchState& state, string text, vector<string> choices) = 0;
@@ -161,6 +162,7 @@ public:
     ~BotPlayer();
 
     void update(MatchState& state);
+    void updateEndMatch(MatchState& state, int winnerID);
     string promptAction(MatchState& state);
     string promptResponse(MatchState& state, string text, string choiceType, vector<int> choices);
     string promptSimpleResponse(MatchState& state, string text, vector<string> choices);

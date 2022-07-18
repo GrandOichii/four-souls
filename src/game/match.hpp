@@ -163,6 +163,7 @@ class Match {
 private:
     // config
     int _logWait;
+    int _soulsToWin;
     int _startingLootAmount;
     int _startingCoinAmount;
     int _startingShopSize;
@@ -184,6 +185,7 @@ private:
     std::default_random_engine rng = std::default_random_engine {};
     std::vector<std::pair<CharacterCard*, bool>> _characterPool;
 
+    Player* _winner = nullptr;
     std::vector<Player*> _players;
     int _currentI;
     int _nextI;
@@ -334,6 +336,7 @@ public:
     void killPlayer(int id);
     void killMonster();
     void updateAllPlayers();
+    void updateAllPlayersEndMatch();
     CardWrapper* addWrapper(ScriptCard* card);
     void addToLootDiscard(CardWrapper* card);
     CardWrapper* cardWithID(int id);

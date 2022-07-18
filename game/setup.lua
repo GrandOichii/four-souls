@@ -2,6 +2,26 @@ math.randomseed( os.time() )
 
 -- treasure / loot
 
+function Common_ChooseMonster(host, ownerID)
+    local monsters = getActiveMonsters(host)
+    local ids = {}
+    for i, p in ipairs(monsters) do
+        ids[i] = p["id"]
+    end
+    local choiceId, _ = requestChoice(host, ownerID, "Choose a monster", MONSTER, ids)
+    return Common_MonsterWithID(host, choiceId)
+end
+
+function Common_ChoosePlayer(host, ownerID)
+    local players = getPlayers(host)
+    local ids = {}
+    for i, p in ipairs(players) do
+        ids[i] = p["id"]
+    end
+    local choiceId, _ = requestChoice(host, ownerID, "Choose a player", PLAYER, ids)
+    return choiceId
+end
+
 function Common_TargetPlayer(host, cardInfo)
     local ownerID = cardInfo["ownerID"]
     local players = getPlayers(host)
@@ -98,6 +118,11 @@ function Common_LastRoll(host)
     return roll
 end
 
+function Common_OpponentDied(host, ownerID)
+    local death = Common_LastDeath(host)
+    return death["type"] == PLAYER and death["id"] ~= ownerID
+end
+
 function Common_OwnerRolled(host, ownerID, value)
     local roll = Common_LastRoll(host)
     if roll["ownerID"] ~= ownerID then
@@ -157,10 +182,6 @@ function Common_LastDeath(host)
     return deathStack[#deathStack]
 end
 
--- function Common_HasCounter()
-    
--- end
-
 function Common_TargetTappedCard(host, ownerID)
     local players = getPlayers(host)
     local ids = {}
@@ -204,11 +225,6 @@ function Common_OwnersTurn(host, cardID)
     return owner["id"] == currentPlayer["id"]
 end
 
--- function Common_PayOneLife(host, ownerID)
---     dealDamage(host, ownerID, 1)
---     return true
--- end
-
 function Common_AllPlayersLoot(host, amount)
     local players = getPlayers(host)
     for _, player in ipairs(players) do
@@ -231,8 +247,6 @@ function Common_DamageAllPlayers(host, amount)
     end
 end
 
--- monsters
-
 function Common_TargetMonster(host, ownerID)
     local monsters = getActiveMonsters(host)
     local ids = {}
@@ -246,13 +260,17 @@ function Common_TargetMonster(host, ownerID)
     return true
 end
 
-function Common_popMonsterTarget(host)
-    local target = popTarget(host)
+function Common_MonsterWithID(host, mid)
     local monsters = getActiveMonsters(host)
     for _, monster in ipairs(monsters) do
-        if target["id"] == monster["id"] then
+        if mid == monster["id"] then
             return monster, true
         end
     end
     return {}, false
+end
+
+function Common_popMonsterTarget(host)
+    local target = popTarget(host)
+    return Common_MonsterWithID(host, target["id"])
 end
