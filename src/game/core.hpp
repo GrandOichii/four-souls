@@ -39,5 +39,6 @@ public:
     void loadMonsterCards(string dir);
     void loadCharacterCards(string dir);
     Match* createMatch();
+    Match* createMatch(int seed);
     std::vector<Card*> getAllCards();
 };

@@ -2,6 +2,7 @@
 
 #include <iostream>
 #include <vector>
+#include <queue>
 #include <thread>
 #include <stdlib.h>
 #include <time.h>

@@ -330,9 +330,16 @@ private:
     std::vector<std::pair<string, int>> _targetStack;
 
     std::vector<CardWrapper*> _allWrappers;
+
+    nlohmann::json _record;
+    string _recordPath;
+    int _seed = 0;
 public:
     Match(nlohmann::json config);
+    Match(nlohmann::json config, int seed);
     ~Match();
+    void saveResponse(string playerName, string response);
+    void saveResponse(string playerName, int response);
     void killPlayer(int id);
     void killMonster(CardWrapper* w);
     void updateAllPlayers();

@@ -225,7 +225,6 @@ public:
                 if (msg.header.id == PollType::Setup) {
                     _myID = j["id"];
                     for (const auto& [key, value] : j["cards"].items()){
-                        cout << value << std::endl;
                         _assets->createCard(value["name"], value["text"]);
                     }
                     // load all cards

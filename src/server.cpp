@@ -209,6 +209,28 @@ public:
     }
 };
 
+class ScriptedPlayer : public Player {
+private:
+    std::queue<string> _actions;
+public:
+    ScriptedPlayer(string name, CharacterCard* card, int id, std::queue<string> actions) :
+        Player(name, card, id),
+        _actions(actions) {}
+
+    string popFirst() {
+        auto result = _actions.front();
+        _actions.pop();
+        return result;
+    }
+
+    void update(MatchState& state) {}
+    void updateEndMatch(MatchState& state, int winnerID) {}
+    string promptAction(MatchState& state) { return popFirst(); }
+    string promptResponse(MatchState& state, string text, string choiceType, vector<int> choices) { return popFirst(); }
+    string promptSimpleResponse(MatchState& state, string text, vector<string> choices) { return popFirst(); }
+    string promptChooseCardsInHand(MatchState& state, string text, int targetID, int amount) { return popFirst(); }
+};
+
 int main(int argc, char* argv[]) {
     
     // the first argument is always the path to the game
@@ -218,13 +240,31 @@ int main(int argc, char* argv[]) {
     }
     Game game(argv[1]);
     auto allCards = game.getAllCards();
-    auto match = game.createMatch();
 
     if (argc == 3) {
         // the only argument is the path to the replay file
+        auto replayPath = string(argv[2]);
+        auto j = fs::readJS(replayPath);
+        auto match = game.createMatch(j["seed"]);
+        // pray to god that the first player will be first
+        int pcount = 0;
+        for (const auto& [name, value] : j["actions"].items()) {
+            std::queue<string> actions;
+            for (const auto& [n, v] : value.items()) actions.push(v);
+            pcount++;
+            match->addPlayer(new ScriptedPlayer(
+                name,
+                match->getRandomAvailableCharacter(),
+                pcount,
+                actions
+            ));
+        }
+        match->start();
+        delete match;
         return 0;
     }
     if (argc == 4) {
+        auto match = game.createMatch(1658236848);
         // first is amount of bot players, second is amount of real players
         auto botC = atoi(argv[2]);
         auto playerC = atoi(argv[3]);
@@ -256,7 +296,6 @@ int main(int argc, char* argv[]) {
                 pcount,
                 fs::readFile("bots/random.lua")
             ));
-            
         }
         match->start();
         delete match;

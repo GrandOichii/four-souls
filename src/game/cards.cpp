@@ -6,6 +6,7 @@
 Card::Card(string dir, json j) : 
     _name(j["name"]),
     _text(j["text"])
+{}
 
 string Card::name() { return _name; }
 string Card::text() { return _text; }

@@ -278,9 +278,10 @@ void MatchState::pushTable(lua_State* L) const {
     l_pushtablenumber(L, "currentID", currentID);
 }
 
-Match::Match(nlohmann::json config) {
-    this->rng.seed(rand());
-
+Match::Match(nlohmann::json config, int seed) {
+    _seed = seed;
+    srand(seed);
+    this->rng.seed(seed);
     this->_logWait = config.contains("logWait") ? (int)config["logWait"] : 0;
     this->_soulsToWin = config.contains("soulsToWin") ? (int)config["soulsToWin"] : 4;
     this->_perDeathCoins = config.contains("perDeathCoins") ? (int)config["perDeathCoins"] : 1;
@@ -294,7 +295,13 @@ Match::Match(nlohmann::json config) {
     this->_startingAttackCount = config.contains("startingAttackCount") ? (int)config["startingAttackCount"] : 1;
     this->_startingPlayableCount = config.contains("startingPlayableCount") ? (int)config["startingPlayableCount"] : 1;
     this->_startingPurchaseCount = config.contains("startingPurchaseCount") ? (int)config["startingPurchaseCount"] : 1;
+
 }
+
+Match::Match(nlohmann::json config)
+    : Match(config, time(0)) 
+{}
+    
 
 Match::~Match() {
     // delete all players
@@ -698,8 +705,8 @@ int Match::wrap_requestChoice(lua_State* L) {
     auto state = match->getState();
     auto response = player->promptResponse(state, text, choiceType, choices);
     
-    // clear lua stack ?
     std::cout << "\t" << player->name() << ": " << response << " (response)" << std::endl;
+    match->saveResponse(player->name(), response);
     if (response == RESPONSE_CANCEL) {
         lua_pushnumber(L, -1);
         lua_pushboolean(L, false);
@@ -744,6 +751,7 @@ int Match::wrap_requestCardsInHand(lua_State* L){
     auto amount = (int)lua_tonumber(L, 5);
     auto state = match->getState();
     auto result = player->promptChooseCardsInHand(state, text, tid, amount);
+    match->saveResponse(player->name(), result);
     if (result == RESPONSE_FIRST) {
         auto hand = player->hand();
         result = std::to_string(hand[0]->id());
@@ -819,6 +827,7 @@ int Match::wrap_requestSimpleChoice(lua_State* L) {
     }
     auto state = match->getState();
     auto response = player->promptSimpleResponse(state, text, choices);
+    match->saveResponse(player->name(), response);
     if (response == RESPONSE_FIRST) response = choices[0];
     lua_pushstring(L, response.c_str());
     return 1;
@@ -2015,6 +2024,18 @@ void Match::createMonsterDeck(std::vector<MonsterCard*> cards) {
 }
 
 void Match::start() {
+    srand(_seed);
+    _recordPath = fs::join("records", "record" + std::to_string(_seed) + ".fsr");
+    this->_currentI = 0;
+
+    // start the record
+    _record = nlohmann::json::object();
+    _record["seed"] = _seed;
+    _record["first"] = this->_currentI;
+    _record["actions"] = nlohmann::json::object();
+    for (const auto player : _players)
+        _record["actions"][player->name()] = nlohmann::json::array();
+
     std::cout << "\nThe game starts\n\n";
     // give starting hands
     for (auto& p : _players) {
@@ -2034,7 +2055,6 @@ void Match::start() {
         _monsters.push_back(pile);
         _monsterDataArr.push_back(((MonsterCard*)c->card())->data());
     }
-    this->_currentI = 0;
 
     this->_priorityI = this->_currentI;
     this->_running = true;
@@ -2096,11 +2116,12 @@ void Match::turn() {
     this->log(_activePlayer->name() + "'s main phase");
     string response = "";
     auto state = this->getState();
-    bool turnStarted = true;
-    while (!_turnEnd && ((response = this->_activePlayer->promptAction(state)) != ACTION_PASS || _isAttackPhase)) {
+    while (!_turnEnd && (response != ACTION_PASS || _isAttackPhase)) {
+        response = this->_activePlayer->promptAction(state);
+        // saveResponse(_activePlayer->name(), ACTION_PASS);
         std::cout << "\t" << _activePlayer->name() << ": " << response << std::endl;
         this->executePlayerAction(_activePlayer, response);
-        if (turnStarted && _isAttackPhase) {
+        if (_isAttackPhase) {
             std::cout << "ATTACKING ERROR CAUGHT" << std::endl;
         }
         if (_isAttackPhase) {
@@ -2110,7 +2131,6 @@ void Match::turn() {
         this->resolveStack();
         if (_winner) return;
         state = this->getState();
-        turnStarted = false;
     }
     _isMainPhase = false;
     _isAttackPhase = false;
@@ -2164,6 +2184,7 @@ void Match::resetEOT() {
 }
 
 void Match::executePlayerAction(Player* player, string action) {
+    this->saveResponse(player->name(), action);
     auto split = str::split(action, " ");
     // std::cout << "ACIONS"
     if (!this->_actionMap.count(split[0])) throw std::runtime_error("don't have a handler for |" + split[0] + "| action in match");
@@ -2230,9 +2251,9 @@ void Match::resolveStack() {
         this->resolveTop();
         if (_winner) break;
     }
-    while (!_damageStack.empty()) {
-        _damageStack.pop();
-    }
+    // while (!_damageStack.empty()) {
+    //     _damageStack.pop();
+    // }
     // _damageStack.clear();
 }
 
@@ -2255,6 +2276,7 @@ void Match::resolveTop() {
         if (response == ACTION_PASS) {
             // player passes priority
             this->log(this->_players[this->_priorityI]->name() + " passes priority");
+            saveResponse(player->name(), ACTION_PASS);
             this->_priorityI = (this->_priorityI + 1) % _players.size();
             continue;
         } else {
@@ -2438,4 +2460,18 @@ void Match::killPlayer(int id) {
         throw std::runtime_error("failed to call death penalty function");
     }
     this->applyTriggers(AFTER_DEATH_TYPE);
+}
+
+void Match::saveResponse(string playerName, string response) {
+    _record["actions"][playerName].push_back(response);
+    std::ofstream out(_recordPath);
+    out << _record.dump(4);
+    out.close();
+}
+
+void Match::saveResponse(string playerName, int response) {
+    _record["actions"][playerName].push_back(std::to_string(response));
+    std::ofstream out(_recordPath);
+    out << _record.dump(4);
+    out.close();
 }
