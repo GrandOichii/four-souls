@@ -240,10 +240,12 @@ private:
     Window* _win = nullptr;
 
 public:
-    ObservingScriptedPlayer(string name, CharacterCard* card, int id, std::queue<string> actions) :
+    ObservingScriptedPlayer(string name, CharacterCard* card, int id, std::queue<string> actions, vector<Card*> cards) :
         ScriptedPlayer(name, card, id, actions)
     {
         _win = new Window("player replay", "assets", false);
+        for (const auto& card : cards)
+            _win->assets()->createCard(card->name(), card->text());
     }
 
     ~ObservingScriptedPlayer() {
@@ -305,6 +307,7 @@ int main(int argc, char* argv[]) {
         auto replayPath = string(argv[2]);
         auto j = fs::readJS(replayPath);
         auto match = game.createMatch(j["seed"]);
+            
         // pray to god that the first player will be first
         int pcount = 0;
         for (const auto& [name, value] : j["actions"].items()) {
@@ -316,7 +319,8 @@ int main(int argc, char* argv[]) {
                     name,
                     match->getRandomAvailableCharacter(),
                     pcount,
-                    actions
+                    actions,
+                    allCards
                 ));
                 continue;
             }

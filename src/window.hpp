@@ -346,6 +346,8 @@ public:
         SDL_Quit();
     }
 
+    AssetsManager* assets() { return _assets; }
+
     void toggleFullscreen() {
         this->_fullscreen = !this->_fullscreen;
         SDL_SetWindowFullscreen(_win, this->_fullscreen);

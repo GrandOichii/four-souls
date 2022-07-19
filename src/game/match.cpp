@@ -343,6 +343,11 @@ int Match::dealDamage(string tgtType, int tgtID, int amount) {
 
 void Match::killMonster(CardWrapper* w) {
     auto card = (MonsterCard*)w->card();
+    std::cout << "KILLING MONSTER," << card->name() << " IT IS BEING ATTACKED: " << card->data()->isBeingAttacked() << std::endl;
+    if (card->data()->isBeingAttacked()) {
+        _lastMonsterIndex = -2;
+        _isAttackPhase = false;
+    }
     this->log(card->name() + " dies!");
     _rewardsStack.push(RewardEvent{
         w,
@@ -526,7 +531,7 @@ int Match::wrap_popRewardsStack(lua_State* L) {
     if (r != LUA_OK) {
         throw std::runtime_error("failed to execute rewards function");
     }
-   match->refillDeadMonsters();
+    match->refillDeadMonsters();
     return 0;
 }
 
@@ -2140,7 +2145,7 @@ void Match::turn() {
         response = this->_activePlayer->promptAction(state);
         std::cout << "\t" << _activePlayer->name() << ": " << response << std::endl;
         this->executePlayerAction(_activePlayer, response);
-        if (_isAttackPhase) {
+        if (_isAttackPhase && response == ACTION_PASS) {
             response = "__passAttack";
             log("Rolling for attack");
             this->rollAttack();

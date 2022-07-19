@@ -5,6 +5,7 @@ function Gimpy_check(host, me)
 end
 
 function Gimpy_effect(host)
+    local _ = getDamageEvent(host)
     local owner = getTopOwner(host)
     local choice1 = "Gain +1a"
     local choice2 = "Gain 1c"
