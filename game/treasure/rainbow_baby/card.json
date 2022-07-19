@@ -1,7 +1,6 @@
 {
     "name": "Ranbow Baby",
     "text": "{T}: Choose 1:\nAll players loot 1.\nAll players gain 2c.\nAll players take 1 damage.",
-    "image": "image.bmp",
     "script": "script.lua",
     "abilities": [
         {

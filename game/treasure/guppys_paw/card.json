@@ -1,7 +1,6 @@
 {
     "name": "Guppy's Paw",
     "text": "{T}, take one damage:\nPrevent up to 2 damage done to a player.",
-    "image": "image.bmp",
     "script": "script.lua",
     "abilities": [
         {

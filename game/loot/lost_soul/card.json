@@ -1,7 +1,6 @@
 {
     "name": "Lost Soul",
     "text": "Gain this soul",
-    "image": "image.bmp",
     "script": "script.lua",
     "use": "LostSoul_use"
 }

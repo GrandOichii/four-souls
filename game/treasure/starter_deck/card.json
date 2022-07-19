@@ -1,7 +1,6 @@
 {
     "name": "Starter Deck",
     "text": "If you have 8 or more loot cards in your hand at the end of your turn, loot 2",
-    "image": "image.bmp",
     "script": "script.lua",
     "on": {
         "turn_end": {

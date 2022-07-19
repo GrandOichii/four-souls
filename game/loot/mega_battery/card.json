@@ -1,7 +1,6 @@
 {
     "name": "Mega Battery",
     "text": "Choose a player. Recharge all of their items.",
-    "image": "image.bmp",
     "script": "script.lua",
     "cost": "MegaBattery_cost",
     "use": "MegaBattery_use"

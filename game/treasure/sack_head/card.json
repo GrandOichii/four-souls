@@ -1,7 +1,6 @@
 {
     "name": "Sack Head",
     "text": "Look at the top card of any deck. Toy may put that card on the bottom of that deck.",
-    "image": "image.bmp",
     "script": "script.lua",
     "abilities": [
         {

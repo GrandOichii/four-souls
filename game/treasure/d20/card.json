@@ -1,9 +1,7 @@
 {
     "name": "The D20",
     "text": "{T}: Destroy target item in play and replace it with the top card of the treasure deck.",
-    "image": "image.bmp",
     "script": "script.lua",
-
     "abilities": [
         {
             "cost": "D20_cost",

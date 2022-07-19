@@ -1,7 +1,6 @@
 {
     "name": "Bag of Crafting",
     "text": "($) Discard 4 loot card:\nGain +1 treasure.",
-    "image": "image.bmp",
     "script": "script.lua",
     "abilities": [
         {

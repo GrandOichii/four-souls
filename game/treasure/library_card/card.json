@@ -1,7 +1,6 @@
 {
     "name": "LibraryCard",
     "text": "{T}: Play an additional loot card this turn.",
-    "image": "image.bmp",
     "script": "script.lua",
     "abilities": [
         {

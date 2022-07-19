@@ -1,7 +1,6 @@
 {
     "name": "Swallowed Penny",
     "text": "Each time you take damage, gain 1c.",
-    "image": "image.bmp",
     "script": "script.lua",
     "on": {
         "damage": {

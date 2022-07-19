@@ -1,7 +1,6 @@
 {
     "name": "Book of Sin",
     "text": "{T}, Roll:\n1-2: Gain 1c.\n3-4: Loot 1.\n5-6: Gain +1h till the end of turn.",
-    "image": "image.bmp",
     "script": "script.lua",
     "abilities": [
         {

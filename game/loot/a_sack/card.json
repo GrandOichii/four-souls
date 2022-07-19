@@ -1,7 +1,6 @@
 {
     "name": "A sack",
     "text": "Loot 3",
-    "image": "image.bmp",
     "script": "script.lua",
     "use": "ASack_use"
 }

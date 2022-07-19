@@ -1,7 +1,6 @@
 {
     "name": "VII. The Chariot",
     "text": "A player gains +2a and +1h till the end of turn.",
-    "image": "image.bmp",
     "script": "script.lua",
     "use": "TheChariot_use",
     "cost": "TheChariot_cost"

@@ -1,7 +1,6 @@
 {
     "name": "Lazarus' Rags",
     "text": "Whenever you die, after paying penalties:\nGain 1 treasure",
-    "image": "image.bmp",
     "script": "script.lua",
     "on": {
         "after_death": {

@@ -1,7 +1,6 @@
 {
     "name": "Cursed Fatty",
     "text": "",
-    "image": "image.bmp",
     "script": "script.lua",
     "health": 4,
     "roll": 2,

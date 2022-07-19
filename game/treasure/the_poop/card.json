@@ -1,7 +1,6 @@
 {
     "name": "The poop",
     "text": "Each time you take damage, put a counter on this.\n($)Remove a counter: Prevent 1 damage done to you.",
-    "image": "image.bmp",
     "script": "script.lua",
     "on": {
         "damage": {

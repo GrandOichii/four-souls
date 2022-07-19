@@ -1,7 +1,6 @@
 {
     "name": "VIII. Justice",
     "text": "Choose a player: gain loot and c until you have the same amount as they do.",
-    "image": "image.bmp",
     "script": "script.lua",
     "use": "Justice_use",
     "cost": "Justice_cost"

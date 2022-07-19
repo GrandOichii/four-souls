@@ -1,7 +1,6 @@
 {
     "name": "Mom\u2019s Eye",
     "text": "",
-    "image": "image.bmp",
     "script": "script.lua",
     "health": 1,
     "roll": 4,

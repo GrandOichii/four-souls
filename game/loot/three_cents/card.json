@@ -1,7 +1,6 @@
 {
     "name": "3 cents!",
     "text": "Gain 3c",
-    "image": "image.bmp",
     "script": "script.lua",
     "use": "ThreeCents_use"
 }

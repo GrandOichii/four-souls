@@ -1,7 +1,6 @@
 {
     "name": "Mom's Box",
     "text": "When anyone rolls a 4, you may loot 1 and then discard a loot card.",
-    "image": "image.bmp",
     "script": "script.lua",
     "on": {
         "roll": {

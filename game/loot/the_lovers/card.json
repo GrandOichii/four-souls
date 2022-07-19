@@ -1,7 +1,6 @@
 {
     "name": "VI. The Lovers",
     "text": "A player gains +2h till the end of turn.",
-    "image": "image.bmp",
     "script": "script.lua",
     "use": "TheLovers_use",
     "cost": "TheLovers_cost"

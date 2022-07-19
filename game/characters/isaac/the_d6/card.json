@@ -1,8 +1,7 @@
 {
     "name": "The D6",
     "text": "{T}: Force a player to reroll any dice roll.",
-    "image": "image.bmp",
-    "script" : "script.lua",
+    "script": "script.lua",
     "abilities": [
         {
             "cost": "TheD6_cost",

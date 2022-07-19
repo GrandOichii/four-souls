@@ -36,12 +36,10 @@ class Card {
 protected:
     string _name;
     string _text;
-    string _imagePath;
 public:
     Card(string dir, json j);
     string name();
     string text();
-    string imagePath();
     virtual void print(string prefix);
 };
 

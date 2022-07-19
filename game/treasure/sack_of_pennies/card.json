@@ -1,7 +1,6 @@
 {
     "name": "Sack of Pennies",
     "text": "{T}: Gain 1c.\nWhen any player rolls a 1, you may recharge this.",
-    "image": "image.bmp",
     "script": "script.lua",
     "on": {
         "roll": {

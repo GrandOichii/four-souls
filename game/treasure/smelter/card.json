@@ -1,8 +1,7 @@
 {
     "name": "Smelter",
     "text": "($) Discard a loot card:\nGain 3c.",
-    "image": "image.bmp",
-    "script" : "script.lua",
+    "script": "script.lua",
     "abilities": [
         {
             "cost": "Smelter_cost",

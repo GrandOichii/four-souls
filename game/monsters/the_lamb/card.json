@@ -1,7 +1,6 @@
 {
     "name": "The Lamb",
     "text": "",
-    "image": "image.bmp",
     "script": "script.lua",
     "health": 6,
     "roll": 3,

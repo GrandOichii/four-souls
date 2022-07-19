@@ -1,7 +1,6 @@
 {
     "name": "Breakfast",
     "text": "+1 H",
-    "image": "image.bmp",
     "script": "script.lua",
     "enter": "Breakfast_enter",
     "leave": "Breakfast_leave"

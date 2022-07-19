@@ -1,7 +1,6 @@
 {
     "name": "The Battery",
     "text": "{T}: Recharge another item.",
-    "image": "image.bmp",
     "script": "script.lua",
     "abilities": [
         {

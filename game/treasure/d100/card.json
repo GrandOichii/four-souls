@@ -1,7 +1,6 @@
 {
     "name": "The D100",
     "text": "{T}, Roll:\n1: Loot1.\n2: Loot 2.\n3: Gain 3c.\n4: Gain 4c.\n5: Gain +1h till the end of turn.\n6: Gain +1a till the end of turn.",
-    "image": "image.bmp",
     "script": "script.lua",
     "abilities": [
         {

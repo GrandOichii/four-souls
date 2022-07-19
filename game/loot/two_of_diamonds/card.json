@@ -1,7 +1,6 @@
 {
     "name": "Two of Diamonds",
     "text": "Double the number of c a player has.",
-    "image": "image.bmp",
     "script": "script.lua",
     "use": "TwoOfDiamonds_use",
     "cost": "TwoOfDiamonds_cost"

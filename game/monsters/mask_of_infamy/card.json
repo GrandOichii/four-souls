@@ -1,7 +1,6 @@
 {
     "name": "Mask Of Infamy",
     "text": "",
-    "image": "image.bmp",
     "script": "script.lua",
     "health": 4,
     "roll": 4,

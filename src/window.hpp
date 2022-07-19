@@ -129,9 +129,20 @@ public:
                 _cardBacks[name] = loadBMP(fs::join(assetsPath, config[name + "_back"]));
             else _cardBacks[name] = createCardBack(name);
         }
+        // add cards
+        for (const auto& [key, value] : config["cards"].items()){
+            SDL_Texture* small = nullptr;
+            SDL_Texture* large = nullptr;
+            if (value.contains("small"))
+                small = loadBMP(fs::join(assetsPath, value["small"]));
+            if (value.contains("large"))
+                large = loadBMP(fs::join(assetsPath, value["large"]));
+            _textureMap[key] = std::make_pair(small, large);
+        }
     }
 
     void createCard(string name, string text) {
+        //  TODO fix missing textures
         if (_textureMap.count(name)) return;
         auto small = SDL_CreateTexture(_ren, SDL_PIXELFORMAT_RGBA8888, SDL_TEXTUREACCESS_TARGET, 87, 121);
         SDL_Rect r;

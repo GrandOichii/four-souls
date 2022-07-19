@@ -1,7 +1,6 @@
 {
     "name": "Bomb!",
     "text": "Deal 1 damage to a monster or player.",
-    "image": "image.bmp",
     "script": "script.lua",
     "cost": "Bomb_cost",
     "use": "Bomb_use"

@@ -1,14 +1,13 @@
 {
     "name": "Lard",
     "text": "+2h.\nEach time tou take damage, discard a loot card.",
-    "image": "image.bmp",
     "script": "script.lua",
     "enter": "Lard_enter",
     "leave": "Lard_leave",
-    "on":{
-        "damage":{
+    "on": {
+        "damage": {
             "check": "Lard_trigger_check",
-            "effect" : "Lard_trigger"
+            "effect": "Lard_trigger"
         }
     }
 }

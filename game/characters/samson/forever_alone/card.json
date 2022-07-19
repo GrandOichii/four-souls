@@ -1,7 +1,6 @@
 {
     "name": "Forever Alone",
     "text": "{T}: Choose one:\n- Steal 1c from a player.\nLook at the top card of any deck.\n- Discard a loot card, then draw a loot card.\nWhen you take damage, recharge this.",
-    "image": "image.bmp",
     "script": "script.lua",
     "abilities": [
         {

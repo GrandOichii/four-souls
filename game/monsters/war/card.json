@@ -1,7 +1,6 @@
 {
     "name": "War",
     "text": "",
-    "image": "image.bmp",
     "script": "script.lua",
     "health": 3,
     "roll": 3,

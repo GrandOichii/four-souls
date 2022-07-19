@@ -1,7 +1,6 @@
 {
     "name": "Gurdy",
     "text": "",
-    "image": "image.bmp",
     "script": "script.lua",
     "health": 5,
     "roll": 4,

@@ -1,7 +1,6 @@
 {
     "name": "Razor Blade",
     "text": "{T}: Deal 1 damage to a player.",
-    "image": "image.bmp",
     "script": "script.lua",
     "abilities": [
         {

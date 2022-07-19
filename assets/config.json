@@ -1,6 +1,43 @@
 {
     "font": "font.ttf",
+    "invalid": {
+        
+    },
     "cards": {
+        "Whore of Babylon": {
+            "small": "images/whore_of_babylon.bmp"
+        },
+        "Lazarus":{
+            "small": "images/lazarus.bmp"
+        },
+        "Dark Judas":{
+            "small": "images/dark_judas.bmp"
+        },
+        "Bum-Bo": {
+            "small": "images/bum_bo.bmp",
+            "large": "images/bum_bo_large.bmp"
+        },
+        "The Hoarder": {
+            "small": "images/the_hoarder.bmp"
+        },
+        "Judas": {
+            "small": "images/judas.bmp"
+        },
+        "Isaac":{
+            "small": "images/isaac.bmp"
+        },
+        "Guppy":{
+            "small": "images/guppy.bmp",
+            "large": "images/guppy_large.bmp"
+        },
+        "Keeper":{
+            "small": "images/keeper.bmp",
+            "large": "images/keeper_large.bmp"
+        },
+        "Samson": {
+            "small": "images/samson.bmp"
+        },
+        
         "A penny!": {
             "small": "images/a_penny_.bmp"
         },

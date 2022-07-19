@@ -1,7 +1,6 @@
 {
     "name": "Goat Head",
     "text": "At the end of your turn, you may discard any number of loot cards, the loot equal to the number of cards discarded this way.",
-    "image": "image.bmp",
     "script": "script.lua",
     "on": {
         "turn_end": {

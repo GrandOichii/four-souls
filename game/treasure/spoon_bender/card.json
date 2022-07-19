@@ -1,7 +1,6 @@
 {
     "name": "Spoon Bender",
     "text": "{T}: Add 1 to any dice roll.",
-    "image": "image.bmp",
     "script": "script.lua",
     "abilities": [
         {

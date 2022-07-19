@@ -1,7 +1,6 @@
 {
     "name": "Mom's Razor",
     "text": "When anyone rolls a 6, you may deal 1 damage to them.",
-    "image": "image.bmp",
     "script": "script.lua",
     "on": {
         "roll": {

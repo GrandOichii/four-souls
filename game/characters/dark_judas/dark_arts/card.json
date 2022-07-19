@@ -1,7 +1,6 @@
 {
     "name": "Dark Arts",
     "text": "When anyone rolls a 6, gain 3c.\nEach time another player dies, loot 2.",
-    "image": "image.bmp",
     "script": "script.lua",
     "on": {
         "roll": {

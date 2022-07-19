@@ -1,7 +1,6 @@
 {
     "name": "Larry Jr.",
     "text": "",
-    "image": "image.bmp",
     "script": "script.lua",
     "health": 4,
     "roll": 3,

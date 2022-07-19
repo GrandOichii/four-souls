@@ -1,7 +1,6 @@
 {
     "name": "Succubus",
     "text": "($) Pay 3c:\nYou may play up to 2 additional loot cards this turn.",
-    "image": "image.bmp",
     "script": "script.lua",
     "abilities": [
         {

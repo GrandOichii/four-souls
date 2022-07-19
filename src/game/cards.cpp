@@ -5,12 +5,10 @@
 
 Card::Card(string dir, json j) : 
     _name(j["name"]),
-    _text(j["text"]),
-    _imagePath(fs::join(dir, j["image"])) { /*std::cout << _name << std::endl;*/ }
+    _text(j["text"])
 
 string Card::name() { return _name; }
 string Card::text() { return _text; }
-string Card::imagePath() { return _imagePath; }
 
 void Card::print(string prefix) {
     std::cout << prefix << _name << std::endl;
