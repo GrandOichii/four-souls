@@ -299,9 +299,10 @@ private:
             // std::cout << "PLAYING " << ->card()->useFuncName() << std::endl;
         }},
         {ACTION_ATTACK_MONSTER, [this](Player* player, std::vector<string> args) {
-            this->_lastMonsterIndex = std::stoi(args[1].c_str());
             //  TODO add -1
+            this->_lastMonsterIndex = std::stoi(args[1].c_str());
             player->decMonsterAttackAmount();
+            this->_monsterDataArr[this->_lastMonsterIndex]->setIsBeingAttacked(true);
             // std::cout << "Player " << player->name() << " is attacking " << monster->name() << std::endl;
             this->pushToStack(new StackEffect(
                 "_attackMonster",

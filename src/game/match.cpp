@@ -910,7 +910,7 @@ int Match::wrap_getDamageEvent(lua_State* L) {
     }
     auto match = getTopMatch(L, 1);
     if (!match->_damageStack.size()) throw std::runtime_error("ERR: tried to pop damage stack while it's empty");
-    auto event = match->_damageStack.top();
+    auto& event = match->_damageStack.top();
     event.pushTable(L);
     event.shelfLife--;
     if (!event.shelfLife) {
@@ -1121,6 +1121,8 @@ int Match::wrap_dealCombatDamage(lua_State* L) {
     if (match->_lastMonsterIndex == -2) return 0;
     if (match->_turnEnd) return 0;
     auto monsterData = match->_monsterDataArr[match->_lastMonsterIndex];
+    if (!monsterData->isBeingAttacked()) return 0;
+    // std::cout << match->_monsters[]
     int dealt = match->dealDamage(event.targetType, event.targetID, event.amount);
     if (!dealt) return 0;
     if (match->_isAttackPhase) {
@@ -1139,9 +1141,11 @@ int Match::wrap_popRollStack(lua_State* L) {
     match->_lastRollOwnerID = roll.owner->id();
     match->_rollStack.pop_back();
     if (!roll.isCombatRoll) return 0;
+    if (match->_turnEnd) return 0;
     if (match->_lastMonsterIndex == -2) return 0;
     auto monsterW = match->_monsters[match->_lastMonsterIndex].back();
     auto monsterData = match->_monsterDataArr[match->_lastMonsterIndex];
+    if (!monsterData->isBeingAttacked()) return 0;
     match->log( "Attack roll " + std::to_string(roll.value) + " vs " + std::to_string(monsterData->roll()));
     auto srcType = PLAYER_TYPE;
     auto srcID = match->_activePlayer->id();
@@ -1868,6 +1872,7 @@ void Match::setupLua(string setupScript) {
     std::cout << "Loading base script" << std::endl;
     // setup script
     this->execScript("LOOT_DECK = \"" + LOOT_DECK + "\"\nTREASURE_DECK = \"" + TREASURE_DECK + "\"\nMONSTER_DECK = \"" + MONSTER_DECK + "\"\nCARD = \"" + CARD_TARGET + "\"\nSTACK = \"" + STACK_MEMBER_TARGET + "\"\nPLAYER = \"" + PLAYER_TARGET + "\"\nMONSTER = \"" + MONSTER_TARGET + "\"\nROLL = \"" + ROLL_TYPE + "\"\nfunction _startTurnLoot(host)\nlocal owner = getTopOwner(host)\nlootCards(host, owner[\"id\"], owner[\"startTurnLootAmount\"])\nend\n\n"
+    "math.randomseed(" + std::to_string(_seed) + ")"
     "function _deathPenalty(host, player)"
     "\n    local amount = " + std::to_string(this->_perDeathLoot).c_str() + ""
     "\n    local ownerID = player.id"
@@ -2133,10 +2138,10 @@ void Match::turn() {
     auto state = this->getState();
     while (!_turnEnd && (response != ACTION_PASS || _isAttackPhase)) {
         response = this->_activePlayer->promptAction(state);
-        // saveResponse(_activePlayer->name(), ACTION_PASS);
         std::cout << "\t" << _activePlayer->name() << ": " << response << std::endl;
         this->executePlayerAction(_activePlayer, response);
         if (_isAttackPhase) {
+            response = "__passAttack";
             log("Rolling for attack");
             this->rollAttack();
         }
@@ -2164,9 +2169,11 @@ void Match::turn() {
     this->resetEOT();
     _turnEnd = false;
 
+    for (const auto& data : _monsterDataArr)
+        data->setIsBeingAttacked(false);
+
     // clear all stack (just in case)
     if (_rewardsStack.size()) {
-        // _rewardsStack.clear();
         throw std::runtime_error("ERR: REWARDS STACK NOT EMPTY");
     }
     if (_stack.size()) {

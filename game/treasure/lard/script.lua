@@ -13,6 +13,7 @@ function Lard_trigger_check(host, me)
 end
 
 function Lard_trigger(host)
+    local _ = getDamageEvent(host)
     local owner = getTopOwner(host)
     Common_Discard(host, owner["id"], 1)
 end

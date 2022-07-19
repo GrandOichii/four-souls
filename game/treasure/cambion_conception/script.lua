@@ -3,6 +3,7 @@ function CambionConception_trigger_check(host, me)
 end
 
 function CambionConception_trigger(host)
+    local _ = getDamageEvent(host)
     local card = this(host)
     addCounters(host, card["id"], 1)
     card = this(host)

@@ -329,15 +329,15 @@ int main(int argc, char* argv[]) {
         }
         try {
             match->start();
-        } catch (std::exception& ex) {
+        } catch (std::runtime_error& ex) {
             match->dumpStacks();
-            std::cerr << ex.what() << std::endl;
+            std::cout << ex.what() << std::endl;
         }
         delete match;
         return 0;
     }
     if (argc == 4) {
-        auto match = game.createMatch(1658236848);
+        auto match = game.createMatch();
         // first is amount of bot players, second is amount of real players
         auto botC = atoi(argv[2]);
         auto playerC = atoi(argv[3]);

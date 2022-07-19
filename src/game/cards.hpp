@@ -102,6 +102,7 @@ private:
     int _health;
     int _blueHealth;
     int _maxHealth;
+    bool _isBeingAttacked = false;
 public:
     MonsterData(int health, int roll, int power);
     MonsterDataState getState();
@@ -111,6 +112,8 @@ public:
     int dealDamage(int amount);
     void fullHeal();
     int maxHealth();
+    bool isBeingAttacked();
+    void setIsBeingAttacked(bool value);
 };
 
 class MonsterCard : public ScriptCard {

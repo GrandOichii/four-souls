@@ -1,5 +1,3 @@
-math.randomseed( os.time() )
-
 -- treasure / loot
 
 function Common_ChooseMonster(host, ownerID)

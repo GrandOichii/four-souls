@@ -157,6 +157,8 @@ MonsterCard::~MonsterCard() {
 string MonsterCard::rewardsFuncName() { return _rewardsFuncName; }
 
 MonsterData* MonsterCard::data() { return _data; }
+bool MonsterData::isBeingAttacked() { return _isBeingAttacked; }
+void MonsterData::setIsBeingAttacked(bool value) { _isBeingAttacked = value; }
 
 void MonsterCard::resetData() {
     delete _data;
