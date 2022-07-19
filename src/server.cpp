@@ -1,10 +1,10 @@
 #include "common.hpp"
 
+#include "window.hpp"
+
 #include "game/core.hpp"
 
 const string REPLAYS_DIR = "../replays";
-
-//  TODO
 
 class Server : public server_interface<PollType> {
 private:
@@ -209,6 +209,7 @@ public:
     }
 };
 
+
 class ScriptedPlayer : public Player {
 private:
     std::queue<string> _actions;
@@ -223,12 +224,67 @@ public:
         return result;
     }
 
-    void update(MatchState& state) {}
-    void updateEndMatch(MatchState& state, int winnerID) {}
-    string promptAction(MatchState& state) { return popFirst(); }
-    string promptResponse(MatchState& state, string text, string choiceType, vector<int> choices) { return popFirst(); }
-    string promptSimpleResponse(MatchState& state, string text, vector<string> choices) { return popFirst(); }
-    string promptChooseCardsInHand(MatchState& state, string text, int targetID, int amount) { return popFirst(); }
+    virtual void update(MatchState& state) {}
+    virtual void updateEndMatch(MatchState& state, int winnerID) {}
+    virtual string promptAction(MatchState& state) { return popFirst(); }
+    virtual string promptResponse(MatchState& state, string text, string choiceType, vector<int> choices) { return popFirst(); }
+    virtual string promptSimpleResponse(MatchState& state, string text, vector<string> choices) { return popFirst(); }
+    virtual string promptChooseCardsInHand(MatchState& state, string text, int targetID, int amount) { return popFirst(); }
+};
+
+class ObservingScriptedPlayer : public ScriptedPlayer {
+private:
+    Window* _win = nullptr;
+
+public:
+    ObservingScriptedPlayer(string name, CharacterCard* card, int id, std::queue<string> actions) :
+        ScriptedPlayer(name, card, id, actions)
+    {
+        _win = new Window("player replay", "assets", false);
+    }
+
+    ~ObservingScriptedPlayer() {
+        delete _win;
+    }
+    
+    void draw(MatchState& state) {
+        //  TODO
+        _win->clear();
+        _win->draw(state);
+        _win->flush();
+    }
+
+    void update(MatchState& state) override {
+        this->draw(state);
+    }
+
+    void updateEndMatch(MatchState& state, int winnerID) override {
+        this->draw(state);
+    }
+
+    string promptAction(MatchState& state) override { 
+        auto result = ScriptedPlayer::promptAction(state);
+        this->draw(state);
+        return result; 
+    }
+
+    string promptResponse(MatchState& state, string text, string choiceType, vector<int> choices) override { 
+        auto result = ScriptedPlayer::promptResponse(state, text, choiceType, choices);
+        this->draw(state);
+        return result; 
+    }
+
+    string promptSimpleResponse(MatchState& state, string text, vector<string> choices) override { 
+        auto result = ScriptedPlayer::promptSimpleResponse(state, text, choices);
+        this->draw(state);
+        return result;
+    }
+
+    string promptChooseCardsInHand(MatchState& state, string text, int targetID, int amount) override {
+        auto result = ScriptedPlayer::promptChooseCardsInHand(state, text, targetID, amount);
+        this->draw(state);
+        return result;
+    }
 };
 
 int main(int argc, char* argv[]) {
@@ -252,6 +308,15 @@ int main(int argc, char* argv[]) {
             std::queue<string> actions;
             for (const auto& [n, v] : value.items()) actions.push(v);
             pcount++;
+            if (pcount == 1) {
+                match->addPlayer(new ObservingScriptedPlayer(
+                    name,
+                    match->getRandomAvailableCharacter(),
+                    pcount,
+                    actions
+                ));
+                continue;
+            }
             match->addPlayer(new ScriptedPlayer(
                 name,
                 match->getRandomAvailableCharacter(),
