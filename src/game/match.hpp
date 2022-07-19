@@ -246,7 +246,7 @@ private:
             player->takeCard(cardID);
             this->log(player->name() + " plays card " + card->name());
             player->decPlayableAmount();
-            
+            std::cout << "PLAYABLE AMOUNT LEFT: " << player->getPlayableAmount() << std::endl;
             this->triggerLastEffectType();
         }},
         {ACTION_BUY_TREASURE, [this](Player* player, std::vector<string> args){

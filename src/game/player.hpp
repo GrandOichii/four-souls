@@ -88,6 +88,7 @@ public:
     void pushTable(lua_State* L);
 
     void resetPlayableCount();
+    int getPlayableAmount();
     void decPlayableAmount();
     void incPlayableAmount();
     void setPlayableCount(int amount);

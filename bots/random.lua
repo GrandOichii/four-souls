@@ -1,17 +1,56 @@
 -- This bot always plays a random loot card, buys a random treasure (if can), then passes the turn
 -- Targets are chosen randomly
 
+local function isSameState(state1, state2)
+    for key, value in pairs(state1) do
+        if value ~= state2[key] then
+            return false
+        end
+    end
+    return true
+end
+
+local function isSameMe(me1, me2)
+    for key, value in pairs(me1) do
+        if key ~= 'board' and key ~= 'hand' then
+            if value ~= me2[key] then
+                return false
+            end
+        end
+    end
+    return true
+end
+
+local lootBlacklist = {
+    'Dice Shard'
+}
+
+local function IsBlacklistedLoot(card)
+    for _, bcard in ipairs(lootBlacklist) do
+        if card.name == bcard then
+            return true
+        end
+    end
+    return false
+end
 
 local function CalcBestCard(me, state)
-    local lootCards = me["hand"]
-    return lootCards[1]
+    for _, card in ipairs(me.hand) do
+        if not IsBlacklistedLoot(card) then
+            return card, true
+        end
+    end
+    return {}, false
 end
 
 local function AttemptPlayLoot(me, state)
     local lootCards = me["hand"]
     if #lootCards ~= 0 then
         if me["playableCount"] ~= 0 then
-            return true, "play_loot " .. CalcBestCard(me, state)["id"]
+            local card, good = CalcBestCard(me, state)
+            if good then
+                return true, "play_loot " .. card.id
+            end
         end
         if me["characterActive"] then
             return true, "activate_character"
@@ -42,26 +81,6 @@ end
 -- local lastMe = {}
 -- local lastActivatedID = ''
 local activationMap = {}
-
-local function isSameState(state1, state2)
-    for key, value in pairs(state1) do
-        if value ~= state2[key] then
-            return false
-        end
-    end
-    return true
-end
-
-local function isSameMe(me1, me2)
-    for key, value in pairs(me1) do
-        if key ~= 'board' and key ~= 'hand' then
-            if value ~= me2[key] then
-                return false
-            end
-        end
-    end
-    return true
-end
 
 local function canActivate(me, state, trinket)
     local map = activationMap[trinket['id']]

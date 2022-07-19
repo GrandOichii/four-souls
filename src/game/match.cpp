@@ -321,14 +321,13 @@ int Match::dealDamage(string tgtType, int tgtID, int amount) {
             if (_monsters[i].back() == monsterW)
                 pileI = i;
         //  TODO replace this with a fizzle
-        if (pileI == -1) throw std::runtime_error("attempted to deal damage to a non-active monster (id: " + std::to_string(monsterW->id()) + ", name: " + card->name());
+        // if (pileI == -1) throw std::runtime_error("attempted to deal damage to a non-active monster (id: " + std::to_string(monsterW->id()) + ", name: " + card->name());
+        if (pileI == -1) return 0;
         auto data = _monsterDataArr[pileI];
         int dealt = data->dealDamage(amount);
         this->log(card->name() + " is dealt " + std::to_string(dealt) + " damage");
         auto health = data->health();
         if (health) return dealt;
-        _isAttackPhase = false;
-        _lastMonsterIndex = -2;
         this->killMonster(monsterW);
         return dealt;
     }
@@ -496,6 +495,8 @@ bool Match::requestPayCost(string costFuncName, Player* player) {
 
 }
 
+//  lua wrappers
+
 int Match::wrap_popRewardsStack(lua_State* L) {
     stackSizeIs(L, 1);
     auto match = getTopMatch(L, 1);
@@ -526,39 +527,20 @@ int Match::wrap_getTopOwner(lua_State* L) {
 }
 
 int Match::wrap_getOwner(lua_State *L) {
-    if (lua_gettop(L) != 2) {
-        lua_err(L);
-        exit(1);
-    }
-    auto match = static_cast<Match*>(lua_touserdata(L, 1));
-    if (!lua_isnumber(L, 2)) {
-        lua_err(L);
-        exit(1);
-    }
-    auto cid = (int)lua_tonumber(L, 2);
+    stackSizeIs(L, 2);
+    auto match = getTopMatch(L, 1);
+    auto cid = getTopNumber(L, 2);
     auto w = match->cardWithID(cid);
-    std::cout << "FINDING OWNER FOR " << w->card()->name() << std::endl;
     if (!w->owner()) std::cout << "FIX ME ALREADY" << std::endl;
     w->owner()->pushTable(L);
     return 1;
 }
 
 int Match::wrap_setRollValue(lua_State* L) {
-    if (lua_gettop(L) != 3) {
-        lua_err(L);
-        exit(1);
-    }
-    auto match = static_cast<Match*>(lua_touserdata(L, 1));
-    if (!lua_isnumber(L, 2)) {
-        lua_err(L);
-        exit(1);
-    }
-    auto rid = (int)lua_tonumber(L, 2);
-    if (!lua_isnumber(L, 3)) {
-        lua_err(L);
-        exit(1);
-    }
-    auto value = (int)lua_tonumber(L, 3);
+    stackSizeIs(L, 3);
+    auto match = getTopMatch(L, 1);
+    auto rid = getTopNumber(L, 2);
+    auto value = getTopNumber(L, 3);
     int rc = 0;
     for (int i = 0; i < rid; i++) {
         if (match->_stack[i]->type != ROLL_TYPE) continue;
@@ -581,21 +563,10 @@ int Match::wrap_setRollValue(lua_State* L) {
 }
 
 int Match::wrap_addBlueHealth(lua_State* L) {
-    if (lua_gettop(L) != 3) {
-        lua_err(L);
-        exit(1);
-    }
-    auto match = static_cast<Match*>(lua_touserdata(L, 1));
-    if (!lua_isnumber(L, 2)) {
-        lua_err(L);
-        exit(1);
-    }
-    auto pid = (int)lua_tonumber(L, 2);
-    if (!lua_isnumber(L, 3)) {
-        lua_err(L);
-        exit(1);
-    }
-    auto amount = (int)lua_tonumber(L, 3);
+    stackSizeIs(L, 3);
+    auto match = getTopMatch(L, 1);
+    auto pid = getTopNumber(L, 2);
+    auto amount  =getTopNumber(L, 3);
     Player* player = match->playerWithID(pid);
     player->addBlueHealth(amount);
     return 0;
@@ -628,37 +599,19 @@ int Match::wrap_dealDamage(lua_State* L) {
 }
 
 int Match::wrap_addCounters(lua_State* L) {
-    if (lua_gettop(L) != 3) {
-        lua_err(L);
-        exit(1);
-    }
-    auto match = static_cast<Match*>(lua_touserdata(L, 1));
-    if (!lua_isnumber(L, 2)) {
-        lua_err(L);
-        exit(1);
-    }
-    int cid = (int)lua_tonumber(L, 2);
+    stackSizeIs(L, 3);
+    auto match = getTopMatch(L, 1);
+    auto cid = getTopNumber(L, 2);
     auto w = match->cardWithID(cid);
-    if (!lua_isnumber(L, 3)) {
-        lua_err(L);
-        exit(1);
-    }
-    int amount = (int)lua_tonumber(L, 3);
+    auto amount = getTopNumber(L, 3);
     w->addCounters(amount);
     return 0;
 }
 
 int Match::wrap_removeCounters(lua_State* L) {
-    if (lua_gettop(L) != 3) {
-        lua_err(L);
-        exit(1);
-    }
-    auto match = static_cast<Match*>(lua_touserdata(L, 1));
-    if (!lua_isnumber(L, 2)) {
-        lua_err(L);
-        exit(1);
-    }
-    int cid = (int)lua_tonumber(L, 2);
+    stackSizeIs(L, 3);
+    auto match = getTopMatch(L, 1);
+    auto cid = getTopNumber(L, 2);
     auto w = match->cardWithID(cid);
     if (!lua_isnumber(L, 3)) {
         lua_err(L);
@@ -674,6 +627,7 @@ int Match::wrap_pushTarget(lua_State* L) {
     auto match = getTopMatch(L, 1);
     int id = getTopNumber(L, 2);
     auto targetType = getTopString(L, 3);
+    std::cout << "PUSHING TAGET " << targetType << " " << id << std::endl;
     match->_targetStack.push_back(std::make_pair(targetType, id));
     return 0;
 }
@@ -692,12 +646,10 @@ int Match::wrap_getDeathStack(lua_State* L) {
 }
 
 int Match::wrap_popTarget(lua_State* L) {
-    if (lua_gettop(L) != 1) {
-        lua_err(L);
-        exit(1);
-    }
-    auto match = static_cast<Match*>(lua_touserdata(L, 1));
+    stackSizeIs(L, 1);
+    auto match = getTopMatch(L, 1);
     auto pair = match->_targetStack.back();
+    std::cout << "POPPING TARGET STACK " << pair.first << " " << pair.second << std::endl;
     match->_targetStack.pop_back();
     lua_newtable(L);
     l_pushtablestring(L, "type", pair.first);
@@ -710,7 +662,7 @@ int Match::wrap_requestChoice(lua_State* L) {
         lua_err(L);
         exit(1);
     }
-    auto match = static_cast<Match*>(lua_touserdata(L, 1));
+    auto match = getTopMatch(L, 1);
     if (!lua_isnumber(L, 2)) {
         lua_err(L);
         exit(1);
@@ -767,7 +719,7 @@ int Match::wrap_requestCardsInHand(lua_State* L){
         lua_err(L);
         exit(1);
     }
-    auto match = static_cast<Match*>(lua_touserdata(L, 1));
+    auto match = getTopMatch(L, 1);
     if (!lua_isnumber(L, 2)) {
         lua_err(L);
         exit(1);
@@ -815,7 +767,7 @@ int Match::wrap_discardLoot(lua_State* L) {
         lua_err(L);
         exit(1);
     }
-    auto match = static_cast<Match*>(lua_touserdata(L, 1));
+    auto match = getTopMatch(L, 1);
     if (!lua_isnumber(L, 2)) {
         lua_err(L);
         exit(1);
@@ -837,7 +789,7 @@ int Match::wrap_requestSimpleChoice(lua_State* L) {
         lua_err(L);
         exit(1);
     }
-    auto match = static_cast<Match*>(lua_touserdata(L, 1));
+    auto match = getTopMatch(L, 1);
     if (!lua_isnumber(L, 2)) {
         lua_err(L);
         exit(1);
@@ -877,7 +829,7 @@ int Match::wrap_getPlayers(lua_State* L) {
         lua_err(L);
         exit(1);
     }
-    auto match = static_cast<Match*>(lua_touserdata(L, 1));
+    auto match = getTopMatch(L, 1);
     match->pushPlayers(L);
     return 1;
 }
@@ -887,7 +839,7 @@ int Match::wrap_setNextPlayer(lua_State* L) {
         lua_err(L);
         exit(1);
     }
-    auto match = static_cast<Match*>(lua_touserdata(L, 1));
+    auto match = getTopMatch(L, 1);
     if (!lua_isnumber(L, 2)) {
         lua_err(L);
         exit(1);
@@ -909,7 +861,7 @@ int Match::wrap_addSouls(lua_State* L) {
         lua_err(L);
         exit(1);
     }
-    auto match = static_cast<Match*>(lua_touserdata(L, 1));
+    auto match = getTopMatch(L, 1);
     if (!lua_isnumber(L, 2)) {
         lua_err(L);
         exit(1);
@@ -934,7 +886,7 @@ int Match::wrap_getDamageEvent(lua_State* L) {
         lua_err(L);
         exit(1);
     }
-    auto match = static_cast<Match*>(lua_touserdata(L, 1));
+    auto match = getTopMatch(L, 1);
     auto event = match->_damageStack.top();
     event.pushTable(L);
     event.shelfLife--;
@@ -950,7 +902,7 @@ int Match::wrap_addCoins(lua_State* L) {
         lua_err(L);
         exit(1);
     }
-    auto match = static_cast<Match*>(lua_touserdata(L, 1));
+    auto match = getTopMatch(L, 1);
     if (!lua_isnumber(L, 2)) {
         lua_err(L);
         exit(1);
@@ -973,7 +925,7 @@ int Match::wrap_subCoins(lua_State* L) {
         lua_err(L);
         exit(1);
     }
-    auto match = static_cast<Match*>(lua_touserdata(L, 1));
+    auto match = getTopMatch(L, 1);
     if (!lua_isnumber(L, 2)) {
         lua_err(L);
         exit(1);
@@ -996,7 +948,7 @@ int Match::wrap_buyItem(lua_State* L) {
         lua_err(L);
         exit(1);
     }
-    auto match = static_cast<Match*>(lua_touserdata(L, 1));
+    auto match = getTopMatch(L, 1);
     CardWrapper* w = nullptr;
     auto top = match->getTopTreasureCard();
     if (top) match->_treasureDeck.pop_back(); //  TODO fix
@@ -1025,7 +977,7 @@ int Match::wrap_lootCards(lua_State *L) {
         lua_err(L);
         exit(1);
     }
-    auto match = static_cast<Match*>(lua_touserdata(L, 1));
+    auto match = getTopMatch(L, 1);
     if (!lua_isnumber(L, 2)) {
         lua_err(L);
         exit(1);
@@ -1049,7 +1001,7 @@ int Match::wrap_playTopLootCard(lua_State* L) {
         lua_err(L);
         exit(1);
     }
-    auto match = static_cast<Match*>(lua_touserdata(L, 1));
+    auto match = getTopMatch(L, 1);
     auto last = match->_stack.back();
     auto cardW = last->cardW;
     auto card = cardW->card();
@@ -1070,7 +1022,7 @@ int Match::wrap_deferEOT(lua_State *L) {
         lua_err(L);
         exit(1);
     }
-    auto match = static_cast<Match*>(lua_touserdata(L, 1));
+    auto match = getTopMatch(L, 1);
     if (!lua_isstring(L, 2)) {
         lua_err(L);
         exit(1);
@@ -1104,7 +1056,7 @@ int Match::wrap_this(lua_State *L) {
         lua_err(L);
         exit(1);
     }
-    auto match = static_cast<Match*>(lua_touserdata(L, 1));
+    auto match = getTopMatch(L, 1);
     match->_stack.back()->cardW->pushTable(match->L);
     return 1;
 }
@@ -1115,7 +1067,7 @@ int Match::wrap_pushRollEvent(lua_State* L) {
         lua_err(L);
         exit(1);
     }
-    auto match = static_cast<Match*>(lua_touserdata(L, 1));
+    auto match = getTopMatch(L, 1);
     if (!lua_isnumber(L, 2)) {
         lua_err(L);
         exit(1);
@@ -1149,7 +1101,7 @@ int Match::wrap_dealCombatDamage(lua_State* L) {
     int dealt = match->dealDamage(event.targetType, event.targetID, event.amount);
     if (!dealt) return 0;
     if (match->_isAttackPhase) {
-        match->_isAttackPhase = match->_activePlayer->health();
+        match->_isAttackPhase = match->_activePlayer->health() && monsterData->health();
         if (!match->_isAttackPhase) match->_lastMonsterIndex = -2;
     }
     match->pushDamageEvent(event);
@@ -1247,7 +1199,7 @@ int Match::wrap_incAdditionalCoins(lua_State* L) {
         lua_err(L);
         exit(1);
     }
-    auto match = static_cast<Match*>(lua_touserdata(L, 1));
+    auto match = getTopMatch(L, 1);
     if (!lua_isnumber(L, 2)) {
         lua_err(L);
         exit(1);
@@ -1263,7 +1215,7 @@ int Match::wrap_decAdditionalCoins(lua_State* L) {
         lua_err(L);
         exit(1);
     }
-    auto match = static_cast<Match*>(lua_touserdata(L, 1));
+    auto match = getTopMatch(L, 1);
     if (!lua_isnumber(L, 2)) {
         lua_err(L);
         exit(1);
@@ -1279,7 +1231,7 @@ int Match::wrap_getLastRoll(lua_State* L) {
         lua_err(L);
         exit(1);
     }
-    auto match = static_cast<Match*>(lua_touserdata(L, 1));
+    auto match = getTopMatch(L, 1);
     lua_newtable(L);
     l_pushtablenumber(L, "value", match->_lastRoll);
     l_pushtablenumber(L, "ownerID", match->_lastRollOwnerID);
@@ -1300,7 +1252,7 @@ int Match::wrap_millDeck(lua_State* L) {
         lua_err(L);
         exit(1);
     }
-    auto match = static_cast<Match*>(lua_touserdata(L, 1));
+    auto match = getTopMatch(L, 1);
     if (!lua_isstring(L, 2)) {
         lua_err(L);
         exit(1);
@@ -1332,7 +1284,7 @@ int Match::wrap_putFromTopToBottom(lua_State* L) {
         lua_err(L);
         exit(1);
     }
-    auto match = static_cast<Match*>(lua_touserdata(L, 1));
+    auto match = getTopMatch(L, 1);
     if (!lua_isstring(L, 2)) {
         lua_err(L);
         exit(1);
@@ -1353,7 +1305,7 @@ int Match::wrap_getStack(lua_State* L) {
         lua_err(L);
         exit(1);
     }
-    auto match = static_cast<Match*>(lua_touserdata(L, 1));
+    auto match = getTopMatch(L, 1);
 
     auto size = match->_stack.size();
     lua_createtable(L, size, 0);
@@ -1410,7 +1362,7 @@ int Match::wrap_topCardsOf(lua_State* L) {
         lua_err(L);
         exit(1);
     }
-    auto match = static_cast<Match*>(lua_touserdata(L, 1));
+    auto match = getTopMatch(L, 1);
     if (!lua_isstring(L, 2)) {
         lua_err(L);
         exit(1);
@@ -1438,7 +1390,7 @@ int Match::wrap_plusOneTreasure(lua_State* L) {
         lua_err(L);
         exit(1);
     }
-    auto match = static_cast<Match*>(lua_touserdata(L, 1));
+    auto match = getTopMatch(L, 1);
     if (!lua_isnumber(L, 2)) {
         lua_err(L);
         exit(1);
@@ -1457,7 +1409,7 @@ int Match::wrap_addPlayableCount(lua_State* L) {
         lua_err(L);
         exit(1);
     }
-    auto match = static_cast<Match*>(lua_touserdata(L, 1));
+    auto match = getTopMatch(L, 1);
     if (!lua_isnumber(L, 2)) {
         lua_err(L);
         exit(1);
@@ -1473,7 +1425,7 @@ int Match::wrap_incBeginningLoot(lua_State* L) {
         lua_err(L);
         exit(1);
     }
-    auto match = static_cast<Match*>(lua_touserdata(L, 1));
+    auto match = getTopMatch(L, 1);
     if (!lua_isnumber(L, 2)) {
         lua_err(L);
         exit(1);
@@ -1489,7 +1441,7 @@ int Match::wrap_decBeginningLoot(lua_State* L) {
         lua_err(L);
         exit(1);
     }
-    auto match = static_cast<Match*>(lua_touserdata(L, 1));
+    auto match = getTopMatch(L, 1);
     if (!lua_isnumber(L, 2)) {
         lua_err(L);
         exit(1);
@@ -1505,7 +1457,7 @@ int Match::wrap_tempIncMaxLife(lua_State* L) {
         lua_err(L);
         exit(1);
     }
-    auto match = static_cast<Match*>(lua_touserdata(L, 1));
+    auto match = getTopMatch(L, 1);
     if (!lua_isnumber(L, 2)) {
         lua_err(L);
         exit(1);
@@ -1526,7 +1478,7 @@ int Match::wrap_tempIncAttack(lua_State* L) {
         lua_err(L);
         exit(1);
     }
-    auto match = static_cast<Match*>(lua_touserdata(L, 1));
+    auto match = getTopMatch(L, 1);
     if (!lua_isnumber(L, 2)) {
         lua_err(L);
         exit(1);
@@ -1547,7 +1499,7 @@ int Match::wrap_incMaxLife(lua_State* L) {
         lua_err(L);
         exit(1);
     }
-    auto match = static_cast<Match*>(lua_touserdata(L, 1));
+    auto match = getTopMatch(L, 1);
     if (!lua_isnumber(L, 2)) {
         lua_err(L);
         exit(1);
@@ -1568,12 +1520,8 @@ int Match::wrap_tapCard(lua_State* L) {
         lua_err(L);
         exit(1);
     }
-    auto match = static_cast<Match*>(lua_touserdata(L, 1));
-    if (!lua_isnumber(L, 2)) {
-        lua_err(L);
-        exit(1);
-    }
-    int cid = (int)lua_tonumber(L, 2);
+    auto match = getTopMatch(L, 1);
+    auto cid = getTopNumber(L, 2);
     auto w = match->cardWithID(cid);
     w->tap();
     return 0;
@@ -1584,12 +1532,8 @@ int Match::wrap_rechargeCard(lua_State* L) {
         lua_err(L);
         exit(1);
     }
-    auto match = static_cast<Match*>(lua_touserdata(L, 1));
-    if (!lua_isnumber(L, 2)) {
-        lua_err(L);
-        exit(1);
-    }
-    int cid = (int)lua_tonumber(L, 2);
+    auto match = getTopMatch(L, 1);
+    auto cid = getTopNumber(L, 2);
     auto w = match->cardWithID(cid);
     w->recharge();
     return 0;
@@ -1600,7 +1544,7 @@ int Match::wrap_decMaxLife(lua_State* L) {
         lua_err(L);
         exit(1);
     }
-    auto match = static_cast<Match*>(lua_touserdata(L, 1));
+    auto match = getTopMatch(L, 1);
     if (!lua_isnumber(L, 2)) {
         lua_err(L);
         exit(1);
@@ -1621,7 +1565,7 @@ int Match::wrap_getCurrentPlayer(lua_State* L) {
         lua_err(L);
         exit(1);
     }
-    auto match = static_cast<Match*>(lua_touserdata(L, 1));
+    auto match = getTopMatch(L, 1);
     match->_activePlayer->pushTable(L);
     return 1;
 }
@@ -1631,7 +1575,7 @@ int Match::wrap_incTreasureCost(lua_State* L) {
         lua_err(L);
         exit(1);
     }
-    auto match = static_cast<Match*>(lua_touserdata(L, 1));
+    auto match = getTopMatch(L, 1);
     if (!lua_isnumber(L, 2)) {
         lua_err(L);
         exit(1);
@@ -1652,7 +1596,7 @@ int Match::wrap_decTreasureCost(lua_State* L) {
         lua_err(L);
         exit(1);
     }
-    auto match = static_cast<Match*>(lua_touserdata(L, 1));
+    auto match = getTopMatch(L, 1);
     if (!lua_isnumber(L, 2)) {
         lua_err(L);
         exit(1);
@@ -1674,7 +1618,7 @@ int Match::wrap_incAttackCount(lua_State* L) {
         lua_err(L);
         exit(1);
     }
-    auto match = static_cast<Match*>(lua_touserdata(L, 1));
+    auto match = getTopMatch(L, 1);
     if (!lua_isnumber(L, 2)) {
         lua_err(L);
         exit(1);
@@ -1706,7 +1650,7 @@ int Match::wrap_attackMonster(lua_State* L) {
         lua_err(L);
         exit(1);
     }
-    auto match = static_cast<Match*>(lua_touserdata(L, 1));
+    auto match = getTopMatch(L, 1);
     match->_isAttackPhase = true;
     return 0;
 }
@@ -1899,35 +1843,36 @@ void Match::setupLua(string setupScript) {
     this->execScript(setupScript);
     std::cout << "Loading base script" << std::endl;
     // setup script
-    this->execScript("LOOT_DECK = \"" + LOOT_DECK + "\"\nTREASURE_DECK = \"" + TREASURE_DECK + "\"\nMONSTER_DECK = \"" + MONSTER_DECK + "\"\nCARD = \"" + CARD_TARGET + "\"\nSTACK = \"" + STACK_MEMBER_TARGET + "\"\nPLAYER = \"" + PLAYER_TARGET + "\"\nMONSTER = \"" + MONSTER_TARGET + "\"\nROLL = \"" + ROLL_TYPE + "\"\nfunction _startTurnLoot(host)\nlocal owner = getTopOwner(host)\nlootCards(host, owner[\"id\"], owner[\"startTurnLootAmount\"])\nend\n\nfunction _deathPenalty(host, player)"
-    "\nlocal amount = " + std::to_string(this->_perDeathLoot).c_str() + ""
-    "\nlocal ownerID = player['id']"
-    "\nif #player[\"hand\"] < amount then"
-    "\n    return"
-    "\nend"
-    "\nlocal message = \"Choose a card to discard\""
-    "\nif amount > 1 then"
-    "\n    message = \"Choose \"..amount..\" cards to discard\""
-    "\nend"
-    "\nlocal cardIDs = requestCardsInHand(host, ownerID, ownerID, message, amount)"
-    "\nfor _, cid in ipairs(cardIDs) do"
-    "\n    discardLoot(host, ownerID, cid)"
-    "\nend"
-    "\nif #player['board'] == 1 then"
-    "\n    return"
-    "\nend"
-    "\ncardIDs = {}"
-    "\nfor _, card in ipairs(player['board']) do"
-    "\n    if not card['isEternal'] then"
-    "\n        cardIDs[#cardIDs+1] = card['id']"
+    this->execScript("LOOT_DECK = \"" + LOOT_DECK + "\"\nTREASURE_DECK = \"" + TREASURE_DECK + "\"\nMONSTER_DECK = \"" + MONSTER_DECK + "\"\nCARD = \"" + CARD_TARGET + "\"\nSTACK = \"" + STACK_MEMBER_TARGET + "\"\nPLAYER = \"" + PLAYER_TARGET + "\"\nMONSTER = \"" + MONSTER_TARGET + "\"\nROLL = \"" + ROLL_TYPE + "\"\nfunction _startTurnLoot(host)\nlocal owner = getTopOwner(host)\nlootCards(host, owner[\"id\"], owner[\"startTurnLootAmount\"])\nend\n\n"
+    "function _deathPenalty(host, player)"
+    "\n    local amount = " + std::to_string(this->_perDeathLoot).c_str() + ""
+    "\n    local ownerID = player.id"
+    "\n    amount = math.min(amount, #(player.hand))"
+    "\n    if amount ~= 0 then"
+    "\n        local message = 'Choose a card to discard'"
+    "\n        if amount > 1 then"
+    "\n            message = 'Choose '..amount..' cards to discard'"
+    "\n        end"
+    "\n        local cardIDs = requestCardsInHand(host, ownerID, ownerID, message, amount)"
+    "\n        for _, cid in ipairs(cardIDs) do"
+    "\n            discardLoot(host, ownerID, cid)"
+    "\n        end"
     "\n    end"
-    "\nend"
-    "\nif #cardIDs == 1 then"
-    "\n    destroyCard(host, cardIDs[1])"
-    "\n    return"
-    "\nend"
-    "\nlocal choice, payed = requestChoice(host, ownerID, 'Choose a card to destroy', CARD, cardIDs)"
-    // "\ndestroyCard(host, choice)"
+    "\n    if #player['board'] == 1 then"
+    "\n        return"
+    "\n    end"
+    "\n    cardIDs = {}"
+    "\n    for _, card in ipairs(player['board']) do"
+    "\n        if not card['isEternal'] then"
+    "\n            cardIDs[#cardIDs+1] = card['id']"
+    "\n        end"
+    "\n    end"
+    "\n    if #cardIDs == 1 then"
+    "\n        destroyCard(host, cardIDs[1])"
+    "\n        return"
+    "\n    end"
+    "\n    local choice, payed = requestChoice(host, ownerID, 'Choose a card to destroy', CARD, cardIDs)"
+    "\n    destroyCard(host, choice)"
     "\nend");
     std::cout << "All scripts loaded!" << std::endl;
 }
@@ -2151,14 +2096,21 @@ void Match::turn() {
     this->log(_activePlayer->name() + "'s main phase");
     string response = "";
     auto state = this->getState();
-    while (!_turnEnd && (response != ACTION_PASS || _isAttackPhase)) {
-        if (_isAttackPhase) this->rollAttack();
-        response = this->_activePlayer->promptAction(state);
+    bool turnStarted = true;
+    while (!_turnEnd && ((response = this->_activePlayer->promptAction(state)) != ACTION_PASS || _isAttackPhase)) {
         std::cout << "\t" << _activePlayer->name() << ": " << response << std::endl;
         this->executePlayerAction(_activePlayer, response);
+        if (turnStarted && _isAttackPhase) {
+            std::cout << "ATTACKING ERROR CAUGHT" << std::endl;
+        }
+        if (_isAttackPhase) {
+            log("Rolling for attack");
+            this->rollAttack();
+        }
         this->resolveStack();
         if (_winner) return;
         state = this->getState();
+        turnStarted = false;
     }
     _isMainPhase = false;
     _isAttackPhase = false;
@@ -2179,6 +2131,30 @@ void Match::turn() {
     if (_winner) return;
     this->resetEOT();
     _turnEnd = false;
+
+    // clear all stack (just in case)
+    if (_rewardsStack.size()) {
+        // _rewardsStack.clear();
+        throw std::runtime_error("ERR: REWARDS STACK NOT EMPTY");
+    }
+    if (_stack.size()) {
+        throw std::runtime_error("ERR: STACK NOT EMPTY");
+    }
+    if (_eotDefers.size()) {
+        throw std::runtime_error("ERR: EOT DEFERS STACK NOT EMPTY");
+    }
+    if (_eotDeferredTriggers.size()){
+        throw std::runtime_error("ERR: EOT DEFERRED TRIGGERS STACK NOT EMPTY");
+    }
+    if (_damageStack.size()) {
+        throw std::runtime_error("ERR: DAMAGE STACK NOT EMPTY");
+    }
+    if (_deathStack.size()) {
+        throw std::runtime_error("ERR: DEATH STACK NOT EMPTY");
+    }
+    if (_targetStack.size()) {
+        throw std::runtime_error("ERR: TARGET STACK NOT EMPTY");
+    }
 }
 
 void Match::resetEOT() {
@@ -2254,6 +2230,10 @@ void Match::resolveStack() {
         this->resolveTop();
         if (_winner) break;
     }
+    while (!_damageStack.empty()) {
+        _damageStack.pop();
+    }
+    // _damageStack.clear();
 }
 
 void Match::updateAllPlayers() {
@@ -2285,6 +2265,9 @@ void Match::resolveTop() {
     } while (last != this->_priorityI);
     // resolve the ability
     if (effect->resolve) this->execFunc(effect->funcName);
+    this->log("Popping " + effect->funcName + " from stack");
+
+    std::cout << "POPPED" << std::endl;
     _stack.erase(std::find(_stack.begin(), _stack.end(), effect));
     delete effect;
     updateAllPlayers();
@@ -2298,6 +2281,7 @@ string Match::promptPlayerWithPriority() {
 }
 
 void Match::log(string message, bool wait) {
+    // return;
     std::cout << " - " << message << std::endl;
     if (wait) {
         // std::this_thread::sleep_for(std::chrono::seconds(1));

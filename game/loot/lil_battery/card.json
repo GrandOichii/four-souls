@@ -1,0 +1,8 @@
+{
+    "name": "Lil Battery",
+    "text": "Recharge an item",
+    "image": "image.bmp",
+    "script": "script.lua",
+    "cost": "LilBattery_cost",
+    "use": "LilBattery_use"
+}

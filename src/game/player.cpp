@@ -173,6 +173,7 @@ void Player::setPlayableCount(int amount) {
     _playableCount = amount;
 }
 
+int Player::getPlayableAmount() { return _playableCount; }
 void Player::decPlayableAmount() { --_playableCount; }
 void Player::incPlayableAmount() { ++_playableCount; }
 

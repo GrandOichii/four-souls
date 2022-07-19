@@ -1,0 +1,12 @@
+{
+    "name": "The Left Hand",
+    "text": "Each time another player dies, you may recharge an item.",
+    "image": "image.bmp",
+    "script": "script.lua",
+    "on": {
+        "death": {
+            "check": "TheLeftHand_trigger_check",
+            "effect": "TheLeftHand_trigger"
+        }
+    }
+}

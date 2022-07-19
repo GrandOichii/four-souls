@@ -8,5 +8,5 @@ function D20_tap(host)
     if not chose then
         return
     end
-    Common_Reroll(host, targetID)
+    Common_RerollItem(host, targetID)
 end

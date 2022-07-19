@@ -1,0 +1,7 @@
+{
+    "name": "Charged Penny",
+    "text": "Gain 1c, then recharge an item",
+    "image": "image.bmp",
+    "script": "script.lua",
+    "use": "ChargedPenny_use"
+}

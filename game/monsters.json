@@ -1,7 +1,7 @@
 {
     "back": "images/monster_card_back.bmp",
     "cards": {
-        "monsters": [
+        "monsters1": [
             "monsters/leech",
             "monsters/leech",
             "monsters/leech",
@@ -16,7 +16,7 @@
             "monsters/leech",
             "monsters/leech"
         ],
-        "monster1s": [
+        "monsters": [
             "monsters/big_spider",
             "monsters/black_bony",
             "monsters/boom_fly",

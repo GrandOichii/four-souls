@@ -1,0 +1,13 @@
+{
+    "name": "AAA Battery",
+    "text": "At the end of your turn roll:\n1-3: Nothing.\n4-6: Recharge an item.",
+    "image": "image.bmp",
+    "script": "script.lua",
+    "on": {
+        "turn_end": {
+            "check": "AAABattery_trigger_check",
+            "cost": "AAABattery_trigger_cost",
+            "effect": "AAABattery_trigger"
+        }
+    }
+}

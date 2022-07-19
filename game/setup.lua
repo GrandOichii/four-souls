@@ -182,6 +182,14 @@ function Common_LastDeath(host)
     return deathStack[#deathStack]
 end
 
+function Common_RechargeAnItem(host, ownerID, haveToBeOwnedByOwner)
+    local choice, chose = Common_ChooseTappedCard(host, ownerID, haveToBeOwnedByOwner)
+    if not chose then
+        return
+    end
+    rechargeCard(host, choice)
+end
+
 function Common_TargetTappedCard(host, ownerID)
     local players = getPlayers(host)
     local ids = {}
@@ -190,7 +198,6 @@ function Common_TargetTappedCard(host, ownerID)
         local board = player["board"]
         for _, card in ipairs(board) do
             if card["tapped"] then
-                print("--> "..card["name"])
                 ids[idI] = card["id"]
                 idI = idI + 1
             end
@@ -223,7 +230,7 @@ function Common_ChooseTappedCard(host, ownerID, haveToBeOwnedByOwner)
         return -1, false
     end
     local choiceId, _ = requestChoice(host, ownerID, "Choose a tapped card", CARD, cardIDs)
-    return choiceId
+    return choiceId, true
 end
 
 function Common_PostDeathOwnerDied(host, cardID)
@@ -310,7 +317,7 @@ function Common_ChooseNonEternalCard(host, ownerID)
     return choice, true
 end
 
-function Common_Reroll(host, cardID)
+function Common_RerollItem(host, cardID)
     local owner = getOwner(host, cardID)
     destroyCard(host, cardID)
     plusOneTreasure(host, owner.id)

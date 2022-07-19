@@ -11,9 +11,9 @@ function DaddysLongLegs_trigger(host)
     local choice = requestSimpleChoice(host, owner.id, 'Choose:', {choice1, choice2})
     if choice == choice1 then
         local target = Common_ChoosePlayer(host, owner.id)
-        dealDamage(host, PLAYER, owner.id, PLAYER, target)
+        dealDamage(host, PLAYER, owner.id, PLAYER, target, 1)
         return
     end
-    local target = Common_ChooseMonster(host, owner.id)
-    dealDamage(host, PLAYER, owner.id, MONSTER, target)
+    local monster = Common_ChooseMonster(host, owner.id)
+    dealDamage(host, PLAYER, owner.id, MONSTER, monster.id, 1)
 end
