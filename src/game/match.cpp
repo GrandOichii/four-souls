@@ -460,7 +460,12 @@ vector<CardWrapper*> Match::getTopMonsterCards(int amount) {
 
 void Match::pushDamageEvent(DamageTrigger event) {
     this->_damageStack.push(event);
-    event.shelfLife = this->applyTriggers(DAMAGE_TRIGGER);
+    auto triggerCount = this->applyTriggers(DAMAGE_TRIGGER);
+    event = this->_damageStack.top();
+    //  WOW
+    this->_damageStack.pop();
+    event.shelfLife = triggerCount;
+    this->_damageStack.push(event);
     if (!event.shelfLife) {
         std::cout << "No damage triggers, popping damage stack" << std::endl;
         this->_damageStack.pop();
@@ -890,12 +895,21 @@ int Match::wrap_addSouls(lua_State* L) {
     return 0;
 }
 
+int Match::wrap_getTopDamageEvent(lua_State* L) {
+    stackSizeIs(L, 1);
+    auto match = getTopMatch(L, 1);
+    auto event = match->_damageStack.top();
+    event.pushTable(L);
+    return 1;
+}
+
 int Match::wrap_getDamageEvent(lua_State* L) {
     if (lua_gettop(L) != 1) {
         lua_err(L);
         exit(1);
     }
     auto match = getTopMatch(L, 1);
+    if (!match->_damageStack.size()) throw std::runtime_error("ERR: tried to pop damage stack while it's empty");
     auto event = match->_damageStack.top();
     event.pushTable(L);
     event.shelfLife--;
@@ -1794,6 +1808,7 @@ void Match::setupLua(string setupScript) {
     lua_register(L, "addSouls", wrap_addSouls);
     lua_register(L, "rechargeCard", wrap_rechargeCard);
     lua_register(L, "getDamageEvent", wrap_getDamageEvent);
+    lua_register(L, "getTopDamageEvent", wrap_getTopDamageEvent);
     lua_register(L, "this", wrap_this);
     lua_register(L, "dealDamage", wrap_dealDamage);
     lua_register(L, "setNextPlayer", wrap_setNextPlayer);
@@ -2122,9 +2137,6 @@ void Match::turn() {
         std::cout << "\t" << _activePlayer->name() << ": " << response << std::endl;
         this->executePlayerAction(_activePlayer, response);
         if (_isAttackPhase) {
-            std::cout << "ATTACKING ERROR CAUGHT" << std::endl;
-        }
-        if (_isAttackPhase) {
             log("Rolling for attack");
             this->rollAttack();
         }
@@ -2175,6 +2187,25 @@ void Match::turn() {
     if (_targetStack.size()) {
         throw std::runtime_error("ERR: TARGET STACK NOT EMPTY");
     }
+}
+
+void Match::dumpStacks() {
+    using std::cout;
+    using std::endl;
+    if (_damageStack.size()) {
+        cout << "TOP OF DAMAGE STACK: " << endl;
+        auto top = _damageStack.top();
+
+        cout <<  "sourceType: " << top.sourceType << endl; 
+        cout <<  "sourceID: " << top.sourceID << endl;
+
+        cout <<  "targetType: " << top.targetType << endl; 
+        cout <<  "targetID: " << top.targetID << endl;
+        
+        cout <<  "amount: " << top.amount << endl;
+        cout <<  "shelfLife: " << top.shelfLife << endl;
+    }
+
 }
 
 void Match::resetEOT() {
@@ -2289,7 +2320,6 @@ void Match::resolveTop() {
     if (effect->resolve) this->execFunc(effect->funcName);
     this->log("Popping " + effect->funcName + " from stack");
 
-    std::cout << "POPPED" << std::endl;
     _stack.erase(std::find(_stack.begin(), _stack.end(), effect));
     delete effect;
     updateAllPlayers();

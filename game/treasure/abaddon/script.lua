@@ -8,7 +8,7 @@ end
 
 function Abaddon_trigger_check(host, me)
     local owner = getOwner(host, me.id)
-    local damageEvent = getDamageEvent(host)
+    local damageEvent = getTopDamageEvent(host)
     return damageEvent["targetType"] == PLAYER and damageEvent["sourceType"] == MONSTER and damageEvent["targetID"] == owner["id"]
 end
 

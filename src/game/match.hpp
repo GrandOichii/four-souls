@@ -381,6 +381,7 @@ public:
     static int wrap_tapCard(lua_State* L);
     static int wrap_rechargeCard(lua_State* L);
     static int wrap_getStack(lua_State* L);
+    static int wrap_getTopDamageEvent(lua_State* L);
     static int wrap_getDamageEvent(lua_State* L);
     static int wrap_destroyCard(lua_State* L);
     static int wrap_popTarget(lua_State* L);
@@ -464,4 +465,5 @@ public:
     MatchState getState();
     int newCardID();
     void pushDeathEvent(string type, int id);
+    void dumpStacks();
 };

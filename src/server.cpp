@@ -219,6 +219,9 @@ public:
         _actions(actions) {}
 
     string popFirst() {
+        if (!_actions.size()) {
+            throw std::runtime_error("scripted player ran out of actions");
+        }
         auto result = _actions.front();
         _actions.pop();
         return result;
@@ -324,7 +327,12 @@ int main(int argc, char* argv[]) {
                 actions
             ));
         }
-        match->start();
+        try {
+            match->start();
+        } catch (std::exception& ex) {
+            match->dumpStacks();
+            std::cerr << ex.what() << std::endl;
+        }
         delete match;
         return 0;
     }

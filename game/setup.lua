@@ -241,7 +241,7 @@ end
 
 function Common_OwnerDamaged(host, cardID)
     local owner = getOwner(host, cardID)
-    local damageEvent = getDamageEvent(host)
+    local damageEvent = getTopDamageEvent(host)
     return damageEvent["targetType"] == PLAYER and damageEvent["targetID"] == owner["id"]
 end
 
