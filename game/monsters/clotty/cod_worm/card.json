@@ -1,9 +1,0 @@
-{
-    "name": "Cod Worm",
-    "text": "",
-    "script": "script.lua",
-    "health": 1,
-    "roll": 6,
-    "power": 0,
-    "rewards": "CodWorm_rewards"
-}

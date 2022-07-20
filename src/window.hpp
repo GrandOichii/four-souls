@@ -61,6 +61,8 @@ enum CardSize : int {
     LARGE
 };
 
+static int MAX_WIDTH = 40;
+
 class AssetsManager {
 private:
     SDL_Renderer* _ren = nullptr;
@@ -143,28 +145,68 @@ public:
 
     void createCard(string name, string text) {
         //  TODO fix missing textures
-        if (_textureMap.count(name)) return;
-        auto small = SDL_CreateTexture(_ren, SDL_PIXELFORMAT_RGBA8888, SDL_TEXTUREACCESS_TARGET, 87, 121);
-        SDL_Rect r;
-        r.x = 0;
-        r.y = 0;
-        r.w = 87;
-        r.h = 121;
-        SDL_SetRenderTarget(_ren, small);
-        SDL_SetRenderDrawColor(_ren, 169, 169, 169, 0);
-        SDL_RenderFillRect(_ren, &r);
-        auto top = getMessage(name, SDL_Color{0, 255, 0, 0}, 24);
-        auto size = getSize(top);
-        r.w = size.first;
-        r.h = size.second;
-        SDL_RenderCopy(_ren, top, NULL, &r);
-        SDL_DestroyTexture(top);
-        SDL_RenderPresent(_ren);
-        SDL_SetRenderTarget(_ren, NULL);
+        if (!_textureMap.count(name)) _textureMap[name] = std::make_pair(nullptr, nullptr);
+        auto pair = _textureMap[name];
+        if (!pair.first) {
+            auto small = SDL_CreateTexture(_ren, SDL_PIXELFORMAT_RGBA8888, SDL_TEXTUREACCESS_TARGET, 87, 121);
+            SDL_Rect r;
+            r.x = 0;
+            r.y = 0;
+            r.w = 87;
+            r.h = 121;
+            SDL_SetRenderTarget(_ren, small);
+            SDL_SetRenderDrawColor(_ren, 169, 169, 169, 0);
+            SDL_RenderFillRect(_ren, &r);
+            auto top = getMessage(name, SDL_Color{0, 255, 0, 0}, 24);
+            auto size = getSize(top);
+            r.w = size.first;
+            r.h = size.second;
+            SDL_RenderCopy(_ren, top, NULL, &r);
+            SDL_DestroyTexture(top);
+            SDL_RenderPresent(_ren);
+            _textureMap[name].first = small;
+        }
+        if (!pair.second) {
+            // 437 610
+            auto large = SDL_CreateTexture(_ren, SDL_PIXELFORMAT_RGBA8888, SDL_TEXTUREACCESS_TARGET, 437, 610);
+            SDL_Rect r;
+            r.x = 0;
+            r.y = 0;
+            r.w = 437;
+            r.h = 610;
+            SDL_SetRenderTarget(_ren, large);
+            SDL_SetRenderDrawColor(_ren, 169, 169, 169, 0);
+            SDL_RenderFillRect(_ren, &r);
 
-        auto large = SDL_CreateTexture(_ren, SDL_PIXELFORMAT_RGBA8888, SDL_TEXTUREACCESS_TARGET, 87, 121);
-        auto result = std::make_pair(small, large);
-        _textureMap[name] = result;
+            auto top = getMessage(name, SDL_Color{0, 255, 0, 0}, 24);
+            auto size = getSize(top);
+            r.w = size.first;
+            r.h = size.second;
+            SDL_RenderCopy(_ren, top, NULL, &r);
+            SDL_DestroyTexture(top);
+            SDL_RenderPresent(_ren);
+
+            if (text.size()) {
+                r.y = 40;
+                auto lines = str::split(text, "\n");
+                for (const auto& line : lines) {
+                    auto split = str::widthSplit(line, MAX_WIDTH);
+                    for (const auto& s : split) {
+                        auto tex = getMessage(s, SDL_Color{0, 255, 0, 0}, 24);
+                        size = getSize(tex);
+                        r.w = size.first;
+                        r.h = size.second;
+                        SDL_RenderCopy(_ren, tex, NULL, &r);
+                        SDL_DestroyTexture(tex);
+                        r.y += 24;
+                    }
+                }
+                SDL_RenderPresent(_ren);
+            }
+
+            _textureMap[name].second = large;
+        }
+        SDL_SetRenderTarget(_ren, NULL);
     }
 
     std::pair<int, int> cardSize() { return getSize(_textureMap.begin()->second.second); }
@@ -213,6 +255,7 @@ public:
 
 class Window {
 protected:
+    const unsigned char * _keys;
     AssetsManager* _assets = nullptr;
 
     SDL_Window* _win = nullptr;
@@ -284,6 +327,7 @@ public:
             std::cout << "SDL_CreateRenderer Error: " << SDL_GetError() << std::endl;
             return;
         }
+        _keys = SDL_GetKeyboardState(NULL);
 
         // calculate player spaces
         this->_sideBoardX = 200;
@@ -600,7 +644,8 @@ public:
 
     virtual void drawCard(CardState& card, int angle, int x, int y) {
         //  TODO add card zoom
-        this->drawTexture(this->_assets->getCard(card.cardName, CardSize::SMALL), x, y, angle);
+        auto cardTex = this->_assets->getCard(card.cardName, CardSize::SMALL);
+        this->drawTexture(cardTex, x, y, angle);
         // auto tex = _assets->getMessage("[" + std::to_string(card.id) + "]", SDL_Color{ 255, 0, 255, 0 }, 24);
         // this->drawTexture(tex, x + 2, y + 2);
         // SDL_DestroyTexture(tex);
@@ -608,6 +653,19 @@ public:
             auto tex = _assets->getMessage(std::to_string(card.counters), SDL_Color{ 0, 0, 255, 0 }, 24);
             this->drawTexture(tex, x + 2, y + 2 + 24);
             SDL_DestroyTexture(tex);
+        }
+        int mx, my;
+        auto s = SDL_GetMouseState(&mx, &my);
+        auto size = getSize(cardTex);
+        int w = size.first;
+        int h = size.second;
+        if (mx >= x && my >= y && mx <= x + w && my <= h+ y) {
+            SDL_PumpEvents();
+            if (_keys[SDL_SCANCODE_Z]) {
+                auto tex = this->_assets->getCard(card.cardName, CardSize::LARGE);
+                auto size = getSize(tex);
+                this->drawTexture(tex, _stackX - size.first, 0);
+            }
         }
     }
 

@@ -23,6 +23,7 @@ namespace str {
         return result;
     }
 
+    vector<string> widthSplit(string text, int maxWidth);
     vector<string> split(string s, const string delimiter);
 }
 

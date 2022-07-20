@@ -13,6 +13,7 @@ function Abaddon_trigger_check(host, me)
 end
 
 function Abaddon_trigger(host)
+    local _ = getDamageEvent(host)
     local owner = getTopOwner(host)
     killEntity(host, PLAYER, owner.id)
 end

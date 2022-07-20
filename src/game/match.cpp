@@ -343,7 +343,6 @@ int Match::dealDamage(string tgtType, int tgtID, int amount) {
 
 void Match::killMonster(CardWrapper* w) {
     auto card = (MonsterCard*)w->card();
-    std::cout << "KILLING MONSTER," << card->name() << " IT IS BEING ATTACKED: " << card->data()->isBeingAttacked() << std::endl;
     if (card->data()->isBeingAttacked()) {
         _lastMonsterIndex = -2;
         _isAttackPhase = false;
@@ -2462,12 +2461,15 @@ void Match::refillDeadMonsters() {
         ((MonsterCard*)w->card())->resetData();
         _monsters[i].pop_back();
         _monsterDiscard.push_back(w);
-        if (_monsters[i].size()) continue;
-        auto newM = _monsterDeck.back();
-        _monsterDeck.pop_back();
-        _monsters[i].push_back(newM);
+        CardWrapper* newM = nullptr;
+        if (!_monsters[i].size()) {
+            newM = _monsterDeck.back();
+            _monsterDeck.pop_back();
+            _monsters[i].push_back(newM);
+        } else {
+            newM = _monsters[i].back();
+        }
         _monsterDataArr[i] = ((MonsterCard*)newM->card())->data();
-        //  TODO push monster death to stack (? before or after removing it from the board)
         pushDeathEvent(MONSTER_TYPE, w->id());
     }
     if (hasBonus) {

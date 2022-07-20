@@ -423,6 +423,7 @@ public:
     }
 
     void drawCard(CardState& card, int angle, int x, int y) override {
+        //  TODO hide opponents hand
         Window::drawCard(card, angle, x, y);
         if (_mouseLock) return;
         bool allowed = false;

@@ -44,7 +44,7 @@ local function CalcBestCard(me, state)
 end
 
 local function AttemptPlayLoot(me, state)
-    local lootCards = me["hand"]
+    local lootCards = me.hand
     if #lootCards ~= 0 then
         if me["playableCount"] ~= 0 then
             local card, good = CalcBestCard(me, state)

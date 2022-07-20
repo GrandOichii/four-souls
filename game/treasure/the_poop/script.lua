@@ -3,6 +3,7 @@ function ThePoop_trigger_check(host, me)
 end
 
 function ThePoop_trigger(host)
+    local _ = getDamageEvent(host)
     local card = this(host)
     addCounters(host, card["id"], 1)
 end

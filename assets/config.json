@@ -4,6 +4,14 @@
         
     },
     "cards": {
+        "Game Breaking Bug!": {
+            "small": "images/game_breaking_bug.bmp",
+            "large": "images/game_breaking_bug_large.bmp"
+        },
+        "Ipecac": {
+            "small": "images/ipecac.bmp",
+            "large": "images/ipecac_large.bmp"
+        },
         "Whore of Babylon": {
             "small": "images/whore_of_babylon.bmp"
         },
