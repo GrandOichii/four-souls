@@ -4,6 +4,46 @@
         
     },
     "cards": {
+        "Greed's Gullet": {
+            "small": "images/greeds_gullet.bmp",
+            "large": "images/greeds_gullet_large.bmp"
+        },
+        "Suicide King": {
+            "small": "images/suicide_king.bmp",
+            "large": "images/suicide_king_large.bmp"
+        },
+        "The Chest": {
+            "small": "images/the_chest.bmp",
+            "large": "images/the_chest_large.bmp"
+        },
+        "Glass Cannon": {
+            "small": "images/glass_cannon.bmp",
+            "large": "images/glass_cannon_large.bmp"
+        },
+        "The D4": {
+            "small": "images/d4.bmp",
+            "large": "images/d4_large.bmp"
+        },
+        "The Midas Touch": {
+            "small": "images/midas_touch.bmp",
+            "large": "images/midas_touch_large.bmp"
+        },
+        "Pandora's Box": {
+            "small": "images/pandoras_box.bmp",
+            "large": "images/pandoras_box_large.bmp"
+        },
+        "Tech X": {
+            "small": "images/tech_x.bmp",
+            "large": "images/tech_x_large.bmp"
+        },
+        "Head of Krampus": {
+            "small": "images/head_of_krampus.bmp",
+            "large": "images/head_of_krampus_large.bmp"
+        },
+        "Curse of the Tower": {
+            "small": "images/curse_of_the_tower.bmp",
+            "large": "images/curse_of_the_tower_large.bmp"
+        },
         "Game Breaking Bug!": {
             "small": "images/game_breaking_bug.bmp",
             "large": "images/game_breaking_bug_large.bmp"

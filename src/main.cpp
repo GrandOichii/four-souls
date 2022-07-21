@@ -168,7 +168,7 @@ public:
             auto p = new ConnectedPlayer(
                 "player " + std::to_string(pcount),
                 _match->getRandomAvailableCharacter(),
-                pcount,
+                _match->newCardID(),
                 _allCards,
                 _server,
                 conn
@@ -181,7 +181,7 @@ public:
             _match->addPlayer(new BotPlayer(
                 "player " + std::to_string(pcount),
                 _match->getRandomAvailableCharacter(),
-                pcount,
+                _match->newCardID(),
                 fs::readFile("game/bots/random.lua")
             ));
             

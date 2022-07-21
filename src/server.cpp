@@ -318,7 +318,7 @@ int main(int argc, char* argv[]) {
                 match->addPlayer(new ObservingScriptedPlayer(
                     name,
                     match->getRandomAvailableCharacter(),
-                    pcount,
+                    match->newCardID(),
                     actions,
                     allCards
                 ));
@@ -327,7 +327,7 @@ int main(int argc, char* argv[]) {
             match->addPlayer(new ScriptedPlayer(
                 name,
                 match->getRandomAvailableCharacter(),
-                pcount,
+                match->newCardID(),
                 actions
             ));
         }
@@ -336,12 +336,14 @@ int main(int argc, char* argv[]) {
         } catch (std::runtime_error& ex) {
             match->dumpStacks();
             std::cout << ex.what() << std::endl;
+            delete match;
+            return 1;
         }
         delete match;
         return 0;
     }
     if (argc == 4) {
-        auto match = game.createMatch();
+        auto match = game.createMatch(1658412975);
         // first is amount of bot players, second is amount of real players
         auto botC = atoi(argv[2]);
         auto playerC = atoi(argv[3]);
@@ -357,7 +359,7 @@ int main(int argc, char* argv[]) {
             auto p = new ConnectedPlayer(
                 "player " + std::to_string(pcount),
                 match->getRandomAvailableCharacter(),
-                pcount,
+                match->newCardID(),
                 &server,
                 allCards,
                 conn
@@ -370,9 +372,17 @@ int main(int argc, char* argv[]) {
             match->addPlayer(new BotPlayer(
                 "player " + std::to_string(pcount),
                 match->getRandomAvailableCharacter(),
-                pcount,
+                match->newCardID(),
                 fs::readFile("bots/random.lua")
             ));
+        }
+        try {
+            match->start();
+        } catch (std::runtime_error& ex) {
+            match->dumpStacks();
+            std::cout << ex.what() << std::endl;
+            delete match;
+            return 1;
         }
         match->start();
         delete match;

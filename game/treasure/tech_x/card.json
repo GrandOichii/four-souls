@@ -1,0 +1,15 @@
+{
+    "name": "Tech X",
+    "text": "{T}: Put a counter on this.\n($) Remove 3 counters from this: kill a player or monster.",
+    "script": "script.lua",
+    "abilities": [
+        {
+            "cost": "TechX_cost1",
+            "ability": "TechX_ability1"
+        },
+        {
+            "cost": "TechX_cost2",
+            "ability": "TechX_ability2"
+        }
+    ]
+}

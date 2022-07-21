@@ -1,5 +1,7 @@
 -- treasure / loot
 
+CardData = {}
+
 function Common_ChooseMonster(host, ownerID)
     local monsters = getActiveMonsters(host)
     local ids = {}
@@ -121,6 +123,11 @@ function Common_OpponentDied(host, ownerID)
     return death["type"] == PLAYER and death["id"] ~= ownerID
 end
 
+function Common_OwnerDied(host, ownerID)
+    local death = Common_LastDeath(host)
+    return death.type == PLAYER and death.id == ownerID
+end
+
 function Common_OwnerRolled(host, ownerID, value)
     local roll = Common_LastRoll(host)
     if roll["ownerID"] ~= ownerID then
@@ -173,6 +180,12 @@ function Common_RemoveCounter(host)
     end
     removeCounters(host, card["id"], 1)
     return true
+end
+
+function Common_RemoveCounters(host, amount)
+    for i = 1, amount do
+        Common_RemoveCounter(host)
+    end
 end
 
 function Common_LastDeath(host)

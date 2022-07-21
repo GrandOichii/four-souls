@@ -1,0 +1,11 @@
+{
+    "name": "The D4",
+    "text": "{T}, Destroy this: Choose a player, that player destroys all items they control, the gains treasure equal to the number of items destroyed.",
+    "script": "script.lua",
+    "abilities": [
+        {
+            "cost": "D4_cost",
+            "ability": "D4_tap"
+        }
+    ]
+}

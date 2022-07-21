@@ -1,0 +1,6 @@
+{
+    "name": "The Chest",
+    "text": "If this item is destroyed, it becomes a soul for the player who owned it.",
+    "script": "script.lua",
+    "leave": "TheChest_leave"
+}

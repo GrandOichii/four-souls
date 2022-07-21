@@ -60,9 +60,12 @@ public:
             if (value.active) _allowedCards.push_back(value.id);
         // check loot cards
         std::cout << "CLIENT PLAYABLE COUNT " << me.playableCount << std::endl;
-        if (me.playableCount)
-            for (const auto& value : me.hand)
+        if (me.playableCount) {
+            for (const auto& value : me.hand){
                 _allowedCards.push_back(value.id);
+                std::cout << "ADDING LOOT CARD " << value.id << std::endl;
+            }
+        }
         // check treasure
         if (me.purchaseCount && !_state.isCombat && me.coinCount >= me.treasurePrice && _state.stack.size() == 0)
             for (const auto& value : _state.shop)
@@ -72,6 +75,9 @@ public:
             for (const auto& value : _state.monsters)
                 _allowedCards.push_back(value.id);
         }
+        std::cout << "ALLOWED CARDS:" << std::endl;
+        for (const auto& id : _allowedCards)
+            std::cout << "\t" << id << std::endl;
     }
 
     void clearSimpleChoiceTextures() {

@@ -1,0 +1,11 @@
+{
+    "name": "Glass Cannon",
+    "text": "{T}, Destroy another item in play, then roll:\n1-5: Destroy this and loot 2.\n6: Recharge this.",
+    "script": "script.lua",
+    "abilities": [
+        {
+            "cost": "GlassCannon_cost",
+            "ability": "GlassCannon_tap"
+        }
+    ]
+}

@@ -1,0 +1,12 @@
+{
+    "name": "Curse of the Tower",
+    "text": "Each time you take damage, roll:\n1-3: All other players take 1 damage.\n4-6: Deal 1 damage to an active monster.",
+    "script": "script.lua",
+    "on": {
+        "damage": {
+            "check": "CurseOfTheTower_trigger_check",
+            "cost": "CurseOfTheTower_trigger_cost",
+            "effect": "CurseOfTheTower_trigger"
+        }
+    }
+}

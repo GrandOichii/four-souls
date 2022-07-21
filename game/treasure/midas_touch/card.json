@@ -1,0 +1,11 @@
+{
+    "name": "The Midas Touch",
+    "text": "Each time a monster is killed, gain 3c.",
+    "script": "script.lua",
+    "on": {
+        "death": {
+            "check": "MidasTouch_trigger_check",
+            "effect": "MidasTouch_trigger"
+        }
+    }
+}

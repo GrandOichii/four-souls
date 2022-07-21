@@ -1,0 +1,11 @@
+{
+    "name": "Head of Krampus",
+    "text": "{T}, Roll:\n1-3: Deal 1 damage to all players.\n4-6: Deal 1 damage to all active monsters.",
+    "script": "script.lua",
+    "abilities": [
+        {
+            "cost": "HeadOfKrampus_cost",
+            "ability": "HeadOfKrampus_tap"
+        }
+    ]
+}

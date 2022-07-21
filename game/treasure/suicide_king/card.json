@@ -1,0 +1,11 @@
+{
+    "name": "Suicide King",
+    "text": "Each time you die, before paying penalties, loot 3.",
+    "script": "script.lua",
+    "on": {
+        "death": {
+            "check": "SuicideKing_trigger_check",
+            "effect": "SuicideKing_trigger"
+        }
+    }
+}

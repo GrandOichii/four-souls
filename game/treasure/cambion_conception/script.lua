@@ -5,10 +5,11 @@ end
 function CambionConception_trigger(host)
     local _ = getDamageEvent(host)
     local card = this(host)
+    local owner = getTopOwner(host)
     addCounters(host, card["id"], 1)
     card = this(host)
     if card["counters"] == 6 then
         removeCounters(host, card["id"], 6)
-        plusOneTreasure(host, card["ownerID"])
+        plusOneTreasure(host, owner.id)
     end
 end

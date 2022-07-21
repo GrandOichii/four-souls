@@ -547,7 +547,10 @@ int Match::wrap_getOwner(lua_State *L) {
     auto match = getTopMatch(L, 1);
     auto cid = getTopNumber(L, 2);
     auto w = match->cardWithID(cid);
-    if (!w->owner()) std::cout << "FIX ME ALREADY" << std::endl;
+    if (!w->owner()) {
+        std::cout << "CARD " << w->card()->name() << " DOESN'T HAVE AN OWNER\n";
+        std::cout << "FIX ME ALREADY" << std::endl;
+    }
     w->owner()->pushTable(L);
     return 1;
 }
@@ -965,7 +968,7 @@ int Match::wrap_subCoins(lua_State* L) {
     }
     auto amount = (int)lua_tonumber(L, 3);
     Player* player = match->playerWithID(pid);
-    match->log(player->name() + " gains " + std::to_string(amount) + " coins");
+    match->log(player->name() + " loses " + std::to_string(amount) + " coins");
     player->removeCoins(amount);
     return 0;
 }

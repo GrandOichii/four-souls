@@ -646,9 +646,9 @@ public:
         //  TODO add card zoom
         auto cardTex = this->_assets->getCard(card.cardName, CardSize::SMALL);
         this->drawTexture(cardTex, x, y, angle);
-        // auto tex = _assets->getMessage("[" + std::to_string(card.id) + "]", SDL_Color{ 255, 0, 255, 0 }, 24);
-        // this->drawTexture(tex, x + 2, y + 2);
-        // SDL_DestroyTexture(tex);
+        auto tex = _assets->getMessage("[" + std::to_string(card.id) + "]", SDL_Color{ 255, 0, 255, 0 }, 24);
+        this->drawTexture(tex, x + 2, y + 2);
+        SDL_DestroyTexture(tex);
         if (card.counters) {
             auto tex = _assets->getMessage(std::to_string(card.counters), SDL_Color{ 0, 0, 255, 0 }, 24);
             this->drawTexture(tex, x + 2, y + 2 + 24);

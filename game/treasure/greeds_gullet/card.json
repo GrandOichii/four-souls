@@ -1,0 +1,11 @@
+{
+    "name": "Greed's Gullet",
+    "text": "Each time you die, before paying penalties, gain 8c.",
+    "script": "script.lua",
+    "on": {
+        "death": {
+            "check": "GreedsGullet_trigger_check",
+            "effect": "GreedsGullet_trigger"
+        }
+    }
+}
