@@ -343,6 +343,7 @@ int Match::dealDamage(string tgtType, int tgtID, int amount) {
 
 void Match::killMonster(CardWrapper* w) {
     auto card = (MonsterCard*)w->card();
+    card->data()->nullHealth();
     if (card->data()->isBeingAttacked()) {
         _lastMonsterIndex = -2;
         _isAttackPhase = false;

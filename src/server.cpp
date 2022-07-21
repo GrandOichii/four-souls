@@ -343,7 +343,7 @@ int main(int argc, char* argv[]) {
         return 0;
     }
     if (argc == 4) {
-        auto match = game.createMatch(1658412975);
+        auto match = game.createMatch();
         // first is amount of bot players, second is amount of real players
         auto botC = atoi(argv[2]);
         auto playerC = atoi(argv[3]);

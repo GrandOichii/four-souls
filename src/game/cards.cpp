@@ -140,6 +140,10 @@ int MonsterData::dealDamage(int amount) {
     return amount;
 }
 
+void MonsterData::nullHealth() {
+    _health = 0;
+}
+
 MonsterCard::MonsterCard(string dir, json j) :
     ScriptCard(dir, j, true)
 {

@@ -114,6 +114,7 @@ public:
     int maxHealth();
     bool isBeingAttacked();
     void setIsBeingAttacked(bool value);
+    void nullHealth();
 };
 
 class MonsterCard : public ScriptCard {
