@@ -1,3 +1,74 @@
+
+Stack = {}
+function Stack:Create()
+    local t = {}
+    t._et = {}
+
+    function t:push(...)
+        if ... then
+            local targs = {...}
+            for _, v in ipairs(targs) do
+                table.insert(self._et, v)
+            end
+        end
+    end
+    function t:top()
+        return t._et[#t._et]
+    end
+    function t:pop(num)
+        local num = num or 1
+        local entries = {}
+        for i = 1, num do
+            if #self._et ~= 0 then
+                table.insert(entries, self._et[#self._et])
+                table.remove(self._et)
+            else
+                break
+            end
+        end
+        return table.unpack(entries)
+    end
+    function t:getn()
+        return #self._et
+    end
+    function t:list()
+        for i, v in pairs(self._et) do
+            print(i, v)
+        end
+    end
+    return t
+    --  stack = Stack:Create()
+    --  stack:push('a', 'b')
+    --  stack:pop(2)
+end
+
+--  death stack effects
+DeathStack = Stack:Create()
+
+function DeathStack:posOf(key)
+    for pos, pair in ipairs(DeathStack._et) do
+        if pair.name == key then
+            return pos
+        end
+    end
+end
+
+function DeathStack:remove(key)
+    table.remove(DeathStack._et, DeathStack:posOf(key))
+end
+
+DeathStack:push({
+    name = 'base',
+    func = _deathPenalty
+})
+
+_deathPenalty = function (host, player)
+    DeathStack:top().func(host, player)
+end
+
+
+
+
 -- treasure / loot
 
 CardData = {}

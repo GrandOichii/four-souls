@@ -2,7 +2,6 @@
     -- add state effects (are checked every time game updates)
     -- add optional "uses stack" option to triggers (decide what to do with damage triggers)
     -- separate trinkets from treasure in treasure discard
-    -- disable activating passive items in client
     -- enable activation choice in client (if card has 2+ activated abilities)
     -- some effects need to distinct between different turns (add wrap_getTurnCounter, use CardData table to store last turn)
     -- make an actual md to see how to setup the project

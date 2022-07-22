@@ -4,10 +4,13 @@
         
     },
     "cards": {
+        "Shadow": {
+            "small": "images/shadow.bmp",
+            "large": "images/shadow_large.bmp"
+        },
         "Azazel": {
             "small": "images/azazel.bmp",
             "large": "images/azazel_large.bmp"
-
         },
         "Lord of the Pit": {
             "small": "images/lord_of_the_pit.bmp",

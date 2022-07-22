@@ -290,7 +290,7 @@ Match::Match(nlohmann::json config, int seed) {
     this->_soulsToWin = config.contains("soulsToWin") ? (int)config["soulsToWin"] : 4;
     this->_perDeathCoins = config.contains("perDeathCoins") ? (int)config["perDeathCoins"] : 1;
     this->_perDeathLoot = config.contains("perDeathLoot") ? (int)config["perDeathLoot"] : 1;
-    this->_perDeathCoinsItems = config.contains("perDeathCoinsItems") ? (int)config["perDeathCoinsItems"] : 1;
+    this->_perDeathItems = config.contains("perDeathItems") ? (int)config["perDeathItems"] : 1;
     this->_startingLootAmount = config.contains("startingLootCount") ? (int)config["startingLootCount"] : 3;
     this->_startingCoinAmount = config.contains("startingCoinCount") ? (int)config["startingCoinCount"] : 3;
     this->_startingShopSize = config.contains("startingShopSize") ? (int)config["startingShopSize"]: 2;
@@ -1890,14 +1890,26 @@ void Match::setupLua(string setupScript) {
         std::cout << "Loading script for " << card->name() << std::endl;
         this->execScript(card->script());
     }
-    std::cout << "Loading setup script" << std::endl;
-    this->execScript(setupScript);
     std::cout << "Loading base script" << std::endl;
     // setup script
-    this->execScript("LOOT_DECK = \"" + LOOT_DECK + "\"\nTREASURE_DECK = \"" + TREASURE_DECK + "\"\nMONSTER_DECK = \"" + MONSTER_DECK + "\"\nCARD = \"" + CARD_TARGET + "\"\nSTACK = \"" + STACK_MEMBER_TARGET + "\"\nPLAYER = \"" + PLAYER_TARGET + "\"\nMONSTER = \"" + MONSTER_TARGET + "\"\nROLL = \"" + ROLL_TYPE + "\"\nfunction _startTurnLoot(host)\nlocal owner = getTopOwner(host)\nlootCards(host, owner[\"id\"], owner[\"startTurnLootAmount\"])\nend\n\n"
-    "math.randomseed(" + std::to_string(_seed) + ")"
-    "function _deathPenalty(host, player)"
-    "\n    local amount = " + std::to_string(this->_perDeathLoot).c_str() + ""
+    this->execScript(""
+    "LOOT_DECK = \"" + LOOT_DECK + "\""
+    "\nTREASURE_DECK = \"" + TREASURE_DECK + "\""
+    "\nMONSTER_DECK = \"" + MONSTER_DECK + "\""
+    "\nCARD = \"" + CARD_TARGET + "\""
+    "\nSTACK = \"" + STACK_MEMBER_TARGET + "\""
+    "\nPLAYER = \"" + PLAYER_TARGET + "\""
+    "\nMONSTER = \"" + MONSTER_TARGET + "\""
+    "\nROLL = \"" + ROLL_TYPE + "\""
+    "\nPER_DEATH_LOOT = " + std::to_string(this->_perDeathLoot).c_str() + ""
+    "\nPER_DEATH_COINS = " + std::to_string(this->_perDeathCoins).c_str() + ""
+    "\nfunction _startTurnLoot(host)"
+    "\n    local owner = getTopOwner(host)"
+    "\n    lootCards(host, owner.id, owner.startTurnLootAmount)"
+    "\nend"
+    "\nmath.randomseed(" + std::to_string(_seed) + ")"
+    "\nfunction _deathPenalty(host, player)"
+    "\n    local amount = PER_DEATH_LOOT"
     "\n    local ownerID = player.id"
     "\n    amount = math.min(amount, #(player.hand))"
     "\n    if amount ~= 0 then"
@@ -1910,22 +1922,27 @@ void Match::setupLua(string setupScript) {
     "\n            discardLoot(host, ownerID, cid)"
     "\n        end"
     "\n    end"
-    "\n    if #player['board'] == 1 then"
-    "\n        return"
-    "\n    end"
-    "\n    cardIDs = {}"
-    "\n    for _, card in ipairs(player['board']) do"
-    "\n        if not card['isEternal'] then"
-    "\n            cardIDs[#cardIDs+1] = card['id']"
+    "\n    amount = math.min(PER_DEATH_COINS, player.coins)"
+    "\n    subCoins(host, player.id, amount)"
+    "\n    if #player['board'] ~= 1 then"
+    "\n        local cardIDs = {}"
+    "\n        for _, card in ipairs(player['board']) do"
+    "\n            if not card['isEternal'] then"
+    "\n                cardIDs[#cardIDs+1] = card['id']"
+    "\n            end"
     "\n        end"
+    "\n        local choice = cardIDs"
+    "\n        if #cardIDs == 1 then"
+    "\n            destroyCard(host, cardIDs[1])"
+    "\n            return"
+    "\n        end"
+    "\n        local choice, payed = requestChoice(host, ownerID, 'Choose a card to destroy', CARD, cardIDs)"
+    "\n        destroyCard(host, choice)"
     "\n    end"
-    "\n    if #cardIDs == 1 then"
-    "\n        destroyCard(host, cardIDs[1])"
-    "\n        return"
-    "\n    end"
-    "\n    local choice, payed = requestChoice(host, ownerID, 'Choose a card to destroy', CARD, cardIDs)"
-    "\n    destroyCard(host, choice)"
+    "\n    "
     "\nend");
+    std::cout << "Loading setup script" << std::endl;
+    this->execScript(setupScript);
     std::cout << "All scripts loaded!" << std::endl;
 }
 
@@ -2510,7 +2527,6 @@ void Match::pushDeathEvent(string type, int id) {
 void Match::killPlayer(int id) {
     auto player = playerWithID(id);
     if (player == _activePlayer) _turnEnd = true;
-    if (player->coinCount()) player->removeCoins(this->_perDeathCoins);
     lua_getglobal(L, "_deathPenalty");
     if (!lua_isfunction(L, -1)) {
         throw std::runtime_error("unknown function: _deathPenalty");
