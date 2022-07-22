@@ -1,0 +1,11 @@
+{
+    "name": "Euthanasia",
+    "text": "Each time you roll the same number twice in a row while attacking, kill the monster you are attacking.",
+    "script": "script.lua",
+    "on": {
+        "roll": {
+            "check": "Euthanasia_trigger_check",
+            "effect": "Euthanasia_trigger"
+        }
+    }
+}

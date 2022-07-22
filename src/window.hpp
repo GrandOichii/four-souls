@@ -137,14 +137,13 @@ public:
             SDL_Texture* large = nullptr;
             if (value.contains("small"))
                 small = loadBMP(fs::join(assetsPath, value["small"]));
-            if (value.contains("large"))
+            if (value.contains("large")) 
                 large = loadBMP(fs::join(assetsPath, value["large"]));
             _textureMap[key] = std::make_pair(small, large);
         }
     }
 
     void createCard(string name, string text) {
-        //  TODO fix missing textures
         if (!_textureMap.count(name)) _textureMap[name] = std::make_pair(nullptr, nullptr);
         auto pair = _textureMap[name];
         if (!pair.first) {

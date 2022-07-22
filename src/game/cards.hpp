@@ -139,6 +139,9 @@ struct CardState {
     int id;
     int counters;
     Zones zone;
+
+    int ownerID;
+    int activatedAbilityCount;
 };
 
 class CardWrapper {

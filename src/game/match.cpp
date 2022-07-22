@@ -13,6 +13,8 @@ static CardState cardFromJson(json j) {
     result.id = j["id"];
     result.counters = j["counters"];
     result.zone = j["zone"];
+    result.ownerID = j["ownerID"];
+    result.activatedAbilityCount = j["activatedAbilityCount"];
     return result;
 }
 
@@ -104,6 +106,8 @@ static json cardToJson(const CardState& card) {
     result["id"] = card.id;
     result["counters"] = card.counters;
     result["zone"] = card.zone;
+    result["ownerID"] = card.ownerID;
+    result["activatedAbilityCount"] = card.activatedAbilityCount;
     return result;
 }
 
@@ -1082,6 +1086,15 @@ int Match::wrap_deferEOT(lua_State *L) {
     return 0;
 }
 
+int Match::wrap_cancelCurrentAttack(lua_State* L) {
+    stackSizeIs(L, 1);
+    auto match = getTopMatch(L, 1);
+    match->_isAttackPhase = false;
+    for (const auto& mdata : match->_monsterDataArr)
+        mdata->setIsBeingAttacked(false);
+    return 0;
+}
+
 int Match::wrap_this(lua_State *L) {
     if (lua_gettop(L) != 1) {
         lua_err(L);
@@ -1702,6 +1715,7 @@ int Match::wrap_getActiveMonsters(lua_State* L) {
         l_pushtablenumber(L, "health", data->health());
         l_pushtablenumber(L, "roll", data->roll());
         l_pushtablenumber(L, "power", data->power());
+        l_pushtableboolean(L, "isBeingAttacked", data->isBeingAttacked());
         lua_settable(L, -3);
     }
     return 1;
@@ -1790,6 +1804,7 @@ void Match::setupLua(string setupScript) {
     // connect common libs
     luaL_openlibs(L);
     // connect functions
+    lua_register(L, "cancelCurrentAttack", wrap_cancelCurrentAttack);
     lua_register(L, "destroyCard", wrap_destroyCard);
     lua_register(L, "incAttack", wrap_incAttack);
     lua_register(L, "decAttack", wrap_decAttack);

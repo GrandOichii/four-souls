@@ -1,0 +1,11 @@
+{
+    "name": "Lord of the Pit",
+    "text": "{T}: Cancel any attack on a monster, that player may attack again this turn.",
+    "script": "script.lua",
+    "abilities": [
+        {
+            "cost": "LordOfThePit_cost",
+            "ability": "LordOfThePit_tap"
+        }
+    ]
+}

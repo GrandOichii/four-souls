@@ -1,34 +1,39 @@
-== lua ==
-- notes:
-    -- the first table in getPlayers has to be the owner of the ability    
-
 - implement:
-    -- disable opponents hands in client
-    -- treasure buying in client
-    -- add choice stack (acts the same as the damage stack)
-    -- discard view in client (treasure, loot and discard)
-    -- 
-    -- card destruction
-    -- card leave - arguments: host, me(the card being destroyed), owner(the owner of the destroyed card)
-    -- player deaths
-    -- monsters
+    -- add state effects (are checked every time game updates)
+    -- add optional "uses stack" option to triggers (decide what to do with damage triggers)
+    -- separate trinkets from treasure in treasure discard
+    -- disable activating passive items in client
+    -- enable activation choice in client (if card has 2+ activated abilities)
+    -- some effects need to distinct between different turns (add wrap_getTurnCounter, use CardData table to store last turn)
+    -- make an actual md to see how to setup the project
+    -- add game logs (perhaps in a different window)
+    -- better card zoom
+    -- add tapping all cards of dead player
+    -- add dice modifiers
+    -- add buying cards from the top of the treasure deck
+    -- add visible rolls and attack to monsters
+    -- implement monster effects
+    -- implement effects that buff monsters
+    -- add bonus effects to the monster deck
+    -- add bad treasure
+    -- change how gaining souls works
+    -- add rooms
+    -- think how to implement more complex cards (flipable cards, cards that turn into monsters)
+    -- search for the reason of the attack-roll in stack (if it's still even present)
+    -- change choice cards to store player's choice in CardData, dont forget to log the player's choice for other players
+    -- figure out how to implement canceling effects
+    -- add animations
+    -- add sound
+    -- better client ui
+    -- use better library to reduce memory used for storing card images
     -- bonus souls
+    -- the expansion heavily leans on the fact that non-monster cards can be attacked, think of implementing this in later stages
     -- card parser (?)
 
-- monsters:
-    -- have health, dice roll to hit and power
-    -- some have death triggers
-    -- some need to know who killed them
-    -- need some way to remember death roll
-    -- have on damage triggers
-    -- have special dice handlers (use the stack?)
-    -- may force the player to attack again (the monster deck / any monster)
-    -- some monsters can't be attacked
-    -- some monsters have to know when other monsters die
-    -- monsters can kill themselves
-    -- monsters can buff other monsters
-    -- monsters can check if their health is low
-    -- monsters can heal
-    -- monsters can place other monsters into attacking slots
+https://www.lua.org/pil/27.3.2.html
+callback_function = luaL_ref(L,LUA_REGISTRYINDEX);
 
-    -- have rewards
+lua_rawgeti(L,LUA_REGISTRYINDEX,callback_function);
+//push the parameters and call it
+lua_pushnumber(L, 5); // push first argument to the function
+lua_pcall(L, 1, 0, 0); // call a function with one argument and no return values

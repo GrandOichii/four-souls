@@ -365,6 +365,7 @@ public:
     void pushDamageEvent(DamageTrigger event);
     void refillDeadMonsters();
     //  TODO add wrap_popBonusCards, inside of it call refillDeadMonsters
+    static int wrap_cancelCurrentAttack(lua_State* L);
     static int wrap_popDeathStack(lua_State* L);
     static int wrap_getLastDeath(lua_State* L);
     static int wrap_popRewardsStack(lua_State* L);

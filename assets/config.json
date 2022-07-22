@@ -4,6 +4,19 @@
         
     },
     "cards": {
+        "Azazel": {
+            "small": "images/azazel.bmp",
+            "large": "images/azazel_large.bmp"
+
+        },
+        "Lord of the Pit": {
+            "small": "images/lord_of_the_pit.bmp",
+            "large": "images/lord_of_the_pit_large.bmp"
+        },
+        "Euthanasia": {
+            "small": "images/euthanasia.bmp",
+            "large": "images/euthanasia_large.bmp"
+        },
         "Greed's Gullet": {
             "small": "images/greeds_gullet.bmp",
             "large": "images/greeds_gullet_large.bmp"

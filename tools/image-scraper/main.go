@@ -9,16 +9,18 @@ import (
 	"path"
 	"strings"
 
-	"github.com/GrandOichii/colorwrapper"
 	"github.com/go-rod/rod"
 	"github.com/go-rod/rod/lib/launcher"
 	"github.com/go-rod/rod/lib/proto"
 )
 
-const URL = "https://pop-life.com/foursouls/"
+const URL = "https://foursouls.com/card-search/page/%d/?card_type=%s"
 const pageCount = 43
-const imageSelector = ".team-img"
-const outPath = "../../game/images"
+const outPath = "result"
+
+var cardTypes = map[string]int{
+	"loot": 3,
+}
 
 func checkErr(err error) {
 	if err != nil {
@@ -44,15 +46,19 @@ func main() {
 	browser, err := initBrowser()
 	checkErr(err)
 	defer browser.Close()
-
-	for i := 1; i <= pageCount; i++ {
-		scrapePage(browser, i)
+	for ctype, pageCount := range cardTypes {
+		scrapeCardType(browser, ctype, pageCount)
 	}
 }
 
-func scrapePage(browser *rod.Browser, n int) {
-	url := fmt.Sprintf("%s%d", URL+"index.php?page=", n)
-	fmt.Printf("Connecting to page %v...\n", url)
+func scrapeCardType(browser *rod.Browser, cardType string, pageCount int) {
+	os.MkdirAll(path.Join(outPath, cardType), os.ModePerm)
+	for i := 1; i <= pageCount; i++ {
+		scrapePage(browser, fmt.Sprintf(URL, i, cardType), cardType)
+	}
+}
+
+func scrapePage(browser *rod.Browser, url, cardType string) {
 	page, err := browser.Page(proto.TargetCreateTarget{})
 	checkErr(err)
 	defer page.Close()
@@ -63,24 +69,58 @@ func scrapePage(browser *rod.Browser, n int) {
 	err = page.WaitLoad()
 	checkErr(err)
 
-	els, err := page.Elements(imageSelector)
+	els, err := page.Elements(".cardGridCell")
 	checkErr(err)
-	if len(els) == 0 {
-		colorwrapper.Printf("red", "Failed to fetch cards from page %d\n", n)
-		return
-	}
 	for _, el := range els {
-		im, err := el.Element("img")
+		image, err := el.Element("img")
 		checkErr(err)
-		src, err := im.Attribute("src")
+		link, err := image.Attribute("src")
 		checkErr(err)
-		name := clearName(*src)
-		err = downloadFile(URL+*src, path.Join(outPath, name))
+		name, err := image.Attribute("alt")
 		checkErr(err)
-		colorwrapper.Printf("cyan", "\tCard %s downloaded\n", name)
-		// fmt.Println()
+
+		imPath := *link
+		if !strings.HasSuffix(imPath, ".png") {
+			continue
+		}
+		imPath = *name + ".png"
+		err = downloadFile(*link, path.Join(outPath, cardType, imPath))
+		checkErr(err)
+		fmt.Printf("%s downloaded!\n", imPath)
 	}
 }
+
+// func scrapePage(browser *rod.Browser, n int) {
+// 	url := fmt.Sprintf("%s%d", URL+"index.php?page=", n)
+// 	fmt.Printf("Connecting to page %v...\n", url)
+// 	page, err := browser.Page(proto.TargetCreateTarget{})
+// 	checkErr(err)
+// 	defer page.Close()
+
+// 	err = page.Navigate(url)
+// 	checkErr(err)
+
+// 	err = page.WaitLoad()
+// 	checkErr(err)
+
+// 	els, err := page.Elements(imageSelector)
+// 	checkErr(err)
+// 	if len(els) == 0 {
+// 		colorwrapper.Printf("red", "Failed to fetch cards from page %d\n", n)
+// 		return
+// 	}
+// 	for _, el := range els {
+// 		im, err := el.Element("img")
+// 		checkErr(err)
+// 		src, err := im.Attribute("src")
+// 		checkErr(err)
+// 		name := clearName(*src)
+// 		err = downloadFile(URL+*src, path.Join(outPath, name))
+// 		checkErr(err)
+// 		colorwrapper.Printf("cyan", "\tCard %s downloaded\n", name)
+// 		// fmt.Println()
+// 	}
+// }
 
 func downloadFile(imURL, fileName string) error {
 	//Get the response bytes from the url
@@ -109,6 +149,6 @@ func downloadFile(imURL, fileName string) error {
 	return nil
 }
 
-func clearName(name string) string {
-	return strings.TrimPrefix(name, "data/cards/")
-}
+// func clearName(name string) string {
+// 	return strings.TrimPrefix(name, "data/cards/")
+// }

@@ -1,0 +1,9 @@
+{
+    "name": "Azazel",
+    "health": 2,
+    "attack": 1,
+    "item": "lord_of_the_pit",
+    "text": "{T}: Play an additional loot card this turn.\nStarting item: Lord of the Pit",
+    "script": "script.lua",
+    "use": "Azazel_tap"
+}

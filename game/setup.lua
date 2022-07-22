@@ -76,6 +76,16 @@ function Common_TargetOpponent(host, cardInfo)
     return true
 end
 
+function Common_IsCombat(host)
+    local monsters = getActiveMonsters(host)
+    for _, monster in ipairs(monsters) do
+        if monster.isBeingAttacked then
+            return true
+        end
+    end
+    return false
+end
+
 function Common_Tap(host)
     local card = this(host)
     if card["tapped"] then

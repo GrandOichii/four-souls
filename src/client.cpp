@@ -57,7 +57,7 @@ public:
         if (me.playerCard.active) _allowedCards.push_back(me.playerCard.id);
         // check board
         for (const auto& value : me.board)
-            if (value.active) _allowedCards.push_back(value.id);
+            if (value.active && value.activatedAbilityCount) _allowedCards.push_back(value.id);
         // check loot cards
         if (me.playableCount) {
             for (const auto& value : me.hand){
@@ -425,6 +425,15 @@ public:
 
     void drawCard(CardState& card, int angle, int x, int y) override {
         //  TODO hide opponents hand
+        if (card.zone == Zones::Hand) {
+            bool flag = false;
+            for (const auto& aid : _allowedCards)
+                if (card.id == aid) flag = true;
+            if (!flag && card.ownerID != _myID) {
+                drawCardBack("loot", true, x, y);
+                return;
+            }
+        }
         Window::drawCard(card, angle, x, y);
         if (_mouseLock) return;
         bool allowed = false;
