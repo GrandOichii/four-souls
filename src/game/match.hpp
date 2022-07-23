@@ -145,7 +145,6 @@ struct RollEvent {
 
 struct RewardEvent {
     CardWrapper* monsterW = nullptr;
-    Player* killer = nullptr;
 };
 
 struct DeathEvent {
@@ -174,7 +173,7 @@ private:
     int _startingPurchaseCount;
     int _perDeathCoins;
     int _perDeathLoot;
-    int _perDeathCoinsItems;
+    int _perDeathItems;
 
     bool _turnEnd = false;
     int _lastID = 0;
@@ -303,7 +302,6 @@ private:
             this->_lastMonsterIndex = std::stoi(args[1].c_str());
             player->decMonsterAttackAmount();
             this->_monsterDataArr[this->_lastMonsterIndex]->setIsBeingAttacked(true);
-            // std::cout << "Player " << player->name() << " is attacking " << monster->name() << std::endl;
             this->pushToStack(new StackEffect(
                 "_attackMonster",
                 player,
@@ -324,6 +322,8 @@ private:
         {TREASURE_DECK, &_treasureDiscard},
         {MONSTER_DECK, &_monsterDiscard},
     };
+
+    int _lastKillerID = -1;
 
     std::stack<DamageTrigger> _damageStack;
     std::vector<DeathEvent> _deathStack;
@@ -366,6 +366,7 @@ public:
     void refillDeadMonsters();
     //  TODO add wrap_popBonusCards, inside of it call refillDeadMonsters
     static int wrap_cancelCurrentAttack(lua_State* L);
+    static int wrap_getLastKillerID(lua_State* L);
     static int wrap_popDeathStack(lua_State* L);
     static int wrap_getLastDeath(lua_State* L);
     static int wrap_popRewardsStack(lua_State* L);

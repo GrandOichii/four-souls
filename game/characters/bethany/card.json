@@ -1,0 +1,9 @@
+{
+    "name": "Bethany",
+    "health": 2,
+    "attack": 1,
+    "item": "book_of_virtues",
+    "text": "{T}: Play an additional loot card this turn.\nStarting item: Book of Virtues",
+    "script": "script.lua",
+    "use": "Bethany_tap"
+}

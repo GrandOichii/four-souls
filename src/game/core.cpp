@@ -11,7 +11,6 @@ static const string STARTING_ITEMS_FILE = "starting_items.json";
 static const string SETUP_SCRIPT_FILE = "setup.lua";
 
 Game::Game(string dir) {
-    std::cout << "LOOT" << std::endl;
     this->loadLootCards(dir);
     this->loadTreasureCards(dir);
     this->loadMonsterCards(dir);

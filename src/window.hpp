@@ -135,10 +135,22 @@ public:
         for (const auto& [key, value] : config["cards"].items()){
             SDL_Texture* small = nullptr;
             SDL_Texture* large = nullptr;
-            if (value.contains("small"))
-                small = loadBMP(fs::join(assetsPath, value["small"]));
-            if (value.contains("large")) 
-                large = loadBMP(fs::join(assetsPath, value["large"]));
+            if (value.contains("small")) {
+                try {
+                    small = loadBMP(fs::join(assetsPath, value["small"]));
+                } catch (std::exception& ex) {
+                    std::cout << "FAILED LOADING " << value["large"];
+                    throw ex;
+                }
+            }
+            if (value.contains("large")) {
+                try {
+                    large = loadBMP(fs::join(assetsPath, value["large"]));
+                } catch (std::exception& ex) {
+                    std::cout << "FAILED LOADING " << value["large"];
+                    throw ex;
+                }
+            }
             _textureMap[key] = std::make_pair(small, large);
         }
     }

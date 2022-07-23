@@ -19,7 +19,11 @@ const pageCount = 43
 const outPath = "result"
 
 var cardTypes = map[string]int{
-	"loot": 3,
+	"treasure": 6,
+	"loot":     3,
+	"monster":  7,
+	"bsoul":    1,
+	"room":     2,
 }
 
 func checkErr(err error) {
@@ -76,17 +80,26 @@ func scrapePage(browser *rod.Browser, url, cardType string) {
 		checkErr(err)
 		link, err := image.Attribute("src")
 		checkErr(err)
-		name, err := image.Attribute("alt")
-		checkErr(err)
-
 		imPath := *link
 		if !strings.HasSuffix(imPath, ".png") {
+			link, err = image.Attribute("data-src")
+			checkErr(err)
+			imPath = *link
+		}
+		nameP, err := image.Attribute("alt")
+		checkErr(err)
+		name := strings.ReplaceAll(*nameP, "/", "_")
+
+		fmt.Println(*link)
+		imPath = name + ".png"
+		op := path.Join(outPath, cardType, imPath)
+		if _, err := os.Stat(op); errors.Is(err, os.ErrNotExist) {
+			err = downloadFile(*link, op)
+			checkErr(err)
+			fmt.Printf("%s downloaded!\n", imPath)
 			continue
 		}
-		imPath = *name + ".png"
-		err = downloadFile(*link, path.Join(outPath, cardType, imPath))
-		checkErr(err)
-		fmt.Printf("%s downloaded!\n", imPath)
+		fmt.Printf("%s already exists\n", op)
 	}
 }
 

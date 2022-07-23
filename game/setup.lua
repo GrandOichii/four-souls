@@ -414,3 +414,14 @@ function Common_RerollItem(host, cardID)
     destroyCard(host, cardID)
     plusOneTreasure(host, owner.id)
 end
+
+function Common_OwnerKilledMonster(host, cardID)
+    local death = Common_LastDeath(host)
+    if death.type == PLAYER then
+        return false
+    end
+    local owner = getOwner(host, cardID)
+    local killerID = getLastKillerID(host)
+    print('LAST KILLER ID: '..killerID)
+    return owner.id == killerID
+end

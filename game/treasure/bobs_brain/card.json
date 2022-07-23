@@ -1,0 +1,12 @@
+{
+    "name": "Bob's Brain",
+    "text": "Each time you declare an attack, roll:\n1-2: Deal 1 damage to a monster.\n3-4: Deal 1 damage to a player.\n5-6: Take 1 damage.",
+    "script": "script.lua",
+    "on": {
+        "attack": {
+            "check": "BobsBrain_trigger_check",
+            "cost": "BobsBrain_trigger_cost",
+            "effect": "BobsBrain_trigger"
+        }
+    }
+}

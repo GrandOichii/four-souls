@@ -1,0 +1,11 @@
+{
+    "name": "Golden Razor",
+    "text": "($) Pay 5c:\nDeal 1 damage to a monster or a player.",
+    "script": "script.lua",
+    "abilities": [
+        {
+            "cost": "GoldenRazor_cost",
+            "ability": "GoldenRazor_tap"
+        }
+    ]
+}

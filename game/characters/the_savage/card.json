@@ -1,0 +1,9 @@
+{
+    "name": "The Savage",
+    "health": 2,
+    "attack": 1,
+    "item": "berserk",
+    "text": "{T}: Play an additional loot card this turn.\nStarting item: Berserk",
+    "script": "script.lua",
+    "use": "TheSavage_tap"
+}

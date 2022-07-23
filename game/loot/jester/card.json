@@ -1,0 +1,6 @@
+{
+    "name": "Jester",
+    "text": "Reroll any number of items you control.",
+    "script": "script.lua",
+    "use": "Jester_use"
+}

@@ -346,6 +346,7 @@ int Match::dealDamage(string tgtType, int tgtID, int amount) {
 }
 
 void Match::killMonster(CardWrapper* w) {
+    _lastKillerID = _stack.back()->player->id();
     auto card = (MonsterCard*)w->card();
     card->data()->nullHealth();
     if (card->data()->isBeingAttacked()) {
@@ -355,7 +356,6 @@ void Match::killMonster(CardWrapper* w) {
     this->log(card->name() + " dies!");
     _rewardsStack.push(RewardEvent{
         w,
-        _activePlayer //  TODO should always be active player (not sure)
     });
     pushToStack(new StackEffect(
         "_popRewardsStack",
@@ -530,7 +530,8 @@ int Match::wrap_popRewardsStack(lua_State* L) {
     }
     lua_pushlightuserdata(L, match);
     rewardsEvent.monsterW->pushTable(L);
-    rewardsEvent.killer->pushTable(L);
+    match->_activePlayer->pushTable(L);
+    // rewardsEvent.killer->pushTable(L);
     int r = lua_pcall(L, 3, 0, 0);
     if (r != LUA_OK) {
         throw std::runtime_error("failed to execute rewards function");
@@ -666,6 +667,13 @@ int Match::wrap_getDeathStack(lua_State* L) {
         match->_deathStack[i].pushTable(L);
         lua_settable(L, -3);
     }
+    return 1;
+}
+
+int Match::wrap_getLastKillerID(lua_State* L) {
+    stackSizeIs(L, 1);
+    auto match = getTopMatch(L, 1);
+    lua_pushnumber(L, match->_lastKillerID);
     return 1;
 }
 
@@ -900,7 +908,7 @@ int Match::wrap_addSouls(lua_State* L) {
     auto amount = (int)lua_tonumber(L, 3);
     Player* player = match->playerWithID(pid);
     player->addSouls(amount);
-    if (player->soulCount() == match->_soulsToWin) {
+    if (player->soulCount() >= match->_soulsToWin) {
         match->_winner = player;
         match->updateAllPlayersEndMatch();
     }
@@ -1699,7 +1707,9 @@ int Match::wrap_attackMonster(lua_State* L) {
         exit(1);
     }
     auto match = getTopMatch(L, 1);
-    match->_isAttackPhase = true;
+    for (const auto& data : match->_monsterDataArr)
+        if (data->isBeingAttacked())
+            match->_isAttackPhase = true;            
     return 0;
 }
 
@@ -1805,6 +1815,7 @@ void Match::setupLua(string setupScript) {
     luaL_openlibs(L);
     // connect functions
     lua_register(L, "cancelCurrentAttack", wrap_cancelCurrentAttack);
+    lua_register(L, "getLastKillerID", wrap_getLastKillerID);
     lua_register(L, "destroyCard", wrap_destroyCard);
     lua_register(L, "incAttack", wrap_incAttack);
     lua_register(L, "decAttack", wrap_decAttack);
@@ -2304,6 +2315,11 @@ int Match::applyTriggers(string triggerType) {
                     continue;
                 }
             }
+            if (!effect.usesStack) {
+                execFunc(effect.effectFuncName);
+                _stack.pop_back();
+                delete p;
+            }
             ++result;
         }
     }
@@ -2393,6 +2409,7 @@ MatchState Match::getState() {
     for (const auto& p : _players) 
         result.boards.push_back(p->getState());
     int rsi = 0;
+
     for (auto& si : _stack){
         auto s = si->getState();
         if (si->type == ROLL_TYPE) {
@@ -2409,7 +2426,14 @@ MatchState Match::getState() {
         }
         if (si->type == ATTACK_MONSTER_TYPE) {
             string monsterName = "top monster";
-            if (_lastMonsterIndex != -1) monsterName = _monsters[_lastMonsterIndex].back()->card()->name();
+            if (_lastMonsterIndex != -1) {
+                monsterName = " ???";
+                if (_monsters.size() > _lastMonsterIndex) {
+                    auto monsters = _monsters[_lastMonsterIndex];
+                    if (monsters.size())
+                        monsterName = monsters.back()->card()->name();
+                }
+            }
             s.message = "Attacking\n" + monsterName;
         }
         if (si->type == COMBAT_DAMAGE_TYPE) {
@@ -2419,15 +2443,16 @@ MatchState Match::getState() {
             else s.message += _monsters[_lastMonsterIndex].back()->card()->name();
         }
         result.stack.push_back(s);
-
         //  TODO DEATH_TYPE = "death";
     }
+
     result.currentI = _currentI;
 
     if (_activePlayer) result.currentID = _activePlayer->id();
     
     result.priorityI = _priorityI;
     result.isMain = _isMainPhase && _stack.empty() && _priorityI == _currentI;
+
 
     result.lootDeckCount = _lootDeck.size();
     for (const auto& w : _lootDiscard) {

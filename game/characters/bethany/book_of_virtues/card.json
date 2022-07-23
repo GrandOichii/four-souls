@@ -1,0 +1,15 @@
+{
+    "name": "Book of Virtues",
+    "text": "Each time you deal combat damage, roll:\n5-6: Deal 1 damage to a monster or a player.\nEach time you kill a monster, choose another player. You and that player each loot 1.",
+    "script": "script.lua",
+    "on": {
+        "damage": {
+            "check": "BookOfVirtues_trigger1_check",
+            "effect": "BookOfVirtues_trigger1"
+        },
+        "death": {
+            "check": "BookOfVirtues_trigger2_check",
+            "effect": "BookOfVirtues_trigger2"
+        }
+    }
+}

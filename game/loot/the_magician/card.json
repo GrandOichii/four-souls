@@ -1,0 +1,7 @@
+{
+    "name": "I. The Magician",
+    "text": "Change the result of a dice roll to a number of your choosing.",
+    "script": "script.lua",
+    "cost": "TheMagician_cost",
+    "use": "TheMagician_use"
+}

@@ -1,0 +1,7 @@
+{
+    "name": "Pills! (Black)",
+    "text": "Roll:\n1-2: Deal 1 damage toa player.\n3-4: Deal 1 damage to a monster.\n5-6: Take 1 damage.",
+    "script": "script.lua",
+    "cost": "BlackPills_cost",
+    "use": "BlackPills_use"
+}

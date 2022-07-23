@@ -1,16 +1,23 @@
 {
     "back": "images/loot_card_back.bmp",
-    "card1s": {
-        "basic": {
-            "loot/black_rune": 4,
-            "loot/perthro": 4
-        },
-        "trinkets": {
-            "loot/the_left_hand": 1
-        }
-    },
     "cards": {
         "basic": {
+            "loot/gold_bomb": 20
+        },
+        "trinkets": {
+            "loot/the_left_hand": 0
+        }
+    },
+    "ca1rds": {
+        "basic": {
+            "loot/jester": 1,
+            "loot/the_high_priestess": 1,
+            "loot/the_magician": 1,
+            "loot/black_pills": 1,
+            "loot/lil_battery": 1,
+            "loot/gold_bomb": 1,
+            "loot/demon_form": 1,
+            "loot/death": 1,
             "loot/one_cent": 6,
             "loot/two_cents": 12,
             "loot/three_cents": 15,

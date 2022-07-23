@@ -1,0 +1,7 @@
+{
+    "name": "Gold Bomb!!",
+    "text": "Deal 3 damage to a monster or player.",
+    "script": "script.lua",
+    "cost": "GoldBomb_cost",
+    "use": "GoldBomb_use"
+}

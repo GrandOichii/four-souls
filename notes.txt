@@ -1,4 +1,9 @@
 - implement:
+    -- abaddon
+    -- 
+    
+    -- fix gimpy text
+    -- add refilling to the stack
     -- add state effects (are checked every time game updates)
     -- add optional "uses stack" option to triggers (decide what to do with damage triggers)
     -- separate trinkets from treasure in treasure discard

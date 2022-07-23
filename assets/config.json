@@ -4,6 +4,62 @@
         
     },
     "cards": {
+        "Berserk": {
+            "small": "images/berserk.bmp",
+            "large": "images/berserk_large.bmp"
+        },
+        "The Savage": {
+            "small": "images/the_savage.bmp",
+            "large": "images/the_savage_large.bmp"
+        },
+        "Bethany": {
+            "small": "images/bethany.bmp",
+            "large": "images/bethany_large.bmp"
+        },
+        "Book of Virtues": {
+            "small": "images/book_of_virtues.bmp",
+            "large": "images/book_of_virtues_large.bmp"
+        },
+        "Demon Form": {
+            "small": "images/demon_form.bmp",
+            "large": "images/demon_form_large.bmp"
+        },
+        "XIII. Death": {
+            "small": "images/xiii__death.bmp",
+            "large": "images/xiii__death_large.bmp"
+        },
+        "Pills! (Black)": {
+            "small": "images/pills_black.bmp",
+            "large": "images/pills_black_large.bmp"
+        },
+        "II. The High Priestess": {
+            "small": "images/ii__the_high_priestess.bmp",
+            "large": "images/ii__the_high_priestess_large.bmp"
+        },
+        "I. The Magician": {
+            "small": "images/i__the_magician.bmp",
+            "large": "images/i__the_magician_large.bmp"
+        },
+        "Lil Battery": {
+            "small": "images/lil_battery.bmp",
+            "large": "images/lil_battery_large.bmp"
+        },
+        "Chunk of Amber": {
+            "small": "images/chunk_of_amber.bmp",
+            "large": "images/chunk_of_amber_large.bmp"
+        },
+        "Gold bomb!!": {
+            "small": "images/gold_bomb.bmp",
+            "large": "images/gold_bomb_large.bmp"
+        },
+        "Golden Razor": {
+            "small": "images/golden_razor.bmp",
+            "large": "images/golden_razor_large.bmp"
+        },
+        "Bob's Brain": {
+            "small": "images/bobs_brain.bmp",
+            "large": "images/bobs_brain_large.bmp"
+        },
         "Shadow": {
             "small": "images/shadow.bmp",
             "large": "images/shadow_large.bmp"
@@ -99,26 +155,32 @@
             "large": "images/keeper_large.bmp"
         },
         "Samson": {
-            "small": "images/samson.bmp"
+            "small": "images/samson.bmp",
+            "large": "images/samson_large.bmp"
         },
-        
         "A penny!": {
-            "small": "images/a_penny_.bmp"
+            "small": "images/a_penny_.bmp",
+            "large": "images/a_penny__large.bmp"
         },
         "2 cents!": {
-            "small": "images/2_cents_.bmp"
+            "small": "images/2_cents_.bmp",
+            "large": "images/2_cents__large.bmp"
         },
         "3 cents!": {
-            "small": "images/3_cents_.bmp"
+            "small": "images/3_cents_.bmp",
+            "large": "images/3_cents__large.bmp"
         },
         "4 cents!": {
-            "small": "images/4_cents_.bmp"
+            "small": "images/4_cents_.bmp",
+            "large": "images/4_cents__large.bmp"
         },
         "A nickel!": {
-            "small": "images/a_nickel_.bmp"
+            "small": "images/a_nickel_.bmp",
+            "large": "images/a_nickel__large.bmp"
         },
         "A Dime!!": {
-            "small": "images/a_dime__.bmp"
+            "small": "images/a_dime__.bmp",
+            "large": "images/a_dime___large.bmp"
         },
         "Charged Penny": {
             "small": "images/charged_penny.bmp",

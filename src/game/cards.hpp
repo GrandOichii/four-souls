@@ -26,6 +26,7 @@ struct Trigger {
     string checkFuncName;
     string costFuncName = "";
     string effectFuncName;
+    bool usesStack = true;
 
     // Trigger(string checkFuncName, string effectFuncName) :
     //     checkFuncName(checkFuncName),

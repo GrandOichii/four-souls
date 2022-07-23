@@ -30,6 +30,7 @@ ScriptCard::ScriptCard(string dir, json j, bool isTrinket, bool isEternal) :
                 Trigger trigger;
                 trigger.checkFuncName = v["check"];
                 trigger.effectFuncName = v["effect"];
+                if (v.contains("usesStack")) trigger.usesStack = v["usesStack"];
                 if (v.contains("cost")) trigger.costFuncName = v["cost"];
                 _triggerMap[pair.key()] = trigger;
             }
