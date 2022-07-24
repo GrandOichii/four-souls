@@ -1,5 +1,5 @@
 {
-    "name": "Ranbow Baby",
+    "name": "Rainbow Baby",
     "text": "{T}: Choose 1:\nAll players loot 1.\nAll players gain 2c.\nAll players take 1 damage.",
     "script": "script.lua",
     "abilities": [

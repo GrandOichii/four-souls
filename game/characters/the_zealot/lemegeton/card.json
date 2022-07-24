@@ -1,0 +1,17 @@
+{
+    "name": "Lemegeton",
+    "text": "{T}: Gain +1 treasure. The next time your turn ends, destroy an item you control.",
+    "script": "script.lua",
+    "abilities": [
+        {
+            "cost": "Lemegeton_cost",
+            "ability": "Lemegeton_use"
+        }
+    ],
+    "on": {
+        "turn_end": {
+            "check": "Lemegeton_trigger_check",
+            "effect": "Lemegeton_trigger"
+        }
+    }
+}

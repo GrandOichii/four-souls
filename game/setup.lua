@@ -1,4 +1,3 @@
-
 Stack = {}
 function Stack:Create()
     local t = {}
@@ -37,9 +36,6 @@ function Stack:Create()
         end
     end
     return t
-    --  stack = Stack:Create()
-    --  stack:push('a', 'b')
-    --  stack:pop(2)
 end
 
 --  death stack effects
@@ -66,8 +62,118 @@ _deathPenalty = function (host, player)
     DeathStack:top().func(host, player)
 end
 
+-- health
+MaxHealthLayers = Stack:Create()
 
+function MaxHealthLayers:posOf(key)
+    for pos, pair in ipairs(MaxHealthLayers._et) do
+        if pair.name == key then
+            return pos
+        end
+    end
+end
 
+function MaxHealthLayers:remove(key)
+    table.remove(MaxHealthLayers._et, MaxHealthLayers:posOf(key))
+end
+
+MaxHealthLayers:push({
+    name = 'base',
+    func = _getMaxHealth
+})
+
+_getMaxHealth = function (host, pid)
+    return MaxHealthLayers:top().func(host, pid)
+end
+
+function Common_IncMaxLife(cardID, ownerID, value)
+    local key = cardID
+    MaxHealthLayers:push(
+        {
+            name = key,
+            func = function (host_, pid)
+                local add = 0
+                if pid == ownerID then
+                    add = value
+                end
+                return add + MaxHealthLayers._et[MaxHealthLayers:posOf(key)-1].func(host_, pid)
+            end
+        }
+    )
+    --  TODO heal player
+end
+
+function Common_DecMaxLife(cardID)
+    MaxHealthLayers:remove(cardID)
+end
+
+-- attack
+AttackLayers = Stack:Create()
+
+function AttackLayers:posOf(key)
+    for pos, pair in ipairs(AttackLayers._et) do
+        if pair.name == key then
+            return pos
+        end
+    end
+end
+
+function AttackLayers:remove(key)
+    table.remove(AttackLayers._et, AttackLayers:posOf(key))
+end
+
+AttackLayers:push({
+    name = 'base',
+    func = _getAttack
+})
+
+_getAttack = function (host, pid)
+    return AttackLayers:top().func(host, pid)
+end
+
+function Common_IncAttack(cardID, ownerID, value)
+    local key = cardID
+    AttackLayers:push(
+        {
+            name = key,
+            func = function (host_, pid)
+                local add = 0
+                if pid == ownerID then
+                    add = value
+                end
+                return add + AttackLayers._et[AttackLayers:posOf(key)-1].func(host_, pid)
+            end
+        }
+    )
+    --  TODO heal player
+end
+
+function Common_DecAttack(cardID)
+    AttackLayers:remove(cardID)
+end
+
+EOTStack = Stack:Create()
+
+function Common_PopEOT(host)
+    local top = EOTStack:pop()
+    print('POPPED TOP: '..top[2])
+    top[1](top[2])
+end
+
+function Common_PushEOT(host, func, cardID)
+    EOTStack:push({func, cardID})
+    deferEOT(host, cardID, 'Common_PopEOT', false)
+end
+
+function Common_TempIncMaxLife(host, cardID, targetID, amount)
+    Common_IncMaxLife(cardID, targetID, amount)
+    Common_PushEOT(host, Common_DecMaxLife, cardID)
+end
+
+function Common_TempIncAttack(host, cardID, targetID, amount)
+    Common_IncAttack(cardID, targetID, amount)
+    Common_PushEOT(host, Common_DecAttack, cardID)
+end
 
 -- treasure / loot
 
@@ -90,6 +196,24 @@ function Common_ChoosePlayer(host, ownerID)
         ids[i] = p["id"]
     end
     local choiceId, _ = requestChoice(host, ownerID, "Choose a player", PLAYER, ids)
+    return choiceId
+end
+
+function Common_ChooseOpponent(host, ownerID)
+    local players = getPlayers(host)
+    print('OWNER ID: '..ownerID)
+    local ids = {}
+    for _, p in ipairs(players) do
+        if p.id ~= ownerID then
+            ids[#ids+1] = p.id
+        end
+    end
+    print('CHOICES:')
+    for _, i in ipairs(ids) do
+        print('\t'..i)
+    end
+    local choiceId, _ = requestChoice(host, ownerID, "Choose an opponent", PLAYER, ids)
+    print('CHOICE ID:'..choiceId)
     return choiceId
 end
 
@@ -335,6 +459,31 @@ function Common_OwnerDamaged(host, cardID)
     local owner = getOwner(host, cardID)
     local damageEvent = getTopDamageEvent(host)
     return damageEvent["targetType"] == PLAYER and damageEvent["targetID"] == owner["id"]
+end
+
+function Common_OwnerDealtCombatDamage(host, cardID)
+    local owner = getOwner(host, cardID)
+    local damageEvent = getTopDamageEvent(host)
+    local lastRoll = getLastRoll(host)
+    -- print('LAST ROLL: VALUE: '..lastRoll.value..', IS COMBAT ROLL: '..lastRoll.isCombatRoll)
+    if not lastRoll.isCombatRoll then
+        return false
+    end
+    if damageEvent.sourceType ~= PLAYER then
+        return false
+    end
+    print('DAMAGE SOURCE ID: '..damageEvent.sourceID..', MY ID: '..owner.id)
+    if damageEvent.sourceID ~= owner.id then
+        return false
+    end
+    if damageEvent.targetType ~= MONSTER then
+        return false
+    end
+    local monster = Common_MonsterWithID(host, damageEvent.targetID)
+    if not monster.isBeingAttacked then
+        return false
+    end
+    return true
 end
 
 function Common_OwnersTurn(host, cardID)

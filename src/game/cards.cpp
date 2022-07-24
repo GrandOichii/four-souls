@@ -153,6 +153,7 @@ MonsterCard::MonsterCard(string dir, json j) :
     _baseRoll = j["roll"];
     _basePower = j["power"];
     _data = new MonsterData(_baseHealth, _baseRoll, _basePower);
+    std::cout << "MONSTER " << _name << ": " << _baseHealth << " " << _baseRoll << " " << _basePower << std::endl;
 }
 
 MonsterCard::~MonsterCard() {

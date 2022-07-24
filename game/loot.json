@@ -2,15 +2,19 @@
     "back": "images/loot_card_back.bmp",
     "cards": {
         "basic": {
-            "loot/gold_bomb": 20
+            "loot/the_chariot": 20
         },
         "trinkets": {
             "loot/the_left_hand": 0
         }
     },
-    "ca1rds": {
+    "card1s": {
         "basic": {
             "loot/jester": 1,
+            "loot/mega_bomb": 1,
+            "loot/two_of_spades": 1,
+            "loot/ace_of_diamonds": 1,
+            "loot/chunk_of_amber": 1,
             "loot/the_high_priestess": 1,
             "loot/the_magician": 1,
             "loot/black_pills": 1,

@@ -1,9 +1,9 @@
 function Abaddon_enter(host, me, owner)
-    incAttack(host, owner.id, 5)
+    Common_IncAttack(me.id, owner.id, 3)
 end
 
 function Abaddon_leave(host, me, owner)
-    decAttack(host, owner.id, 5)
+    Common_DecAttack(me.id)
 end
 
 function Abaddon_trigger_check(host, me)

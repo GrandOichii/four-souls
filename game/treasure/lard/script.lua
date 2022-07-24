@@ -1,11 +1,11 @@
 --  TODO untested
 
 function Lard_enter(host, me, owner)
-    incMaxLife(host, owner["id"], 2)
+    Common_IncMaxLife(me.id, owner.id, 2)
 end
 
 function Lard_leave(host, me, owner)
-    decMaxLife(host, owner["id"], 2)
+    Common_DecMaxLife(me.id)
 end
 
 function Lard_trigger_check(host, me)

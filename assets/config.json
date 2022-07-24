@@ -3,7 +3,35 @@
     "invalid": {
         
     },
-    "cards": {
+    "cards": {        
+        "Two of Spades": {
+            "small": "images/two_of_spades.bmp",
+            "large": "images/two_of_spades_large.bmp"
+        },
+        "Ceremonial Blade": {
+            "small": "images/ceremonial_blade.bmp",
+            "large": "images/ceremonial_blade_large.bmp"
+        },
+        "The Deceiver": {
+            "small": "images/the_deceiver.bmp",
+            "large": "images/the_deceiver_large.bmp"
+        },
+        "Mega Bomb!": {
+            "small": "images/mega_bomb_.bmp",
+            "large": "images/mega_bomb__large.bmp"
+        },
+        "Ace of Diamonds": {
+            "small": "images/ace_of_diamonds.bmp",
+            "large": "images/ace_of_diamonds_large.bmp"
+        },
+        "Lemegeton": {
+            "small": "images/lemegeton.bmp",
+            "large": "images/lemegeton_large.bmp"
+        },
+        "The Zealot": {
+            "small": "images/the_zealot.bmp",
+            "large": "images/the_zealot_large.bmp"
+        },
         "Berserk": {
             "small": "images/berserk.bmp",
             "large": "images/berserk_large.bmp"
@@ -48,7 +76,7 @@
             "small": "images/chunk_of_amber.bmp",
             "large": "images/chunk_of_amber_large.bmp"
         },
-        "Gold bomb!!": {
+        "Gold Bomb!!": {
             "small": "images/gold_bomb.bmp",
             "large": "images/gold_bomb_large.bmp"
         },
@@ -225,7 +253,8 @@
             "small": "images/vii__the_chariot.bmp"
         },
         "X. Wheel of Fortune": {
-            "small": "images/x__wheel_of_fortune.bmp"
+            "small": "images/x__wheel_of_fortune.bmp",
+            "large": "images/x__wheel_of_fortune_large.bmp"
         },
         "Pills! (Yellow)": {
             "small": "images/pills__(yellow).bmp"
@@ -648,9 +677,9 @@
             "small": "images/abaddon.bmp",
             "large": "images/abaddon_large.bmp"
         },
-        "Ranbow Baby": {
-            "small": "images/ranbow_baby.bmp",
-            "large": "images/ranbow_baby_large.bmp"
+        "Rainbow Baby": {
+            "small": "images/rainbow_baby.bmp",
+            "large": "images/rainbow_baby_large.bmp"
         },
         "Breakfast": {
             "small": "images/breakfast.bmp"
@@ -668,7 +697,8 @@
             "large": "images/athame_large.bmp"
         },
         "Mom's Coin Purse": {
-            "small": "images/mom_s_coin_purse.bmp"
+            "small": "images/mom_s_coin_purse.bmp",
+            "large": "images/mom_s_coin_purse_large.bmp"
         },
         "The poop": {
             "small": "images/the_poop.bmp",
@@ -682,7 +712,8 @@
             "large": "images/guppy_s_paw_large.bmp"
         },
         "Dad's Lost Coin": {
-            "small": "images/dad_s_lost_coin.bmp"
+            "small": "images/dad_s_lost_coin.bmp",
+            "large": "images/dad_s_lost_coin_large.bmp"
         },
         "Daddy's Long Legs": {
             "small": "images/daddy_s_long_legs.bmp",

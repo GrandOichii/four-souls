@@ -335,6 +335,7 @@ int Match::dealDamage(string tgtType, int tgtID, int amount) {
         // if (pileI == -1) throw std::runtime_error("attempted to deal damage to a non-active monster (id: " + std::to_string(monsterW->id()) + ", name: " + card->name());
         if (pileI == -1) return 0;
         auto data = _monsterDataArr[pileI];
+        if (!data->health()) return 0;
         int dealt = data->dealDamage(amount);
         this->log(card->name() + " is dealt " + std::to_string(dealt) + " damage");
         auto health = data->health();
@@ -795,6 +796,15 @@ int Match::wrap_requestCardsInHand(lua_State* L){
     // requestCardsInHand(host, playerID, targetID, text, amount)
 }
 
+int Match::wrap_getAttack(lua_State* L) {
+    stackSizeIs(L, 2);
+    auto match = getTopMatch(L, 1);
+    auto pid = getTopNumber(L, 2);
+    auto player = match->playerWithID(pid);
+    lua_pushnumber(L, player->baseAttack());
+    return 1;
+}
+
 int Match::wrap_discardLoot(lua_State* L) {
     if (lua_gettop(L) != 3) {
         lua_err(L);
@@ -1167,6 +1177,7 @@ int Match::wrap_popRollStack(lua_State* L) {
     auto match = getTopMatch(L, 1);
     auto roll = match->_rollStack.back();
     match->_lastRoll = roll.value;
+    match->_lastRollIsCombat = roll.isCombatRoll;
     match->_lastRollOwnerID = roll.owner->id();
     match->_rollStack.pop_back();
     if (!roll.isCombatRoll) return 0;
@@ -1291,6 +1302,7 @@ int Match::wrap_getLastRoll(lua_State* L) {
     lua_newtable(L);
     l_pushtablenumber(L, "value", match->_lastRoll);
     l_pushtablenumber(L, "ownerID", match->_lastRollOwnerID);
+    l_pushtableboolean(L, "isCombatRoll", match->_lastRollIsCombat);
     return 1;
 }
 
@@ -1372,26 +1384,6 @@ int Match::wrap_getStack(lua_State* L) {
         lua_settable(L, -3);
     }
     return 1;
-}
-
-int Match::wrap_incAttack(lua_State* L) {
-    stackSizeIs(L, 3);
-    auto match = getTopMatch(L, 1);
-    auto pid = getTopNumber(L, 2);
-    auto amount = getTopNumber(L, 3);
-    auto player = match->playerWithID(pid);
-    player->incAttack(amount);
-    return 0;
-}
-
-int Match::wrap_decAttack(lua_State* L) {
-    stackSizeIs(L, 3);
-    auto match = getTopMatch(L, 1);
-    auto pid = getTopNumber(L, 2);
-    auto amount = getTopNumber(L, 3);
-    auto player = match->playerWithID(pid);
-    player->decAttack(amount);
-    return 0;
 }
 
 int Match::wrap_killEntity(lua_State* L) {
@@ -1508,69 +1500,6 @@ int Match::wrap_decBeginningLoot(lua_State* L) {
     return 0;
 }
 
-int Match::wrap_tempIncMaxLife(lua_State* L) {
-    if (lua_gettop(L) != 3) {
-        lua_err(L);
-        exit(1);
-    }
-    auto match = getTopMatch(L, 1);
-    if (!lua_isnumber(L, 2)) {
-        lua_err(L);
-        exit(1);
-    }
-    int pid = (int)lua_tonumber(L, 2);
-    auto player = match->playerWithID(pid);
-    if (!lua_isnumber(L, 3)) {
-        lua_err(L);
-        exit(1);
-    }
-    int amount = (int)lua_tonumber(L, 3);
-    player->tempIncMaxLife(amount);
-    return 0;
-}
-
-int Match::wrap_tempIncAttack(lua_State* L) {
-    if (lua_gettop(L) != 3) {
-        lua_err(L);
-        exit(1);
-    }
-    auto match = getTopMatch(L, 1);
-    if (!lua_isnumber(L, 2)) {
-        lua_err(L);
-        exit(1);
-    }
-    int pid = (int)lua_tonumber(L, 2);
-    auto player = match->playerWithID(pid);
-    if (!lua_isnumber(L, 3)) {
-        lua_err(L);
-        exit(1);
-    }
-    int amount = (int)lua_tonumber(L, 3);
-    player->tempIncAttack(amount);
-    return 0;
-}
-
-int Match::wrap_incMaxLife(lua_State* L) {
-    if (lua_gettop(L) != 3) {
-        lua_err(L);
-        exit(1);
-    }
-    auto match = getTopMatch(L, 1);
-    if (!lua_isnumber(L, 2)) {
-        lua_err(L);
-        exit(1);
-    }
-    int pid = (int)lua_tonumber(L, 2);
-    auto player = match->playerWithID(pid);
-    if (!lua_isnumber(L, 3)) {
-        lua_err(L);
-        exit(1);
-    }
-    int amount = (int)lua_tonumber(L, 3);
-    player->incMaxLife(amount);
-    return 0;
-}
-
 int Match::wrap_tapCard(lua_State* L) {
     if (lua_gettop(L) != 2) {
         lua_err(L);
@@ -1595,27 +1524,6 @@ int Match::wrap_rechargeCard(lua_State* L) {
     return 0;
 }
 
-int Match::wrap_decMaxLife(lua_State* L) {
-    if (lua_gettop(L) != 3) {
-        lua_err(L);
-        exit(1);
-    }
-    auto match = getTopMatch(L, 1);
-    if (!lua_isnumber(L, 2)) {
-        lua_err(L);
-        exit(1);
-    }
-    int pid = (int)lua_tonumber(L, 2);
-    auto player = match->playerWithID(pid);
-    if (!lua_isnumber(L, 3)) {
-        lua_err(L);
-        exit(1);
-    }
-    int amount = (int)lua_tonumber(L, 3);
-    player->decMaxLife(amount);
-    return 0;
-}
-
 int Match::wrap_getCurrentPlayer(lua_State* L) {
     if (lua_gettop(L) != 1) {
         lua_err(L);
@@ -1623,6 +1531,15 @@ int Match::wrap_getCurrentPlayer(lua_State* L) {
     }
     auto match = getTopMatch(L, 1);
     match->_activePlayer->pushTable(L);
+    return 1;
+}
+
+int Match::wrap_getMaxHealth(lua_State* L) {
+    stackSizeIs(L, 2);
+    auto match = getTopMatch(L, 1);
+    auto pid = getTopNumber(L, 2);
+    auto player = match->playerWithID(pid);
+    lua_pushnumber(L, player->baseMaxHealth());
     return 1;
 }
 
@@ -1748,9 +1665,10 @@ void Match::removeFromShop(CardWrapper* cardW) {
 }
 
 Player* Match::playerWithID(int id) {
-    for (const auto& p : this->_players) 
+    for (const auto& p : this->_players) {
         if (p->id() == id) 
             return p;
+    }
     throw std::runtime_error("no player with id " + std::to_string(id));
 }
 
@@ -1817,8 +1735,6 @@ void Match::setupLua(string setupScript) {
     lua_register(L, "cancelCurrentAttack", wrap_cancelCurrentAttack);
     lua_register(L, "getLastKillerID", wrap_getLastKillerID);
     lua_register(L, "destroyCard", wrap_destroyCard);
-    lua_register(L, "incAttack", wrap_incAttack);
-    lua_register(L, "decAttack", wrap_decAttack);
     lua_register(L, "killEntity", wrap_killEntity);
     lua_register(L, "_popDeathStack", wrap_popDeathStack);
     lua_register(L, "getLastDeath", wrap_getLastDeath);
@@ -1838,10 +1754,6 @@ void Match::setupLua(string setupScript) {
     lua_register(L, "decBeginningLoot", wrap_decBeginningLoot);
     lua_register(L, "plusOneTreasure", wrap_plusOneTreasure);
     lua_register(L, "addPlayableCount", wrap_addPlayableCount);
-    lua_register(L, "incMaxLife", wrap_incMaxLife);
-    lua_register(L, "tempIncMaxLife", wrap_tempIncMaxLife);
-    lua_register(L, "tempIncAttack", wrap_tempIncAttack);
-    lua_register(L, "decMaxLife", wrap_decMaxLife);
     lua_register(L, "getCurrentPlayer", wrap_getCurrentPlayer);
     lua_register(L, "addSouls", wrap_addSouls);
     lua_register(L, "rechargeCard", wrap_rechargeCard);
@@ -1877,6 +1789,8 @@ void Match::setupLua(string setupScript) {
     lua_register(L, "getStack", wrap_getStack);
     lua_register(L, "_attackMonster", wrap_attackMonster);
     lua_register(L, "getActiveMonsters", wrap_getActiveMonsters);
+    lua_register(L, "_getMaxHealth", wrap_getMaxHealth);
+    lua_register(L, "_getAttack", wrap_getAttack);
 
     //  TODO add state checking after some functions
 
@@ -2015,6 +1929,8 @@ void Match::addToCharacterPool(CharacterCard* card) {
 }
 
 void Match::addPlayer(Player* player) {
+    player->setLuaENV(L);
+    player->setParent(this);
     player->addCoins(_startingCoinAmount);
     _players.push_back(player);
     player->setStartingValues( _startingTreasurePrice,  _startingAttackCount,  _startingPlayableCount,  _startingPurchaseCount);
@@ -2176,6 +2092,7 @@ void Match::turn() {
     this->applyTriggers(TURN_START_TRIGGER);
     this->resolveStack();
     if (_winner) return;
+
 
     // add loot 1 to stack, then resolve stack
     this->currentPlayerLoot();

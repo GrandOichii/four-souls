@@ -295,7 +295,7 @@ public:
 int main(int argc, char* argv[]) {
     
     // the first argument is always the path to the game
-    if (argc == 1) {
+    if (argc == 1 || argc > 5) {
         std::cout << "Invalid number of arguments" << std::endl;
         return 0;
     }
@@ -342,53 +342,52 @@ int main(int argc, char* argv[]) {
         delete match;
         return 0;
     }
-    if (argc == 4) {
-        auto match = game.createMatch();
-        // first is amount of bot players, second is amount of real players
-        auto botC = atoi(argv[2]);
-        auto playerC = atoi(argv[3]);
-        Server server(9090, playerC);
-        server.Start();
-        while (server.Connections() != playerC) {
-            std::this_thread::sleep_for(std::chrono::milliseconds(150));
-            std::cout << "Waiting for players.." << std::endl;            
-        }
-        int pcount = 0;
-        for (auto& conn : server.GetClients()) {
-            pcount++;
-            auto p = new ConnectedPlayer(
-                "player " + std::to_string(pcount),
-                match->getRandomAvailableCharacter(),
-                match->newCardID(),
-                &server,
-                allCards,
-                conn
-                // fs::readFile(fs::join(path, value["script"]).c_str())
-            );
-            match->addPlayer(p);
-        }
-        for (int i = 0; i < botC; i++) {
-            pcount++;
-            match->addPlayer(new BotPlayer(
-                "player " + std::to_string(pcount),
-                match->getRandomAvailableCharacter(),
-                match->newCardID(),
-                fs::readFile("bots/random.lua")
-            ));
-        }
-        try {
-            match->start();
-        } catch (std::runtime_error& ex) {
-            match->dumpStacks();
-            std::cout << ex.what() << std::endl;
-            delete match;
-            return 1;
-        }
-        match->start();
+    auto match = game.createMatch();
+    if (argc == 5) {
         delete match;
-        return 0;
+        match = game.createMatch(atoi(argv[4]));
     }
-    std::cout << "Invalid number of arguments" << std::endl;
+    // first is amount of bot players, second is amount of real players
+    auto botC = atoi(argv[2]);
+    auto playerC = atoi(argv[3]);
+    Server server(9090, playerC);
+    server.Start();
+    while (server.Connections() != playerC) {
+        std::this_thread::sleep_for(std::chrono::milliseconds(150));
+        std::cout << "Waiting for players.." << std::endl;            
+    }
+    int pcount = 0;
+    for (auto& conn : server.GetClients()) {
+        pcount++;
+        auto p = new ConnectedPlayer(
+            "player " + std::to_string(pcount),
+            match->getRandomAvailableCharacter(),
+            match->newCardID(),
+            &server,
+            allCards,
+            conn
+            // fs::readFile(fs::join(path, value["script"]).c_str())
+        );
+        match->addPlayer(p);
+    }
+    for (int i = 0; i < botC; i++) {
+        pcount++;
+        match->addPlayer(new BotPlayer(
+            "player " + std::to_string(pcount),
+            match->getRandomAvailableCharacter(),
+            match->newCardID(),
+            fs::readFile("bots/random.lua")
+        ));
+    }
+    try {
+        match->start();
+    } catch (std::runtime_error& ex) {
+        match->dumpStacks();
+        std::cout << ex.what() << std::endl;
+        delete match;
+        return 1;
+    }
+    delete match;
     
     return 0;
 }

@@ -4,6 +4,14 @@
 #include <vector>
 #include <stack>
 
+extern "C" {
+
+#include <lua.h>
+#include <lauxlib.h>
+#include <lualib.h>
+
+}
+
 #include "cards.hpp"
 
 using std::string;
@@ -33,9 +41,12 @@ struct PlayerBoardState {
 // string toJson(const PlayerBoardState& state);
 
 struct MatchState;
+class Match;
 
 class Player {
 private:
+    Match* _parent;
+    lua_State* L = nullptr;
     CardWrapper* _characterCard;
     CharacterCard* _characterCardOrig;
     string _name;
@@ -43,10 +54,8 @@ private:
     int _maxHealth;
     int _health;
     int _blueHealth;
-    int _tempMaxHealthBoost = 0;
 
     int _attack;
-    int _tempAttackBoost = 0;
 
     int _maxAttackCount;
     int _attackCount;
@@ -75,6 +84,8 @@ private:
 public:
     Player(std::string name, CharacterCard* card, int id);
     virtual ~Player();
+    void setParent(Match* parent);
+    void setLuaENV(lua_State* L);
     void print();
     CharacterCard* origCharacterCard();;
     CardWrapper* takeCard(int cardID);
@@ -105,7 +116,7 @@ public:
     void incAttackCount();
 
     int attack();
-    void tempIncAttack(int amount);
+    int baseAttack();
 
     void addBlueHealth(int amount);
     int blueHealth();
@@ -115,6 +126,7 @@ public:
 
     int health();
     int maxHealth();
+    int baseMaxHealth();
     int dealDamage(int amount);
 
     virtual void update(MatchState& state) = 0;
@@ -145,10 +157,6 @@ public:
     PlayerBoardState getState();
     void addToBoard(CardWrapper* w);
     void removeFromBoard(CardWrapper* w);
-
-    void incMaxLife(int amount);
-    void tempIncMaxLife(int amount);
-    void decMaxLife(int amount);
 
     void incAttack(int amount);
     void decAttack(int amount);

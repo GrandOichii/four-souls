@@ -1,0 +1,9 @@
+{
+    "name": "The Deceiver",
+    "health": 2,
+    "attack": 1,
+    "item": "ceremonial_blade",
+    "text": "{T}: Play an additional loot card this turn.\nStarting item: Ceremonial Blade",
+    "script": "script.lua",
+    "use": "TheDeceiver_tap"
+}

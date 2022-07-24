@@ -1,11 +1,11 @@
 --  TODO untested
 
 function Ipecac_enter(host, me, owner)
-    incAttack(host, owner.id, 1)
+    Common_IncAttack(me.id, owner.id, 1)
 end
 
 function Ipecac_leave(host, me, owner)
-    decAttack(host, owner.id, 1)
+    Common_DecAttack(me.id)
 end
 
 

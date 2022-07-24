@@ -1,5 +1,4 @@
 function TheLovers_cost(host, cardInfo)
-
     local ownerID = cardInfo["ownerID"]
     local players = getPlayers(host)
     local ids = {}
@@ -13,7 +12,8 @@ function TheLovers_cost(host, cardInfo)
 end
 
 function TheLovers_use(host)
+    local me = this(host)
     local target = popTarget(host)
-    local targetID = target["id"]
-    tempIncMaxLife(host, targetID, 2)
+    --  TODO untested
+    Common_TempIncMaxLife(host, me.id, target.id, 2)
 end

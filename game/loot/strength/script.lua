@@ -5,10 +5,9 @@ function Strength_cost(host, cardInfo)
 end
 
 function Strength_use(host)
-
+    local me = this(host)
     local target = popTarget(host)
-    local targetID = target["id"]
 
-    tempIncAttack(host, targetID, 1)
-    incAttackCount(host, targetID)
+    Common_TempIncAttack(host, me.id, target.id, 2)
+    incAttackCount(host, target.id)
 end

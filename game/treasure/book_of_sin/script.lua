@@ -3,6 +3,7 @@ function BookOfSin_cost(host, cardInfo)
 end
 
 function BookOfSin_tap(host)
+    local me = this(host)
     local owner = getTopOwner(host)
     local roll = getLastRoll(host)["value"]
     if roll == 1 or roll == 2 then
@@ -12,6 +13,7 @@ function BookOfSin_tap(host)
         lootCards(host, owner["id"], 1)
     end
     if roll == 5 or roll == 6 then
-        tempIncMaxLife(host, owner["id"], 1)
+        --  TODO untested
+        Common_TempIncMaxLife(host, me.id, owner.id, 1)
     end
 end

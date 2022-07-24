@@ -1,7 +1,7 @@
 --  TODO untested
 
 function BlackPills_cost(host, cardInfo)
-    return Common_Roll(host, cardInfo)
+    return Common_Roll(host, cardInfo.ownerID)
 end
 
 function BlackPills_use(host)

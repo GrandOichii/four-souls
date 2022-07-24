@@ -3,6 +3,7 @@ function D100_cost(host, cardInfo)
 end
 
 function D100_tap(host)
+    local me = this(host)
     local owner = getTopOwner(host)
     local roll = getLastRoll(host)["value"]
     if roll == 1 then
@@ -18,9 +19,10 @@ function D100_tap(host)
         addCoins(host, owner["id"], 4)
     end
     if roll == 5 then
-        tempIncMaxLife(host, owner["id"], 1)
+        --  TODO untested
+        Common_TempIncMaxLife(host, me.id, owner.id, 1)
     end
     if roll == 6 then
-        tempIncAttack(host, owner["id"], 1)
+        Common_TempIncAttack(host, me.id, owner.id, 1)
     end
 end

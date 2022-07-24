@@ -22,7 +22,8 @@ local function isSameMe(me1, me2)
 end
 
 local lootBlacklist = {
-    'Dice Shard'
+    'Dice Shard',
+    'I. The Magician'
 }
 
 local function IsBlacklistedLoot(card)
@@ -116,22 +117,22 @@ end
 function Bot_PromptAction(me, state)
     if me["id"] == state["currentID"] and state["isMain"] then
         -- main phase actions
-        -- local played, message = AttemptPlayLoot(me, state)
-        -- if played then
-        --     return message
-        -- end
+        local played, message = AttemptPlayLoot(me, state)
+        if played then
+            return message
+        end
         local purchased, message = AttemptBuyTreasure(me, state)
         if purchased then
             return message
         end
-        -- local activated, message = AttemptActivate(me, state)
-        -- if activated then
-        --     return message
-        -- end
-        local attacked, message = AttemptAttack(me, state)
-        if attacked then
+        local activated, message = AttemptActivate(me, state)
+        if activated then
             return message
         end
+        -- local attacked, message = AttemptAttack(me, state)
+        -- if attacked then
+        --     return message
+        -- end
         return "$PASS"
     end
     -- responses
@@ -143,9 +144,9 @@ end
 -- }
 
 function Bot_PromptResponse(me, state, text, choiceType, choices)
-    if choiceType == "player" then
-        return ""..me["id"]
-    end
+    -- if choiceType == "player" then
+    --     return ""..me["id"]
+    -- end
     return "$FIRST"
 end
 

@@ -221,22 +221,56 @@ void Player::removeFromBoard(CardWrapper *w) {
     throw std::runtime_error("player " + _name + " doesn't have a card with id " + std::to_string(w->id()) + " on his board");
 }
 
-void Player::incMaxLife(int amount) {
-    _maxHealth += amount;
-    _health += amount;
-}
-
-void Player::decMaxLife(int amount) {
-    _maxHealth -= amount;
-    if (_maxHealth < 0) throw std::runtime_error("max player health can't be less than or equal to 0");
-    //  TODO consider decreasing actual health by that amount
-}
-
 int Player::health() { return _health; }
-int Player::maxHealth() { return _maxHealth + _tempMaxHealthBoost; }
 
-void Player::tempIncAttack(int amount) { _tempAttackBoost += amount; }
-int Player::attack() { return _attack + _tempAttackBoost; }
+int Player::baseMaxHealth() { return _maxHealth; }
+
+void Player::setParent(Match* parent) { _parent = parent; }
+
+int Player::maxHealth() { 
+    lua_getglobal(L, "_getMaxHealth");
+    if (!lua_isfunction(L, -1)) {
+        throw std::runtime_error("unknown function: _getMaxHealth");
+    }
+    lua_pushlightuserdata(L, _parent);
+    lua_pushnumber(L, _id);
+
+    int r = lua_pcall(L, 2, 1, 0);
+    if (r != LUA_OK) {
+        throw std::runtime_error("failed to call _getMaxHealth function");
+    }
+    if (!lua_isnumber(L, -1)) {
+        throw std::runtime_error("_getMaxHealth didn't return a number");
+    }
+
+    int result = (int)lua_tonumber(L, -1);
+    return result;
+    // return _maxHealth;
+}
+
+int Player::attack() { 
+    lua_getglobal(L, "_getAttack");
+    if (!lua_isfunction(L, -1)) {
+        throw std::runtime_error("unknown function: _getMaxHealth");
+    }
+    lua_pushlightuserdata(L, _parent);
+    lua_pushnumber(L, _id);
+
+    int r = lua_pcall(L, 2, 1, 0);
+    if (r != LUA_OK) {
+        throw std::runtime_error("failed to call _getMaxHealth function");
+    }
+    if (!lua_isnumber(L, -1)) {
+        throw std::runtime_error("_getMaxHealth didn't return a number");
+    }
+
+    int result = (int)lua_tonumber(L, -1);
+    return result;
+}
+
+int Player::baseAttack() {
+    return _attack;
+}
 
 PlayerBoardState Player::getState() {
     PlayerBoardState result;
@@ -273,35 +307,15 @@ void PlayerBoardState::pushTable(lua_State* L) {
 
 }
 
-// string toJson(const PlayerBoardState& state) {
-//     string result = "{";
-//     addValue(result, "coinCount", state.coinCount);
-//     addValue(result, "characterActive", state.characterActive);
-//     addValue(result, "health", state.health);
-//     addValue(result, "maxHealth", state.maxHealth);
-//     addValue(result, "blueHealth", state.blueHealth);
-//     addValue(result, "soulCount", state.soulCount);
-//     addValue(result, "attack", state.attack);
-//     addValue(result, "playerCard", state.playerCard);
-//     addValue(result, "board", state.board);
-//     addValue(result, "hand", state.hand, true);
-//     result += "}";
-//     return result;
-// }
-
-
 void Player::addSouls(int amount) { _soulCount += amount; }
 
-void Player::tempIncMaxLife(int amount) {
-    _tempMaxHealthBoost += amount;
-    _health += amount;
+void Player::setLuaENV(lua_State* L) { 
+    this->L = L; 
 }
 
 void Player::resetEOT() {
     _blueHealth = 0;
-    _tempMaxHealthBoost = 0;
     _health = maxHealth();
-    _tempAttackBoost = 0;
     _attackCount = _maxAttackCount;
 }
 

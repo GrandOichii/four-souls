@@ -1,0 +1,6 @@
+{
+    "name": "Ace of Diamonds",
+    "text": "Gain Xc, where X is the number of monster slots plus the number of loot cards in your hand.",
+    "script": "script.lua",
+    "use": "AceOfDiamonds_use"
+}

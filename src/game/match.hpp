@@ -194,6 +194,7 @@ private:
 
     int _lastRoll = -1;
     int _lastRollOwnerID = -1;
+    bool _lastRollIsCombat = false;
     std::vector<RollEvent> _rollStack;
 
     std::deque<CardWrapper*> _lootDeck;
@@ -302,6 +303,7 @@ private:
             this->_lastMonsterIndex = std::stoi(args[1].c_str());
             player->decMonsterAttackAmount();
             this->_monsterDataArr[this->_lastMonsterIndex]->setIsBeingAttacked(true);
+            std::cout << "ATTEMPTING TO ATTACK " << this->_monsters[_lastMonsterIndex].back()->card()->name() << std::endl;
             this->pushToStack(new StackEffect(
                 "_attackMonster",
                 player,
@@ -366,6 +368,8 @@ public:
     void refillDeadMonsters();
     //  TODO add wrap_popBonusCards, inside of it call refillDeadMonsters
     static int wrap_cancelCurrentAttack(lua_State* L);
+    static int wrap_getMaxHealth(lua_State* L);
+    static int wrap_getAttack(lua_State* L);
     static int wrap_getLastKillerID(lua_State* L);
     static int wrap_popDeathStack(lua_State* L);
     static int wrap_getLastDeath(lua_State* L);
@@ -413,13 +417,7 @@ public:
     static int wrap_decBeginningLoot(lua_State* L);
     static int wrap_discardLoot(lua_State* L);
     static int wrap_plusOneTreasure(lua_State* L);
-    static int wrap_incMaxLife(lua_State* L);
-    static int wrap_decMaxLife(lua_State* L);
-    static int wrap_incAttack(lua_State* L);
-    static int wrap_decAttack(lua_State* L);
     static int wrap_killEntity(lua_State* L);
-    static int wrap_tempIncMaxLife(lua_State* L);
-    static int wrap_tempIncAttack(lua_State* L);
     static int wrap_topCardsOf(lua_State* L);
     static int wrap_getCurrentPlayer(lua_State* L);
     static int wrap_addSouls(lua_State* L);

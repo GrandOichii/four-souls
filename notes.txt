@@ -1,8 +1,8 @@
 - implement:
-    -- abaddon
-    -- 
-    
+    -- fix abaddon
     -- fix gimpy text
+
+    -- remove killing players multiple times per turn
     -- add refilling to the stack
     -- add state effects (are checked every time game updates)
     -- add optional "uses stack" option to triggers (decide what to do with damage triggers)
@@ -23,7 +23,7 @@
     -- change how gaining souls works
     -- add rooms
     -- think how to implement more complex cards (flipable cards, cards that turn into monsters)
-    -- search for the reason of the attack-roll in stack (if it's still even present)
+    -- search for the reason of the [declare_attack-roll] in stack (if it's still even present)
     -- change choice cards to store player's choice in CardData, dont forget to log the player's choice for other players
     -- figure out how to implement canceling effects
     -- add animations

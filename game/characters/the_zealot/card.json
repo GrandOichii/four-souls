@@ -1,0 +1,9 @@
+{
+    "name": "The Zealot",
+    "health": 2,
+    "attack": 1,
+    "item": "lemegeton",
+    "text": "{T}: Play an additional loot card this turn.\nStarting item: Lemegeton",
+    "script": "script.lua",
+    "use": "TheZealot_tap"
+}

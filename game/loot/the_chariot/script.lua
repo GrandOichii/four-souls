@@ -14,11 +14,12 @@ function TheChariot_cost(host, cardInfo)
 end
 
 function TheChariot_use(host)
-
+    local me = this(host)
     local target = popTarget(host)
     local targetID = target["id"]
 
-    tempIncMaxLife(host, targetID, 1)
-    tempIncAttack(host, targetID, 1)
+    --  TODO untested
+    Common_TempIncMaxLife(host, me.id, target.id, 1)
+    Common_TempIncAttack(host, me.id, target.id, 1)
 
 end
