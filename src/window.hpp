@@ -584,14 +584,14 @@ public:
         int bWidth = (_boardWidth) / 2 - 200;
         int cardW = _assets->cardSize().first;
         if (w > bWidth) {
-            xDiff = bWidth / pboard.hand.size();
+            xDiff = (bWidth - cardW) / (pboard.hand.size() - 1);
             if (xDiff < cardW)
                 cardW = xDiff;
         }
         for (auto& card : pboard.hand) {
             Rect bBox{
                 lootX, lootY,
-                cardW, _assets->cardSize().second
+                (&card == &pboard.hand.back()) ? _assets->cardSize().first : cardW, _assets->cardSize().second
             };
             this->drawCard(card, 0, lootX, lootY, &bBox);
             lootX += xDiff;

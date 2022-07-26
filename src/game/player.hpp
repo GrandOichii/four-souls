@@ -125,6 +125,7 @@ public:
     void decBeginningLoot();
 
     int health();
+    void heal(int amount);
     int maxHealth();
     int baseMaxHealth();
     int dealDamage(int amount);

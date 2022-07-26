@@ -86,7 +86,7 @@ _getMaxHealth = function (host, pid)
     return MaxHealthLayers:top().func(host, pid)
 end
 
-function Common_IncMaxLife(cardID, ownerID, value)
+function Common_IncMaxLife(host, cardID, ownerID, value)
     local key = cardID
     MaxHealthLayers:push(
         {
@@ -100,12 +100,12 @@ function Common_IncMaxLife(cardID, ownerID, value)
             end
         }
     )
-    --  TODO heal player
+    healPlayer(host, ownerID, value)
 end
 
-function Common_DecMaxLife(cardID)
+function Common_DecMaxLife(host, cardID, ownerID)
     MaxHealthLayers:remove(cardID)
-    --  TODO correct player health if greater than max
+    healPlayer(host, ownerID, 0) -- a trick for resetting player's health if it's greater than max
 end
 
 -- attack
@@ -146,7 +146,6 @@ function Common_IncAttack(cardID, ownerID, value)
             end
         }
     )
-    --  TODO heal player
 end
 
 function Common_DecAttack(cardID)
@@ -157,23 +156,22 @@ EOTStack = Stack:Create()
 
 function Common_PopEOT(host)
     local top = EOTStack:pop()
-    print('POPPED TOP: '..top[2])
-    top[1](top[2])
+    top[1](host, top[2], top[3])
 end
 
-function Common_PushEOT(host, func, cardID)
-    EOTStack:push({func, cardID})
+function Common_PushEOT(host, func, cardID, ownerID)
+    EOTStack:push({func, cardID, ownerID})
     deferEOT(host, cardID, 'Common_PopEOT', false)
 end
 
 function Common_TempIncMaxLife(host, cardID, targetID, amount)
-    Common_IncMaxLife(cardID, targetID, amount)
-    Common_PushEOT(host, Common_DecMaxLife, cardID)
+    Common_IncMaxLife(host, cardID, targetID, amount)
+    Common_PushEOT(host, Common_DecMaxLife, cardID, targetID)
 end
 
 function Common_TempIncAttack(host, cardID, targetID, amount)
     Common_IncAttack(cardID, targetID, amount)
-    Common_PushEOT(host, Common_DecAttack, cardID)
+    Common_PushEOT(host, Common_DecAttack, cardID, targetID)
 end
 
 -- treasure / loot
@@ -219,7 +217,7 @@ function Common_ChooseOpponent(host, ownerID)
 end
 
 function Common_TargetPlayer(host, cardInfo)
-    local ownerID = cardInfo["ownerID"]
+    local ownerID = cardInfo.ownerID
     local players = getPlayers(host)
     local ids = {}
     for i, p in ipairs(players) do
@@ -556,7 +554,7 @@ function Common_TargetNonEternalCard(host, ownerID)
         return false
     end
     local choice, _ = requestChoice(host, ownerID, 'Choose a non-eternal card', CARD, cardIDs)
-    pushTarget(host, choice, true)
+    pushTarget(host, choice, CARD)
     return true
 end
 

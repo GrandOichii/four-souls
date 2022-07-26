@@ -8,14 +8,14 @@ function D4_cost(host, cardInfo)
         ownerID = cardInfo.ownerID
     }
     destroyCard(host, card.id)
-    return true
+    return Common_TargetPlayer(host, cardInfo)
 end
 
 function D4_tap(host)
     local card = this(host)
     local owner = Common_PlayerWithID(host, CardData[card.id].ownerID)
-    local choice = Common_ChoosePlayer(host, owner.id)
-    local target = Common_PlayerWithID(host, choice)
+    local targetID = popTarget(host).id
+    local target = Common_PlayerWithID(host, targetID)
     local count = 0
     for _, item in ipairs(target.board) do
         if not item.isEternal then

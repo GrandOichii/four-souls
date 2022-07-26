@@ -3,13 +3,13 @@
 function Jester_use(host)
     local owner = getTopOwner(host)
     local cardIDs = {}
-    for _, player in ipairs(getPlayers(host)) do
-        for _, card in ipairs(player.board) do
-            if not card.isEternal then
-                cardIDs[#cardIDs+1] = card.id
-            end
+    -- for _, player in ipairs(getPlayers(host)) do
+    for _, card in ipairs(owner.board) do
+        if not card.isEternal then
+            cardIDs[#cardIDs+1] = card.id
         end
     end
+    -- end
     local removeItem = function (item)
         for i, value in ipairs(cardIDs) do
             if item == value then

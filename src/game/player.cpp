@@ -211,6 +211,13 @@ void Player::addToBoard(CardWrapper* w) {
     w->setOwner(this);
 }
 
+void Player::heal(int amount) {
+    _health += amount;
+    auto mh = maxHealth();
+    if (_health > mh)
+        _health = mh;
+}
+
 void Player::removeFromBoard(CardWrapper *w) {
     for (auto it = _board.begin(); it != _board.end(); it++) {
         if (*it == w) {

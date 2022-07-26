@@ -430,6 +430,7 @@ public:
     static int wrap_popLootStack(lua_State* L);
     static int wrap_deferEOT(lua_State *L);
     static int wrap_this(lua_State *L);
+    static int wrap_healPlayer(lua_State *L);
     static int wrap_incBeginningLoot(lua_State* L);
     static int wrap_decBeginningLoot(lua_State* L);
     static int wrap_discardLoot(lua_State* L);

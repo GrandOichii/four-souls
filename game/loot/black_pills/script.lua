@@ -14,7 +14,7 @@ function BlackPills_use(host)
     end
     if roll == 3 or roll == 4 then
         local target = Common_ChooseMonster(host, owner.id)
-        dealDamage(host, PLAYER, owner.id, MONSTER, target.id)
+        dealDamage(host, PLAYER, owner.id, MONSTER, target.id, 1)
         return
     end
     dealDamage(host, PLAYER, owner.id, PLAYER, owner.id, 1)

@@ -1120,6 +1120,16 @@ int Match::wrap_cancelCurrentAttack(lua_State* L) {
     return 0;
 }
 
+int Match::wrap_healPlayer(lua_State* L) {
+    stackSizeIs(L, 3);
+    auto match = getTopMatch(L, 1);
+    auto pid = getTopNumber(L, 2);
+    auto amount = getTopNumber(L, 3);
+    auto player = match->playerWithID(pid);
+    player->heal(amount);
+    return 0;
+}
+
 int Match::wrap_this(lua_State *L) {
     if (lua_gettop(L) != 1) {
         lua_err(L);
@@ -1739,6 +1749,7 @@ void Match::setupLua(string setupScript) {
     // connect common libs
     luaL_openlibs(L);
     // connect functions
+    lua_register(L, "healPlayer", wrap_healPlayer);
     lua_register(L, "cancelCurrentAttack", wrap_cancelCurrentAttack);
     lua_register(L, "getLastKillerID", wrap_getLastKillerID);
     lua_register(L, "destroyCard", wrap_destroyCard);
