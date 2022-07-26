@@ -23,6 +23,7 @@ end
 
 local lootBlacklist = {
     'Dice Shard',
+    'Lil Battery',
     'I. The Magician'
 }
 
@@ -129,10 +130,10 @@ function Bot_PromptAction(me, state)
         if activated then
             return message
         end
-        -- local attacked, message = AttemptAttack(me, state)
-        -- if attacked then
-        --     return message
-        -- end
+        local attacked, message = AttemptAttack(me, state)
+        if attacked then
+            return message
+        end
         return "$PASS"
     end
     -- responses

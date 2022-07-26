@@ -423,7 +423,7 @@ public:
         _waitingResponse = false;
     }
 
-    void drawCard(CardState& card, int angle, int x, int y) override {
+    void drawCard(CardState& card, int angle, int x, int y, Rect * bBox = nullptr) override {
         //  TODO hide opponents hand
         if (card.zone == Zones::Hand) {
             bool flag = false;
@@ -434,7 +434,7 @@ public:
                 return;
             }
         }
-        Window::drawCard(card, angle, x, y);
+        Window::drawCard(card, angle, x, y, bBox);
         if (_mouseLock) return;
         bool allowed = false;
         for (const auto& id : _allowedCards)
@@ -442,8 +442,14 @@ public:
         if (!allowed) return;
         int mx, my;
         auto s = SDL_GetMouseState(&mx, &my);
-        int w = (angle == 0) ? _cardSize.first : _cardSize.second;
-        int h = (angle == 0) ? _cardSize.second : _cardSize.first;
+        int cardWidth = _cardSize.first;
+        int cardHeight = _cardSize.second;
+        if (bBox) {
+            cardWidth = bBox->w;
+            cardHeight = bBox->h;
+        }
+        int w = (angle == 0) ? cardWidth : cardHeight;
+        int h = (angle == 0) ? cardHeight : cardWidth;
         if (mx >= x && my >= y && mx <= x + w && my <= h+ y) {
             auto color = (s&1) ? SDL_Color{255, 0, 0, 0} : SDL_Color{0, 255, 0, 0};
             this->drawRect(x, y, w, h, color, false);

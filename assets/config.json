@@ -4,6 +4,10 @@
         
     },
     "cards": {        
+        "The Keeper": {
+            "small": "images/the_keeper.bmp",
+            "large": "images/the_keeper_large.bmp"
+        },
         "Two of Spades": {
             "small": "images/two_of_spades.bmp",
             "large": "images/two_of_spades_large.bmp"
@@ -736,14 +740,16 @@
             "large": "images/godhead_large.bmp"
         },
         "Dark Bum": {
-            "small": "images/dark_bum.bmp"
+            "small": "images/dark_bum.bmp",
+            "large": "images/dark_bum_large.bmp"
         },
         "Spoon Bender": {
             "small": "images/spoon_bender.bmp",
             "large": "images/spoon_bender_large.bmp"
         },
         "Potato Peeler": {
-            "small": "images/potato_peeler.bmp"
+            "small": "images/potato_peeler.bmp",
+            "large": "images/potato_peeler_large.bmp"
         },
         "Razor Blade": {
             "small": "images/razor_blade.bmp"
@@ -772,7 +778,8 @@
             "small": "images/book_of_sin.bmp"
         },
         "The D100": {
-            "small": "images/the_d100.bmp"
+            "small": "images/the_d100.bmp",
+            "large": "images/the_d100_large.bmp"
         },
         "Mystery Sack": {
             "small": "images/mystery_sack.bmp"
@@ -781,10 +788,12 @@
             "small": "images/steamy_sale_.bmp"
         },
         "The D6": {
-            "small": "images/the_d6.bmp"
+            "small": "images/the_d6.bmp",
+            "large": "images/the_d6_large.bmp"
         },
         "Book of Belial": {
-            "small": "images/book_of_belial.bmp"
+            "small": "images/book_of_belial.bmp",
+            "large": "images/book_of_belial_large.bmp"
         },
         "Wooden Nickel": {
             "small": "images/wooden_nickel.bmp",

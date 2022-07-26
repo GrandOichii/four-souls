@@ -16,7 +16,7 @@ end
 function Justice_use(host)
 
     local target = popTarget(host)
-    local targetID = target["id"]
+    local targetID = target.id
 
     local player = Common_PlayerWithID(host, targetID)
 

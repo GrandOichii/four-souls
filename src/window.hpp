@@ -220,7 +220,7 @@ public:
         SDL_SetRenderTarget(_ren, NULL);
     }
 
-    std::pair<int, int> cardSize() { return getSize(_textureMap.begin()->second.second); }
+    std::pair<int, int> cardSize() { return getSize(_textureMap.begin()->second.first); }
 
     void addCardBack(string cardType, string path) {
         auto tex = this->loadBMP(path);
@@ -262,6 +262,16 @@ public:
         if (!_fontMap.count(fontSize)) throw std::runtime_error("no font with size " + std::to_string(fontSize));
         return _fontMap[fontSize]->get(message, color);
     }
+};
+
+struct Rect {
+    int x, y;
+    int w, h;
+    // Rect(int x, int y, int w, int h) : 
+    //     x(x),
+    //     y(y),
+    //     w(w),
+    //     h(h) {}
 };
 
 class Window {
@@ -311,6 +321,8 @@ protected:
 
     bool _fullscreen;
     string _title;
+
+    std::map<int, std::pair<int, int>> _cardLocs;
 
 public:
     Window(string title, string assetsPath, bool fullscreen):
@@ -410,6 +422,7 @@ public:
     }
 
     void draw(MatchState& state) {
+        _cardLocs.clear();
         // draw player separators
         this->drawLine(
             this->_sideBoardX + this->_boardWidth / 2,
@@ -544,7 +557,7 @@ public:
         int x = pX;
         int y = pY;
         int lootX = pX + 200;
-        int looyY = pY + 10;
+        int lootY = pY + 10;
         if (playerI == state.currentI)
             this->drawRect(pX, pY, _boardWidth / 2, _boardHeight / 2, SDL_Color{ 0, 150, 0, 0 }, true);
         if (playerI == state.priorityI) {
@@ -556,18 +569,32 @@ public:
 
         pX += _cardSize.second - _cardSize.first;
         auto cCard = pboard.playerCard;
-
         this->drawCard(cCard, (cCard.active ? 0 : 90), pX + 10, pY + 10);
         pY += 150;
         int betweenCards = 2;
+        // draw board
         for (auto& card : pboard.board) {
             // this->drawCard(card, (card.active ? 0 : 90), pX + 10, pY);
             this->drawCard(card, (card.active ? 0 : 90), pX + 10, pY);
             pX += _cardSize.second + betweenCards;
         }
+        // draw hand
+        int xDiff = _cardSize.first + betweenCards;
+        int w = xDiff * pboard.hand.size();
+        int bWidth = (_boardWidth) / 2 - 200;
+        int cardW = _assets->cardSize().first;
+        if (w > bWidth) {
+            xDiff = bWidth / pboard.hand.size();
+            if (xDiff < cardW)
+                cardW = xDiff;
+        }
         for (auto& card : pboard.hand) {
-            this->drawCard(card, 0, lootX, looyY);
-            lootX += _cardSize.first + betweenCards;
+            Rect bBox{
+                lootX, lootY,
+                cardW, _assets->cardSize().second
+            };
+            this->drawCard(card, 0, lootX, lootY, &bBox);
+            lootX += xDiff;
         }
 
         pX = _playerSpaces[playerI][0];
@@ -649,13 +676,18 @@ public:
             else {
                 this->drawSpecialStackMember(state, stackI, x, y);
             }
+            for (const auto& target : si.targets) {
+                auto loc = _cardLocs[target];
+                drawLine(x, y, loc.first, loc.second, SDL_Color{0, 255, 0, 0});
+            }
             y += _cardSize.second + yOffset;
         }
     }
 
-    virtual void drawCard(CardState& card, int angle, int x, int y) {
+    virtual void drawCard(CardState& card, int angle, int x, int y, Rect * bBox = nullptr) {
         //  TODO add card zoom
         auto cardTex = this->_assets->getCard(card.cardName, CardSize::SMALL);
+        _cardLocs[card.id] = std::make_pair(x + 10, y + 10);
         this->drawTexture(cardTex, x, y, angle);
         auto tex = _assets->getMessage("[" + std::to_string(card.id) + "]", SDL_Color{ 255, 0, 255, 0 }, 24);
         this->drawTexture(tex, x + 2, y + 2);

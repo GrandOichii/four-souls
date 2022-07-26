@@ -63,6 +63,9 @@ static StackMemberState stackMemberFromJson(json j) {
     result.isCard = j["isCard"];
     result.type = j["type"];
     result.card = cardFromJson(j["card"]);
+    for (const auto& [_, target] : j["targets"].items()) {
+        result.targets.push_back(target);
+    }
     return result;
 }
 
@@ -134,6 +137,9 @@ static json stackMemberToJson(const StackMemberState& member) {
     result["isCard"] = member.isCard;
     result["type"] = member.type;
     result["card"] = cardToJson(member.card);
+    result["targets"] = json::array();
+    for (const auto& target : member.targets)
+        result["targets"].push_back(target);
     return result;
 }
 
@@ -273,6 +279,8 @@ StackMemberState StackEffect::getState() {
         result.card.zone = Zones::Stack;
         result.card.active = true;
     }
+    for (const auto targetID : targets)
+        result.targets.push_back(targetID);
     return result;
 }
 
@@ -493,7 +501,6 @@ void Match::pushPlayers(lua_State* L) {
 }
 
 bool Match::requestPayCost(string costFuncName, Player* player) {
-
     lua_getglobal(L, costFuncName.c_str());
     if (!lua_isfunction(L, -1)) {
         lua_err(L);
@@ -2225,11 +2232,17 @@ int Match::applyTriggers(string triggerType) {
             );
             this->pushToStack(p);
             if (effect.costFuncName.size()) {
+                int old = _targetStack.size();
                 bool payed = this->requestPayCost(effect.costFuncName, player);
                 if (!payed) {
                     this->_stack.pop_back();
                     delete p;
                     continue;
+                }
+                int c = _targetStack.size() - old;
+                for (int i = 0; i < c; i++){
+                    auto it = _targetStack.end() - 1 - i;
+                    p->targets.push_back(it->second);
                 }
             }
             if (!effect.usesStack) {

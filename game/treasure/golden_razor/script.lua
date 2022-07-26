@@ -3,7 +3,7 @@
 function GoldenRazor_cost(host, cardInfo)
     local payed = Common_Pay(host, cardInfo.ownerID, 5)
     if not payed then
-        return
+        return false
     end
     local owner = Common_PlayerWithID(host, cardInfo.ownerID)
     local choice1 = 'Player'

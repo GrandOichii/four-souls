@@ -32,6 +32,7 @@ struct StackMemberState {
     bool isCard;
     CardState card;
     string type;
+    vector<int> targets;
 };
 
 struct RollEventState;
@@ -71,6 +72,9 @@ struct StackEffect {
     CardWrapper* cardW = nullptr;
     string type;
     bool resolve = true;
+
+    //  TODO maybe fix to pair<string, int>
+    vector<int> targets;
 
     StackEffect(string funcName, Player* player, CardWrapper* card, string effect);
     StackEffect();
@@ -236,12 +240,19 @@ private:
             this->pushToStack(e);
             auto cost = card->costFuncName();
             if (cost.size()) {
+                int old = _targetStack.size();
                 bool payed = this->requestPayCost(cost, player);
                 if (!payed) {
                     this->_stack.pop_back();
                     delete e;
                     return;
                 };
+                int c = _targetStack.size() - old;
+                for (int i = 0; i < c; i++){
+                    auto it = _targetStack.end() - 1 - i;
+                    e->targets.push_back(it->second);
+                }
+
             }
             player->takeCard(cardID);
             this->log(player->name() + " plays card " + card->name());
@@ -275,11 +286,17 @@ private:
                 ACTIVATE_ITEM_TYPE
             );
             this->pushToStack(p);
+            int old = _targetStack.size();
             bool payed = this->requestPayCost(ability.costFuncName, player);
             if (!payed) {
                 this->_stack.pop_back();
                 delete p;
                 return;
+            }
+            int c = _targetStack.size() - old;
+            for (int i = 0; i < c; i++){
+                auto it = _targetStack.end() - 1 - i;
+                p->targets.push_back(it->second);
             }
             this->log(player->name() + " activated " + card->name());
             this->triggerLastEffectType();
