@@ -48,7 +48,6 @@ public:
     }
 
     void getActionCalc() {
-        //  TODO temporary fix for getting action when not having priority
         PlayerBoardState me;
         for (const auto& board : _state.boards)
             if (board.id == _myID)
@@ -516,6 +515,35 @@ public:
                 }
             }
         }
+    }
+
+    void drawTreasureDeck(MatchState& state) override {
+        Window::drawTreasureDeck(state);
+        PlayerBoardState me;
+        for (const auto& board : _state.boards)
+            if (board.id == _myID)
+                me = board;
+        if (!_waitingResponse) return;
+        if (_lastRequestType != PollType::GetAction) return;
+        if (!(me.purchaseCount && !_state.isCombat && me.coinCount >= me.treasurePrice && _state.stack.size() == 0)) return;
+        if (_mouseLock) return;
+        int mx, my;
+        auto s = SDL_GetMouseState(&mx, &my);
+        int w = _cardSize.first;
+        int h = _cardSize.second;
+        auto x = _treasureDeckX;
+        auto y = _treasureDeckY;
+        if (!(mx >= x && my >= y && mx <= x + w && my <= h+ y)) return;
+        auto color = (s&1) ? SDL_Color{255, 0, 0, 0} : SDL_Color{0, 255, 0, 0};
+        this->drawRect(x, y, w, h, color, false);
+        this->drawRect(x+1, y+1, w-2, h-2, color, false);
+        if (!(s&1)) return;
+
+        message<PollType> reply;
+        reply << string("buy_treasure -1");
+        _c->Send(reply);
+        _mouseLock = true;
+        _waitingResponse = false;
     }
     
 };

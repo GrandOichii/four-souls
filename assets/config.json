@@ -223,7 +223,8 @@
             "large": "images/bomb__large.bmp"
         },
         "Mega Battery": {
-            "small": "images/mega_battery.bmp"
+            "small": "images/mega_battery.bmp",
+            "large": "images/mega_battery_large.bmp"
         },
         "Perthro": {
             "small": "images/perthro.bmp",
@@ -668,7 +669,8 @@
             "large": "images/goat_head_large.bmp"
         },
         "Sack of Pennies": {
-            "small": "images/sack_of_pennies.bmp"
+            "small": "images/sack_of_pennies.bmp",
+            "large": "images/sack_of_pennies_large.bmp"
         },
         "Dinner": {
             "small": "images/dinner.bmp"

@@ -34,3 +34,7 @@ namespace fs {
     string dirOf(const string path);
     string readFile(const char* path);
 }
+
+namespace args {
+    class InputParser;
+}

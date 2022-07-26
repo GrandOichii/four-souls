@@ -11,7 +11,7 @@ function Hourglass_trigger(host)
     for _, player in pairs(players) do
         local board = player["board"]
         for _, card in ipairs(board) do
-            if card["tapped"] then
+            if not card.tapped then
                 ids[#ids+1] = card.id
             end
         end

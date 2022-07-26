@@ -8,8 +8,8 @@ function Gimpy_effect(host)
     local _ = getDamageEvent(host)
     local me = this(host)
     local owner = getTopOwner(host)
-    local choice1 = "Gain +1a"
-    local choice2 = "Gain 1c"
+    local choice1 = "Gain +2a till end of turn"
+    local choice2 = "Gain 2c"
     local choice3 = "Loot 1, then discard a loot card"
     local choice = requestSimpleChoice(host, owner["id"], "Choose 1:", {choice1, choice2, choice3})
     if choice == choice1 then

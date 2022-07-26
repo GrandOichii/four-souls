@@ -496,17 +496,9 @@ public:
 
     void drawTreasure(MatchState& state) {
         // draw treasure deck
-        auto count = state.treasureDeckCount;
-        if (count) this->drawCardBack(CARD_TYPE_TREASURE, true, _treasureDeckX, _treasureDeckY);
-        // _lastLootDeckCount
-        if (count != _lastTreasureDeckCount) {
-            _lastTreasureDeckCount = count;
-            SDL_DestroyTexture(_lastTreasureDeckCountTex);
-            _lastTreasureDeckCountTex = this->_assets->getMessage(std::to_string(_lastTreasureDeckCount), SDL_Color{ 255, 255, 255, 0 }, 24);
-        }
-        this->drawTexture(_lastTreasureDeckCountTex, _treasureDeckX + 10, _treasureDeckY + 10);
+        this->drawTreasureDeck(state);
         // draw treasure discard
-        count = state.treasureDiscard.size();
+        auto count = state.treasureDiscard.size();
         // std::cout << "\t" << count << std::endl;
         if (count) {
             auto card = *(state.treasureDiscard.end() - 1);
@@ -525,6 +517,18 @@ public:
 
             y -= _cardSize.first + 3;
         }
+    }
+
+    virtual void drawTreasureDeck(MatchState& state) {
+        auto count = state.treasureDeckCount;
+        if (count) this->drawCardBack(CARD_TYPE_TREASURE, true, _treasureDeckX, _treasureDeckY);
+        // _lastLootDeckCount
+        if (count != _lastTreasureDeckCount) {
+            _lastTreasureDeckCount = count;
+            SDL_DestroyTexture(_lastTreasureDeckCountTex);
+            _lastTreasureDeckCountTex = this->_assets->getMessage(std::to_string(_lastTreasureDeckCount), SDL_Color{ 255, 255, 255, 0 }, 24);
+        }
+        this->drawTexture(_lastTreasureDeckCountTex, _treasureDeckX + 10, _treasureDeckY + 10);
     }
 
     void drawLoot(MatchState& state) {

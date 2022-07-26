@@ -1,6 +1,6 @@
 {
     "back": "images/loot_card_back.bmp",
-    "cards": {
+    "car1ds": {
         "basic": {
             "loot/the_chariot": 20
         },
@@ -8,7 +8,7 @@
             "loot/the_left_hand": 0
         }
     },
-    "card1s": {
+    "cards": {
         "basic": {
             "loot/jester": 1,
             "loot/mega_bomb": 1,
