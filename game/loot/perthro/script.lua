@@ -1,8 +1,10 @@
+function Prethro_cost(host, cardInfo)
+    return Common_TargetNonEternalCard(host, cardInfo.ownerID)
+end
+
 function Perthro_use(host)
     local owner = getTopOwner(host)
-    local choice, chosen = Common_ChooseNonEternalCard(host, owner.id)
-    if not chosen then
-        return
-    end
+    local target = popTarget(host)
+    local choice = target.id
     Common_RerollItem(host, choice)
 end

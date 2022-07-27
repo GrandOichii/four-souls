@@ -5,6 +5,6 @@ function LibraryCard_cost(host, cardInfo)
 end
 
 function LibraryCard_tap(host)
-    local owner = getOwner(host)
-    addPlayableCount(host, owner["id"])
+    local owner = getTopOwner(host)
+    addPlayableCount(host, owner.id)
 end

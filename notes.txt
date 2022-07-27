@@ -1,3 +1,11 @@
+- sound:
+    -- check stack, if it has a new trigger from a holy monster, play holy!.wav
+    -- when new monster is added, if it's name is mom!, play one of the mom sound effects
+    -- when money is added, play penny/nickel/dime pickup
+    -- when playing special effects, play power up
+    -- when new monster is added, if it's name is satan, play the satan sound effect
+
+
 - implement:
     -- fix abaddon
     -- fix gimpy text

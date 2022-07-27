@@ -347,6 +347,7 @@ int Match::dealDamage(string tgtType, int tgtID, int amount) {
         int dealt = data->dealDamage(amount);
         this->log(card->name() + " is dealt " + std::to_string(dealt) + " damage");
         auto health = data->health();
+        std::cout << "LEFT: " << data->health() << std::endl;
         if (health) return dealt;
         this->killMonster(monsterW);
         return dealt;

@@ -1,5 +1,5 @@
 {
-    "name": "LibraryCard",
+    "name": "Library Card",
     "text": "{T}: Play an additional loot card this turn.",
     "script": "script.lua",
     "abilities": [

@@ -108,7 +108,7 @@ public:
     MonsterData(int health, int roll, int power);
     MonsterDataState getState();
     int roll();
-    bool health();
+    int health();
     int power();
     int dealDamage(int amount);
     void fullHeal();

@@ -1,5 +1,5 @@
 {
-    "name": "Horuglass",
+    "name": "Hourglass",
     "text": "When anyone rolls a 2, you may deactiveate any item.",
     "script": "script.lua",
     "on": {

@@ -27,7 +27,7 @@ function BookOfVirtues_trigger1(host)
         return
     end
     local target = Common_ChoosePlayer(host, owner.id)
-    dealDamage(host, PLAYER, owner.id, MONSTER, target, 1)
+    dealDamage(host, PLAYER, owner.id, PLAYER, target, 1)
 end
 
 function BookOfVirtues_trigger2_check(host, me)

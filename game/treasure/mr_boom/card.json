@@ -1,5 +1,5 @@
 {
-    "name": "Mr Boom",
+    "name": "Mr. Boom",
     "text": "{T}: Deal 1 damage to a monster.",
     "script": "script.lua",
     "abilities": [

@@ -118,7 +118,7 @@ int MonsterData::power() {
     return _basePower;
 }
 
-bool MonsterData::health() {
+int MonsterData::health() {
     return _health;
 }
 

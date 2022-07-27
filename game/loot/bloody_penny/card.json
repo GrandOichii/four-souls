@@ -1,11 +1,11 @@
 {
-    "name": "Blood penny",
+    "name": "Bloody penny",
     "text": "Each time a player dies, loot 1",
     "script": "script.lua",
     "on": {
         "death": {
-            "check": "BloodPenny_trigger_check",
-            "effect": "BloodPenny_trigger"
+            "check": "BloodyPenny_trigger_check",
+            "effect": "BloodyPenny_trigger"
         }
     }
 }

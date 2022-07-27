@@ -320,7 +320,6 @@ private:
             this->_lastMonsterIndex = std::stoi(args[1].c_str());
             player->decMonsterAttackAmount();
             this->_monsterDataArr[this->_lastMonsterIndex]->setIsBeingAttacked(true);
-            std::cout << "ATTEMPTING TO ATTACK " << this->_monsters[_lastMonsterIndex].back()->card()->name() << std::endl;
             this->pushToStack(new StackEffect(
                 "_attackMonster",
                 player,

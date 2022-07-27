@@ -4,6 +4,6 @@
     "script": "script.lua",
     "health": 6,
     "roll": 3,
-    "power": 0,
+    "power": 6,
     "rewards": "TheLamb_rewards"
 }
