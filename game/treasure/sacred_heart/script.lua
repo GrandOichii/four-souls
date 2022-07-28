@@ -1,7 +1,7 @@
 --  TODO untested
 
 function SacredHeart_trigger_check(host, me)
-    return Common_OwnerRolled(host, me["ownerID"], 1)
+    return Common_OwnerRolled(host, me.ownerID, 1)
 end
 
 function SacredHeart_trigger(host)

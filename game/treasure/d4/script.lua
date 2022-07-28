@@ -23,7 +23,5 @@ function D4_tap(host)
             destroyCard(host, item.id)
         end
     end
-    for i = 1, count do
-        plusOneTreasure(host, target.id)
-    end
+    gainTreasure(host, target.id, count)
 end

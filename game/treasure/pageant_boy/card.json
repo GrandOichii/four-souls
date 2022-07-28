@@ -1,0 +1,11 @@
+{
+    "name": "Pageant Boy",
+    "text": "{T}, Destroy this, roll:\nGain Xc, where X is 4 times the result.",
+    "script": "script.lua",
+    "abilities": [
+        {
+            "cost": "PageantBoy_cost",
+            "ability": "PageantBoy_tap"
+        }
+    ]
+}

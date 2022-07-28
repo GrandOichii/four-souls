@@ -1,0 +1,11 @@
+{
+    "name": "Monstro's Tooth",
+    "text": "At the start of your turn, choose a player at random. That player destroys an item they control.",
+    "script": "script.lua",
+    "on": {
+        "turn_start": {
+            "check": "MonstrosTooth_trigger_check",
+            "effect": "MonstrosTooth_trigger"
+        }
+    }
+}

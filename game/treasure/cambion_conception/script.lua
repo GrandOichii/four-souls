@@ -10,6 +10,6 @@ function CambionConception_trigger(host)
     card = this(host)
     if card["counters"] == 6 then
         removeCounters(host, card["id"], 6)
-        plusOneTreasure(host, owner.id)
+        gainTreasure(host, owner.id, 1)
     end
 end

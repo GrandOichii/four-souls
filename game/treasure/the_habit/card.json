@@ -1,0 +1,11 @@
+{
+    "name": "The Habit",
+    "text": "The first time ypu take damage each turn, you may recharge an item.",
+    "script": "script.lua",
+    "on": {
+        "damage": {
+            "check": "TheHabit_trigger_check",
+            "effect": "TheHabit_trigger"
+        }
+    }
+}

@@ -1,0 +1,11 @@
+{
+    "name": "The Crowdfunder",
+    "text": "($) Pay 2c, roll:\n3-4: Deal 1 damage to another player.\n5-6: Deal 1 damage to a monster.",
+    "script": "script.lua",
+    "abilities": [
+        {
+            "cost": "TheCrowdfunder_cost",
+            "ability": "TheCrowdfunder_fund"
+        }
+    ]
+}

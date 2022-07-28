@@ -384,6 +384,8 @@ public:
     void refillDeadMonsters();
     //  TODO add wrap_popBonusCards, inside of it call refillDeadMonsters
     static int wrap_cancelCurrentAttack(lua_State* L);
+    static int wrap_setTurnEnd(lua_State* L);
+    static int wrap_getTurnCounter(lua_State* L);
     static int wrap_getMaxHealth(lua_State* L);
     static int wrap_getAttack(lua_State* L);
     static int wrap_getLastKillerID(lua_State* L);
@@ -433,7 +435,7 @@ public:
     static int wrap_incBeginningLoot(lua_State* L);
     static int wrap_decBeginningLoot(lua_State* L);
     static int wrap_discardLoot(lua_State* L);
-    static int wrap_plusOneTreasure(lua_State* L);
+    static int wrap_gainTreasure(lua_State* L);
     static int wrap_killEntity(lua_State* L);
     static int wrap_topCardsOf(lua_State* L);
     static int wrap_getCurrentPlayer(lua_State* L);

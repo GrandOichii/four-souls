@@ -1,5 +1,5 @@
 function BloodyPenny_trigger_check(host, me)
-    return Common_LastDeath(host)["type"] == PLAYER
+    return Common_LastDeath(host).type == PLAYER
 end
 
 function BloodyPenny_trigger(host)

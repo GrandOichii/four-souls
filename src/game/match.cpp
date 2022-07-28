@@ -227,6 +227,14 @@ static int getTopNumber(lua_State* L, int pos) {
     return (int)lua_tonumber(L, pos);
 }
 
+static bool getTopBool(lua_State* L, int pos) {
+    if (!lua_isboolean(L, pos)) {
+        dumpstack(L);
+        throw std::runtime_error("position at " + std::to_string(pos) + " of lua stack is not boolean");
+    }
+    return (bool)lua_toboolean(L, pos);
+}
+
 static void stackSizeIs(lua_State* L, int size) {
     if (lua_gettop(L) == size) return;
     dumpstack(L);
@@ -549,6 +557,14 @@ int Match::wrap_popRewardsStack(lua_State* L) {
     return 0;
 }
 
+int Match::wrap_setTurnEnd(lua_State* L) {
+    stackSizeIs(L, 2);
+    auto match = getTopMatch(L, 1);
+    auto value = getTopBool(L, 2);
+    match->_turnEnd = value;
+    return 0;
+}
+
 int Match::wrap_getTopOwner(lua_State* L) {
     stackSizeIs(L, 1);
     auto match = getTopMatch(L, 1);
@@ -592,6 +608,7 @@ int Match::wrap_setRollValue(lua_State* L) {
     0 roll
     */
     match->_rollStack[rc].value = value;
+    std::cout << "SIZE: " << match->_rollStack.size() << ", OPERATING: " << rc << std::endl;
     std::cout << "NEW ROLL VALUE " << match->_rollStack[rc].value << std::endl;
     return 0;
 }
@@ -686,6 +703,13 @@ int Match::wrap_getLastKillerID(lua_State* L) {
     return 1;
 }
 
+int Match::wrap_getTurnCounter(lua_State* L){ 
+    stackSizeIs(L, 1);
+    auto match = getTopMatch(L, 1);
+    lua_pushnumber(L, match->_turnCounter);
+    return 1;
+}
+
 int Match::wrap_popTarget(lua_State* L) {
     stackSizeIs(L, 1);
     auto match = getTopMatch(L, 1);
@@ -699,10 +723,7 @@ int Match::wrap_popTarget(lua_State* L) {
 }
 
 int Match::wrap_requestChoice(lua_State* L) {
-    if (lua_gettop(L) != 5) {
-        lua_err(L);
-        exit(1);
-    }
+    stackSizeIs(L, 5);
     auto match = getTopMatch(L, 1);
     if (!lua_isnumber(L, 2)) {
         lua_err(L);
@@ -756,10 +777,7 @@ int Match::wrap_requestChoice(lua_State* L) {
 }
 
 int Match::wrap_requestCardsInHand(lua_State* L){ 
-    if (lua_gettop(L) != 5) {
-        lua_err(L);
-        exit(1);
-    }
+    stackSizeIs(L, 5);
     auto match = getTopMatch(L, 1);
     if (!lua_isnumber(L, 2)) {
         lua_err(L);
@@ -1410,7 +1428,8 @@ int Match::wrap_killEntity(lua_State* L) {
     auto type = getTopString(L, 2);
     auto id = getTopNumber(L, 3);
     if (type == PLAYER_TYPE) {
-        match->killPlayer(id);
+        match->pushDeathEvent(PLAYER_TYPE, id);
+        // match->killPlayer(id);
         return 0;
     }
     if (type == MONSTER_TYPE) {
@@ -1451,22 +1470,18 @@ int Match::wrap_topCardsOf(lua_State* L) {
     return 1;
 }
 
-int Match::wrap_plusOneTreasure(lua_State* L) {
-    if (lua_gettop(L) != 2) {
-        lua_err(L);
-        exit(1);
-    }
+int Match::wrap_gainTreasure(lua_State* L) {
+    stackSizeIs(L, 3);
     auto match = getTopMatch(L, 1);
-    if (!lua_isnumber(L, 2)) {
-        lua_err(L);
-        exit(1);
-    }
-    auto pid = (int)lua_tonumber(L, 2);
+    auto pid = getTopNumber(L, 2);
+    auto amount = getTopNumber(L, 3);
     Player* player = match->playerWithID(pid);
-    auto top = match->getTopTreasureCard();
-    if (!top) return 0;
-    match->_treasureDeck.pop_back();
-    match->addCardToBoard(top, player);
+    for (int i = 0; i < amount; i++) {
+        auto top = match->getTopTreasureCard();
+        if (!top) return 0;
+        match->_treasureDeck.pop_back();
+        match->addCardToBoard(top, player);
+    }
     return 0;
 }
 
@@ -1751,6 +1766,8 @@ void Match::setupLua(string setupScript) {
     luaL_openlibs(L);
     // connect functions
     lua_register(L, "healPlayer", wrap_healPlayer);
+    lua_register(L, "setTurnEnd", wrap_setTurnEnd);
+    lua_register(L, "getTurnCounter", wrap_getTurnCounter);
     lua_register(L, "cancelCurrentAttack", wrap_cancelCurrentAttack);
     lua_register(L, "getLastKillerID", wrap_getLastKillerID);
     lua_register(L, "destroyCard", wrap_destroyCard);
@@ -1771,7 +1788,7 @@ void Match::setupLua(string setupScript) {
     lua_register(L, "_playTopLootCard", wrap_playTopLootCard);
     lua_register(L, "incBeginningLoot", wrap_incBeginningLoot);
     lua_register(L, "decBeginningLoot", wrap_decBeginningLoot);
-    lua_register(L, "plusOneTreasure", wrap_plusOneTreasure);
+    lua_register(L, "gainTreasure", wrap_gainTreasure);
     lua_register(L, "addPlayableCount", wrap_addPlayableCount);
     lua_register(L, "getCurrentPlayer", wrap_getCurrentPlayer);
     lua_register(L, "addSouls", wrap_addSouls);

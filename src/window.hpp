@@ -477,19 +477,29 @@ public:
         this->drawTexture(_lastMonsterDiscardCountTex, _monsterDiscardX + 10, _monsterDeckY + 10);
         // draw monster slots
         auto y = _monsterDeckY + _cardSize.second;
+        int monstersX = _monsterDiscardX + 10;
         for (int i = 0; i < state.monsters.size(); i++) {
             auto card = state.monsters[i];
-            this->drawCard(card, -90, _monsterDiscardX + 20, y);
-            
+            this->drawCard(card, -90, monstersX, y);
+            auto x = monstersX + _assets->cardSize().second + 10;
             auto data = state.monsterDataArr[i];
+            // draw health
             auto health = data.health;
-            auto tex = _assets->getMessage(std::to_string(health), SDL_Color{255, 0, 0, 0}, 48);
-            this->drawTexture(tex, _monsterDiscardX + 30, y + 30);
+            auto tex = _assets->getMessage(std::to_string(health), SDL_Color{255, 0, 0, 0}, 24);
+            this->drawTexture(tex, x, y);
             if (data.blueHealth) {
                 auto btex = _assets->getMessage("+" + std::to_string(data.blueHealth), SDL_Color{255, 0, 0, 0}, 48);
-                this->drawTexture(btex, _monsterDiscardX + 30 + getSize(tex).first, y + 30);
+                this->drawTexture(btex, x + getSize(tex).first, y + 30);
                 SDL_DestroyTexture(btex);
             }
+            SDL_DestroyTexture(tex);
+            // draw roll
+            tex = _assets->getMessage(std::to_string(data.roll), SDL_Color{255, 255, 255, 0}, 24);
+            this->drawTexture(tex, x, y + 24);
+            SDL_DestroyTexture(tex);
+            // draw power
+            tex = _assets->getMessage(std::to_string(data.power), SDL_Color{169, 169, 169, 0}, 24);
+            this->drawTexture(tex, x, y + 48);
             SDL_DestroyTexture(tex);
             y += _cardSize.first + 3;
         }
@@ -500,7 +510,6 @@ public:
         this->drawTreasureDeck(state);
         // draw treasure discard
         auto count = state.treasureDiscard.size();
-        // std::cout << "\t" << count << std::endl;
         if (count) {
             auto card = *(state.treasureDiscard.end() - 1);
             this->drawCard(card, 0, _treasureDiscardX, _treasureDeckY);
@@ -510,7 +519,7 @@ public:
             SDL_DestroyTexture(_lastTreasureDiscardCountTex);
             _lastTreasureDiscardCountTex = this->_assets->getMessage(std::to_string(_lastTreasureDiscardCount), SDL_Color{ 255, 255, 255, 0 }, 24);
         }
-        this->drawTexture(_lastTreasureDiscardCountTex, 0, _treasureDiscardX + 10, _treasureDeckY + 10);
+        this->drawTexture(_lastTreasureDiscardCountTex, _treasureDiscardX + 10, _treasureDeckY + 10);
         // draw shop
         auto y = _treasureDeckY - _cardSize.second;
         for (auto& card : state.shop) {

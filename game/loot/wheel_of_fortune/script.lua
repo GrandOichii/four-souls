@@ -30,7 +30,7 @@ function WheelOfFortune_use(host)
         return
     end
     if roll == 6 then
-        plusOneTreasure(host, owner["id"])
+        gainTreasure(host, owner.id, 1)
         return
     end
 end

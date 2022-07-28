@@ -5,11 +5,15 @@
     -- when playing special effects, play power up
     -- when new monster is added, if it's name is satan, play the satan sound effect
 
+- fix size:
+    -- stars
+    -- psy horf
 
 - implement:
     -- fix abaddon
     -- fix gimpy text
 
+    -- add custom counters (egg counters mostly)
     -- remove killing players multiple times per turn
     -- add refilling to the stack
     -- add state effects (are checked every time game updates)
@@ -28,6 +32,7 @@
     -- implement effects that buff monsters
     -- add bonus effects to the monster deck
     -- add bad treasure
+    -- if a player gains +1 treasure due to rewards, and the card has a monster death trigger, the card is triggered immediately - decide whether to keep or not
     -- change how gaining souls works
     -- add rooms
     -- add better console argument parsing

@@ -1,0 +1,11 @@
+{
+    "name": "Dead Eye",
+    "text": "Each time you deal damage to a monster, gain +1a till the end of turn.",
+    "script": "script.lua",
+    "on": {
+        "damage": {
+            "check": "DeadEye_trigger_check",
+            "effect": "DeadEye_trigger"
+        }
+    }
+}

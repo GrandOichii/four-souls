@@ -219,7 +219,6 @@ public:
         _actions(actions) {}
 
     string popFirst() {
-        std::cout << "PROMPTING " << name() << std::endl;
         if (!_actions.size()) {
             throw std::runtime_error("scripted player ran out of actions");
         }

@@ -1,0 +1,17 @@
+{
+    "name": "Jar of Flies",
+    "text": "Each time a monster dies, put a counter on this.\n{T}, Remove 1 or more counters from this: Loot 1. If 3+ counters were removed, deal 1 damage to a monster instead.",
+    "script": "script.lua",
+    "on": {
+        "death": {
+            "check": "JarOfFlies_trigger_check",
+            "effect": "JarOfFlies_trigger"
+        }
+    },
+    "abilities": [
+        {
+            "cost": "JarOfFlies_cost",
+            "ability": "JarOfFlies_tap"
+        }
+    ]
+}

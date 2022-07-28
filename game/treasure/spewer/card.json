@@ -1,0 +1,11 @@
+{
+    "name": "Spewer",
+    "text": "($) Discard a loot card, roll. If the discarded card was named Pills!, roll 3x instead.\n1-2: You gain +1h till the end of turn.\n3-4: You gain +1a till end of turn.\n5-6: Take 1 damage.",
+    "script": "script.lua",
+    "abilities": [
+        {
+            "cost": "Spewer_cost",
+            "ability": "Spewer_eat"
+        }
+    ]
+}

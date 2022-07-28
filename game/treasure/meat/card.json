@@ -1,0 +1,11 @@
+{
+    "name": "Meat!",
+    "text": "You have +1 to attack rolls.",
+    "script": "script.lua",
+    "on": {
+        "roll": {
+            "check": "Meat_trigger_check",
+            "effect": "Meat_trigger"
+        }
+    }
+}

@@ -52,20 +52,28 @@ function Common_PushEOT(host, func, cardID, ownerID, id)
     deferEOT(host, cardID, 'Common_PopEOT', false)
 end
 
---  death stack effects
-DeathStack = Stack:Create()
+-- func overriding stack
 
-function DeathStack:posOf(key)
-    for pos, pair in ipairs(DeathStack._et) do
-        if pair.name == key then
-            return pos
+FuncStack = {}
+
+function FuncStack:Create()
+    local result = Stack:Create()
+    function result:posOf(key)
+        for pos, pair in ipairs(result._et) do
+            if pair.name == key then
+                return pos
+            end
         end
     end
+    
+    function result:remove(key)
+        table.remove(result._et, result:posOf(key))
+    end
+    return result
 end
 
-function DeathStack:remove(key)
-    table.remove(DeathStack._et, DeathStack:posOf(key))
-end
+--  death stack effects
+DeathStack = FuncStack:Create()
 
 DeathStack:push({
     name = 'base',
@@ -74,6 +82,42 @@ DeathStack:push({
 
 _deathPenalty = function (host, player)
     DeathStack:top().func(host, player)
+end
+
+-- damage func stack
+DamageFuncStack = FuncStack:Create()
+
+DamageFuncStack:push({
+    name = 'base',
+    func = dealDamage
+})
+
+dealDamage = function (host, srcType, srcID, tgtType, tgtID, amount)
+    DamageFuncStack:top().func(host, srcType, srcID, tgtType, tgtID, amount)
+end
+
+-- destroy card func stack
+DestroyFuncStack = FuncStack:Create()
+
+DestroyFuncStack:push({
+    name = 'base',
+    func = destroyCard
+})
+
+destroyCard = function (host, cardID)
+    DestroyFuncStack:top().func(host, cardID)
+end
+
+-- gain treasure func stack
+GainTreasureFuncStack = FuncStack:Create()
+
+GainTreasureFuncStack:push({
+    name = 'base',
+    func = gainTreasure
+})
+
+gainTreasure = function (host, pid, amount)
+    GainTreasureFuncStack:top().func(host, pid, amount)
 end
 
 -- layers
@@ -239,7 +283,7 @@ end
 
 function Common_Pay(host, ownerID, amount)
     local player = Common_PlayerWithID(host, ownerID)
-    if player["coins"] < amount then
+    if player.coins < amount then
         return false
     end
     subCoins(host, ownerID, amount)
@@ -314,6 +358,15 @@ function Common_RollStackSize(host)
     return #getRollStack(host)
 end
 
+function Common_ModLastRoll(host, value)
+    local rs = getRollStack(host)
+    local roll = rs[#rs]
+    if roll.value == 6 then
+        return
+    end
+    setRollValue(host, #rs-1, roll.value + 1)
+end
+
 function Common_LastRoll(host)
     local rolls = getRollStack(host)
     local roll = rolls[#rolls]
@@ -322,20 +375,21 @@ end
 
 function Common_OpponentDied(host, ownerID)
     local death = Common_LastDeath(host)
-    return death["type"] == PLAYER and death["id"] ~= ownerID
+    return death.type == PLAYER and death.id ~= ownerID
 end
 
 function Common_OwnerDied(host, ownerID)
     local death = Common_LastDeath(host)
+    print('LAST DEATH -- TYPE:'..death.type..'  ID: '..death.id)
     return death.type == PLAYER and death.id == ownerID
 end
 
 function Common_OwnerRolled(host, ownerID, value)
     local roll = Common_LastRoll(host)
-    if roll["ownerID"] ~= ownerID then
+    if roll.ownerID ~= ownerID then
         return false
     end
-    return roll["value"] == value
+    return roll.value == value
 end
 
 function Common_RollWithID(host, id)
@@ -385,8 +439,12 @@ end
 
 function Common_RemoveCounters(host, amount)
     for i = 1, amount do
-        Common_RemoveCounter(host)
+        local flag = Common_RemoveCounter(host)
+        if not flag then
+            return false
+        end
     end
+    return true
 end
 
 function Common_LastDeath(host)
@@ -451,13 +509,29 @@ function Common_PostDeathOwnerDied(host, cardID)
     return  death.type == PLAYER and death.id == owner.id
 end
 
+function Common_OncePerTurn(host, cardID)
+    local turnC = getTurnCounter(host)
+    if CardData[cardID] == nil then
+        CardData[cardID] = {
+            lastTurn = turnC
+        }
+        return true
+    end
+    if CardData[cardID].lastTurn == turnC then
+        return false
+    end
+    CardData[cardID].lastTurn = turnC
+    return true
+end
+
 function Common_OwnerDamaged(host, cardID)
     local owner = getOwner(host, cardID)
     local damageEvent = getTopDamageEvent(host)
     return damageEvent["targetType"] == PLAYER and damageEvent["targetID"] == owner["id"]
 end
 
-function Common_OwnerDealtCombatDamage(host, cardID)
+function Common_OwnerDealtCombatDamage(host, cardID, targetType)
+    local targetType = targetType or MONSTER
     local owner = getOwner(host, cardID)
     local damageEvent = getTopDamageEvent(host)
     local lastRoll = getLastRoll(host)
@@ -470,7 +544,7 @@ function Common_OwnerDealtCombatDamage(host, cardID)
     if damageEvent.sourceID ~= owner.id then
         return false
     end
-    if damageEvent.targetType ~= MONSTER then
+    if damageEvent.targetType ~= targetType then
         return false
     end
     local monster = Common_MonsterWithID(host, damageEvent.targetID)
@@ -571,7 +645,7 @@ end
 function Common_RerollItem(host, cardID)
     local owner = getOwner(host, cardID)
     destroyCard(host, cardID)
-    plusOneTreasure(host, owner.id)
+    gainTreasure(host, owner.id, 1)
 end
 
 function Common_OwnerKilledMonster(host, cardID)

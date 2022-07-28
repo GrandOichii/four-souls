@@ -1,0 +1,11 @@
+{
+    "name": "Mama Mega",
+    "text": "{T}: Destroy this. If you do, deal 3 damage to each monster and player.",
+    "script": "script.lua",
+    "abilities": [
+        {
+            "cost": "MamaMega_cost",
+            "ability": "MamaMega_tap"
+        }
+    ]
+}

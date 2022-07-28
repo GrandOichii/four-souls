@@ -4,5 +4,5 @@ end
 
 function LazarusRags_trigger(host)
     local owner = getTopOwner(host)
-    plusOneTreasure(host, owner["id"])
+    gainTreasure(host, owner.id, 1)
 end

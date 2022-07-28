@@ -1,0 +1,11 @@
+{
+    "name": "Experimental Treatment",
+    "text": "($) Destroy this, roll:\n1: You die.\n2: Loot 3.\nGain 9c.\n4: Gain +1 treasure.\n5: Gain +2 treasure.\n6: This becomes a soul, gain it.",
+    "script": "script.lua",
+    "abilities": [
+        {
+            "cost": "ExperimentalTreatment_cost",
+            "ability": "ExperimentalTreatment_inject"
+        }
+    ]
+}

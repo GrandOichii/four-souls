@@ -5,7 +5,7 @@ end
 function Lemegeton_use(host)
     local me = this(host)
     local owner = getTopOwner(host)
-    plusOneTreasure(host, owner.id)
+    gainTreasure(host, owner.id, 1)
     if CardData[me.id] == nil then
         CardData[me.id] = {
             usedC = 0

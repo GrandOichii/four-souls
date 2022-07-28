@@ -1,0 +1,11 @@
+{
+    "name": "Libra",
+    "text": "{T}: Change the result of a dice roll to 3.",
+    "script": "script.lua",
+    "abilities": [
+        {
+            "cost": "Libra_cost",
+            "ability": "Libra_tap"
+        }
+    ]
+}

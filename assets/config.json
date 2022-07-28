@@ -1,5 +1,81 @@
 {
     "cards": {
+        "Damocles": {
+            "large": "images/damocles_large.bmp",
+            "small": "images/damocles.bmp"
+        },
+        "1-UP": {
+            "large": "images/one_up_large.bmp",
+            "small": "images/one_up.bmp"
+        },
+        "Bag Lunch": {
+            "large": "images/bag_lunch_large.bmp",
+            "small": "images/bag_lunch.bmp"
+        },
+        "The Habit": {
+            "large": "images/the_habit_large.bmp",
+            "small": "images/the_habit.bmp"
+        },
+        "Experimental Treatment": {
+            "large": "images/experimental_treatment_large.bmp",
+            "small": "images/experimental_treatment.bmp"
+        },
+        "Dry Baby": {
+            "large": "images/dry_baby_large.bmp",
+            "small": "images/dry_baby.bmp"
+        },
+        "Jar of Flies": {
+            "large": "images/jar_of_flies_large.bmp",
+            "small": "images/jar_of_flies.bmp"
+        },
+        "Spewer": {
+            "large": "images/spewer_large.bmp",
+            "small": "images/spewer.bmp"
+        },
+        "Monstro's Tooth": {
+            "large": "images/monstro_s_tooth_large.bmp",
+            "small": "images/monstro_s_tooth.bmp"
+        },
+        "Pageant Boy": {
+            "large": "images/pageant_boy_large.bmp",
+            "small": "images/pageant_boy.bmp"
+        },
+        "The Crowdfunder": {
+            "large": "images/the_crowdfunder_large.bmp",
+            "small": "images/the_crowdfunder.bmp"
+        },
+        "Sacrificial Dagger": {
+            "large": "images/sacrificial_dagger_large.bmp",
+            "small": "images/sacrificial_dagger.bmp"
+        },
+        "Meat!": {
+            "large": "images/meat__large.bmp",
+            "small": "images/meat_.bmp"
+        },
+        "Mama Mega": {
+            "large": "images/mama_mega_large.bmp",
+            "small": "images/mama_mega.bmp"
+        },
+        "Libra": {
+            "large": "images/libra_large.bmp",
+            "small": "images/libra.bmp"
+        },
+        "Empty Vessel": {
+            "large": "images/empty_vessel_large.bmp",
+            "small": "images/empty_vessel.bmp"
+        },
+        "Dead Eye": {
+            "large": "images/dead_eye_large.bmp",
+            "small": "images/dead_eye.bmp"
+        },
+        "Synthoil": {
+            "large": "images/synthoil_large.bmp",
+            "small": "images/synthoil.bmp"
+        },
+        "Tony": {
+            "large": "images/tony_large.bmp",
+            "small": "images/tony.bmp"
+        },
         "The Dauntless": {
             "large": "images/the_dauntless_large.bmp",
             "small": "images/the_dauntless.bmp"
@@ -11,6 +87,10 @@
         "The Empty": {
             "large": "images/the_empty_large.bmp",
             "small": "images/the_empty.bmp"
+        },
+        "Abyss": {
+            "large": "images/abyss_large.bmp",
+            "small": "images/abyss.bmp"
         },
         "Crooked Penny": {
             "large": "images/crooked_penny_large.bmp",

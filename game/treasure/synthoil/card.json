@@ -1,0 +1,11 @@
+{
+    "name": "Synthoil",
+    "text": "You have +1 to attack rolls.",
+    "script": "script.lua",
+    "on": {
+        "roll": {
+            "check": "Synthoil_trigger_check",
+            "effect": "Synthoil_trigger"
+        }
+    }
+}
