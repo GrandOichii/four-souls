@@ -270,13 +270,26 @@ public:
         case 'f':
             this->toggleFullscreen();
             return;
+        case 'p':
+            this->playFunnySound();
+            break;
         case SDLK_SPACE:
             if (!_waitingResponse || _lastRequestType != PollType::GetAction) return;
             message<PollType> reply;
             reply << ACTION_PASS;
             _c->Send(reply);
             _waitingResponse = false;
+            break;
         }
+    }
+
+    void playFunnySound() {
+        auto sound = new Sound("assets/sound/choir.wav");
+        sound->setup();
+        sound->play();
+        std::this_thread::sleep_for(std::chrono::milliseconds(1000));
+        sound->stop();
+        delete sound;
     }
 
     void sendAction(PlayerBoardState& state) {

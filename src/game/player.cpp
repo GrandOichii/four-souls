@@ -265,7 +265,7 @@ int Player::attack() {
 
     int r = lua_pcall(L, 2, 1, 0);
     if (r != LUA_OK) {
-        throw std::runtime_error("failed to call _getMaxHealth function");
+        throw std::runtime_error("failed to call attack function");
     }
     if (!lua_isnumber(L, -1)) {
         throw std::runtime_error("_getMaxHealth didn't return a number");

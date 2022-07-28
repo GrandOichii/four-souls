@@ -24,7 +24,8 @@ end
 local lootBlacklist = {
     'Dice Shard',
     'Lil Battery',
-    'I. The Magician'
+    'I. The Magician',
+    'Perthro'
 }
 
 local function IsBlacklistedLoot(card)

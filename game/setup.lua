@@ -38,6 +38,20 @@ function Stack:Create()
     return t
 end
 
+-- end of turn stack
+
+EOTStack = Stack:Create()
+
+function Common_PopEOT(host)
+    local top = EOTStack:pop()
+    top[1](host, top[4], top[3])
+end
+
+function Common_PushEOT(host, func, cardID, ownerID, id)
+    EOTStack:push({func, cardID, ownerID, id})
+    deferEOT(host, cardID, 'Common_PopEOT', false)
+end
+
 --  death stack effects
 DeathStack = Stack:Create()
 
@@ -62,23 +76,30 @@ _deathPenalty = function (host, player)
     DeathStack:top().func(host, player)
 end
 
--- health
-MaxHealthLayers = Stack:Create()
-
-function MaxHealthLayers:posOf(key)
-    for pos, pair in ipairs(MaxHealthLayers._et) do
-        if pair.name == key then
-            return pos
+-- layers
+Layers = {}
+function Layers:Create()
+    local t = Stack:Create()
+    function t:posOf(id)
+        for pos, pair in ipairs(t._et) do
+            if pair.id == id then
+                return pos
+            end
         end
+        return 0
     end
+    function t:remove(id)
+        table.remove(t._et, t:posOf(id))
+    end
+
+    return t
 end
 
-function MaxHealthLayers:remove(key)
-    table.remove(MaxHealthLayers._et, MaxHealthLayers:posOf(key))
-end
+-- health
+MaxHealthLayers = Layers:Create()
 
 MaxHealthLayers:push({
-    name = 'base',
+    id = 1,
     func = _getMaxHealth
 })
 
@@ -86,45 +107,44 @@ _getMaxHealth = function (host, pid)
     return MaxHealthLayers:top().func(host, pid)
 end
 
-function Common_IncMaxLife(host, cardID, ownerID, value)
-    local key = cardID
+function Common_IncMaxLife(host, ownerID, value)
+    local id = MaxHealthLayers:top().id + 1
     MaxHealthLayers:push(
         {
-            name = key,
+            id = id,
             func = function (host_, pid)
                 local add = 0
                 if pid == ownerID then
                     add = value
                 end
-                return add + MaxHealthLayers._et[MaxHealthLayers:posOf(key)-1].func(host_, pid)
+                return add + MaxHealthLayers._et[MaxHealthLayers:posOf(id)-1].func(host_, pid)
             end
         }
     )
     healPlayer(host, ownerID, value)
+    return id
 end
 
-function Common_DecMaxLife(host, cardID, ownerID)
-    MaxHealthLayers:remove(cardID)
+function Common_DecMaxLife(host, id, ownerID)
+    MaxHealthLayers:remove(id)
+    for index, value in ipairs(MaxHealthLayers._et) do
+        print(index, value.id)
+    end
     healPlayer(host, ownerID, 0) -- a trick for resetting player's health if it's greater than max
 end
 
+function Common_TempIncMaxLife(host, cardID, targetID, amount)
+    local id = Common_IncMaxLife(host, targetID, amount)
+    -- print('NEW ID TO REMOVE: '..id)
+    Common_PushEOT(host, Common_DecMaxLife, cardID, targetID, id)
+    -- print('EOT SIZE: '..#EOTStack._et)
+end
+
 -- attack
-AttackLayers = Stack:Create()
-
-function AttackLayers:posOf(key)
-    for pos, pair in ipairs(AttackLayers._et) do
-        if pair.name == key then
-            return pos
-        end
-    end
-end
-
-function AttackLayers:remove(key)
-    table.remove(AttackLayers._et, AttackLayers:posOf(key))
-end
+AttackLayers = Layers:Create()
 
 AttackLayers:push({
-    name = 'base',
+    id = 1,
     func = _getAttack
 })
 
@@ -132,47 +152,32 @@ _getAttack = function (host, pid)
     return AttackLayers:top().func(host, pid)
 end
 
-function Common_IncAttack(cardID, ownerID, value)
-    local key = cardID
+function Common_IncAttack(ownerID, value)
+    local id = AttackLayers:top().id + 1
     AttackLayers:push(
         {
-            name = key,
+            id = id,
             func = function (host_, pid)
                 local add = 0
                 if pid == ownerID then
                     add = value
                 end
-                return add + AttackLayers._et[AttackLayers:posOf(key)-1].func(host_, pid)
+                return add + AttackLayers._et[AttackLayers:posOf(id)-1].func(host_, pid)
             end
         }
     )
+    return id
 end
 
-function Common_DecAttack(cardID)
-    AttackLayers:remove(cardID)
-end
-
-EOTStack = Stack:Create()
-
-function Common_PopEOT(host)
-    local top = EOTStack:pop()
-    top[1](host, top[2], top[3])
-end
-
-function Common_PushEOT(host, func, cardID, ownerID)
-    EOTStack:push({func, cardID, ownerID})
-    deferEOT(host, cardID, 'Common_PopEOT', false)
-end
-
-function Common_TempIncMaxLife(host, cardID, targetID, amount)
-    Common_IncMaxLife(host, cardID, targetID, amount)
-    Common_PushEOT(host, Common_DecMaxLife, cardID, targetID)
+function Common_DecAttack(host, id, ownerID)
+    AttackLayers:remove(id)
 end
 
 function Common_TempIncAttack(host, cardID, targetID, amount)
-    Common_IncAttack(cardID, targetID, amount)
-    Common_PushEOT(host, Common_DecAttack, cardID, targetID)
+    local id = Common_IncAttack(targetID, amount)
+    Common_PushEOT(host, Common_DecAttack, cardID, targetID, id)
 end
+
 
 -- treasure / loot
 
@@ -200,19 +205,13 @@ end
 
 function Common_ChooseOpponent(host, ownerID)
     local players = getPlayers(host)
-    print('OWNER ID: '..ownerID)
     local ids = {}
     for _, p in ipairs(players) do
         if p.id ~= ownerID then
             ids[#ids+1] = p.id
         end
     end
-    print('CHOICES:')
-    for _, i in ipairs(ids) do
-        print('\t'..i)
-    end
     local choiceId, _ = requestChoice(host, ownerID, "Choose an opponent", PLAYER, ids)
-    print('CHOICE ID:'..choiceId)
     return choiceId
 end
 
@@ -301,7 +300,6 @@ function Common_Discard(host, ownerID, amount)
     local cardIDs = requestCardsInHand(host, ownerID, ownerID, message, amount)
     --  TODO debug
     for _, cid in ipairs(cardIDs) do
-        print("DISCARDING CARD WITH ID "..cid)
         discardLoot(host, ownerID, cid)
     end
     return true
@@ -378,11 +376,10 @@ end
 
 function Common_RemoveCounter(host)
     local card = this(host)
-    print("attempting to remove counters "..card["counters"])
-    if card["counters"] == 0 then
+    if card.counters == 0 then
         return false
     end
-    removeCounters(host, card["id"], 1)
+    removeCounters(host, card.id, 1)
     return true
 end
 
@@ -464,14 +461,12 @@ function Common_OwnerDealtCombatDamage(host, cardID)
     local owner = getOwner(host, cardID)
     local damageEvent = getTopDamageEvent(host)
     local lastRoll = getLastRoll(host)
-    -- print('LAST ROLL: VALUE: '..lastRoll.value..', IS COMBAT ROLL: '..lastRoll.isCombatRoll)
     if not lastRoll.isCombatRoll then
         return false
     end
     if damageEvent.sourceType ~= PLAYER then
         return false
     end
-    print('DAMAGE SOURCE ID: '..damageEvent.sourceID..', MY ID: '..owner.id)
     if damageEvent.sourceID ~= owner.id then
         return false
     end
@@ -517,8 +512,7 @@ function Common_TargetMonster(host, ownerID)
     local monsters = getActiveMonsters(host)
     local ids = {}
     for i, p in ipairs(monsters) do
-        ids[i] = p["id"]
-        print('mid: '..p['id'])
+        ids[i] = p.id
     end
     local choiceId, payed = requestChoice(host, ownerID, "Choose a monster", MONSTER, ids)
     if not payed then return false end
@@ -587,6 +581,5 @@ function Common_OwnerKilledMonster(host, cardID)
     end
     local owner = getOwner(host, cardID)
     local killerID = getLastKillerID(host)
-    print('LAST KILLER ID: '..killerID)
     return owner.id == killerID
 end

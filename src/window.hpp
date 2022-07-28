@@ -3,6 +3,7 @@
 #include <SDL.h>
 #include <SDL_ttf.h>
 
+#include "sound.hpp"
 #include "common.hpp"
 
 std::pair<int, int> getSize(SDL_Texture *texture) {
@@ -708,7 +709,7 @@ public:
         int h = size.second;
         if (mx >= x && my >= y && mx <= x + w && my <= h+ y) {
             SDL_PumpEvents();
-            if (_keys[SDL_SCANCODE_Z]) {
+            if (_keys[SDL_SCANCODE_LSHIFT]) {
                 auto tex = this->_assets->getCard(card.cardName, CardSize::LARGE);
                 auto size = getSize(tex);
                 this->drawTexture(tex, _stackX - size.first, 0);

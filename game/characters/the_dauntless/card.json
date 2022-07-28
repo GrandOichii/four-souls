@@ -1,0 +1,9 @@
+{
+    "name": "The Dauntless",
+    "health": 1,
+    "attack": 1,
+    "item": "hypercoagulation",
+    "text": "{T}: Play an additional loot card this turn.\nStarting item: Hypercoagulation",
+    "script": "script.lua",
+    "use": "TheDauntless_tap"
+}

@@ -1899,7 +1899,7 @@ void Match::execScript(string script) {
     int r = luaL_dostring(L, script.c_str());
     if (r != LUA_OK) {
         lua_err(this->L);
-        exit(1);
+        throw std::runtime_error("failed to load script");
     }
 }
 
@@ -1914,7 +1914,7 @@ void Match::execFunc(string funcName) {
 
     if (r != LUA_OK) {
         lua_err(this->L);
-        exit(1);
+        throw std::runtime_error("failed to execute func " + funcName);
     }
 
     //  TODO run state checks

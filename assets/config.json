@@ -1,6 +1,18 @@
 {
     "cards": {
-        "Crooked penny": {
+        "The Dauntless": {
+            "large": "images/the_dauntless_large.bmp",
+            "small": "images/the_dauntless.bmp"
+        },
+        "Hypercoagulation": {
+            "large": "images/hypercoagulation_large.bmp",
+            "small": "images/hypercoagulation.bmp"
+        },
+        "The Empty": {
+            "large": "images/the_empty_large.bmp",
+            "small": "images/the_empty.bmp"
+        },
+        "Crooked Penny": {
             "large": "images/crooked_penny_large.bmp",
             "small": "images/crooked_penny.bmp"
         },

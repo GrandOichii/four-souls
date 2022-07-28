@@ -12,7 +12,6 @@ function Berserk_trigger2_check(host, me)
 end
 
 function Berserk_trigger2(host)
-    --  TODO untested
     local owner = getTopOwner(host)
     local me = this(host)
     Common_TempIncMaxLife(host, me.id, owner.id, 1)

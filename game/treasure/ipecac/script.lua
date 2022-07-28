@@ -1,11 +1,13 @@
 --  TODO untested
 
 function Ipecac_enter(host, me, owner)
-    Common_IncAttack(me.id, owner.id, 1)
+    CardData[me.id] = {
+        iaID = Common_IncAttack(owner.id, 1)
+    }
 end
 
 function Ipecac_leave(host, me, owner)
-    Common_DecAttack(me.id)
+    Common_DecAttack(host, CardData[me.id].iaID, owner.id)
 end
 
 

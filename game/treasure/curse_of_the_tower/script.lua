@@ -15,7 +15,9 @@ function CurseOfTheTower_trigger(host)
     if roll < 4 then
         local players = getPlayers(host)
         for _, player in ipairs(players) do
-            dealDamage(host, PLAYER, owner.id, PLAYER, player.id, 1)
+            if player.id ~= owner.id then
+                dealDamage(host, PLAYER, owner.id, PLAYER, player.id, 1)
+            end
         end
         return
     end
