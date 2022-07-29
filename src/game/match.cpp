@@ -959,6 +959,15 @@ int Match::wrap_getTopDamageEvent(lua_State* L) {
     return 1;
 }
 
+int Match::wrap_rechargeCharacterCard(lua_State* L) {
+    stackSizeIs(L, 2);
+    auto match = getTopMatch(L, 1);
+    auto pid = getTopNumber(L, 2);
+    auto player = match->playerWithID(pid);
+    player->rechargeCharacter();
+    return 0;
+}
+
 int Match::wrap_getDamageEvent(lua_State* L) {
     if (lua_gettop(L) != 1) {
         lua_err(L);
@@ -1766,6 +1775,7 @@ void Match::setupLua(string setupScript) {
     luaL_openlibs(L);
     // connect functions
     lua_register(L, "healPlayer", wrap_healPlayer);
+    lua_register(L, "rechargeCharacterCard", wrap_rechargeCharacterCard);
     lua_register(L, "setTurnEnd", wrap_setTurnEnd);
     lua_register(L, "getTurnCounter", wrap_getTurnCounter);
     lua_register(L, "cancelCurrentAttack", wrap_cancelCurrentAttack);
@@ -1892,9 +1902,11 @@ void Match::setupLua(string setupScript) {
     "\n                cardIDs[#cardIDs+1] = card['id']"
     "\n            end"
     "\n        end"
-    "\n        local choice = cardIDs"
     "\n        if #cardIDs == 1 then"
     "\n            destroyCard(host, cardIDs[1])"
+    "\n            return"
+    "\n        end"
+    "\n        if #cardIDs == 0 then"
     "\n            return"
     "\n        end"
     "\n        local choice, payed = requestChoice(host, ownerID, 'Choose a card to destroy', CARD, cardIDs)"

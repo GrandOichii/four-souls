@@ -1,25 +1,39 @@
 --  TODO untested
 
 function Euthanasia_trigger_check(host, me)
+    local turnC = getTurnCounter(host)
     local roll = Common_LastRoll(host)
     local owner = getOwner(host, me.id)
+    -- check if is combat roll
     if not roll.isCombatRoll then
-        CardData[me.id] = {}
-        return false
-    end
-    if roll.ownerID ~= owner.id then
-        CardData[me.id] = {}
-        return false
-    end
-    if CardData[me.id] == nil then
         CardData[me.id] = {
-            lastRoll = roll.value
+            lastRoll = -1,
+            turnC = turnC
+        }
+        return false
+    end
+    -- check that the owner owns the roll
+    if roll.ownerID ~= owner.id then
+        CardData[me.id] = {
+            lastRoll = -1,
+            turnC = turnC
+        }
+        return false
+    end
+    -- check if the data is set or it's the same turn
+    if CardData[me.id] == nil or CardData[me.id].turnC ~= turnC then
+        CardData[me.id] = {
+            lastRoll = roll.value,
+            turnC = turnC
         }
         return false
     end
     local lastRoll = CardData[me.id].lastRoll
     if lastRoll == roll.value then
-        CardData[me.id] = {}
+        CardData[me.id] = {
+            lastRoll = -1,
+            turnC = turnC
+        }
         return true
     end
     CardData[me.id].lastRoll = roll.value

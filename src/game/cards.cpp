@@ -48,6 +48,8 @@ ScriptCard::ScriptCard(string dir, json j, bool isTrinket, bool isEternal) :
                 _abilities.push_back(ability);
             }
         }
+        if (j.contains("eternal"))
+            _isEternal = j["eternal"];
     } else {
         this->_useFuncName = j["use"];
         if (j.contains("goes_to_bottom"))

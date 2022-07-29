@@ -445,6 +445,7 @@ public:
     static int wrap_decTreasureCost(lua_State* L);
     static int wrap_getTopOwner(lua_State* L);
     static int wrap_attackMonster(lua_State* L);
+    static int wrap_rechargeCharacterCard(lua_State* L);
     void healMonsters();
     void rollAttack();
     void resetEOT();

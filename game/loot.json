@@ -1,6 +1,6 @@
 {
     "back": "images/loot_card_back.bmp",
-    "cards": {
+    "card1s": {
         "basic": {
             "loot/the_stars": 20
         },
@@ -8,7 +8,7 @@
             "loot/bag_lunch": 0
         }
     },
-    "car1ds": {
+    "cards": {
         "basic": {
             "loot/jester": 1,
             "loot/mega_bomb": 1,
@@ -56,6 +56,7 @@
             "loot/swallowed_penny": 1,
             "loot/the_left_hand": 1,
             "loot/bag_lunch": 1,
+            "loot/tick": 1,
             "loot/aaa_battery": 1
         }
     }

@@ -1,0 +1,16 @@
+{
+    "name": "Belly Button",
+    "text": "You may play an additional loot card on your turn.\nEach time you take damage, you may recharge your character.",
+    "script": "script.lua",
+    "on": {
+        "turn_start": {
+            "usesStack": false,
+            "check": "BellyButton_trigger1_check",
+            "effect": "BellyButton_trigger1"
+        },
+        "damage": {
+            "check": "BellyButton_trigger2_check",
+            "effect": "BellyButton_trigger2"
+        }
+    }
+}

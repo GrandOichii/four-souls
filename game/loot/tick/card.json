@@ -1,0 +1,12 @@
+{
+    "name": "Tick",
+    "eternal": true,
+    "text": "The first time you kill a monster on your turn, heal 1h and you may attack an additional time this turn.",
+    "script": "script.lua",
+    "on": {
+        "death": {
+            "check": "Tick_trigger_check",
+            "effect": "Tick_trigger"
+        }
+    }
+}

@@ -1,6 +1,6 @@
 {
     "back": "images/treasure_card_back.bmp",
-    "cards": [
+    "card1s": [
         "treasure/damocles",
         "treasure/damocles",
         "treasure/damocles",
@@ -18,13 +18,15 @@
         "treasure/damocles",
         "treasure/damocles"
     ],
-    "car1ds": [
+    "cards": [
         "treasure/lunch",
         "treasure/the_crowdfunder",
         "treasure/damocles",
+        "treasure/belly_button",
         "treasure/monstros_tooth",
         "treasure/abaddon",
         "treasure/one_up",
+        "treasure/battery_bum",
         "treasure/jar_of_flies",
         "treasure/sacrificial_dagger",
         "treasure/experimental_treatment",

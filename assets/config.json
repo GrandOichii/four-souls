@@ -1,5 +1,17 @@
 {
     "cards": {
+        "Battery Bum": {
+            "large": "images/battery_bum_large.bmp",
+            "small": "images/battery_bum.bmp"
+        },
+        "Tick": {
+            "large": "images/tick_large.bmp",
+            "small": "images/tick.bmp"
+        },
+        "Belly Button": {
+            "large": "images/belly_button_large.bmp",
+            "small": "images/belly_button.bmp"
+        },
         "Damocles": {
             "large": "images/damocles_large.bmp",
             "small": "images/damocles.bmp"

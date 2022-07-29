@@ -10,18 +10,14 @@
     -- psy horf
 
 - implement:
-    -- fix abaddon
-    -- fix gimpy text
-
+    -- when stealing item, call their "leave", then call their "enter", so that the effects know who the owner is
     -- add custom counters (egg counters mostly)
     -- remove killing players multiple times per turn
     -- add refilling to the stack
     -- add state effects (are checked every time game updates)
-    -- add optional "uses stack" option to triggers (decide what to do with damage triggers)
     -- separate trinkets from treasure in treasure discard
     -- enable activation choice in client (if card has 2+ activated abilities)
     -- some effects need to distinct between different turns (add wrap_getTurnCounter, use CardData table to store last turn)
-    -- make an actual md for people to see how to setup the project
     -- add game logs (perhaps in a different window)
     -- better card zoom ( perhaps in a different window )
     -- add tapping all cards of dead player

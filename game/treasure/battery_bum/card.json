@@ -1,0 +1,11 @@
+{
+    "name": "Battery Bum",
+    "text": "($) Pay 4c:\nRecharge an item.",
+    "script": "script.lua",
+    "abilities": [
+        {
+            "cost": "BatteryBum_cost",
+            "ability": "BatteryBum_pay"
+        }
+    ]
+}
