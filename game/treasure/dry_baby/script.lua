@@ -8,11 +8,11 @@ function DryBaby_enter(host, me, owner)
             if tgtType == PLAYER and tgtID == owner.id then
                 amount = 1
             end
-            DeathStack._et[DeathStack:posOf(key)-1].func(host_, srcType, srcID, tgtType, tgtID, amount)
+            DamageFuncStack._et[DamageFuncStack:posOf(key)-1].func(host_, srcType, srcID, tgtType, tgtID, amount)
         end
     })
 end
 
 function DryBaby_leave(host, me, owner)
-    DeathStack:remove('damage'..me.id)
+    DamageFuncStack:remove('damage'..me.id)
 end

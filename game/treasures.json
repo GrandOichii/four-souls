@@ -1,6 +1,6 @@
 {
     "back": "images/treasure_card_back.bmp",
-    "cards": [
+    "car1ds": [
         "treasure/polydactyly",
         "treasure/polydactyly",
         "treasure/polydactyly",
@@ -18,7 +18,7 @@
         "treasure/polydactyly",
         "treasure/polydactyly"
     ],
-    "car1ds": [
+    "cards": [
         "treasure/lunch",
         "treasure/the_crowdfunder",
         "treasure/damocles",

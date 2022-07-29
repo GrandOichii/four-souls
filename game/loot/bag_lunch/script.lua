@@ -44,14 +44,13 @@ function BL_ModDestroyStack(host, me, owner)
         name = 'destroy'..me.id,
         func = function (host_, cardID)
             local me_ = getMe()
-            local owner_ = getOwner(host, me.id)
             print('ME: id - '..me_.id..'  COUNTERS: '..me_.counters)
             if cardID ~= me.id or me_.counters > 0 then
                 DestroyFuncStack._et[DestroyFuncStack:posOf('destroy'..me.id)-1].func(host_, cardID)
                 return
             end
             addCounters(host_, me_.id, 1)
-            healPlayer(host_, owner_.id, 1)
+            healPlayer(host_, owner.id, 1)
         end
     })
 
@@ -62,8 +61,7 @@ function BagLunch_enter(host, me, owner)
     BL_IncLife(host, me, owner)
 end
 
-
 function BagLunch_leave(host, me, owner)
-    DamageFuncStack:remove('destroy'..me.id)
+    DestroyFuncStack:remove('destroy'..me.id)
     Common_DecMaxLife(host, CardData[me.id].ihID, owner.id)
 end

@@ -12,6 +12,7 @@ function BellyButton_trigger2_check(host, me)
 end
 
 function BellyButton_trigger2(host)
+    local _ = getDamageEvent(host)
     local owner = getTopOwner(host)
     local choice = requestSimpleChoice(host, owner.id, 'Recharge your character card?', {'Yes', 'No'})
     if choice == 'No' then
