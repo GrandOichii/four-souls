@@ -35,6 +35,7 @@ const string BUY_TREASURE_TYPE = "buy_treasure";
 const string ATTACK_MONSTER_TYPE = "attack";
 const string ACTIVATE_ITEM_TYPE = "activate";
 const string ACTIVATE_CHARACTER_TYPE = "activate_character";
+const string COMBAT_END_TYPE = "combat_end";
 
 const string LOOT_DECK = "loot";
 const string TREASURE_DECK = "treasure";

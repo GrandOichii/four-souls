@@ -119,23 +119,23 @@ end
 function Bot_PromptAction(me, state)
     if me["id"] == state["currentID"] and state["isMain"] then
         -- main phase actions
-        local played, message = AttemptPlayLoot(me, state)
-        if played then
-            return message
-        end
-        local purchased, message = AttemptBuyTreasure(me, state)
-        if purchased then
-            return message
-        end
-        local activated, message = AttemptActivate(me, state)
-        if activated then
-            return message
-        end
-        local attacked, message = AttemptAttack(me, state)
-        if attacked then
-            return message
-        end
-        return "$PASS"
+        -- local played, message = AttemptPlayLoot(me, state)
+        -- if played then
+        --     return message
+        -- end
+        -- local purchased, message = AttemptBuyTreasure(me, state)
+        -- if purchased then
+        --     return message
+        -- end
+        -- local activated, message = AttemptActivate(me, state)
+        -- if activated then
+        --     return message
+        -- end
+        -- local attacked, message = AttemptAttack(me, state)
+        -- if attacked then
+        --     return message
+        -- end
+        -- return "$PASS"
     end
     -- responses
     return "$PASS"

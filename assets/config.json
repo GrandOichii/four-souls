@@ -1,5 +1,17 @@
 {
     "cards": {
+        "Wishbone": {
+            "large": "images/wishbone_large.bmp",
+            "small": "images/wishbone.bmp"
+        },
+        "Polydactyly": {
+            "large": "images/polydactyly_large.bmp",
+            "small": "images/polydactyly.bmp"
+        },
+        "Ultra Flesh Kid!": {
+            "large": "images/ultra_flesh_kid__large.bmp",
+            "small": "images/ultra_flesh_kid_.bmp"
+        },
         "Cancer": {
             "large": "images/cancer_large.bmp",
             "small": "images/cancer.bmp"

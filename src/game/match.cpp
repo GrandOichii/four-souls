@@ -370,6 +370,7 @@ void Match::killMonster(CardWrapper* w) {
     if (card->data()->isBeingAttacked()) {
         _lastMonsterIndex = -2;
         _isAttackPhase = false;
+        applyTriggers(COMBAT_END_TYPE);
     }
     this->log(card->name() + " dies!");
     _rewardsStack.push(RewardEvent{

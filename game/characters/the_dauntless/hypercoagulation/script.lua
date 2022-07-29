@@ -9,7 +9,6 @@ function Hypercoagulation_enter(host, me, owner)
                 return card
             end
         end
-        -- return nil
     end
     local id = MaxHealthLayers:top().id + 1
     MaxHealthLayers:push(
