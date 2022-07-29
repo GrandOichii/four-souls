@@ -1,5 +1,9 @@
 {
     "cards": {
+        "Cancer": {
+            "large": "images/cancer_large.bmp",
+            "small": "images/cancer.bmp"
+        },
         "Battery Bum": {
             "large": "images/battery_bum_large.bmp",
             "small": "images/battery_bum.bmp"

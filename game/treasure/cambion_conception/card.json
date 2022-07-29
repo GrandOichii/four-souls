@@ -1,6 +1,6 @@
 {
     "name": "Cambion Conception",
-    "text": "Each time you take damage, put a counter on this.\nWhenever this has 6 counters on it, remove them and gain +1 treasure.",
+    "text": "Each time you take damage, put counters on this equal to the amount of damage taken. Then, if this 6+ counters, remove 6 counters from this and gain +1 treasure.",
     "script": "script.lua",
     "on": {
         "damage": {

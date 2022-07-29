@@ -334,7 +334,7 @@ end
 
 function Common_Discard(host, ownerID, amount)
     local player = Common_PlayerWithID(host, ownerID)
-    if #player["hand"] < amount then
+    if #player.hand < amount then
         return false
     end
     local message = "Choose a card to discard"

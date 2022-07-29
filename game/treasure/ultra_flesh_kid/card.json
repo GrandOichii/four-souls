@@ -1,0 +1,15 @@
+{
+    "name": "Ultra Flesh Kid!",
+    "text": "Each time a monster or player dies, put a counter on this.\nAt the end of your turn, if this has 12+ counters, it becomes a soul and loses all abilities.",
+    "script": "script.lua",
+    "on": {
+        "death": {
+            "check": "UltraFleshKid_trigger1_check",
+            "effect": "UltraFleshKid_trigger1"
+        },
+        "turn_end": {
+            "check": "UltraFleshKid_trigger2_check",
+            "effect": "UltraFleshKid_trigger2"
+        }
+    }
+}

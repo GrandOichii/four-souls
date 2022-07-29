@@ -1,0 +1,11 @@
+{
+    "name": "Cancer",
+    "text": "You have +1 to your first dice roll each turn.",
+    "script": "script.lua",
+    "on": {
+        "roll": {
+            "check": "Cancer_trigger_check",
+            "effect": "Cancer_trigger"
+        }
+    }
+}

@@ -307,6 +307,7 @@ Match::Match(nlohmann::json config, int seed) {
     this->_perDeathCoins = config.contains("perDeathCoins") ? (int)config["perDeathCoins"] : 1;
     this->_perDeathLoot = config.contains("perDeathLoot") ? (int)config["perDeathLoot"] : 1;
     this->_perDeathItems = config.contains("perDeathItems") ? (int)config["perDeathItems"] : 1;
+    this->_maxHandSize = config.contains("maxHandSize") ? (int)config["maxHandSize"] : 10;
     this->_startingLootAmount = config.contains("startingLootCount") ? (int)config["startingLootCount"] : 3;
     this->_startingCoinAmount = config.contains("startingCoinCount") ? (int)config["startingCoinCount"] : 3;
     this->_startingShopSize = config.contains("startingShopSize") ? (int)config["startingShopSize"]: 2;
@@ -321,7 +322,6 @@ Match::Match(nlohmann::json config, int seed) {
 Match::Match(nlohmann::json config)
     : Match(config, time(0)) 
 {}
-    
 
 Match::~Match() {
     // delete all players
@@ -1912,7 +1912,15 @@ void Match::setupLua(string setupScript) {
     "\n        local choice, payed = requestChoice(host, ownerID, 'Choose a card to destroy', CARD, cardIDs)"
     "\n        destroyCard(host, choice)"
     "\n    end"
-    "\n    "
+    "\nend"
+    "\nfunction _discardToHandSize(host, amount)"
+    "\n    local player = getCurrentPlayer(host)"
+    "\n    amount = #player.hand - amount"
+    "\n    if amount <= 0 then return end"
+    "\n    local cardIDs = requestCardsInHand(host, player.id, player.id, 'Discard to hand size ('..amount..')', amount)"
+    "\n    for _, cid in ipairs(cardIDs) do"
+    "\n        discardLoot(host, player.id, cid)"
+    "\n    end"
     "\nend");
     std::cout << "Loading setup script" << std::endl;
     this->execScript(setupScript);
@@ -2184,6 +2192,20 @@ void Match::turn() {
     if (_winner) return;
     this->resetEOT();
     _turnEnd = false;
+
+    // force player to discard to hand size
+    lua_getglobal(L, "_discardToHandSize");
+    if (!lua_isfunction(L, -1)) {
+        throw std::runtime_error("unknown function: _discardToHandSize");
+    }
+
+    lua_pushlightuserdata(L, this);
+    lua_pushnumber(L, _maxHandSize);
+    int r = lua_pcall(L, 2, 0, 0);
+    if (r != LUA_OK) {
+        lua_err(L);
+        throw std::runtime_error("failed to call discard to hand size function");
+    }
 
     for (const auto& data : _monsterDataArr)
         data->setIsBeingAttacked(false);

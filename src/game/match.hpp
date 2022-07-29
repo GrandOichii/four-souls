@@ -178,6 +178,7 @@ private:
     int _perDeathCoins;
     int _perDeathLoot;
     int _perDeathItems;
+    int _maxHandSize;
 
     bool _turnEnd = false;
     int _lastID = 0;
