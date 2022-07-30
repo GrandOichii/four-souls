@@ -1,8 +1,52 @@
 {
     "cards": {
+        "XXI. The World": {
+            "large": "images/xxi__the_world_large.bmp",
+            "small": "images/xxi__the_world.bmp"
+        },
+        "Bible Thump!": {
+            "large": "images/bible_thump__large.bmp",
+            "small": "images/bible_thump_.bmp"
+        },
+        "Chocolate Milk": {
+            "large": "images/chocolate_milk_large.bmp",
+            "small": "images/chocolate_milk.bmp"
+        },
+        "20/20": {
+            "large": "images/20_20_large.bmp",
+            "small": "images/20_20.bmp"
+        },
+        "Birthday Cake": {
+            "large": "images/birthday_cake_large.bmp",
+            "small": "images/birthday_cake.bmp"
+        },
+        "Crystal Ball": {
+            "large": "images/crystal_ball_large.bmp",
+            "small": "images/crystal_ball.bmp"
+        },
         "Wishbone": {
             "large": "images/wishbone_large.bmp",
             "small": "images/wishbone.bmp"
+        },
+        "Playdough Cookie": {
+            "large": "images/playdough_cookie_large.bmp",
+            "small": "images/playdough_cookie.bmp"
+        },
+        "Callus": {
+            "large": "images/callus_large.bmp",
+            "small": "images/callus.bmp"
+        },
+        "Battery Pack": {
+            "large": "images/battery_pack_large.bmp",
+            "small": "images/battery_pack.bmp"
+        },
+        "Blue Baby": {
+            "large": "images/blue_baby_large.bmp",
+            "small": "images/blue_baby.bmp"
+        },
+        "Two of Clubs": {
+            "large": "images/two_of_clubs_large.bmp",
+            "small": "images/two_of_clubs.bmp"
         },
         "Polydactyly": {
             "large": "images/polydactyly_large.bmp",
@@ -221,7 +265,7 @@
             "small": "images/blank_rune.bmp"
         },
         "Bloody penny": {
-            "large": "images/bloody_penny.bmp",
+            "large": "images/bloody_penny_large.bmp",
             "small": "images/bloody_penny.bmp"
         },
         "Bob's Brain": {

@@ -1,0 +1,11 @@
+{
+    "name": "20/20",
+    "text": "{T}: Add up to 2 to an attack roll.",
+    "script": "script.lua",
+    "abilities": [
+        {
+            "cost": "C2020_cost",
+            "ability": "C2020_tap"
+        }
+    ]
+}

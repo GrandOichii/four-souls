@@ -1,0 +1,18 @@
+{
+    "name": "Crystal Ball",
+    "text": "{T}: Before a dice is rolled, if the next roll is that number, loot 3.",
+    "script": "script.lua",
+    "enter": "CrystalBall_enter",
+    "on": {
+        "roll": {
+            "check": "CrystalBall_trigger_check",
+            "effect": "CrystalBall_trigger"
+        }
+    },
+    "abilities": [
+        {
+            "cost": "CrystalBall_cost",
+            "ability": "CrystalBall_tap"
+        }
+    ]
+}

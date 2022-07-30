@@ -1,8 +1,8 @@
 {
     "back": "images/loot_card_back.bmp",
-    "card1s": {
+    "car1ds": {
         "basic": {
-            "loot/the_stars": 20
+            "loot/the_world": 40
         },
         "trinkets": {
             "loot/bag_lunch": 0
@@ -47,6 +47,7 @@
             "loot/blank_rune": 1,
             "loot/justice": 1,
             "loot/black_rune": 1,
+            "loot/the_world": 1,
             "loot/strength": 1
         },
         "trinkets": {
@@ -59,6 +60,7 @@
             "loot/tick": 1,
             "loot/wishbone": 1,
             "loot/cancer": 1,
+            "loot/callus": 1,
             "loot/aaa_battery": 1
         }
     }

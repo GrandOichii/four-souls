@@ -120,6 +120,18 @@ gainTreasure = function (host, pid, amount)
     GainTreasureFuncStack:top().func(host, pid, amount)
 end
 
+-- loot cards func stack
+LootCardsFuncStack = FuncStack:Create()
+
+LootCardsFuncStack:push({
+    name = 'base',
+    func = lootCards
+})
+
+lootCards = function (host, pid, amount)
+    LootCardsFuncStack:top().func(host, pid, amount)
+end
+
 -- layers
 Layers = {}
 function Layers:Create()
@@ -415,10 +427,41 @@ function Common_TargetRoll(host, ownerID)
     local choices = {}
     local ci = 1
     for i, member in ipairs(stack) do
-        if member["type"] == ROLL then
+        if member.type == ROLL then
             choices[ci] = i-1
             ci = ci + 1
         end
+    end
+    if #choices == 0 then
+        return
+    end
+
+    local choice, payed = requestChoice(host, ownerID, "Choose a roll", STACK, choices)
+    if not payed then
+        return false
+    end
+    pushTarget(host, choice, ROLL)
+    return true
+end
+
+function Common_TargetCombatRoll(host, ownerID)
+    local rolls = getRollStack(host)
+    if #rolls == 0 then
+        return false
+    end
+    local stack = getStack(host)
+    local choices = {}
+    local rp = 1
+    for i, member in ipairs(stack) do
+        if member.type == ROLL then
+            if rolls[rp].isCombatRoll then
+                choices[#choices+1] = i-1
+            end
+            rp = rp + 1
+        end
+    end
+    if #choices == 0 then
+        return false
     end
     local choice, payed = requestChoice(host, ownerID, "Choose a roll", STACK, choices)
     if not payed then

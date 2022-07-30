@@ -1,0 +1,13 @@
+{
+    "name": "Chocolate Milk",
+    "text": "At the start of your turn, put a counter on this. Then, if this has 3+ counters, remove all counters from this and deal 1 damage to a monster or a player.\nWhile this has 2 on it, you have +1a.",
+    "script": "script.lua",
+    "enter": "ChocolateMilk_enter",
+    "leave": "ChocolateMilk_leave",
+    "on": {
+        "turn_start": {
+            "check": "ChocolateMilk_trigger_check",
+            "effect": "ChocolateMilk_trigger"
+        }
+    }
+}

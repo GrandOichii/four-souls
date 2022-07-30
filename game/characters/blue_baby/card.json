@@ -1,0 +1,9 @@
+{
+    "name": "Blue Baby",
+    "health": 2,
+    "attack": 1,
+    "item": "forever_alone",
+    "script": "script.lua",
+    "text": "{T}: Play an additional loot card this turn.\nStarting item: Forever Alone",
+    "use": "BlueBaby_use"
+}

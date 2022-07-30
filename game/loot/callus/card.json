@@ -1,0 +1,7 @@
+{
+    "name": "Callus",
+    "text": "Prevent all non-combat damage you would take.",
+    "script": "script.lua",
+    "enter": "Callus_enter",
+    "leave": "Callus_leave"
+}

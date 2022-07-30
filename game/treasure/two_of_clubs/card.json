@@ -1,0 +1,20 @@
+{
+    "name": "Two of Clubs",
+    "text": "{T}: Choose a player. Till end of turn, if they would loot any number of loot cards, they loot double that number instead.",
+    "script": "script.lua",
+    "enter": "TwoOfClubs_enter",
+    "leave": "TwoOfClubs_leave",
+    "abilities": [
+        {
+            "cost": "TwoOfClubs_cost",
+            "ability": "TwoOfClubs_tap"
+        }
+    ],
+    "on": {
+        "turn_end": {
+            "usesStack": false,
+            "check": "TwoOfClubs_trigger_check",
+            "effect": "TwoOfClubs_trigger"
+        }
+    }
+}

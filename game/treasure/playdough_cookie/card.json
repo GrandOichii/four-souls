@@ -1,0 +1,11 @@
+{
+    "name": "Plydough Cookie",
+    "text": "At the start of your turn, you may choose a non-eternal item. Put a counter on that item or remove one from it. Otherwise, gain 1c.",
+    "script": "script.lua",
+    "on": {
+        "turn_start": {
+            "check": "PlaydoughCookie_trigger_check",
+            "effect": "PlaydoughCookie_trigger"
+        }
+    }
+}

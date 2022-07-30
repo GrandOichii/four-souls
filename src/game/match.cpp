@@ -780,37 +780,25 @@ int Match::wrap_requestChoice(lua_State* L) {
 int Match::wrap_requestCardsInHand(lua_State* L){ 
     stackSizeIs(L, 5);
     auto match = getTopMatch(L, 1);
-    if (!lua_isnumber(L, 2)) {
-        lua_err(L);
-        exit(1);
-    }
-    auto pid = (int)lua_tonumber(L, 2);
+    auto pid = getTopNumber(L, 2);
     Player* player = match->playerWithID(pid);
-    if (!lua_isnumber(L, 3)) {
-        lua_err(L);
-        exit(1);
-    }
-    auto tid = (int)lua_tonumber(L, 3);
-    Player* target = match->playerWithID(pid); // just check that they exist
-    if (!lua_isstring(L, 4)) {
-        lua_err(L);
-        exit(1);
-    }
-    auto text = (string)lua_tostring(L, 4);
-    if (!lua_isnumber(L, 5)) {
-        lua_err(L);
-        exit(1);
-    }
-    auto amount = (int)lua_tonumber(L, 5);
+    auto tid = getTopNumber(L, 3);
+    Player* target = match->playerWithID(tid); // just check that they exist
+    auto text = getTopString(L, 4);
+    auto amount = getTopNumber(L, 5);
     auto state = match->getState();
     auto result = player->promptChooseCardsInHand(state, text, tid, amount);
     match->saveResponse(player->name(), result);
+    std::cout << "BEGIN\n";
     if (result == RESPONSE_FIRST) {
-        auto hand = player->hand();
+        auto hand = target->hand();
+        std::cout << "TARGET: " << target->name() << std::endl;
+        std::cout << "HAND SIZE: " << hand.size() << std::endl;
         result = std::to_string(hand[0]->id());
         for (int i = 1; i < amount; i++)
             result += " " + std::to_string(hand[i]->id());
     }
+    std::cout << "END\n";
     auto split = str::split(result, " ");
     auto size = split.size();
     lua_createtable(L, size, 0);
@@ -2403,6 +2391,7 @@ MatchState Match::getState() {
     for (const auto& p : _players) 
         result.boards.push_back(p->getState());
     int rsi = 0;
+    int dsp = 0;
 
     for (auto& si : _stack){
         auto s = si->getState();
@@ -2436,8 +2425,21 @@ MatchState Match::getState() {
                 s.message += _activePlayer->name();
             else s.message += _monsters[_lastMonsterIndex].back()->card()->name();
         }
+        if (si->type == DEATH_TYPE) {
+            string message = "Death of\n";
+            DeathEvent* de = &_lastDeath;
+            if (dsp < _deathStack.size()) {
+                de = &_deathStack[dsp];
+                ++dsp;
+            }
+            if (de->type == MONSTER_TYPE) {                
+                message += cardWithID(de->id)->card()->name();
+            } else {
+                message += playerWithID(de->id)->name();
+            }
+            s.message = message;
+        }
         result.stack.push_back(s);
-        //  TODO DEATH_TYPE = "death";
     }
 
     result.currentI = _currentI;

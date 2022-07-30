@@ -34,25 +34,17 @@ function Shadow_enter(host, me, owner)
                 for _, card in ipairs(player.board) do
                     if not card.isEternal then
                         cardIDs[#cardIDs+1] = card.id
-                        print('ADDING CARD '..card.id..'\t'..card.name)
                     end
                 end
-                print('CHOICES SIZE: '..#cardIDs)
                 if #cardIDs == 0 then
                     return
                 end
                 if #cardIDs == 1 then
-                    print('DESTROYING FIRST CARD')
                     destroyCard(host, cardIDs[1])
-                    print('FIRST CARD DESTROYED')
                     return
                 end
-                print('REQUESTING CHOICE')
                 local choice, payed = requestChoice(host, owner.id, 'Choose a card to destroy', CARD, cardIDs)
-                print('CHOICE RECEIVED: '..choice)
-                print('DESTROYING')
                 destroyCard(host, choice)
-                print('DESTROYED')
             end
         end
     })

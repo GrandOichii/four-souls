@@ -1,0 +1,11 @@
+{
+    "name": "Birthday Cake",
+    "text": "At the start oy your turn, choose any number of players. Those players loot 1.",
+    "script": "script.lua",
+    "on": {
+        "turn_start": {
+            "check": "BirthdayCake_trigger_check",
+            "effect": "BirthdayCake_trigger"
+        }
+    }
+}

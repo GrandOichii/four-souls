@@ -2,7 +2,7 @@
     "name": "Samson",
     "health": 2,
     "attack": 1,
-    "item": "forever_alone",
+    "item": "blood_lust",
     "script": "script.lua",
     "text": "{T}: Play an additional loot card this turn.\nStarting item: Blood Lust",
     "use": "Samson_use"
