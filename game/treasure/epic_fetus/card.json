@@ -1,0 +1,11 @@
+{
+    "name": "Epic Fetus",
+    "text": "{T}: Deal 1 damage to a monster, player and yourself.",
+    "script": "script.lua",
+    "abilities": [
+        {
+            "cost": "EpicFetus_cost",
+            "ability": "EpicFetus_tap"
+        }
+    ]
+}

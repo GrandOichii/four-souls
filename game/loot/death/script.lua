@@ -1,9 +1,8 @@
---  TODO untested
---  TODO decide the order of the players
+function Death_cost(host, cardInfo)
+    return Common_TargetPlayer(host, cardInfo)
+end
 
 function Death_use(host)
-    local players = getPlayers(host)
-    for _, player in ipairs(players) do
-        killEntity(host, PLAYER, player.id)
-    end
+    local target = popTarget(host)
+    killEntity(host, PLAYER, target.id)
 end

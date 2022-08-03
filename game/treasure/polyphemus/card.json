@@ -1,0 +1,7 @@
+{
+    "name": "Polyphemus",
+    "text": "+2a\nMonsters have +1r on your turn.",
+    "script": "script.lua",
+    "enter": "Polyphemus_enter",
+    "leave": "Polyphemus_leave"
+}

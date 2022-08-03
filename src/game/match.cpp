@@ -205,7 +205,7 @@ json MatchState::toJson() {
 
 static Match* getTopMatch(lua_State* L, int pos) {
     if (!lua_isuserdata(L, pos)) {
-        dumpstack(L);
+        // dumpstack(L);
         throw std::runtime_error("position at " + std::to_string(pos) + " of lua stack is not pointer to match");
     }
     return static_cast<Match*>(lua_touserdata(L, pos));
@@ -213,7 +213,7 @@ static Match* getTopMatch(lua_State* L, int pos) {
 
 static string getTopString(lua_State* L, int pos) {
     if (!lua_isstring(L, pos)) {
-        dumpstack(L);
+        // dumpstack(L);
         throw std::runtime_error("position at " + std::to_string(pos) + " of lua stack is not string");
     }
     return (string)lua_tostring(L, pos);
@@ -221,7 +221,7 @@ static string getTopString(lua_State* L, int pos) {
 
 static int getTopNumber(lua_State* L, int pos) {
     if (!lua_isnumber(L, pos)) {
-        dumpstack(L);
+        // dumpstack(L);
         throw std::runtime_error("position at " + std::to_string(pos) + " of lua stack is not number");
     }
     return (int)lua_tonumber(L, pos);
@@ -229,7 +229,7 @@ static int getTopNumber(lua_State* L, int pos) {
 
 static bool getTopBool(lua_State* L, int pos) {
     if (!lua_isboolean(L, pos)) {
-        dumpstack(L);
+        // dumpstack(L);
         throw std::runtime_error("position at " + std::to_string(pos) + " of lua stack is not boolean");
     }
     return (bool)lua_toboolean(L, pos);
@@ -237,7 +237,6 @@ static bool getTopBool(lua_State* L, int pos) {
 
 static void stackSizeIs(lua_State* L, int size) {
     if (lua_gettop(L) == size) return;
-    dumpstack(L);
     throw std::runtime_error("expected lua stack size to be " + std::to_string(size) + ", but it is " + std::to_string(lua_gettop(L)));
 }
 
@@ -566,6 +565,15 @@ int Match::wrap_setTurnEnd(lua_State* L) {
     return 0;
 }
 
+int Match::wrap_incPurchaseAmount(lua_State* L) {
+    stackSizeIs(L, 2);
+    auto match = getTopMatch(L, 1);
+    auto pid = getTopNumber(L, 2);
+    auto player = match->playerWithID(pid);
+    player->incPurchaseAmount();
+    return 0;
+}
+
 int Match::wrap_getTopOwner(lua_State* L) {
     stackSizeIs(L, 1);
     auto match = getTopMatch(L, 1);
@@ -789,16 +797,12 @@ int Match::wrap_requestCardsInHand(lua_State* L){
     auto state = match->getState();
     auto result = player->promptChooseCardsInHand(state, text, tid, amount);
     match->saveResponse(player->name(), result);
-    std::cout << "BEGIN\n";
     if (result == RESPONSE_FIRST) {
         auto hand = target->hand();
-        std::cout << "TARGET: " << target->name() << std::endl;
-        std::cout << "HAND SIZE: " << hand.size() << std::endl;
         result = std::to_string(hand[0]->id());
         for (int i = 1; i < amount; i++)
             result += " " + std::to_string(hand[i]->id());
     }
-    std::cout << "END\n";
     auto split = str::split(result, " ");
     auto size = split.size();
     lua_createtable(L, size, 0);
@@ -840,6 +844,38 @@ int Match::wrap_discardLoot(lua_State* L) {
     auto card = player->takeCard(cid);
     match->_lootDiscard.push_back(card);
     return 0;
+}
+
+int Match::wrap_getMRoll(lua_State* L) {
+    stackSizeIs(L, 2);
+    auto match = getTopMatch(L, 1);
+    auto mid = getTopNumber(L, 2);
+    MonsterData* mdata = nullptr;
+    for (int i = 0; i < match->_monsters.size(); i++) {
+        if (match->_monsters[i].back()->id() == mid) {
+            mdata = match->_monsterDataArr[i];
+            break;
+        }
+    }
+    if (!mid) throw std::runtime_error("failed to find active monter with id: " + std::to_string(mid));
+    lua_pushnumber(L, mdata->baseRoll());
+    return 1;
+}
+
+int Match::wrap_getMPower(lua_State* L) {
+    stackSizeIs(L, 2);
+    auto match = getTopMatch(L, 1);
+    auto mid = getTopNumber(L, 2);
+    MonsterData* mdata = nullptr;
+    for (int i = 0; i < match->_monsters.size(); i++) {
+        if (match->_monsters[i].back()->id() == mid) {
+            mdata = match->_monsterDataArr[i];
+            break;
+        }
+    }
+    if (!mid) throw std::runtime_error("failed to find active monter with id: " + std::to_string(mid));
+    lua_pushnumber(L, mdata->basePower());
+    return 1;
 }
 
 int Match::wrap_requestSimpleChoice(lua_State* L) {
@@ -946,6 +982,15 @@ int Match::wrap_getTopDamageEvent(lua_State* L) {
     auto event = match->_damageStack.top();
     event.pushTable(L);
     return 1;
+}
+
+int Match::wrap_tapCharacterCard(lua_State* L) {
+    stackSizeIs(L, 2);
+    auto match = getTopMatch(L, 1);
+    auto pid = getTopNumber(L, 2);
+    auto player = match->playerWithID(pid);
+    player->tapCharacter();
+    return 0;
 }
 
 int Match::wrap_rechargeCharacterCard(lua_State* L) {
@@ -1671,8 +1716,14 @@ int Match::wrap_getActiveMonsters(lua_State* L) {
         lua_pushnumber(L, i+1);
         match->_monsters[i].back()->pushTable(L);
         l_pushtablenumber(L, "health", data->health());
-        l_pushtablenumber(L, "roll", data->roll());
-        l_pushtablenumber(L, "power", data->power());
+        // these are unique, because they themselves use the lua stack
+        lua_pushstring(L, "roll");
+        data->roll();
+        lua_settable(L, -3);
+        lua_pushstring(L, "power");
+        data->power();
+        lua_settable(L, -3);
+        
         l_pushtableboolean(L, "isBeingAttacked", data->isBeingAttacked());
         lua_settable(L, -3);
     }
@@ -1726,7 +1777,7 @@ void Match::execEnter(CardWrapper* w, Player* owner) {
     lua_getglobal(L, funcName.c_str());
     if (!lua_isfunction(L, -1)) {
         lua_err(L);
-        exit(1);
+        throw std::runtime_error("failed to execute enter function " + funcName);
     }
     lua_pushlightuserdata(L, this);
     w->pushTable(L);
@@ -1746,7 +1797,7 @@ void Match::execLeave(CardWrapper* w, Player* owner) {
     lua_getglobal(L, funcName.c_str());
     if (!lua_isfunction(L, -1)) {
         lua_err(L);
-        exit(1);
+        throw std::runtime_error("failed to execute leave function " + funcName);
     }
     lua_pushlightuserdata(L, this);
     w->pushTable(L);
@@ -1764,6 +1815,8 @@ void Match::setupLua(string setupScript) {
     luaL_openlibs(L);
     // connect functions
     lua_register(L, "healPlayer", wrap_healPlayer);
+    lua_register(L, "_getMRoll", wrap_getMRoll);
+    lua_register(L, "_getMPower", wrap_getMPower);
     lua_register(L, "rechargeCharacterCard", wrap_rechargeCharacterCard);
     lua_register(L, "setTurnEnd", wrap_setTurnEnd);
     lua_register(L, "getTurnCounter", wrap_getTurnCounter);
@@ -1812,6 +1865,7 @@ void Match::setupLua(string setupScript) {
     lua_register(L, "requestCardsInHand", wrap_requestCardsInHand);
     lua_register(L, "discardLoot", wrap_discardLoot);
     lua_register(L, "incAttackCount", wrap_incAttackCount);
+    lua_register(L, "tapCharacterCard", wrap_tapCharacterCard);
     lua_register(L, "tapCard", wrap_tapCard);
     lua_register(L, "millDeck", wrap_millDeck);
     lua_register(L, "getTopOwner", wrap_getTopOwner);
@@ -1826,41 +1880,42 @@ void Match::setupLua(string setupScript) {
     lua_register(L, "getActiveMonsters", wrap_getActiveMonsters);
     lua_register(L, "_getMaxHealth", wrap_getMaxHealth);
     lua_register(L, "_getAttack", wrap_getAttack);
+    lua_register(L, "incPurchaseAmount", wrap_incPurchaseAmount);
 
     //  TODO add state checking after some functions
 
     // load card scripts
     for (const auto& w : _lootDeck) {
-        std::cout << "Loading script for " << w->card()->name() << std::endl;
+        // std::cout << "Loading script for " << w->card()->name() << std::endl;
         this->execScript(w->card()->script());
     }
     for (const auto& w : _treasureDeck) {
-        std::cout << "Loading script for " << w->card()->name() << std::endl;
+        // std::cout << "Loading script for " << w->card()->name() << std::endl;
         this->execScript(w->card()->script());
     }
     for (const auto& w : _monsterDeck) {
-        std::cout << "Loading script for " << w->card()->name() << std::endl;
+        // std::cout << "Loading script for " << w->card()->name() << std::endl;
         this->execScript(w->card()->script());
     }
     for (const auto& pair : _characterPool) {
         auto character = pair.first;
-        std::cout << "Loading script for " << character->name() << std::endl;
+        // std::cout << "Loading script for " << character->name() << std::endl;
         this->execScript(character->script());
         auto card = character->startingItem();
-        std::cout << "Loading script for " << card->name() << std::endl;
+        // std::cout << "Loading script for " << card->name() << std::endl;
         this->execScript(card->script());
     }
     std::cout << "Loading base script" << std::endl;
     // setup script
     this->execScript(""
-    "LOOT_DECK = \"" + LOOT_DECK + "\""
-    "\nTREASURE_DECK = \"" + TREASURE_DECK + "\""
-    "\nMONSTER_DECK = \"" + MONSTER_DECK + "\""
-    "\nCARD = \"" + CARD_TARGET + "\""
-    "\nSTACK = \"" + STACK_MEMBER_TARGET + "\""
-    "\nPLAYER = \"" + PLAYER_TARGET + "\""
-    "\nMONSTER = \"" + MONSTER_TARGET + "\""
-    "\nROLL = \"" + ROLL_TYPE + "\""
+    "LOOT_DECK = \'" + LOOT_DECK + "\'"
+    "\nTREASURE_DECK = \'" + TREASURE_DECK + "\'"
+    "\nMONSTER_DECK = \'" + MONSTER_DECK + "\'"
+    "\nCARD = \'" + CARD_TARGET + "\'"
+    "\nSTACK = \'" + STACK_MEMBER_TARGET + "\'"
+    "\nPLAYER = \'" + PLAYER_TARGET + "\'"
+    "\nMONSTER = \'" + MONSTER_TARGET + "\'"
+    "\nROLL = \'" + ROLL_TYPE + "\'"
     "\nPER_DEATH_LOOT = " + std::to_string(this->_perDeathLoot).c_str() + ""
     "\nPER_DEATH_COINS = " + std::to_string(this->_perDeathCoins).c_str() + ""
     "\nfunction _startTurnLoot(host)"
@@ -1869,22 +1924,26 @@ void Match::setupLua(string setupScript) {
     "\nend"
     "\nmath.randomseed(" + std::to_string(_seed) + ")"
     "\nfunction _deathPenalty(host, player)"
-    "\n    local amount = PER_DEATH_LOOT"
     "\n    local ownerID = player.id"
-    "\n    amount = math.min(amount, #(player.hand))"
-    "\n    if amount ~= 0 then"
-    "\n        local message = 'Choose a card to discard'"
-    "\n        if amount > 1 then"
-    "\n            message = 'Choose '..amount..' cards to discard'"
-    "\n        end"
-    "\n        local cardIDs = requestCardsInHand(host, ownerID, ownerID, message, amount)"
-    "\n        for _, cid in ipairs(cardIDs) do"
-    "\n            discardLoot(host, ownerID, cid)"
-    "\n        end"
+    "\n    local function discard()"
+    "\n        local amount = PER_DEATH_LOOT"
+    "\n        amount = math.min(amount, #(player.hand))"
+    "\n        if amount ~= 0 then"
+    "\n            local message = 'Choose a card to discard'"
+    "\n            if amount > 1 then"
+    "\n                message = 'Choose '..amount..' cards to discard'"
+    "\n            end"
+    "\n            local cardIDs = requestCardsInHand(host, ownerID, ownerID, message, amount)"
+    "\n            for _, cid in ipairs(cardIDs) do"
+    "\n                discardLoot(host, ownerID, cid)"
+    "\n            end"
+    "\n        end"    
     "\n    end"
-    "\n    amount = math.min(PER_DEATH_COINS, player.coins)"
-    "\n    subCoins(host, player.id, amount)"
-    "\n    if #player['board'] ~= 1 then"
+    "\n    local function payCoins()"
+    "\n        local amount = math.min(PER_DEATH_COINS, player.coins)"
+    "\n        subCoins(host, player.id, amount)"
+    "\n    end"
+    "\n    local function destroyItems()"
     "\n        local cardIDs = {}"
     "\n        for _, card in ipairs(player['board']) do"
     "\n            if not card['isEternal'] then"
@@ -1901,6 +1960,19 @@ void Match::setupLua(string setupScript) {
     "\n        local choice, payed = requestChoice(host, ownerID, 'Choose a card to destroy', CARD, cardIDs)"
     "\n        destroyCard(host, choice)"
     "\n    end"
+    "\n    local function tapCards()"
+    "\n        tapCharacterCard(host, player.id)"
+    "\n        for _, card in ipairs(player.board) do"
+    "\n            if not card.passive then"
+    "\n                tapCard(host, card.id)"
+    "\n            end"
+    "\n        end"
+    "\n    "
+    "\n    end"
+    "\n    discard()"
+    "\n    payCoins()"
+    "\n    destroyItems()"
+    "\n    tapCards()"
     "\nend"
     "\nfunction _discardToHandSize(host, amount)"
     "\n    local player = getCurrentPlayer(host)"
@@ -1918,7 +1990,7 @@ void Match::setupLua(string setupScript) {
 
 void Match::lua_err(lua_State *L) {
     string errormsg = lua_tostring(L, -1);
-    std::cout << "LUA ERR:" << errormsg << std::endl;
+    std::cout << "LUA ERR: " << errormsg << std::endl;
 }
 
 void Match::execScript(string script) {
@@ -2085,7 +2157,9 @@ void Match::start() {
         vector<CardWrapper*> pile;
         pile.push_back(c);
         _monsters.push_back(pile);
-        _monsterDataArr.push_back(((MonsterCard*)c->card())->data());
+        auto mcard = ((MonsterCard*)c->card());
+        mcard->createData(L, this, c->id());
+        _monsterDataArr.push_back(mcard->data());
     }
 
     this->_priorityI = this->_currentI;
@@ -2515,7 +2589,7 @@ void Match::refillDeadMonsters() {
     for (int i = 0; i < _monsters.size(); i++) {
         if (_monsterDataArr[i]->health()) continue;
         auto w = _monsters[i].back();
-        ((MonsterCard*)w->card())->resetData();
+        ((MonsterCard*)w->card())->deleteData();
         _monsters[i].pop_back();
         _monsterDiscard.push_back(w);
         CardWrapper* newM = nullptr;
@@ -2526,7 +2600,10 @@ void Match::refillDeadMonsters() {
         } else {
             newM = _monsters[i].back();
         }
-        _monsterDataArr[i] = ((MonsterCard*)newM->card())->data();
+        auto mcard = ((MonsterCard*)newM->card());
+        mcard->createData(L, this, newM->id());
+        std::cout << "NEW MONSTER " << mcard->name() << "\t" << mcard->data()->baseHealth() << " " << mcard->data()->baseRoll() << " " << mcard->data()->basePower() << std::endl;
+        _monsterDataArr[i] = mcard->data();
         pushDeathEvent(MONSTER_TYPE, w->id());
     }
     if (hasBonus) {

@@ -10,6 +10,7 @@
     -- psy horf
 
 - implement:
+    -- remove declaring attack while in combat
     -- when stealing item, call their "leave", then call their "enter", so that the effects know who the owner is
     -- add custom counters (egg counters mostly)
     -- remove killing players multiple times per turn
@@ -20,10 +21,8 @@
     -- some effects need to distinct between different turns (add wrap_getTurnCounter, use CardData table to store last turn)
     -- add game logs (perhaps in a different window)
     -- better card zoom ( perhaps in a different window )
-    -- add tapping all cards of dead player
-    -- add dice modifiers
-    -- add buying cards from the top of the treasure deck
     -- add visible rolls and attack to monsters
+    -- add attacking top of monster deck
     -- implement monster effects
     -- implement effects that buff monsters
     -- add bonus effects to the monster deck
@@ -36,6 +35,9 @@
     -- search for the reason of the [declare_attack-roll] in stack (if it's still even present)
     -- change choice cards to store player's choice in CardData, dont forget to log the player's choice for other players
     -- figure out how to implement canceling effects
+    -- add multiple cube of meat cards
+
+- bonus:
     -- add animations
     -- add sound
     -- better client ui

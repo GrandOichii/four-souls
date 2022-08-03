@@ -96,8 +96,13 @@ struct MonsterDataState {
     int blueHealth;
 };
 
+class Match;
+
 class MonsterData {
 private:
+    lua_State* _L = nullptr;
+    Match* _parent = nullptr;
+    int _mid;
     int _basePower;
     int _baseRoll;
     int _health;
@@ -105,11 +110,14 @@ private:
     int _maxHealth;
     bool _isBeingAttacked = false;
 public:
-    MonsterData(int health, int roll, int power);
+    MonsterData(lua_State* L, Match* parent, int mid, int health, int roll, int power);
     MonsterDataState getState();
     int roll();
+    int baseRoll();
     int health();
+    int baseHealth();
     int power();
+    int basePower();
     int dealDamage(int amount);
     void fullHeal();
     int maxHealth();
@@ -131,7 +139,8 @@ public:
     ~MonsterCard();
     string rewardsFuncName();
     MonsterData* data();
-    void resetData();
+    void deleteData();
+    void createData(lua_State* L, Match* parent, int id);
 };
 
 struct CardState {

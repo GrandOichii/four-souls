@@ -234,6 +234,43 @@ function Common_TempIncAttack(host, cardID, targetID, amount)
     Common_PushEOT(host, Common_DecAttack, cardID, targetID, id)
 end
 
+-- monster roll layers
+MonsterRollLayers = Layers:Create()
+
+MonsterRollLayers:push({
+    id = 1,
+    func = _getMRoll
+})
+
+_getMRoll = function (host, mid)
+    return MonsterRollLayers:top().func(host, mid)
+end
+
+function Common_IncMonsterRolls(ownerID, value)
+    local id = MonsterRollLayers:top().id + 1
+    MonsterRollLayers:push(
+        {
+            id = id,
+            func = function (host_, mid)
+                local p = getCurrentPlayer(host_)
+                local add = 0
+                if p.id == ownerID then
+                    add = value
+                end
+                return math.min(6, add + MonsterRollLayers._et[MonsterRollLayers:posOf(id)-1].func(host_, mid))
+            end
+        }
+    )
+    return id
+end
+
+function Common_DecMonsterRolls(host, id, ownerID)
+    MonsterRollLayers:remove(id)
+    -- for i, layer in ipairs(MonsterRollLayers._et) do
+    --     print(i, layer.id)
+    -- end
+end
+
 
 -- treasure / loot
 
@@ -337,10 +374,10 @@ end
 
 function Common_Tap(host)
     local card = this(host)
-    if card["tapped"] then
+    if card.tapped then
         return false
     end
-    tapCard(host, card["id"])
+    tapCard(host, card.id)
     return true
 end
 
@@ -600,7 +637,7 @@ end
 function Common_OwnersTurn(host, cardID)
     local owner = getOwner(host, cardID)
     local currentPlayer = getCurrentPlayer(host)
-    return owner["id"] == currentPlayer["id"]
+    return owner.id == currentPlayer.id
 end
 
 function Common_AllPlayersLoot(host, amount)

@@ -13,11 +13,12 @@ function MamaMega_tap(host)
         },
         {
             collection = getPlayers(host),
-            elType = MONSTER
+            elType = PLAYER
         }
     }
     for _, tt in ipairs(t) do
         for _, element in ipairs(tt.collection) do
+            print('DEALING DAMAGE TO '..tt.elType..' (ID: '..element.id..')')
             dealDamage(host, PLAYER, owner.id, tt.elType, element.id, 3)
         end
     end

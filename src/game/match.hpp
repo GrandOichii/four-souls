@@ -384,8 +384,12 @@ public:
     void pushDamageEvent(DamageTrigger event);
     void refillDeadMonsters();
     //  TODO add wrap_popBonusCards, inside of it call refillDeadMonsters
+    static int wrap_tapCharacterCard(lua_State* L);
+    static int wrap_incPurchaseAmount(lua_State* L);
     static int wrap_cancelCurrentAttack(lua_State* L);
     static int wrap_setTurnEnd(lua_State* L);
+    static int wrap_getMRoll(lua_State* L);
+    static int wrap_getMPower(lua_State* L);
     static int wrap_getTurnCounter(lua_State* L);
     static int wrap_getMaxHealth(lua_State* L);
     static int wrap_getAttack(lua_State* L);

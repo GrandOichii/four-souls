@@ -22,7 +22,9 @@ void l_pushtableboolean(lua_State* L, string key, bool value) {
     lua_settable(L, -3);
 }
 
-void dumpstack (lua_State *L) {
+void dumpstack(lua_State *L) {
+    std::cout << "DUMP" << std::endl;
+    return;
     int top=lua_gettop(L);
     for (int i=1; i <= top; i++) {
         std::cout << i << "\t" << luaL_typename(L,i) << "\t";
@@ -45,44 +47,3 @@ void dumpstack (lua_State *L) {
         }
     }
 }
-
-// string toJson(const string& v) { return "\"" + v + "\""; }
-// string toJson(const int& v) { return std::to_string(v); }
-// string toJson(const bool& v) { return (v ? "true" : "false"); }
-
-// string toJson(const CardState& state) {
-//     string result = "{";
-//     addValue(result, "active", state.active);
-//     addValue(result, "id", state.id);
-//     addValue(result, "cardName", state.cardName);
-//     addValue(result, "counters", state.counters, true);
-//     result += "}";
-//     return result;
-// }
-
-// template<class T>
-// string toJson(std::vector<T> v) {
-//     string result = "[";
-//     for (int i = 0; i < v.size(); i++) {
-//         result += toJson(v[i]);
-//         if (i != v.size()-1) result += ", ";
-//     }
-//     result += "]";
-//     return result;
-// }
-
-// template<class T>
-// void addValue(string& j, string key, T value, bool last) {
-//     j += "\"" + key + "\" : " + toJson(value) + "" + (last ? "" : ", ");
-// }
-
-// template<class T>
-// void addValueV(string& j, string key, std::vector<T> value, bool last) {
-//     j += "\"" + key + "\" : [";
-//     for (int i = 0; i < value.size(); i++) {
-//         j += toJson(value[i]);
-//         if (i != value.size()-1) j += ", ";
-//     }
-//     j += "]";
-//     if (last) j += "}";
-// }

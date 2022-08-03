@@ -1,5 +1,21 @@
 {
     "cards": {
+        "Polyphemus": {
+            "large": "images/polyphemus_large.bmp",
+            "small": "images/polyphemus.bmp"
+        },
+        "There's Options": {
+            "large": "images/there_s_options_large.bmp",
+            "small": "images/there_s_options.bmp"
+        },
+        "Rock Bottom": {
+            "large": "images/rock_bottom_large.bmp",
+            "small": "images/rock_bottom.bmp"
+        },
+        "Epic Fetus": {
+            "large": "images/epic_fetus_large.bmp",
+            "small": "images/epic_fetus.bmp"
+        },
         "XXI. The World": {
             "large": "images/xxi__the_world_large.bmp",
             "small": "images/xxi__the_world.bmp"

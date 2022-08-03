@@ -92,7 +92,10 @@ int CharacterCard::attack() { return _attack; }
 int CharacterCard::health() { return _health; }
 ScriptCard* CharacterCard::startingItem() { return _startingItem; }
 
-MonsterData::MonsterData(int health, int roll, int power) {
+MonsterData::MonsterData(lua_State* L, Match* parent, int mid, int health, int roll, int power) {
+    _L = L;
+    _parent = parent;
+    _mid = mid;
     _health = health;
     _maxHealth = _health;
     _blueHealth = 0;
@@ -102,22 +105,63 @@ MonsterData::MonsterData(int health, int roll, int power) {
 
 MonsterDataState MonsterData::getState() {
     MonsterDataState result;
-    //  TODO
     result.health = _health;
-    result.roll = _baseRoll;
-    result.power = _basePower;
+    result.roll = roll();
+    result.power = power();
     result.blueHealth = _blueHealth;
     return result;
 }
 
-int MonsterData::roll() {
-    //  TODO
+int MonsterData::baseRoll() {
     return _baseRoll;
 }
 
-int MonsterData::power() {
-    //  TODO
+int MonsterData::roll() {
+    lua_getglobal(_L, "_getMRoll");
+    if (!lua_isfunction(_L, -1)) {
+        throw std::runtime_error("unknown function: _getMRoll");
+    }
+    lua_pushlightuserdata(_L, _parent);
+    lua_pushnumber(_L, _mid);
+
+    int r = lua_pcall(_L, 2, 1, 0);
+    if (r != LUA_OK) {
+        throw std::runtime_error("failed to call _getMRoll function");
+    }
+    if (!lua_isnumber(_L, -1)) {
+        throw std::runtime_error("_getMRoll didn't return a number");
+    }
+
+    int result = (int)lua_tonumber(_L, -1);
+    return result;
+}
+
+int MonsterData::basePower() {
     return _basePower;
+}
+
+int MonsterData::power() {
+    lua_getglobal(_L, "_getMPower");
+    if (!lua_isfunction(_L, -1)) {
+        throw std::runtime_error("unknown function: _getMPower");
+    }
+    lua_pushlightuserdata(_L, _parent);
+    lua_pushnumber(_L, _mid);
+
+    int r = lua_pcall(_L, 2, 1, 0);
+    if (r != LUA_OK) {
+        throw std::runtime_error("failed to call _getMPower function");
+    }
+    if (!lua_isnumber(_L, -1)) {
+        throw std::runtime_error("_getMPower didn't return a number");
+    }
+
+    int result = (int)lua_tonumber(_L, -1);
+    return result;
+}
+
+int MonsterData::baseHealth() {
+    return _health;
 }
 
 int MonsterData::health() {
@@ -154,8 +198,7 @@ MonsterCard::MonsterCard(string dir, json j) :
     _baseHealth = j["health"];
     _baseRoll = j["roll"];
     _basePower = j["power"];
-    _data = new MonsterData(_baseHealth, _baseRoll, _basePower);
-    std::cout << "MONSTER " << _name << ": " << _baseHealth << " " << _baseRoll << " " << _basePower << std::endl;
+    // std::cout << "MONSTER " << name() << "\t" << _baseHealth << " " << _baseRoll << " " << _basePower << std::endl;
 }
 
 MonsterCard::~MonsterCard() {
@@ -168,9 +211,12 @@ MonsterData* MonsterCard::data() { return _data; }
 bool MonsterData::isBeingAttacked() { return _isBeingAttacked; }
 void MonsterData::setIsBeingAttacked(bool value) { _isBeingAttacked = value; }
 
-void MonsterCard::resetData() {
+void MonsterCard::deleteData() {
     delete _data;
-    _data = new MonsterData(_baseHealth, _baseRoll, _basePower);
+}
+
+void MonsterCard::createData(lua_State* L, Match* parent, int id) {
+    _data = new MonsterData(L, parent, id, _baseHealth, _baseRoll, _basePower);
 }
 
 CardWrapper::CardWrapper(ScriptCard* card, int id) :

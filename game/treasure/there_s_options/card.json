@@ -1,0 +1,18 @@
+{
+    "name": "There's Options",
+    "text": "You may look at the top card of the treasure deck at any time during your turn.\nYou may purchase an additional time on your turn.",
+    "script": "script.lua",
+    "on": {
+        "turn_start": {
+            "usesStack": false,
+            "check": "TheresOptions_trigger_check",
+            "effect": "TheresOptions_trigger"
+        }
+    },
+    "abilities": [
+        {
+            "cost": "TheresOptions_cost",
+            "ability": "TheresOptions_peek"
+        }
+    ]
+}

@@ -2,5 +2,6 @@
     "name": "XIII. Death",
     "text": "Kill all players.",
     "script": "script.lua",
+    "cost": "Death_cost",
     "use": "Death_use"
 }
