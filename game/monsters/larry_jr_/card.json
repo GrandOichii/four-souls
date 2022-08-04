@@ -5,5 +5,7 @@
     "health": 4,
     "roll": 3,
     "power": 1,
-    "rewards": "LarryJr_rewards"
+    "rewards": "LarryJr_rewards",
+    "enter": "LarryJr_enter",
+    "leave": "LarryJr_leave"
 }

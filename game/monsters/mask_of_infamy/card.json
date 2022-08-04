@@ -5,5 +5,7 @@
     "health": 4,
     "roll": 4,
     "power": 1,
-    "rewards": "MaskOfInfamy_rewards"
+    "rewards": "MaskOfInfamy_rewards",
+    "enter": "MaskOfInfamy_enter",
+    "leave": "MaskOfInfamy_leave"
 }

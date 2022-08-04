@@ -1,0 +1,12 @@
+{
+    "name": "Death's Head",
+    "text": "Monsters have +1a.\nThis can't be attacked.\nWhen another monster dies, this dies.",
+    "script": "script.lua",
+    "canBeAttacked": false,
+    "health": 2,
+    "roll": 0,
+    "power": 0,
+    "rewards": "DeathsHead_rewards",
+    "enter": "DeathsHead_enter",
+    "leave": "DeathsHead_leave"
+}

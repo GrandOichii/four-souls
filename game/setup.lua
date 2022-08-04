@@ -266,10 +266,41 @@ end
 
 function Common_DecMonsterRolls(host, id, ownerID)
     MonsterRollLayers:remove(id)
-    -- for i, layer in ipairs(MonsterRollLayers._et) do
-    --     print(i, layer.id)
-    -- end
 end
+
+-- monster power layers
+MonsterPowerLayers = Layers:Create()
+
+MonsterPowerLayers:push({
+    id = 1,
+    func = _getMPower
+})
+
+_getMPower = function (host, mid)
+    return MonsterPowerLayers:top().func(host, mid)
+end
+
+-- function Common_IncMonsterRolls(ownerID, value)
+--     local id = MonsterPowerLayers:top().id + 1
+--     MonsterPowerLayers:push(
+--         {
+--             id = id,
+--             func = function (host_, mid)
+--                 local p = getCurrentPlayer(host_)
+--                 local add = 0
+--                 if p.id == ownerID then
+--                     add = value
+--                 end
+--                 return math.min(6, add + MonsterPowerLayers._et[MonsterPowerLayers:posOf(id)-1].func(host_, mid))
+--             end
+--         }
+--     )
+--     return id
+-- end
+
+-- function Common_DecMonsterRolls(host, id, ownerID)
+--     MonsterPowerLayers:remove(id)
+-- end
 
 
 -- treasure / loot

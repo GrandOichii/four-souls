@@ -5,5 +5,7 @@
     "health": 5,
     "roll": 4,
     "power": 3,
-    "rewards": "Delirium_rewards"
+    "rewards": "Delirium_rewards",
+    "enter": "Delirium_enter",
+    "leave": "Delirium_leave"
 }
