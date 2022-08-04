@@ -69,9 +69,9 @@ Press space to pass priority / end the turn.
 To zoom in on a card, hold shift while mousingg over it.
 
 ## Screenshots
-![alt text](https://github.com/GrandOichii/four-souls/screenshots/screenshot1.png)
+![alt text](https://github.com/GrandOichii/four-souls/blob/master/screenshots/screenshot1.png)
 <!-- ![alt text](screenshots/screenshot1.png) -->
-![alt text](https://github.com/GrandOichii/four-souls/screenshots/screenshot2.png)
+![alt text](https://github.com/GrandOichii/four-souls/blob/master/screenshots/screenshot2.png)
 <!-- ![alt text](screenshots/screenshot2.png) -->
-![alt text](https://github.com/GrandOichii/four-souls/screenshots/screenshot3.png)
+![alt text](https://github.com/GrandOichii/four-souls/blob/master/screenshots/screenshot3.png)
 <!-- ![alt text](screenshots/screenshot3.png) -->

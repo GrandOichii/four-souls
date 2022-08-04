@@ -92,7 +92,8 @@ int CharacterCard::attack() { return _attack; }
 int CharacterCard::health() { return _health; }
 ScriptCard* CharacterCard::startingItem() { return _startingItem; }
 
-MonsterData::MonsterData(lua_State* L, Match* parent, int mid, int health, int roll, int power) {
+MonsterData::MonsterData(lua_State* L, Match* parent, int mid, int health, int roll, int power, bool canBeAttacked) {
+    _canBeAttacked = canBeAttacked;
     _L = L;
     _parent = parent;
     _mid = mid;
@@ -108,6 +109,7 @@ MonsterDataState MonsterData::getState() {
     result.health = _health;
     result.roll = roll();
     result.power = power();
+    result.canBeAttacked = _canBeAttacked;
     result.blueHealth = _blueHealth;
     return result;
 }
@@ -187,6 +189,8 @@ int MonsterData::dealDamage(int amount) {
     return amount;
 }
 
+bool MonsterData::canBeAttacked() { return _canBeAttacked; }
+
 void MonsterData::nullHealth() {
     _health = 0;
 }
@@ -198,6 +202,8 @@ MonsterCard::MonsterCard(string dir, json j) :
     _baseHealth = j["health"];
     _baseRoll = j["roll"];
     _basePower = j["power"];
+    if (j.contains("canBeAttacked"))
+        _canBeAttacked = j["canBeAttacked"];
     // std::cout << "MONSTER " << name() << "\t" << _baseHealth << " " << _baseRoll << " " << _basePower << std::endl;
 }
 
@@ -216,7 +222,7 @@ void MonsterCard::deleteData() {
 }
 
 void MonsterCard::createData(lua_State* L, Match* parent, int id) {
-    _data = new MonsterData(L, parent, id, _baseHealth, _baseRoll, _basePower);
+    _data = new MonsterData(L, parent, id, _baseHealth, _baseRoll, _basePower, _canBeAttacked);
 }
 
 CardWrapper::CardWrapper(ScriptCard* card, int id) :

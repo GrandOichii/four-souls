@@ -4,6 +4,10 @@
             "large": "images/polyphemus_large.bmp",
             "small": "images/polyphemus.bmp"
         },
+        "Newgrounds Tank": {
+            "large": "images/newgrounds_tank_large.bmp",
+            "small": "images/newgrounds_tank.bmp"
+        },
         "There's Options": {
             "large": "images/there_s_options_large.bmp",
             "small": "images/there_s_options.bmp"

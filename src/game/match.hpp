@@ -465,6 +465,7 @@ public:
     void execEnter(CardWrapper* w, Player* owner);
     void execLeave(CardWrapper* w, Player* owner);
     void execFunc(string funcName);
+    void execMEnterLeave(CardWrapper* cardW, string funcName);
     bool execCheck(string funcName, CardWrapper* card);
     void addToCharacterPool(CharacterCard* card);
     void addPlayer(Player* player);

@@ -1,22 +1,22 @@
 {
     "back": "images/monster_card_back.bmp",
     "cards": {
-        "monsters1": [
-            "monsters/leech",
-            "monsters/leech",
-            "monsters/leech",
-            "monsters/leech",
-            "monsters/leech",
-            "monsters/leech",
-            "monsters/leech",
-            "monsters/leech",
-            "monsters/leech",
-            "monsters/leech",
-            "monsters/leech",
-            "monsters/leech",
-            "monsters/leech"
-        ],
         "monsters": [
+            "monsters/stoney",
+            "monsters/stoney",
+            "monsters/stoney",
+            "monsters/stoney",
+            "monsters/stoney",
+            "monsters/stoney",
+            "monsters/stoney",
+            "monsters/stoney",
+            "monsters/pooter",
+            "monsters/pooter",
+            "monsters/pooter",
+            "monsters/pooter",
+            "monsters/pooter"
+        ],
+        "monste1rs": [
             "monsters/big_spider",
             "monsters/black_bony",
             "monsters/boom_fly",

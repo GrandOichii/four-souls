@@ -54,6 +54,7 @@ static MonsterDataState monsterDataFromJson(json j) {
     result.power = j["power"];
     result.health = j["health"];
     result.blueHealth = j["blueHealth"];
+    result.canBeAttacked = j["canBeAttacked"];
     return result;
 }
 
@@ -120,6 +121,7 @@ static json monsterDataToJson(const MonsterDataState& data) {
     result["power"] = data.power;
     result["roll"] = data.roll;
     result["blueHealth"] = data.blueHealth;
+    result["canBeAttacked"] = data.canBeAttacked;
     return result;
 }
 
@@ -841,6 +843,8 @@ int Match::wrap_discardLoot(lua_State* L) {
         exit(1);
     }
     auto cid = (int)lua_tonumber(L, 3);
+    std::cout << "AMOGUS " << cid << std::endl;
+
     auto card = player->takeCard(cid);
     match->_lootDiscard.push_back(card);
     return 0;
@@ -1785,7 +1789,7 @@ void Match::execEnter(CardWrapper* w, Player* owner) {
     int r = lua_pcall(L, 3, 0, 0);
     if (r != LUA_OK) {
         lua_err(this->L);
-        exit(1);
+        throw std::runtime_error("failed to execute enter func of card " + w->card()->name());
     }
 }
 
@@ -1933,6 +1937,9 @@ void Match::setupLua(string setupScript) {
     "\n            if amount > 1 then"
     "\n                message = 'Choose '..amount..' cards to discard'"
     "\n            end"
+    // "\n            for _, card in ipairs(player.hand) do"
+    // "\n                print('CARD', card.id, card.name)"
+    // "\n            end"
     "\n            local cardIDs = requestCardsInHand(host, ownerID, ownerID, message, amount)"
     "\n            for _, cid in ipairs(cardIDs) do"
     "\n                discardLoot(host, ownerID, cid)"
@@ -2160,6 +2167,7 @@ void Match::start() {
         auto mcard = ((MonsterCard*)c->card());
         mcard->createData(L, this, c->id());
         _monsterDataArr.push_back(mcard->data());
+        execMEnterLeave(c, mcard->enterFuncName());
     }
 
     this->_priorityI = this->_currentI;
@@ -2590,6 +2598,7 @@ void Match::refillDeadMonsters() {
         if (_monsterDataArr[i]->health()) continue;
         auto w = _monsters[i].back();
         ((MonsterCard*)w->card())->deleteData();
+        execMEnterLeave(w, w->card()->leaveFuncName());
         _monsters[i].pop_back();
         _monsterDiscard.push_back(w);
         CardWrapper* newM = nullptr;
@@ -2602,12 +2611,33 @@ void Match::refillDeadMonsters() {
         }
         auto mcard = ((MonsterCard*)newM->card());
         mcard->createData(L, this, newM->id());
-        std::cout << "NEW MONSTER " << mcard->name() << "\t" << mcard->data()->baseHealth() << " " << mcard->data()->baseRoll() << " " << mcard->data()->basePower() << std::endl;
+        execMEnterLeave(newM, mcard->enterFuncName());
+
+        // std::cout << "NEW MONSTER " << mcard->name() << "\t" << mcard->data()->baseHealth() << " " << mcard->data()->baseRoll() << " " << mcard->data()->basePower() << std::endl;
         _monsterDataArr[i] = mcard->data();
         pushDeathEvent(MONSTER_TYPE, w->id());
     }
     if (hasBonus) {
         //  TODO push function of bonus card
+    }
+}
+
+void Match::execMEnterLeave(CardWrapper* cardW, string funcName) {
+    if (!funcName.size()) return;
+
+    // this->execFunc(efn);
+    this->log("Executing monster function " + funcName);
+    lua_getglobal(L, funcName.c_str());
+    if (!lua_isfunction(L, -1)) {
+        lua_err(L);
+        throw std::runtime_error("failed to execute monster function " + funcName);
+    }
+    lua_pushlightuserdata(L, this);
+    cardW->pushTable(L);
+    int r = lua_pcall(L, 2, 0, 0);
+    if (r != LUA_OK) {
+        lua_err(this->L);
+        throw std::runtime_error("failed to execute monster func of card " + cardW->card()->name());
     }
 }
 

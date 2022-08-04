@@ -10,11 +10,12 @@
     -- psy horf
 
 - implement:
+    -- implement testing records
     -- remove declaring attack while in combat
     -- when stealing item, call their "leave", then call their "enter", so that the effects know who the owner is
     -- add custom counters (egg counters mostly)
     -- remove killing players multiple times per turn
-    -- add refilling to the stack
+    -- add refilling shops/monsters to the stack
     -- add state effects (are checked every time game updates)
     -- separate trinkets from treasure in treasure discard
     -- enable activation choice in client (if card has 2+ activated abilities)

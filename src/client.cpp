@@ -69,8 +69,11 @@ public:
                 _allowedCards.push_back(value.id);
         // check monsters
         if (me.attackCount && _state.stack.size() == 0) {
-            for (const auto& value : _state.monsters)
-                _allowedCards.push_back(value.id);
+            for (int i = 0; i < _state.monsters.size(); i++) {
+                if (_state.monsterDataArr[i].canBeAttacked)
+                    _allowedCards.push_back(_state.monsters[i].id);
+
+            }
         }
     }
 

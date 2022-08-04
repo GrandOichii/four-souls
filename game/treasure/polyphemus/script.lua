@@ -7,6 +7,5 @@ end
 
 function Polyphemus_leave(host, me, owner)
     Common_DecAttack(host, CardData[me.id].iaID, owner.id)
-    print('REMOVING MONSTER ROLL LAYER: '..CardData[me.id].irID)
     Common_DecMonsterRolls(host, CardData[me.id].irID, owner.id)
 end

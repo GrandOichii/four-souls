@@ -5,5 +5,8 @@
     "health": 3,
     "roll": 0,
     "power": 0,
+    "canBeAttacked": false,
+    "enter": "Stoney_enter",
+    "leave": "Stoney_leave",
     "rewards": "Stoney_rewards"
 }

@@ -94,6 +94,7 @@ struct MonsterDataState {
     int roll;
     int power;
     int blueHealth;
+    bool canBeAttacked;
 };
 
 class Match;
@@ -108,9 +109,10 @@ private:
     int _health;
     int _blueHealth;
     int _maxHealth;
+    bool _canBeAttacked = true;
     bool _isBeingAttacked = false;
 public:
-    MonsterData(lua_State* L, Match* parent, int mid, int health, int roll, int power);
+    MonsterData(lua_State* L, Match* parent, int mid, int health, int roll, int power, bool canBeAttacked);
     MonsterDataState getState();
     int roll();
     int baseRoll();
@@ -124,6 +126,7 @@ public:
     bool isBeingAttacked();
     void setIsBeingAttacked(bool value);
     void nullHealth();
+    bool canBeAttacked();
 };
 
 class MonsterCard : public ScriptCard {
@@ -131,6 +134,7 @@ private:
     int _baseHealth;
     int _basePower;
     int _baseRoll;
+    bool _canBeAttacked = true;
 
     MonsterData* _data = nullptr;
     string _rewardsFuncName;
