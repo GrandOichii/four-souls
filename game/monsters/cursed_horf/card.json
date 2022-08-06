@@ -5,5 +5,11 @@
     "health": 1,
     "roll": 4,
     "power": 1,
-    "rewards": "CursedHorf_rewards"
+    "rewards": "CursedHorf_rewards",
+    "on": {
+        "roll": {
+            "check": "CursedHorf_trigger_check",
+            "effect": "CursedHorf_trigger"
+        }
+    }
 }

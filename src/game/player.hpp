@@ -50,6 +50,7 @@ private:
     CardWrapper* _characterCard;
     CharacterCard* _characterCardOrig;
     string _name;
+    bool _isDead = false;
 
     int _maxHealth;
     int _health;
@@ -114,6 +115,9 @@ public:
     void incMaxAttackCount();
     void decMaxAttackCount();
     void incAttackCount();
+
+    bool isDead();
+    void setIsDead(bool value);
 
     int attack();
     int baseAttack();

@@ -2,10 +2,19 @@
 #include <SDL.h>
 #include <SDL_ttf.h>
 
+#include <regex>
+
 #include "common.hpp"
 #include "window.hpp"
 
+const std::regex CARD_NAME_REGEX("\\$\\{([\\w\\ \\'\\!\\?]+)\\}|[\\w\\?\\!]+");
+
 using Client = client_interface<PollType>;
+
+struct MessageMember {
+    string message;
+    bool isCard;
+};
 
 class ClientWrapper : public Window {
 private:
@@ -17,14 +26,14 @@ private:
     vector<SDL_Texture*> _simpleChoiceTextures;
     int _maxSimpleChoiceLength = 0;
 
+    std::vector<MessageMember> _lastText;
+
     int _cardAmount = 0;
     vector<int> _chosenCardIDs;
 
     vector<int> _allowedCards;
     vector<int> _allowedPlayers;
     vector<int> _allowedStackMembers;
-
-    SDL_Texture* _lastTextTex = nullptr;
     
     string _host;
     Client* _c;
@@ -44,7 +53,7 @@ public:
 
     ~ClientWrapper() {
         delete _c;
-        SDL_DestroyTexture(_lastTextTex);
+        clearLastText();
     }
 
     void getActionCalc() {
@@ -82,12 +91,33 @@ public:
         _simpleChoiceTextures.clear();
     }
 
+    void setTopText(string text) {
+        clearLastText();
+        auto words_begin = std::sregex_iterator(text.begin(), text.end(), CARD_NAME_REGEX);
+        auto words_end = std::sregex_iterator();
+        for (auto i = words_begin; i != words_end; ++i) {
+            std::smatch match = *i;
+            string message = match.str();
+            MessageMember mem;
+            mem.message = message;
+            mem.isCard = false;
+            if (match.str(1).size()) {
+                mem.message = match.str(1);
+                mem.isCard = true;
+            }
+            _lastText.push_back(mem);
+        }
+    }
+
+    void clearLastText() {
+        _lastText.clear();
+    }
+
     void promptCalc(nlohmann::json j) {
         std::vector<int> choices;
         for (const auto& [key, value] : j["prompt"]["choices"].items()) choices.push_back(value);
         // last text texture
-        SDL_DestroyTexture(this->_lastTextTex);
-        this->_lastTextTex = _assets->getMessage(j["prompt"]["text"], SDL_Color{255, 0, 0, 0}, _boardStart);
+        setTopText(j["prompt"]["text"]);
         auto lastChoiceType = j["prompt"]["choiceType"];
         if (lastChoiceType == PLAYER_TARGET) {
             _allowedPlayers = choices;
@@ -109,8 +139,7 @@ public:
     }
 
     void simplePromptCalc(nlohmann::json j) {
-        SDL_DestroyTexture(this->_lastTextTex);
-        this->_lastTextTex = _assets->getMessage(j["prompt"]["text"], SDL_Color{255, 0, 0, 0}, 24);
+        setTopText(j["prompt"]["text"]);
         _maxSimpleChoiceLength = 0;
         for (const auto& [key, value] : j["prompt"]["choices"].items()) {
             _simpleChoices.push_back(value);
@@ -148,16 +177,14 @@ public:
             message<PollType> reply;
             reply << _simpleChoices[ci];
             _c->Send(reply);
-            SDL_DestroyTexture(_lastTextTex);
-            _lastTextTex = nullptr;
+            clearLastText();
             _waitingResponse = false;
             _mouseLock = true;
         }
     }
 
     void chooseCardsCalc(nlohmann::json j) {
-        SDL_DestroyTexture(this->_lastTextTex);
-        this->_lastTextTex = _assets->getMessage(j["prompt"]["text"], SDL_Color{255, 0, 0, 0}, _boardStart);
+        setTopText(j["prompt"]["text"]);
         auto targetID = j["prompt"]["targetID"];
         this->_cardAmount = j["prompt"]["amount"];
         for (const auto& board : _state.boards) {
@@ -185,8 +212,7 @@ public:
                 message = "You lost! (Winner: " + winnerName + ")";
                 color = SDL_Color{255, 0, 0, 0};
             }
-            std::cout << "WINNER " << winnerID << std::endl;
-            _lastTextTex = _assets->getMessage(message, color, 24);
+            setTopText(message);
         }
         _allowedCards.clear();
         _allowedPlayers.clear();
@@ -299,8 +325,7 @@ public:
         message<PollType> reply;
         reply << std::to_string(state.id);
         _c->Send(reply);
-        SDL_DestroyTexture(_lastTextTex);
-        _lastTextTex = nullptr;
+        clearLastText();
     }
 
     void onClick(PlayerBoardState state) {
@@ -320,8 +345,7 @@ public:
         message<PollType> reply;
         reply << std::to_string(i);
         _c->Send(reply);
-        SDL_DestroyTexture(_lastTextTex);
-        _lastTextTex = nullptr;
+        clearLastText();
     }
 
     void onClick(int i) {
@@ -362,7 +386,6 @@ public:
             throw std::runtime_error("Card " + card.cardName + " [" + std::to_string(card.id) + "] has unknown zone");
             return;
         case Zones::Hand:
-            //  TODO check that the card is owned by active player
             reply << "play_loot " + std::to_string(card.id);
             break;
         case Zones::Board:
@@ -377,7 +400,6 @@ public:
             reply << buyTreasureReply(card);
             break;
         case Zones::Stack:
-            //  TODO
             break;
         case Zones::LootDiscard:
             //  TODO show the player the discard pile
@@ -399,8 +421,7 @@ public:
         message<PollType> reply;
         reply << std::to_string(card.id);
         _c->Send(reply);
-        SDL_DestroyTexture(_lastTextTex);
-        _lastTextTex = nullptr;
+        clearLastText();
     }
 
     void chooseCard(CardState& card) {
@@ -414,14 +435,12 @@ public:
             message += " " + std::to_string(_chosenCardIDs[i]);
         reply << message;
         _c->Send(reply);
-        SDL_DestroyTexture(_lastTextTex);
-        _lastTextTex = nullptr;
+        clearLastText();
         _waitingResponse = false;
     }
 
     void onClick(CardState card) {
         if (!_waitingResponse) return;
-        // std::cout << card.cardName << "\t" << card.id << std::endl;
         switch (_lastRequestType) {
         case PollType::GetAction:
             this->sendAction(card);
@@ -439,7 +458,6 @@ public:
     }
 
     void drawCard(CardState& card, int angle, int x, int y, Rect * bBox = nullptr) override {
-        //  TODO hide opponents hand
         if (card.zone == Zones::Hand) {
             bool flag = false;
             for (const auto& aid : _allowedCards)
@@ -479,8 +497,29 @@ public:
     void draw() {
         Window::draw(_state);
         // draw top text
-        if (_lastTextTex) {
-            this->drawTexture(_lastTextTex, _sideBoardX, 0);
+        auto spaceTex = _assets->getMessage(" ", SDL_Color{0, 0, 0, 0}, 24);
+        auto spaceWidth = getSize(spaceTex).first;
+        SDL_DestroyTexture(spaceTex);
+        int x = _sideBoardX;
+        int y = 0;
+        for (const auto& member : _lastText) {
+            unsigned char r = (member.isCard ? 0 : 255);
+            unsigned char g = (member.isCard ? 255 : 0);
+            auto tex = _assets->getMessage(member.message, SDL_Color{r, g, 0, 0}, 24);
+            auto size = getSize(tex);
+            int w = size.first;
+            int h = size.second;
+            this->drawTexture(tex, x, y);
+            SDL_DestroyTexture(tex);
+            int xx = x;
+            x += size.first + spaceWidth;
+            if (!member.isCard) continue;
+            int mx, my;
+            auto s = SDL_GetMouseState(&mx, &my);
+            if (!(mx >= xx && my >= y && mx <= xx + w && my <= h + y)) continue;
+            tex = this->_assets->getCard(member.message, CardSize::LARGE);
+            size = getSize(tex);
+            this->drawTexture(tex, _stackX - size.first, 0);
         }
         // draw simple choice choices
         this->drawSimplePromptBox();

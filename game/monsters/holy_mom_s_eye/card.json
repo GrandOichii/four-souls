@@ -1,9 +1,15 @@
 {
-    "name": "Holy Mom\u2019s Eye",
+    "name": "Holy Mom's Eye",
     "text": "",
     "script": "script.lua",
     "health": 1,
     "roll": 4,
     "power": 2,
-    "rewards": "HolyMomsEye_rewards"
+    "rewards": "HolyMomsEye_rewards",
+    "on": {
+        "roll": {
+            "check": "HolyMomsEye_trigger_check",
+            "effect": "HolyMomsEye_trigger"
+        }
+    }
 }

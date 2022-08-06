@@ -5,5 +5,11 @@
     "health": 3,
     "roll": 3,
     "power": 1,
-    "rewards": "HolyDinga_rewards"
+    "rewards": "HolyDinga_rewards",
+    "on": {
+        "roll": {
+            "check": "HolyDinga_trigger_check",
+            "effect": "HolyDinga_trigger"
+        }
+    }
 }

@@ -5,5 +5,11 @@
     "health": 2,
     "roll": 4,
     "power": 1,
-    "rewards": "CursedKeeperHead_rewards"
+    "rewards": "CursedKeeperHead_rewards",
+    "on": {
+        "roll": {
+            "check": "CursedKeeperHead_trigger_check",
+            "effect": "CursedKeeperHead_trigger"
+        }
+    }
 }

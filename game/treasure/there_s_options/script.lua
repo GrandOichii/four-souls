@@ -12,5 +12,11 @@ function TheresOptions_cost(host)
 end
 
 function TheresOptions_peek(host)
-    --  TODO
+    local cards = topCardsOf(host, TREASURE_DECK, 1)
+    if #cards == 0 then
+        return
+    end
+    local card = cards[1]
+    local owner = getTopOwner(host)
+    requestSimpleChoice(host, owner.id, 'Top card of the treasure deck is ${'..card.name..'}', {'Ok'})
 end

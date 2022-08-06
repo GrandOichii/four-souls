@@ -88,11 +88,10 @@ struct DamageTrigger {
 
     string targetType;
     int targetID;
-    // string targetType;
-    // int id;
-    //  TODO change to: source - (type, id), target - (type, id)
     
     int amount;
+    bool isCombatDamage;
+
     int shelfLife;
 
     void pushTable(lua_State* L) {
@@ -104,6 +103,7 @@ struct DamageTrigger {
         l_pushtablenumber(L, "targetID", (float)this->targetID);
 
         l_pushtablenumber(L, "amount", (float)this->amount);
+        l_pushtableboolean(L, "isCombatDamage", isCombatDamage);
     }
 };
 
@@ -259,7 +259,7 @@ private:
             this->log(player->name() + " plays card " + card->name());
             player->decPlayableAmount();
             std::cout << "PLAYABLE AMOUNT LEFT: " << player->getPlayableAmount() << std::endl;
-            this->triggerLastEffectType();
+            this->applyTriggers(PLAY_LOOT_CARD_TYPE);
         }},
         {ACTION_BUY_TREASURE, [this](Player* player, std::vector<string> args){
             this->_lastTreasureIndex = std::stoi(args[1].c_str());
@@ -300,7 +300,7 @@ private:
                 p->targets.push_back(it->second);
             }
             this->log(player->name() + " activated " + card->name());
-            this->triggerLastEffectType();
+            applyTriggers(ACTIVATE_ITEM_TYPE);
         }},
         {ACTION_ACTIVATE_CHARACTER_CARD, [this](Player* player, std::vector<string> args) {
             player->tapCharacter();
@@ -330,7 +330,6 @@ private:
             this->triggerLastEffectType();
         }}
     };
-
     std::map<string, std::deque<CardWrapper*>*> _deckMap = {
         {LOOT_DECK, &_lootDeck},
         {TREASURE_DECK, &_treasureDeck},
@@ -411,6 +410,7 @@ public:
     static int wrap_tapCard(lua_State* L);
     static int wrap_rechargeCard(lua_State* L);
     static int wrap_getStack(lua_State* L);
+    static int wrap_expandActiveMonsters(lua_State* L);
     static int wrap_getTopDamageEvent(lua_State* L);
     static int wrap_getDamageEvent(lua_State* L);
     static int wrap_destroyCard(lua_State* L);
@@ -445,11 +445,14 @@ public:
     static int wrap_topCardsOf(lua_State* L);
     static int wrap_getCurrentPlayer(lua_State* L);
     static int wrap_addSouls(lua_State* L);
+    static int wrap_getActivations(lua_State* L);
     static int wrap_setNextPlayer(lua_State* L);
+    static int wrap_getMonsterHealth(lua_State* L);
     static int wrap_incTreasureCost(lua_State* L);
     static int wrap_decTreasureCost(lua_State* L);
     static int wrap_getTopOwner(lua_State* L);
     static int wrap_attackMonster(lua_State* L);
+    static int wrap_expandShopSize(lua_State* L);
     static int wrap_rechargeCharacterCard(lua_State* L);
     void healMonsters();
     void rollAttack();

@@ -38,7 +38,6 @@ public:
     SDL_Texture * get(std::string message, SDL_Color color) {
         SDL_Surface *surf = TTF_RenderText_Blended(_font, message.c_str(), color);
         if (surf == nullptr){
-            TTF_CloseFont(_font);
             std::cout << "TTF_RenderText Error: " << SDL_GetError() << std::endl;
             throw std::runtime_error("failed rendering message " + message);
         }
@@ -260,6 +259,7 @@ public:
     }
 
     SDL_Texture* getMessage(string message, SDL_Color color, int fontSize) {
+        // std::cout << "RENDERING TEX " << message << std::endl;
         if (!_fontMap.count(fontSize)) throw std::runtime_error("no font with size " + std::to_string(fontSize));
         return _fontMap[fontSize]->get(message, color);
     }
@@ -699,7 +699,6 @@ public:
     }
 
     virtual void drawCard(CardState& card, int angle, int x, int y, Rect * bBox = nullptr) {
-        //  TODO add card zoom
         auto cardTex = this->_assets->getCard(card.cardName, CardSize::SMALL);
         _cardLocs[card.id] = std::make_pair(x + 10, y + 10);
         this->drawTexture(cardTex, x, y, angle);

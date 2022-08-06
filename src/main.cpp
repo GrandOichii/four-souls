@@ -188,10 +188,6 @@ public:
         }
     }
 
-    //  TODO create a new type of player: observable bot
-    //  his actions are done by lua, but he has a window, where you can inspect the game state
-    // it will much safer than the game wrapper class
-
     void start() {
         this->setup();
         this->_running = true;

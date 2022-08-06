@@ -5,8 +5,7 @@ function LarryJr_enter(host, me)
             id = id,
             func = function (host_, mid)
 				local add = 0
-				local me_ = Common_MonsterWithID(host, mid)
-				if mid == me.id and me_.health <= 2 then
+				if mid == me.id and getMonsterHealth(host, mid) <= 2 then
 					add = 1
 				end
                 return math.min(6, add + MonsterRollLayers._et[MonsterRollLayers:posOf(id)-1].func(host_, mid))

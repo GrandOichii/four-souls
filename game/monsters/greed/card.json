@@ -5,5 +5,11 @@
     "health": 3,
     "roll": 4,
     "power": 1,
-    "rewards": "Greed_rewards"
+    "rewards": "Greed_rewards",
+    "on": {
+        "damage": {
+            "check": "Greed_trigger_check",
+            "effect": "Greed_trigger"
+        }
+    }
 }

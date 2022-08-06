@@ -2,7 +2,7 @@
     "back": "images/loot_card_back.bmp",
     "car1ds": {
         "basic": {
-            "loot/the_world": 40
+            "loot/gold_bomb": 40
         },
         "trinkets": {
             "loot/bag_lunch": 0

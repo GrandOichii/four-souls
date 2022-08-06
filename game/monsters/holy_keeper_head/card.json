@@ -5,5 +5,11 @@
     "health": 2,
     "roll": 4,
     "power": 1,
-    "rewards": "HolyKeeperHead_rewards"
+    "rewards": "HolyKeeperHead_rewards",
+    "on": {
+        "roll": {
+            "check": "HolyKeeperHead_trigger_check",
+            "effect": "HolyKeeperHead_trigger"
+        }
+    }
 }

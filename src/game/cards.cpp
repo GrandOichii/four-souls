@@ -128,6 +128,9 @@ int MonsterData::roll() {
 
     int r = lua_pcall(_L, 2, 1, 0);
     if (r != LUA_OK) {
+        dumpstack(_L);
+        string errormsg = lua_tostring(_L, -1);
+        std::cout << "LUA ERR: " << errormsg << std::endl;
         throw std::runtime_error("failed to call _getMRoll function");
     }
     if (!lua_isnumber(_L, -1)) {
@@ -204,6 +207,8 @@ MonsterCard::MonsterCard(string dir, json j) :
     _basePower = j["power"];
     if (j.contains("canBeAttacked"))
         _canBeAttacked = j["canBeAttacked"];
+    if (j.contains("death"))
+        _deathFuncName = j["death"];
     // std::cout << "MONSTER " << name() << "\t" << _baseHealth << " " << _baseRoll << " " << _basePower << std::endl;
 }
 
@@ -211,6 +216,7 @@ MonsterCard::~MonsterCard() {
     delete _data;
 }
 
+string MonsterCard::deathFuncName() { return _deathFuncName; }
 string MonsterCard::rewardsFuncName() { return _rewardsFuncName; }
 
 MonsterData* MonsterCard::data() { return _data; }

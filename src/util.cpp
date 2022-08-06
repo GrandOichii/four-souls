@@ -1,5 +1,7 @@
 #include "util.hpp"
 
+#include <iostream>
+
 namespace str {
     vector<string> widthSplit(string text, int maxWidth) {
         vector<string> result;
@@ -38,12 +40,17 @@ namespace str {
 
 namespace fs {
     nlohmann::json readJS(const string path) {
-        std::ifstream in(path);
-        if (!in) throw std::runtime_error("path " + string(path) + " doesn't exist");
-        nlohmann::json j;
-        in >> j;
-        in.close();
-        return j;
+        try {
+            std::ifstream in(path);
+            if (!in) throw std::runtime_error("path " + string(path) + " doesn't exist");
+            nlohmann::json j;
+            in >> j;
+            in.close();
+            return j;
+        } catch (std::exception& ex) {
+            std::cerr << ex.what() << std::endl;
+            throw std::runtime_error("failed to read json from " + path);
+        }
     }
 
     string join(const vector<string> dirs) {

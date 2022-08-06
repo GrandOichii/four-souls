@@ -10,6 +10,8 @@
     -- psy horf
 
 - implement:
+    -- add stealing cards
+    -- implement viewing cards from simple requests
     -- implement testing records
     -- remove declaring attack while in combat
     -- when stealing item, call their "leave", then call their "enter", so that the effects know who the owner is

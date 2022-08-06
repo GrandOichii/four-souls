@@ -5,5 +5,11 @@
     "health": 1,
     "roll": 4,
     "power": 1,
-    "rewards": "HolyDip_rewards"
+    "rewards": "HolyDip_rewards",
+    "on": {
+        "roll": {
+            "check": "HolyDip_trigger_check",
+            "effect": "HolyDip_trigger"
+        }
+    }
 }

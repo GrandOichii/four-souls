@@ -1,5 +1,5 @@
 {
-    "name": "Plydough Cookie",
+    "name": "Playdough Cookie",
     "text": "At the start of your turn, you may choose a non-eternal item. Put a counter on that item or remove one from it. Otherwise, gain 1c.",
     "script": "script.lua",
     "on": {

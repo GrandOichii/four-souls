@@ -23,8 +23,8 @@ void l_pushtableboolean(lua_State* L, string key, bool value) {
 }
 
 void dumpstack(lua_State *L) {
-    std::cout << "DUMP" << std::endl;
-    return;
+    // std::cout << "DUMP" << std::endl;
+    // return;
     int top=lua_gettop(L);
     for (int i=1; i <= top; i++) {
         std::cout << i << "\t" << luaL_typename(L,i) << "\t";

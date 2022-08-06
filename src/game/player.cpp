@@ -41,6 +41,8 @@ void Player::setStartingValues(int treasurePrice, int attackCount, int playableC
 
 CharacterCard* Player::origCharacterCard() { return _characterCardOrig; }
 
+void Player::setIsDead(bool value) { _isDead = value; }
+
 int Player::dealDamage(int amount) {
     _blueHealth -= amount;
     if (_blueHealth >= 0) return 0;
@@ -127,6 +129,7 @@ void Player::decMonsterAttackAmount() {
     --this->_attackCount;
 }
 
+bool Player::isDead() { return _isDead; }
 
 void Player::pushTable(lua_State* L) {
     lua_newtable(L);
@@ -324,6 +327,7 @@ void Player::resetEOT() {
     _blueHealth = 0;
     _health = maxHealth();
     _attackCount = _maxAttackCount;
+    _isDead = false;
 }
 
 BotPlayer::BotPlayer(std::string name, CharacterCard* card, int id, string script) :

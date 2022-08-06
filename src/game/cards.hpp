@@ -1,5 +1,3 @@
-//  TODO add costs to loot cards
-
 #pragma once
 
 #include <string>
@@ -136,12 +134,15 @@ private:
     int _baseRoll;
     bool _canBeAttacked = true;
 
+    string _deathFuncName = "";
+
     MonsterData* _data = nullptr;
     string _rewardsFuncName;
 public:
     MonsterCard(string dir, json j);
     ~MonsterCard();
     string rewardsFuncName();
+    string deathFuncName();
     MonsterData* data();
     void deleteData();
     void createData(lua_State* L, Match* parent, int id);

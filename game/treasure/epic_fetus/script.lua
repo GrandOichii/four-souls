@@ -7,6 +7,6 @@ function EpicFetus_tap(host)
     local target1 = popTarget(host)
     dealDamage(host, PLAYER, owner.id, MONSTER, target1.id, 1)
     local target2 = popTarget(host)
-    dealDamage(host, PLAYER, owner.id, PLAYER, target1.id, 1)
+    dealDamage(host, PLAYER, owner.id, PLAYER, target2.id, 1)
     dealDamage(host, PLAYER, owner.id, PLAYER, owner.id, 1)
 end

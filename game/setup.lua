@@ -280,29 +280,6 @@ _getMPower = function (host, mid)
     return MonsterPowerLayers:top().func(host, mid)
 end
 
--- function Common_IncMonsterRolls(ownerID, value)
---     local id = MonsterPowerLayers:top().id + 1
---     MonsterPowerLayers:push(
---         {
---             id = id,
---             func = function (host_, mid)
---                 local p = getCurrentPlayer(host_)
---                 local add = 0
---                 if p.id == ownerID then
---                     add = value
---                 end
---                 return math.min(6, add + MonsterPowerLayers._et[MonsterPowerLayers:posOf(id)-1].func(host_, mid))
---             end
---         }
---     )
---     return id
--- end
-
--- function Common_DecMonsterRolls(host, id, ownerID)
---     MonsterPowerLayers:remove(id)
--- end
-
-
 -- treasure / loot
 
 CardData = {}
@@ -355,7 +332,7 @@ end
 function Common_PlayerWithID(host, id)
     local players = getPlayers(host)
     for _, p in pairs(players) do
-        if p["id"] == id then
+        if p.id == id then
             return p
         end
     end
@@ -638,7 +615,17 @@ end
 function Common_OwnerDamaged(host, cardID)
     local owner = getOwner(host, cardID)
     local damageEvent = getTopDamageEvent(host)
-    return damageEvent["targetType"] == PLAYER and damageEvent["targetID"] == owner["id"]
+    return damageEvent.targetType == PLAYER and damageEvent.targetID == owner.id
+end
+
+function Common_MonsterDamaged(host, cardID)
+    local damageEvent = getTopDamageEvent(host)
+    return damageEvent.targetType == MONSTER and damageEvent.targetID == cardID
+end
+
+function Common_MonsterDealtCombatDamage(host, cardID)
+    local damageEvent = getTopDamageEvent(host)
+    return damageEvent.sourceType == MONSTER and damageEvent.sourceID == cardID and damageEvent.isCombatDamage
 end
 
 function Common_OwnerDealtCombatDamage(host, cardID, targetType)

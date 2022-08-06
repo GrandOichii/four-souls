@@ -5,5 +5,11 @@
     "health": 4,
     "roll": 4,
     "power": 2,
-    "rewards": "TheBloat_rewards"
+    "rewards": "TheBloat_rewards",
+    "on": {
+        "damage": {
+            "check": "TheBloat_trigger_check",
+            "effect": "TheBloat_trigger"
+        }
+    }
 }

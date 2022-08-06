@@ -71,7 +71,6 @@ static StackMemberState stackMemberFromJson(json j) {
 }
 
 static RollEventState rollStackMemberFromJson(json j) {
-    //  TODO
     RollEventState result;
     result.value = j["value"];
     result.isCombatRoll = j["isCombatRoll"];
@@ -348,15 +347,12 @@ int Match::dealDamage(string tgtType, int tgtID, int amount) {
         for (int i = 0; i < _monsters.size(); i++)
             if (_monsters[i].back() == monsterW)
                 pileI = i;
-        //  TODO replace this with a fizzle
-        // if (pileI == -1) throw std::runtime_error("attempted to deal damage to a non-active monster (id: " + std::to_string(monsterW->id()) + ", name: " + card->name());
         if (pileI == -1) return 0;
         auto data = _monsterDataArr[pileI];
         if (!data->health()) return 0;
         int dealt = data->dealDamage(amount);
         this->log(card->name() + " is dealt " + std::to_string(dealt) + " damage");
         auto health = data->health();
-        std::cout << "LEFT: " << data->health() << std::endl;
         if (health) return dealt;
         this->killMonster(monsterW);
         return dealt;
@@ -379,6 +375,14 @@ void Match::killMonster(CardWrapper* w) {
     });
     pushToStack(new StackEffect(
         "_popRewardsStack",
+        _activePlayer,
+        w,
+        REWARDS_TYPE
+    ));
+    // std::cout << "DEATH FUNC NAME: " << card->deathFuncName() << std::endl;
+    if (!card->deathFuncName().size()) return;
+    pushToStack(new StackEffect(
+        card->deathFuncName(),
         _activePlayer,
         w,
         REWARDS_TYPE
@@ -597,6 +601,23 @@ int Match::wrap_getOwner(lua_State *L) {
     return 1;
 }
 
+int Match::wrap_expandActiveMonsters(lua_State *L) {
+    stackSizeIs(L, 2);
+    auto match = getTopMatch(L, 1);
+    auto amount = getTopNumber(L, 2);
+    auto w = match->getTopMonsterCard();
+    if (!w) throw std::runtime_error("failed to create new monster pile: no monsters left");
+    match->_monsterDeck.pop_back();
+    auto monster = (MonsterCard*)w->card();
+    monster->createData(match->L, match, w->id());
+    vector<CardWrapper*> pile;
+    pile.push_back(w);
+    match->_monsters.push_back(pile);
+    match->_monsterDataArr.push_back(monster->data());
+
+    return 0;
+}
+
 int Match::wrap_setRollValue(lua_State* L) {
     stackSizeIs(L, 3);
     auto match = getTopMatch(L, 1);
@@ -619,8 +640,8 @@ int Match::wrap_setRollValue(lua_State* L) {
     0 roll
     */
     match->_rollStack[rc].value = value;
-    std::cout << "SIZE: " << match->_rollStack.size() << ", OPERATING: " << rc << std::endl;
-    std::cout << "NEW ROLL VALUE " << match->_rollStack[rc].value << std::endl;
+    // std::cout << "SIZE: " << match->_rollStack.size() << ", OPERATING: " << rc << std::endl;
+    // std::cout << "NEW ROLL VALUE " << match->_rollStack[rc].value << std::endl;
     return 0;
 }
 
@@ -654,10 +675,28 @@ int Match::wrap_dealDamage(lua_State* L) {
         tgtID,
 
         amount,
+        false,
         -1
     };
     match->pushDamageEvent(trigger);
     return 0;
+}
+
+int Match::wrap_getActivations(lua_State* L) {
+    stackSizeIs(L, 1);
+    auto match = getTopMatch(L, 1);
+    vector<StackEffect*> activations;
+    for (const auto& effect : match->_stack)
+        if (effect->type == ACTIVATE_ITEM_TYPE)
+            activations.push_back(effect);
+    auto size = activations.size();
+    lua_createtable(L, size, 0);
+    for (int i = 0; i < size; i++) {
+        lua_pushnumber(L, i+1);
+        activations[i]->pushTable(L);
+        lua_settable(L, -3);
+    }
+    return 1;
 }
 
 int Match::wrap_addCounters(lua_State* L) {
@@ -711,6 +750,17 @@ int Match::wrap_getLastKillerID(lua_State* L) {
     stackSizeIs(L, 1);
     auto match = getTopMatch(L, 1);
     lua_pushnumber(L, match->_lastKillerID);
+    return 1;
+}
+
+int Match::wrap_expandShopSize(lua_State* L) {
+    stackSizeIs(L, 2);
+    auto match = getTopMatch(L, 1);
+    int amount = getTopNumber(L, 2);
+    auto card = match->getTopTreasureCard();
+    //  TODO figure out fix
+    if (!card) throw std::runtime_error("shop is empty, can't expand shop size");
+    match->_shop.push_back(card);
     return 1;
 }
 
@@ -843,8 +893,6 @@ int Match::wrap_discardLoot(lua_State* L) {
         exit(1);
     }
     auto cid = (int)lua_tonumber(L, 3);
-    std::cout << "AMOGUS " << cid << std::endl;
-
     auto card = player->takeCard(cid);
     match->_lootDiscard.push_back(card);
     return 0;
@@ -1046,6 +1094,19 @@ int Match::wrap_addCoins(lua_State* L) {
     return 0;
 }
 
+int Match::wrap_getMonsterHealth(lua_State* L) {
+    stackSizeIs(L, 2);
+    auto match = getTopMatch(L, 1);
+    auto mid = getTopNumber(L, 2);
+    for (int i = 0 ; i < match->_monsters.size(); i++) {
+        if (match->_monsters[i].back()->id() == mid) {
+            lua_pushnumber(L, match->_monsterDataArr[i]->health());
+            return 1;
+        }
+    }
+    throw std::runtime_error("no active monster with id: " + std::to_string(mid));
+}
+
 int Match::wrap_subCoins(lua_State* L) {
     if (lua_gettop(L) != 3) {
         lua_err(L);
@@ -1083,7 +1144,7 @@ int Match::wrap_buyItem(lua_State* L) {
     if (lti == -1) {
         w = top;
     } else {
-        if (match->_shop.size() <= lti) return 0; //  TODO replace this with error
+        if (match->_shop.size() <= lti) throw std::runtime_error("shop index " + std::to_string(lti) + " is greater than shop size");
 
         w = match->_shop[lti];
         if (top) {match->_shop[lti] = top;}
@@ -1208,16 +1269,9 @@ int Match::wrap_this(lua_State *L) {
 
 int Match::wrap_pushRollEvent(lua_State* L) {
     // pushRollEvent(host, cardInfo["id"], false)
-    if (lua_gettop(L) != 2) {
-        lua_err(L);
-        exit(1);
-    }
+    stackSizeIs(L, 2);
     auto match = getTopMatch(L, 1);
-    if (!lua_isnumber(L, 2)) {
-        lua_err(L);
-        exit(1);
-    }
-    auto pid = (int)lua_tonumber(L, 2);
+    auto pid = getTopNumber(L, 2);
     Player* player = match->playerWithID(pid);
     RollEvent p(
         player,
@@ -1290,6 +1344,7 @@ int Match::wrap_popRollStack(lua_State* L) {
         tgtID,
 
         amount,
+        true,
         -1
     };
     match->_lastCombatDamageEvent = event;
@@ -1476,7 +1531,6 @@ int Match::wrap_killEntity(lua_State* L) {
     auto id = getTopNumber(L, 3);
     if (type == PLAYER_TYPE) {
         match->pushDeathEvent(PLAYER_TYPE, id);
-        // match->killPlayer(id);
         return 0;
     }
     if (type == MONSTER_TYPE) {
@@ -1490,21 +1544,10 @@ int Match::wrap_killEntity(lua_State* L) {
 }
 
 int Match::wrap_topCardsOf(lua_State* L) {
-    if (lua_gettop(L) != 3) {
-        lua_err(L);
-        exit(1);
-    }
+    stackSizeIs(L, 3);
     auto match = getTopMatch(L, 1);
-    if (!lua_isstring(L, 2)) {
-        lua_err(L);
-        exit(1);
-    }
-    auto deckType = (string)lua_tostring(L, 2);
-    if (!lua_isnumber(L, 3)) {
-        lua_err(L);
-        exit(1);
-    }
-    int amount = (int)lua_tonumber(L, 3);
+    auto deckType = getTopString(L, 2);
+    int amount = getTopNumber(L, 3);
     auto deck = match->_deckMap[deckType];
     vector<CardWrapper*> result;
     auto size = deck->size();
@@ -1666,7 +1709,6 @@ int Match::wrap_decTreasureCost(lua_State* L) {
 }
 
 int Match::wrap_incAttackCount(lua_State* L) {
-    //  TODO untested
     if (lua_gettop(L) != 2) {
         lua_err(L);
         exit(1);
@@ -1819,6 +1861,9 @@ void Match::setupLua(string setupScript) {
     luaL_openlibs(L);
     // connect functions
     lua_register(L, "healPlayer", wrap_healPlayer);
+    lua_register(L, "getActivations", wrap_getActivations);
+    lua_register(L, "expandActiveMonsters", wrap_expandActiveMonsters);
+    lua_register(L, "expandShopSize", wrap_expandShopSize);
     lua_register(L, "_getMRoll", wrap_getMRoll);
     lua_register(L, "_getMPower", wrap_getMPower);
     lua_register(L, "rechargeCharacterCard", wrap_rechargeCharacterCard);
@@ -1837,6 +1882,7 @@ void Match::setupLua(string setupScript) {
     lua_register(L, "getRollStack", wrap_getRollStack);
     lua_register(L, "setRollValue", wrap_setRollValue);
     lua_register(L, "lootCards", wrap_lootCards);
+    lua_register(L, "getMonsterHealth", wrap_getMonsterHealth);
     lua_register(L, "addCoins", wrap_addCoins);
     lua_register(L, "subCoins", wrap_subCoins);
     lua_register(L, "_buyItem", wrap_buyItem);
@@ -2249,7 +2295,6 @@ void Match::turn() {
     this->log("End of " + this->_activePlayer->name() + "'s turn");
 
     // end of turn
-    //  TODO prompt the player to choose the order of triggers
     this->applyTriggers(TURN_END_TRIGGER);
     this->pushEOTDeferredTriggers();
     this->resolveStack();
@@ -2280,7 +2325,6 @@ void Match::turn() {
 
     for (const auto& data : _monsterDataArr)
         data->setIsBeingAttacked(false);
-
     // clear all stack (just in case)
     if (_rewardsStack.size()) {
         throw std::runtime_error("ERR: REWARDS STACK NOT EMPTY");
@@ -2341,9 +2385,49 @@ void Match::executePlayerAction(Player* player, string action) {
 int Match::applyTriggers(string triggerType) {
     int result = 0;
     // first the monsters
-
+    for(const auto& pile : _monsters) {
+        auto w = pile.back();
+        auto card = w->card();
+        if (!card->hasTrigger(triggerType)) continue;
+        this->log("Card " + card->name() + "[" + std::to_string(w->id()) + "] has a " + triggerType + " trigger");
+        auto effect = card->getTriggerWhen(triggerType);
+        auto checkFuncName = effect.checkFuncName;
+        if (!this->execCheck(checkFuncName, w)) {
+            std::cout << "Check failed" << std::endl;
+            continue;
+        }
+        this->log(card->name() + " is triggered");
+        auto p = new StackEffect(
+            effect.effectFuncName, 
+            nullptr, 
+            w,
+            TRIGGER_TYPE    
+        );
+        this->pushToStack(p);
+        //  TODO? add costs back
+        // if (effect.costFuncName.size()) {
+        //     int old = _targetStack.size();
+        //     bool payed = this->requestPayCost(effect.costFuncName, player);
+        //     if (!payed) {
+        //         this->_stack.pop_back();
+        //         delete p;
+        //         continue;
+        //     }
+        //     int c = _targetStack.size() - old;
+        //     for (int i = 0; i < c; i++){
+        //         auto it = _targetStack.end() - 1 - i;
+        //         p->targets.push_back(it->second);
+        //     }
+        // }
+        if (!effect.usesStack) {
+            execFunc(effect.effectFuncName);
+            _stack.pop_back();
+            delete p;
+        }
+        ++result;
+    }
     // then the items, starting with the current player
-    //  TODO prompt the player to order them
+    //  TODO prompt the player to choose the order of triggers
     for (int i = 0; i < _players.size(); i++) {
         auto player = _players[(_currentI + i) % _players.size()];
         auto board = player->board();
@@ -2393,7 +2477,7 @@ int Match::applyTriggers(string triggerType) {
 void Match::triggerLastEffectType() {
     // auto effect = this->_lastStack;
     auto effect = this->_stack.back();
-
+    std::cout << "EMITTING " << effect->type << std::endl;
     this->applyTriggers(effect->type);
     // this->resolveStack();
 }
@@ -2597,9 +2681,17 @@ void Match::refillDeadMonsters() {
     for (int i = 0; i < _monsters.size(); i++) {
         if (_monsterDataArr[i]->health()) continue;
         auto w = _monsters[i].back();
+        // std::cout << "MONSTERS SIZE: " << _monsters.size() << "\tDATA SIZE: " << _monsterDataArr.size() << std::endl;;
+        std::cout << "MONSTER " << w->card()->name() << "died \t" << std::endl;
+        std::cout << "OLD MONSTERS\n";
+        for (int i = 0; i < _monsters.size(); i++)
+            std::cout << "\t " << i << ") " << _monsters[i].back()->card()->name() << std::endl;
+
         ((MonsterCard*)w->card())->deleteData();
         execMEnterLeave(w, w->card()->leaveFuncName());
+        std::cout << "OLD: " << _monsters[i].size() << std::endl;
         _monsters[i].pop_back();
+        std::cout << "NEW: " << _monsters[i].size() << std::endl;
         _monsterDiscard.push_back(w);
         CardWrapper* newM = nullptr;
         if (!_monsters[i].size()) {
@@ -2613,7 +2705,10 @@ void Match::refillDeadMonsters() {
         mcard->createData(L, this, newM->id());
         execMEnterLeave(newM, mcard->enterFuncName());
 
-        // std::cout << "NEW MONSTER " << mcard->name() << "\t" << mcard->data()->baseHealth() << " " << mcard->data()->baseRoll() << " " << mcard->data()->basePower() << std::endl;
+        std::cout << "NEW MONSTER " << mcard->name() << "\t" << mcard->data()->baseHealth() << " " << mcard->data()->baseRoll() << " " << mcard->data()->basePower() << std::endl;
+        std::cout << "NEW MONSTERS\n";
+        for (int i = 0; i < _monsters.size(); i++)
+            std::cout << "\t " << i << ") " << _monsters[i].back()->card()->name() << std::endl;
         _monsterDataArr[i] = mcard->data();
         pushDeathEvent(MONSTER_TYPE, w->id());
     }

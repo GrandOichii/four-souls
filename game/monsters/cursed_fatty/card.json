@@ -5,5 +5,11 @@
     "health": 4,
     "roll": 2,
     "power": 1,
-    "rewards": "CursedFatty_rewards"
+    "rewards": "CursedFatty_rewards",
+    "on": {
+        "roll": {
+            "check": "CursedFatty_trigger_check",
+            "effect": "CursedFatty_trigger"
+        }
+    }
 }

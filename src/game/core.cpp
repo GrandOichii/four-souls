@@ -17,7 +17,6 @@ Game::Game(string dir) {
     this->loadCharacterCards(dir);
 
     this->_setupScript = fs::readFile(fs::join(dir, SETUP_SCRIPT_FILE).c_str());
-    //  TODO load config
     this->_matchConfig = fs::readJS(fs::join(dir, CONFIG_FILE).c_str());
 }
 

@@ -253,7 +253,6 @@ public:
     }
     
     void draw(MatchState& state) {
-        //  TODO
         _win->clear();
         _win->draw(state);
         _win->flush();
@@ -322,6 +321,13 @@ int main(int argc, char* argv[]) {
                     actions,
                     allCards
                 ));
+                
+                // match->addPlayer(new ScriptedPlayer(
+                //     name,
+                //     match->getRandomAvailableCharacter(),
+                //     match->newCardID(),
+                //     actions
+                // ));
                 continue;
             }
             // match->addPlayer(new BotPlayer(
