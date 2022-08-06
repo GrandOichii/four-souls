@@ -45,6 +45,8 @@ ScriptCard::ScriptCard(string dir, json j, bool isTrinket, bool isEternal) :
                 ActivatedAbility ability;
                 ability.funcName = a["ability"];
                 ability.costFuncName = a["cost"];
+                if (a.contains("usesStack"))
+                    ability.usesStack = a["usesStack"];
                 _abilities.push_back(ability);
             }
         }

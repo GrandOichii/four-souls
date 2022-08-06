@@ -300,7 +300,14 @@ private:
                 p->targets.push_back(it->second);
             }
             this->log(player->name() + " activated " + card->name());
-            applyTriggers(ACTIVATE_ITEM_TYPE);
+            if (ability.usesStack) {
+                applyTriggers(ACTIVATE_ITEM_TYPE);
+                return;
+            }
+            //  TODO figure out how to remove from stack
+            this->execFunc(ability.funcName);
+            this->_stack.pop_back();
+            delete p;
         }},
         {ACTION_ACTIVATE_CHARACTER_CARD, [this](Player* player, std::vector<string> args) {
             player->tapCharacter();

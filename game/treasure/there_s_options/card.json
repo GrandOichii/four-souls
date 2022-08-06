@@ -11,6 +11,7 @@
     },
     "abilities": [
         {
+            "usesStack": false,
             "cost": "TheresOptions_cost",
             "ability": "TheresOptions_peek"
         }

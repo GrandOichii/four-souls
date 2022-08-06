@@ -58,6 +58,7 @@ const string ACTION_PASS = "$PASS";
 struct ActivatedAbility {
     string costFuncName;
     string funcName;
+    bool usesStack = true;
 
     void print() {
         std::cout << "Cost: " << costFuncName << std::endl;
