@@ -5,5 +5,12 @@
     "health": 3,
     "roll": 5,
     "power": 2,
-    "rewards": "EvilTwin_rewards"
+    "rewards": "EvilTwin_rewards",
+    "on": {
+        "damage": {
+            "usesStack": false,
+            "check": "EvilTwin_trigger_check",
+            "effect": "EvilTwin_trigger"
+        }
+    }
 }

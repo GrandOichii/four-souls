@@ -3,8 +3,8 @@ function CambionConception_trigger_check(host, me)
 end
 
 function CambionConception_trigger(host)
-    local damageEvent = getDamageEvent(host)
     local me = this(host)
+    local damageEvent = CardData[me.id].damageEvent
     local owner = getTopOwner(host)
     addCounters(host, me.id, damageEvent.amount)
     me = this(host)

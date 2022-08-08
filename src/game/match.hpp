@@ -201,6 +201,7 @@ private:
     int _lastRollOwnerID = -1;
     bool _lastRollIsCombat = false;
     std::vector<RollEvent> _rollStack;
+    int _lastCRollValue = -1;
 
     std::deque<CardWrapper*> _lootDeck;
     std::deque<CardWrapper*> _lootDiscard;
@@ -350,7 +351,7 @@ private:
 
     int _lastKillerID = -1;
 
-    std::stack<DamageTrigger> _damageStack;
+    DamageTrigger _lastDamageEvent;
     std::vector<DeathEvent> _deathStack;
     DeathEvent _lastDeath;
     std::vector<std::pair<string, int>> _targetStack;
@@ -391,6 +392,7 @@ public:
     void refillDeadMonsters();
     //  TODO add wrap_popBonusCards, inside of it call refillDeadMonsters
     static int wrap_tapCharacterCard(lua_State* L);
+    static int wrap_dealCombatDamageF(lua_State* L);
     static int wrap_incPurchaseAmount(lua_State* L);
     static int wrap_cancelCurrentAttack(lua_State* L);
     static int wrap_setTurnEnd(lua_State* L);

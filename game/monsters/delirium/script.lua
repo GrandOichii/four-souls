@@ -4,7 +4,11 @@ function Delirium_enter(host, me)
         {
             id = id,
             func = function (host_, mid)
-                return math.min(6, 1 + MonsterRollLayers._et[MonsterRollLayers:posOf(id)-1].func(host_, mid))
+                local add = 0
+                if mid ~= me.id then
+                    add = 1
+                end
+                return math.min(6, add + MonsterRollLayers._et[MonsterRollLayers:posOf(id)-1].func(host_, mid))
             end
         }
     )

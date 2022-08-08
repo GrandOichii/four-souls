@@ -261,7 +261,9 @@ void CardWrapper::pushTable(lua_State* L) {
 }
 
 CardState CardWrapper::getState() {
+
     CardState result;
+    // std::cout << "NAME: " << _card->name() << std::endl;
     result.cardName = _card->name();
     result.active = !_tapped;
     result.id = _id;

@@ -5,5 +5,12 @@
     "health": 2,
     "roll": 4,
     "power": 2,
-    "rewards": "Dople_rewards"
+    "rewards": "Dople_rewards",
+    "on": {
+        "damage": {
+            "usesStack": false,
+            "check": "Dople_trigger_check",
+            "effect": "Dople_trigger"
+        }
+    }
 }

@@ -1,6 +1,6 @@
 {
     "back": "images/treasure_card_back.bmp",
-    "cards": [
+    "card1s": [
         "treasure/there_s_options",
         "treasure/there_s_options",
         "treasure/there_s_options",
@@ -33,7 +33,7 @@
         "treasure/there_s_options",
         "treasure/there_s_options"
     ],
-    "card1s": [
+    "cards": [
         "treasure/lunch",
         "treasure/epic_fetus",
         "treasure/newgrounds_tank",

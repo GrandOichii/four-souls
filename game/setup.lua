@@ -280,6 +280,18 @@ _getMPower = function (host, mid)
     return MonsterPowerLayers:top().func(host, mid)
 end
 
+-- combat damage layers
+CombatDamageLayers = Layers:Create()
+
+CombatDamageLayers:push({
+    id = 1,
+    func = _dealCombatDamageF
+})
+
+_dealCombatDamageF = function (host, srcType, srcID, tgtType, tgtID, amount, roll)
+    return CombatDamageLayers:top().func(host, srcType, srcID, tgtType, tgtID, amount, roll)
+end
+
 -- treasure / loot
 
 CardData = {}
@@ -615,17 +627,43 @@ end
 function Common_OwnerDamaged(host, cardID)
     local owner = getOwner(host, cardID)
     local damageEvent = getTopDamageEvent(host)
-    return damageEvent.targetType == PLAYER and damageEvent.targetID == owner.id
+    if damageEvent.targetType == PLAYER and damageEvent.targetID == owner.id then
+        if CardData[cardID] == nil then
+            CardData[cardID] = {}
+        end
+        CardData[cardID].damageEvent = damageEvent
+        return true
+    end
+    return false
 end
 
 function Common_MonsterDamaged(host, cardID)
     local damageEvent = getTopDamageEvent(host)
-    return damageEvent.targetType == MONSTER and damageEvent.targetID == cardID
+    if damageEvent.targetType == MONSTER and damageEvent.targetID == cardID then
+        if CardData[cardID] == nil then
+            CardData[cardID] = {}
+        end
+        CardData[cardID].damageEvent = damageEvent
+        return true
+    end
+    return false
 end
 
 function Common_MonsterDealtCombatDamage(host, cardID)
     local damageEvent = getTopDamageEvent(host)
-    return damageEvent.sourceType == MONSTER and damageEvent.sourceID == cardID and damageEvent.isCombatDamage
+    if damageEvent.sourceType == MONSTER and damageEvent.sourceID == cardID and damageEvent.isCombatDamage then
+        if CardData[cardID] == nil then
+            CardData[cardID] = {}
+        end
+        CardData[cardID].damageEvent = damageEvent
+        return true
+    end
+    return false
+end
+
+function Common_MonsterIsBeingAttacked(host, cardID)
+    local monster = Common_MonsterWithID(host, cardID)
+    return monster.isBeingAttacked
 end
 
 function Common_OwnerDealtCombatDamage(host, cardID, targetType)
