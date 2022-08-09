@@ -1,0 +1,13 @@
+{
+    "name": "Soy Milk",
+    "text": "Monsters have +1d on your turn.\nEach time you deal combat damage to a monster, deal 1 damage to each other monster.",
+    "script": "script.lua",
+    "enter": "SoyMilk_enter",
+    "leave": "SoyMilk_leave",
+    "on": {
+        "damage": {
+            "check": "SoyMilk_trigger_check",
+            "effect": "SoyMilk_trigger"
+        }
+    }
+}

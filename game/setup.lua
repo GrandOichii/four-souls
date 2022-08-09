@@ -670,8 +670,7 @@ function Common_OwnerDealtCombatDamage(host, cardID, targetType)
     local targetType = targetType or MONSTER
     local owner = getOwner(host, cardID)
     local damageEvent = getTopDamageEvent(host)
-    local lastRoll = getLastRoll(host)
-    if not lastRoll.isCombatRoll then
+    if not damageEvent.isCombatDamage then
         return false
     end
     if damageEvent.sourceType ~= PLAYER then

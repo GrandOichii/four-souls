@@ -1,0 +1,11 @@
+{
+    "name": "Shiny Rock",
+    "text": "Each time you activate an item, gain 1$.",
+    "script": "script.lua",
+    "on": {
+        "activate": {
+            "check": "ShinyRock_trigger_check",
+            "effect": "ShinyRock_trigger"
+        }
+    }
+}

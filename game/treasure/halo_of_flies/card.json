@@ -1,0 +1,7 @@
+{
+    "name": "Halo of Flies",
+    "text": "You take no combat damage on attack rolls of 1 or 6.",
+    "script": "script.lua",
+    "enter": "HaloOfFlies_enter",
+    "leave": "HaloOfFlies_leave"
+}

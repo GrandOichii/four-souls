@@ -1,11 +1,11 @@
 function DadsLostCoin_trigger_check(host, me)
-    return Common_LastRoll(host)["value"] == 1
+    return Common_LastRoll(host).value == 1
 end
 
 function DadsLostCoin_trigger(host)
 
     local owner = getTopOwner(host)
-    local choice = requestSimpleChoice(host, owner["id"], "Force player to reroll?", {"Yes", "No"})
+    local choice = requestSimpleChoice(host, owner.id, "Force player to reroll?", {"Yes", "No"})
     if choice == "No" then
         return
     end

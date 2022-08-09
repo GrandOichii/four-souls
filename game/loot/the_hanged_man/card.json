@@ -1,0 +1,6 @@
+{
+    "name": "XII. The Hanged Man",
+    "text": "Look at the top card of each deck. You may put any of those cards on the bottom of their deck. Loot 2.",
+    "script": "script.lua",
+    "use": "TheHangedMan_use"
+}

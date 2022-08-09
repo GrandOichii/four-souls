@@ -1,3 +1,3 @@
 #!/bin/sh
 # cd build ; make ; make install ; cpack
-cd build ; make
+cd build ; make install

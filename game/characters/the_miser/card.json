@@ -1,0 +1,9 @@
+{
+    "name": "The Miser",
+    "health": 2,
+    "attack": 1,
+    "item": "keeper_s_bargain",
+    "text": "{T}: Play an additional loot card this turn.\nStarting item: Keeper's Bargain",
+    "script": "script.lua",
+    "use": "TheMiser_tap"
+}

@@ -6,7 +6,11 @@ function SackHead_tap(host)
     local owner = getTopOwner(host)
     local choices = {LOOT_DECK, TREASURE_DECK, MONSTER_DECK}
     local deckType = requestSimpleChoice(host, owner.id, 'Look at the top of which deck?', choices)
-    local card = topCardsOf(host, deckType, 1)[1]
+    local cards = topCardsOf(host, deckType, 1)
+    if #cards == 0 then
+        return
+    end
+    local card = cards[1]
     local choice = requestSimpleChoice(host, owner.id, 'Put ${'..card.name..'} on the bottom of the '..deckType..' deck?', {'Yes', 'No'})
     if choice == 'No' then
         return

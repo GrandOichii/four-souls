@@ -4,6 +4,58 @@
             "large": "images/polyphemus_large.bmp",
             "small": "images/polyphemus.bmp"
         },
+        "Placenta": {
+            "large": "images/placenta_large.bmp",
+            "small": "images/placenta.bmp"
+        },
+        "Fire Mind": {
+            "large": "images/fire_mind_large.bmp",
+            "small": "images/fire_mind.bmp"
+        },
+        "The Wiz": {
+            "large": "images/the_wiz_large.bmp",
+            "small": "images/the_wiz.bmp"
+        },
+        "Diogenes' Pot": {
+            "large": "images/diogenes__pot_large.bmp",
+            "small": "images/diogenes__pot.bmp"
+        },
+        "Ball of Bandages": {
+            "large": "images/ball_of_bandages_large.bmp",
+            "small": "images/ball_of_bandages.bmp"
+        },
+        "Halo of Flies": {
+            "large": "images/halo_of_flies_large.bmp",
+            "small": "images/halo_of_flies.bmp"
+        },
+        "Infamy": {
+            "large": "images/infamy_large.bmp",
+            "small": "images/infamy.bmp"
+        },
+        "Shiny Rock": {
+            "large": "images/shiny_rock_large.bmp",
+            "small": "images/shiny_rock.bmp"
+        },
+        "Soy Milk": {
+            "large": "images/soy_milk_large.bmp",
+            "small": "images/soy_milk.bmp"
+        },
+        "XII. The Hanged Man": {
+            "large": "images/xii__the_hanged_man_large.bmp",
+            "small": "images/xii__the_hanged_man.bmp"
+        },
+        "Keeper's Bargain": {
+            "large": "images/keeper_s_bargain_large.bmp",
+            "small": "images/keeper_s_bargain.bmp"
+        },
+        "The Miser": {
+            "large": "images/the_miser_large.bmp",
+            "small": "images/the_miser.bmp"
+        },
+        "Forever Alone": {
+            "large": "images/forever_alone_large.bmp",
+            "small": "images/forever_alone.bmp"
+        },
         "Death's Head": {
             "large": "images/death_s_head_large.bmp",
             "small": "images/death_s_head.bmp"

@@ -7,7 +7,7 @@
 #include "common.hpp"
 #include "window.hpp"
 
-const std::regex CARD_NAME_REGEX("\\$\\{([\\w\\ \\'\\!\\?]+)\\}|[\\w\\?\\!]+");
+const std::regex CARD_NAME_REGEX("\\$\\{([\\w\\ \\'\\!\\?]+)\\}|[\\w\\?\\!\\$]+");
 
 using Client = client_interface<PollType>;
 
@@ -604,13 +604,14 @@ public:
 };
 
 int main(int argc, char* argv[]) {
+    // throw std::runtime_error(string(argv[0]));
     if (argc == 1 || argc > 3) {
         std::cout << "Invalid argument number" << std::endl;
         return 0;
     }
     string assetsPath = string(argv[1]);
 
-    // string assetsPath = "/Users/oichii/Desktop/code/C++/four-souls/assets";
+    // string assetsPath = "@executable_path/.";
     string host = "localhost";
     if (argc == 3) host = string(argv[2]);
     ClientWrapper wrapper(host, "four-souls-client", assetsPath, false);

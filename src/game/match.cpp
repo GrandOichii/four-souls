@@ -1577,10 +1577,12 @@ int Match::wrap_topCardsOf(lua_State* L) {
     auto deck = match->_deckMap[deckType];
     vector<CardWrapper*> result;
     auto size = deck->size();
-    for (int i = 0; i < amount; i++) {
-        auto ii = size - i - 1;
-        if (ii < 0) break;
-        result.push_back(deck->at(ii));
+    if (amount <= size) {
+        for (int i = 0; i < amount; i++) {
+            auto ii = size - i - 1;
+            if (ii < 0) break;
+            result.push_back(deck->at(ii));
+        }
     }
     pushCards(result, L);
     return 1;
@@ -2551,7 +2553,7 @@ string Match::promptPlayerWithPriority() {
 }
 
 void Match::log(string message, bool wait) {
-    return;
+    // return;
     std::cout << " - " << message << std::endl;
     if (wait) {
         // std::this_thread::sleep_for(std::chrono::seconds(1));
@@ -2565,7 +2567,9 @@ MatchState Match::getState() {
         result.boards.push_back(p->getState());
     int rsi = 0;
     int dsp = 0;
+
     for (auto& si : _stack){
+    std::cout << si->type << std::endl;
         auto s = si->getState();
         if (si->type == ROLL_TYPE) {
             s.message = "Roll: " + std::to_string(_rollStack[rsi].value);
@@ -2595,7 +2599,13 @@ MatchState Match::getState() {
             s.message = "Combat\ndamage to\n";
             if (_lastCombatDamageEvent.targetType == PLAYER_TYPE) 
                 s.message += _activePlayer->name();
-            else s.message += _monsters[_lastMonsterIndex].back()->card()->name();
+            else {
+                //  TODO fix
+                if (_lastMonsterIndex != -2)
+                    s.message += _monsters[_lastMonsterIndex].back()->card()->name();
+                else s.message += "???";
+            }
+                
         }
         if (si->type == DEATH_TYPE) {
             string message = "Death of\n";
@@ -2613,6 +2623,7 @@ MatchState Match::getState() {
         }
         result.stack.push_back(s);
     }
+
 
     result.currentI = _currentI;
 
