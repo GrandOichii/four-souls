@@ -1,5 +1,5 @@
 function CursedHorf_rewards(host, me, killer)
-	addCoins(host, killer["id"], 3)
+	addCoins(host, killer.id, 3)
 end
 
 function CursedHorf_trigger_check(host, me)

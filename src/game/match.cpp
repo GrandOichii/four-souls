@@ -614,6 +614,8 @@ int Match::wrap_expandActiveMonsters(lua_State *L) {
     match->_monsters.push_back(pile);
     match->_monsterDataArr.push_back(monster->data());
 
+    match->execMEnterLeave(w, w->card()->enterFuncName());
+
     return 0;
 }
 
@@ -2173,7 +2175,8 @@ void Match::shuffleMonsterDeck() {
 
 CardWrapper* Match::addWrapper(ScriptCard* card) {
     auto id = newCardID();
-    this->log(card->name() + " -> " + std::to_string(id), false);
+    std::cout << card->name() + " -> " + std::to_string(id) << std::endl;
+    // this->log(card->name() + " -> " + std::to_string(id), false);
     auto w = new CardWrapper(card, id);
     _allWrappers.push_back(w);
     return w;
@@ -2548,7 +2551,7 @@ string Match::promptPlayerWithPriority() {
 }
 
 void Match::log(string message, bool wait) {
-    // return;
+    return;
     std::cout << " - " << message << std::endl;
     if (wait) {
         // std::this_thread::sleep_for(std::chrono::seconds(1));
@@ -2684,8 +2687,8 @@ void Match::refillDeadMonsters() {
     for (int i = 0; i < _monsters.size(); i++) {
         if (_monsterDataArr[i]->health()) continue;
         auto w = _monsters[i].back();
-
         ((MonsterCard*)w->card())->deleteData();
+        std::cout << "EXECUTING MONSTER LEAVE " << w->card()->name() << " -- " << w->card()->leaveFuncName() << std::endl;
         execMEnterLeave(w, w->card()->leaveFuncName());
         _monsters[i].pop_back();
         _monsterDiscard.push_back(w);
@@ -2699,6 +2702,7 @@ void Match::refillDeadMonsters() {
         }
         auto mcard = ((MonsterCard*)newM->card());
         mcard->createData(L, this, newM->id());
+        std::cout << "EXECUTING ENTER " << mcard->name() << std::endl;
         execMEnterLeave(newM, mcard->enterFuncName());
 
         _monsterDataArr[i] = mcard->data();

@@ -12,9 +12,6 @@ function BookOfVirtues_trigger1(host)
     local _ = getDamageEvent(host)
     local owner = getTopOwner(host)
     local roll = getLastRoll(host)
-    -- if not roll.isCombatRoll then
-    --     return
-    -- end
     if roll.value <= 4 then
         return
     end

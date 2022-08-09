@@ -604,12 +604,13 @@ public:
 };
 
 int main(int argc, char* argv[]) {
-    // string host, string title, string assetsPath, bool fullscreen
     if (argc == 1 || argc > 3) {
         std::cout << "Invalid argument number" << std::endl;
         return 0;
     }
     string assetsPath = string(argv[1]);
+
+    // string assetsPath = "/Users/oichii/Desktop/code/C++/four-souls/assets";
     string host = "localhost";
     if (argc == 3) host = string(argv[2]);
     ClientWrapper wrapper(host, "four-souls-client", assetsPath, false);
