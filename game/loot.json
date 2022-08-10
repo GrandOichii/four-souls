@@ -2,10 +2,10 @@
     "back": "images/loot_card_back.bmp",
     "car1ds": {
         "basic": {
-            "loot/gold_bomb": 40
+            "loot/gold_bomb": 0
         },
         "trinkets": {
-            "loot/bag_lunch": 0
+            "loot/curved_horn": 30
         }
     },
     "cards": {
@@ -61,6 +61,7 @@
             "loot/tick": 1,
             "loot/wishbone": 1,
             "loot/cancer": 1,
+            "loot/curved_horn": 1,
             "loot/callus": 1,
             "loot/aaa_battery": 1
         }

@@ -17,7 +17,7 @@ function DiogenesPot_enter(host, me, owner)
 end
 
 function DiogenesPot_leave(host, me, owner)
-        CombatDamageLayers:remove(CardData[me.id].ipID)
+    CombatDamageLayers:remove(CardData[me.id].ipID)
 
 end
 

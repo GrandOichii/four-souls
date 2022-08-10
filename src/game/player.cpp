@@ -116,8 +116,19 @@ void Player::rechargeCharacter() {
 void Player::tapCharacter() { _characterActive = false; }
 
 void Player::rechargeCards() {
-    for (auto& w : _board)
-        w->recharge();
+    for (auto& w : _board) {
+        lua_getglobal(L, "rechargeCard");
+        if (!lua_isfunction(L, -1)) {
+            throw std::runtime_error("unknown function: rechargeCard");
+        }
+        lua_pushlightuserdata(L, _parent);
+        lua_pushnumber(L, w->id());
+
+        int r = lua_pcall(L, 2, 0, 0);
+        if (r != LUA_OK) {
+            throw std::runtime_error("failed to call rechargeCard function");
+        }
+    }
 }
 
 void Player::recharge() {

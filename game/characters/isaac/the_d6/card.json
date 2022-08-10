@@ -7,5 +7,11 @@
             "cost": "TheD6_cost",
             "ability": "TheD6_tap"
         }
-    ]
+    ],
+    "on": {
+        "turn_end": {
+            "check": "TheD6_trigger_check",
+            "effect": "TheD6_trigger"
+        }
+    }
 }

@@ -132,6 +132,18 @@ lootCards = function (host, pid, amount)
     LootCardsFuncStack:top().func(host, pid, amount)
 end
 
+-- recharge func stack
+RechargeFuncStack = FuncStack:Create()
+
+RechargeFuncStack:push({
+    name = 'base',
+    func = rechargeCard
+})
+
+rechargeCard = function (host, cid)
+    RechargeFuncStack:top().func(host, cid)
+end
+
 -- layers
 Layers = {}
 function Layers:Create()
@@ -465,7 +477,7 @@ function Common_RollWithID(host, id)
     local stack = getStack(host)
     local rollI = 0
     for i, member in ipairs(stack) do
-        if member["type"] == ROLL then
+        if member.type == ROLL then
             rollI = rollI + 1
         end
         if i == id+1 then
@@ -512,6 +524,33 @@ function Common_TargetCombatRoll(host, ownerID)
     for i, member in ipairs(stack) do
         if member.type == ROLL then
             if rolls[rp].isCombatRoll then
+                choices[#choices+1] = i-1
+            end
+            rp = rp + 1
+        end
+    end
+    if #choices == 0 then
+        return false
+    end
+    local choice, payed = requestChoice(host, ownerID, "Choose a roll", STACK, choices)
+    if not payed then
+        return false
+    end
+    pushTarget(host, choice, ROLL)
+    return true
+end
+
+function Common_TargetNonCombatRoll(host, ownerID)
+    local rolls = getRollStack(host)
+    if #rolls == 0 then
+        return false
+    end
+    local stack = getStack(host)
+    local choices = {}
+    local rp = 1
+    for i, member in ipairs(stack) do
+        if member.type == ROLL then
+            if not rolls[rp].isCombatRoll then
                 choices[#choices+1] = i-1
             end
             rp = rp + 1
@@ -713,7 +752,7 @@ function Common_DamageAllPlayers(host, amount)
     local owner = getTopOwner(host)
     local players = getPlayers(host)
     for _, player in ipairs(players) do
-        dealDamage(host, PLAYER, owner["id"], PLAYER, player["id"], amount)
+        dealDamage(host, PLAYER, owner.id, PLAYER, player.id, amount)
     end
 end
 

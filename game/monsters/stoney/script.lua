@@ -20,5 +20,18 @@ function Stoney_leave(host, me)
 end
 
 function Stoney_rewards(host, me, killer)
-	lootCards(host, killer["id"], 1)
+	lootCards(host, killer.id, 1)
+end
+
+function Stoney_trigger_check(host)
+    return Common_LastDeath(host).type == MONSTER
+end
+
+function Stoney_trigger(host)
+    local me = this(host)
+    for _, monster in ipairs(getActiveMonsters(host)) do
+        if monster.id == me.id then
+            killEntity(host, MONSTER, me.id)
+        end
+    end
 end

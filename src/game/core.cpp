@@ -46,7 +46,7 @@ void Game::loadLootCards(string dir) {
             auto cardPath = fs::join(dir, key);
             int amount = value;
             auto cardJS = fs::readJS(fs::join(cardPath, CARD_INFO_FILE));
-            auto card = new ScriptCard(cardPath, cardJS, isTrinket);
+            auto card = new ScriptCard(cardPath, cardJS, CardTypes::Loot, isTrinket);
             this->_lootCards.push_back(card);
             // add cards to the deck template
             this->_lootDeckTemplate.push_back(std::make_pair(card, amount));
@@ -64,7 +64,7 @@ void Game::loadTreasureCards(string dir) {
     for (const auto& jj : jcards.items()) {
         string tdir = fs::join(dir, jj.value());
         auto jjj = fs::readJS(fs::join(tdir, CARD_INFO_FILE));
-        this->_treasureCards.push_back(new ScriptCard(tdir, jjj, true));
+        this->_treasureCards.push_back(new ScriptCard(tdir, jjj, CardTypes::Treasure, true));
     }
     // for (const auto& c : _treasureCards)
     //     c->print("");

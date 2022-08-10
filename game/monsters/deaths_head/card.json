@@ -8,5 +8,11 @@
     "power": 0,
     "rewards": "DeathsHead_rewards",
     "enter": "DeathsHead_enter",
-    "leave": "DeathsHead_leave"
+    "leave": "DeathsHead_leave",
+    "on": {
+        "death": {
+            "check": "DeathsHead_trigger_check",
+            "effect": "DeathsHead_trigger"
+        }
+    }
 }

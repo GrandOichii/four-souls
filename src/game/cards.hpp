@@ -35,10 +35,12 @@ class Card {
 protected:
     string _name;
     string _text;
+    CardTypes _type;
 public:
-    Card(string dir, json j);
+    Card(string dir, json j, CardTypes type);
     string name();
     string text();
+    CardTypes type();
     virtual void print(string prefix);
 };
 
@@ -60,7 +62,7 @@ private:
     string _costFuncName;
     bool _goesToBottom = false;
 public:
-    ScriptCard(string dir, json j, bool isTrinket, bool isEternal=false);
+    ScriptCard(string dir, json j, CardTypes type, bool isTrinket, bool isEternal=false);
     ~ScriptCard();
     string script();
     bool hasTrigger(string triggerName);

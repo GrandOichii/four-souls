@@ -78,3 +78,11 @@ enum Zones : int {
     MonsterDiscard,
     ActiveMonsters
 };
+
+enum CardTypes : int {
+    Loot,
+    Treasure,
+    Monster,
+    Character,
+    StartingItem
+};

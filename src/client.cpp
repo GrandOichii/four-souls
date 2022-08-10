@@ -7,7 +7,7 @@
 #include "common.hpp"
 #include "window.hpp"
 
-const std::regex CARD_NAME_REGEX("\\$\\{([\\w\\ \\'\\!\\?]+)\\}|[\\w\\?\\!\\$]+");
+const std::regex CARD_NAME_REGEX("\\$\\{([\\w\\ \\'\\!\\?\\.\\(\\)]+)\\}|[\\w\\?\\!\\$]+");
 
 using Client = client_interface<PollType>;
 

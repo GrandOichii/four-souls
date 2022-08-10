@@ -1,0 +1,11 @@
+{
+    "name": "Mini Mush",
+    "text": "{T}: Subtract up to 2 from a roll.",
+    "script": "script.lua",
+    "abilities": [
+        {
+            "cost": "MiniMush_cost",
+            "ability": "MiniMush_tap"
+        }
+    ]
+}

@@ -10,7 +10,12 @@
     -- psy horf
     -- holy keeper head
 
+- issues:
+    -- when buying cards with curved horn effect and attacking again
+
 - implement:
+    -- change how guppy's hairball works
+    -- fix bag o trash
     -- add "requiresTap" field
     -- add stealing cards
     -- implement viewing cards from simple requests
@@ -21,15 +26,10 @@
     -- remove killing players multiple times per turn
     -- add refilling shops/monsters to the stack
     -- add state effects (are checked every time game updates)
-    -- separate trinkets from treasure in treasure discard
     -- enable activation choice in client (if card has 2+ activated abilities)
-    -- some effects need to distinct between different turns (add wrap_getTurnCounter, use CardData table to store last turn)
     -- add game logs (perhaps in a different window)
     -- better card zoom ( perhaps in a different window )
-    -- add visible rolls and attack to monsters
     -- add attacking top of monster deck
-    -- implement monster effects
-    -- implement effects that buff monsters
     -- add bonus effects to the monster deck
     -- add bad treasure
     -- if a player gains +1 treasure due to rewards, and the card has a monster death trigger, the card is triggered immediately - decide whether to keep or not

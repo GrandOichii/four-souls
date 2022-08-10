@@ -5,5 +5,18 @@
     "health": 3,
     "roll": 3,
     "power": 1,
-    "rewards": "War_rewards"
+    "rewards": "War_rewards",
+    "enter": "War_enter",
+    "leave": "War_leave",
+    "on": {
+        "damage": {
+            "check": "War_trigger1_check",
+            "effect": "War_trigger1"
+        },
+        "turn_end": {
+            "usesStack": false,
+            "check": "War_trigger2_check",
+            "effect": "War_trigger2"    
+        }
+    }
 }

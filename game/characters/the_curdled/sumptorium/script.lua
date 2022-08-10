@@ -38,9 +38,7 @@ end
 
 function Sumptorium_trigger2(host)
     local me = this(host)
-    CardData[me.id] = {
-        mids = {}
-    }
+    CardData[me.id].mids = {}
 end
 
 function Sumptorium_cost(host, cardInfo)

@@ -5,5 +5,18 @@
     "health": 3,
     "roll": 4,
     "power": 1,
-    "rewards": "DarkOne_rewards"
+    "rewards": "DarkOne_rewards",
+    "enter": "DarkOne_enter",
+    "leave": "DarkOne_leave",
+    "on": {
+        "damage": {
+            "check": "DarkOne_trigger1_check",
+            "effect": "DarkOne_trigger1"
+        },
+        "turn_end": {
+            "usesStack": false,
+            "check": "DarkOne_trigger2_check",
+            "effect": "DarkOne_trigger2"    
+        }
+    }
 }

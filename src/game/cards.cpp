@@ -3,20 +3,22 @@
 #include "match.hpp"
 #include "player.hpp"
 
-Card::Card(string dir, json j) : 
+Card::Card(string dir, json j, CardTypes type) : 
     _name(j["name"]),
-    _text(j["text"])
+    _text(j["text"]),
+    _type(type)
 {}
 
 string Card::name() { return _name; }
 string Card::text() { return _text; }
+CardTypes Card::type() { return _type; }
 
 void Card::print(string prefix) {
     std::cout << prefix << _name << std::endl;
 }
 
-ScriptCard::ScriptCard(string dir, json j, bool isTrinket, bool isEternal) : 
-    Card(dir, j),
+ScriptCard::ScriptCard(string dir, json j, CardTypes type, bool isTrinket, bool isEternal) : 
+    Card(dir, j, type),
     _isTrinket(isTrinket),
     _isEternal(isEternal)
 
@@ -81,13 +83,13 @@ bool ScriptCard::isEternal() { return _isEternal; }
 bool ScriptCard::goesToBottom() { return _goesToBottom; }
 
 CharacterCard::CharacterCard(string dir, json j) : 
-    ScriptCard(dir, j, false),
+    ScriptCard(dir, j, CardTypes::Character, false),
     _attack(j["attack"]),
     _health(j["health"])
 {
     auto itemDir = fs::join(dir, j["item"]);
     auto jj = fs::readJS(fs::join(itemDir, CARD_INFO_FILE));
-    this->_startingItem = new ScriptCard(itemDir, jj, true, true);
+    this->_startingItem = new ScriptCard(itemDir, jj, CardTypes::StartingItem, true, true);
 }
 
 int CharacterCard::attack() { return _attack; }
@@ -201,7 +203,7 @@ void MonsterData::nullHealth() {
 }
 
 MonsterCard::MonsterCard(string dir, json j) :
-    ScriptCard(dir, j, true)
+    ScriptCard(dir, j, CardTypes::Monster, true)
 {
     _rewardsFuncName = j["rewards"];
     _baseHealth = j["health"];

@@ -8,5 +8,11 @@
     "canBeAttacked": false,
     "enter": "Stoney_enter",
     "leave": "Stoney_leave",
-    "rewards": "Stoney_rewards"
+    "rewards": "Stoney_rewards",
+    "on": {
+        "death": {
+            "check": "Stoney_trigger_check",
+            "effect": "Stoney_trigger"
+        }
+    }
 }

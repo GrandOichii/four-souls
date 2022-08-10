@@ -19,6 +19,7 @@ function Polydactyly_enter(host, me, owner)
         turnC = -1,
         rolls = 0
     }
+    addPlayableCount(host, owner.id)
 end
 
 function Polydactyly_leave(host, me, owner)
@@ -61,5 +62,5 @@ end
 
 function Polydactyly_trigger3(host)
     local me = this(host)
-    CardData[me.id].rolls = 0
+    CardData[me.id].rolls = CardData[me.id].rolls + 1
 end

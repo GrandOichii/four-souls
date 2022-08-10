@@ -1,0 +1,11 @@
+{
+    "name": "Lucky Foot",
+    "text": "{T}: Add up to 2 to a non-attack roll.",
+    "script": "script.lua",
+    "abilities": [
+        {
+            "cost": "LuckyFoot_cost",
+            "ability": "LuckyFoot_tap"
+        }
+    ]
+}

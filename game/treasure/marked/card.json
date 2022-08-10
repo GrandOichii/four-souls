@@ -1,0 +1,11 @@
+{
+    "name": "Marked",
+    "text": "Each time you make your first attack roll for your turn, you may change the dice result to a 5.",
+    "script": "script.lua",
+    "on": {
+        "roll": {
+            "check": "Marked_trigger_check",
+            "effect": "Marked_trigger"
+        }
+    }
+}

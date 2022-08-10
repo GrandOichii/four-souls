@@ -13,4 +13,5 @@ function TheHangedMan_use(host)
             end
         end
     end
+    lootCards(host, owner.id, 2)
 end

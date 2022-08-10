@@ -4,6 +4,50 @@
             "large": "images/polyphemus_large.bmp",
             "small": "images/polyphemus.bmp"
         },
+        "Lodestone": {
+            "large": "images/lodestone_large.bmp",
+            "small": "images/lodestone.bmp"
+        },
+        "Lemon Mishap": {
+            "large": "images/lemon_mishap_large.bmp",
+            "small": "images/lemon_mishap.bmp"
+        },
+        "Marked": {
+            "large": "images/marked_large.bmp",
+            "small": "images/marked.bmp"
+        },
+        "Mini Mush": {
+            "large": "images/mini_mush_large.bmp",
+            "small": "images/mini_mush.bmp"
+        },
+        "Lucky Foot": {
+            "large": "images/lucky_foot_large.bmp",
+            "small": "images/lucky_foot.bmp"
+        },
+        "Champion Belt": {
+            "large": "images/champion_belt_large.bmp",
+            "small": "images/champion_belt.bmp"
+        },
+        "Curved Horn": {
+            "large": "images/curved_horn_large.bmp",
+            "small": "images/curved_horn.bmp"
+        },
+        "Car Battery": {
+            "large": "images/car_battery_large.bmp",
+            "small": "images/car_battery.bmp"
+        },
+        "Blood Lust": {
+            "large": "images/blood_lust_large.bmp",
+            "small": "images/blood_lust.bmp"
+        },
+        "Infestation": {
+            "large": "images/infestation_large.bmp",
+            "small": "images/infestation.bmp"
+        },
+        "Seraphim": {
+            "large": "images/seraphim_large.bmp",
+            "small": "images/seraphim.bmp"
+        },
         "Sumptorium": {
             "large": "images/sumptorium_large.bmp",
             "small": "images/sumptorium.bmp"

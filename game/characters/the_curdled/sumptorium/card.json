@@ -3,6 +3,7 @@
     "text": "Each time you take damage, put a counter on this.\n($) Remove 2 counters from this:\nA monster gains -1d till end of turn.",
     "script": "script.lua",
     "enter": "Sumptorium_enter",
+    "leave": "Sumptorium_leave",
     "on": {
         "damage": {
             "check": "Sumptorium_trigger1_check",

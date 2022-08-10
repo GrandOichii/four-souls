@@ -5,6 +5,7 @@
     "on": {
         "roll": {
             "check": "Hourglass_trigger_check",
+            "cost": "Hourglass_trigger_cost",
             "effect": "Hourglass_trigger"
         }
     }

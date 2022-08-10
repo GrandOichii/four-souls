@@ -369,7 +369,9 @@ int Match::dealDamage(string tgtType, int tgtID, int amount) {
 }
 
 void Match::killMonster(CardWrapper* w) {
-    _lastKillerID = _stack.back()->player->id();
+    if (_stack.back()->player)
+        _lastKillerID = _stack.back()->player->id();
+    // std::cout << "KILLING MONSTER " << std::endl;
     auto card = (MonsterCard*)w->card();
     card->data()->nullHealth();
     if (card->data()->isBeingAttacked()) {
@@ -1414,7 +1416,14 @@ int Match::wrap_destroyCard(lua_State* L) {
             // destroy card
             //  TODO sort loot cards and treasure cards
             player->removeFromBoard(card);
-            match->_treasureDiscard.push_back(card);
+            switch (bcard->card()->type()) {
+            case CardTypes::Treasure:
+                match->_treasureDiscard.push_back(card);
+                break;
+            case CardTypes::Loot:
+                match->_lootDiscard.push_back(card);
+                break;
+            }
             card->setOwner(nullptr);
             match->execLeave(card, player);
             return 0;
@@ -1561,6 +1570,7 @@ int Match::wrap_killEntity(lua_State* L) {
     }
     if (type == MONSTER_TYPE) {
         for (const auto& pile : match->_monsters) {
+            // std::cout << "\t" << pile.back()->id() << "  " << pile.back()->card()->name() << std::endl;
             if (pile.back()->id() != id) continue;
             match->killMonster(pile.back());
             return 0;
@@ -2569,7 +2579,6 @@ MatchState Match::getState() {
     int dsp = 0;
 
     for (auto& si : _stack){
-    std::cout << si->type << std::endl;
         auto s = si->getState();
         if (si->type == ROLL_TYPE) {
             s.message = "Roll: " + std::to_string(_rollStack[rsi].value);

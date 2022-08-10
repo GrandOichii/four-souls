@@ -1,0 +1,19 @@
+{
+    "name": "Lodestone",
+    "text": "Each time a player rolls a 3, choose a monster. It gains -1d till end of turn.",
+    "script": "script.lua",
+    "enter": "Lodestone_enter",
+    "leave": "Lodestone_leave",
+    "on": {
+        "roll": {
+            "check": "Lodestone_trigger1_check",
+            "cost": "Lodestone_trigger1_cost",
+            "effect": "Lodestone_trigger1"
+        },
+        "turn_end": {
+            "usesStack": false,
+            "check": "Lodestone_trigger2_check",
+            "effect": "Lodestone_trigger2"
+        }
+    }
+}
