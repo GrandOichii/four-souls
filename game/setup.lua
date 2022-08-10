@@ -705,7 +705,7 @@ function Common_MonsterIsBeingAttacked(host, cardID)
     return monster.isBeingAttacked
 end
 
-function Common_OwnerDealtCombatDamage(host, cardID, targetType)
+function Common_OwnerDealtDamage(host, cardID, targetType)
     local targetType = targetType or MONSTER
     local owner = getOwner(host, cardID)
     local damageEvent = getTopDamageEvent(host)

@@ -236,7 +236,6 @@ public:
         switch (_lastRequestType) {
         case PollType::GetAction:
             this->getActionCalc();
-            if (!_state.stack.size()) _skipStack = false;
             if (_skipStack) respondPass();
             if (_yield) respondPass();
             break;
@@ -274,6 +273,7 @@ public:
                     continue;
                 }
                 _state = MatchState(j);
+                if (!_state.stack.size()) _skipStack = false;
                 if (_yield && _state.currentID == _myID && _lastTurnCounter != _state.turnCounter) _yield = false;
                 _hasState = true;
                 _lastRequestType = msg.header.id;
@@ -327,8 +327,10 @@ public:
             respondPass();
             break;
         case SKIP_STACK_KEY:
-            _skipStack = true;
-            if (_state.stack.size()) respondPass();
+            if (_state.stack.size()) {
+                _skipStack = true;
+                respondPass();
+            }
             break;
         }
     }

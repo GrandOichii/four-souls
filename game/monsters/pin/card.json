@@ -5,6 +5,8 @@
     "health": 2,
     "roll": 4,
     "power": 1,
+    "soulCount": 1,
+
     "rewards": "Pin_rewards",
     "enter": "Pin_enter",
     "leave": "Pin_leave"

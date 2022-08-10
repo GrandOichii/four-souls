@@ -5,6 +5,7 @@
     "health": 3,
     "roll": 4,
     "power": 2,
+    "soulCount": 1,
     "rewards": "Death_rewards",
     "death": "Death_death"
 }

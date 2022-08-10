@@ -5,5 +5,6 @@
     "health": 2,
     "roll": 4,
     "power": 1,
+    "soulCount": 1,
     "rewards": "Lust_rewards"
 }

@@ -5,6 +5,7 @@
     "health": 3,
     "roll": 3,
     "power": 1,
+    "soulCount": 1,
     "rewards": "War_rewards",
     "enter": "War_enter",
     "leave": "War_leave",

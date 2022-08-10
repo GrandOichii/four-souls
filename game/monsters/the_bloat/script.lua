@@ -1,6 +1,5 @@
 function TheBloat_rewards(host, me, killer)
     gainTreasure(host, killer.id, 1)
-	addSouls(host, killer.id, 1)
 end
 
 function TheBloat_trigger_check(host, me)

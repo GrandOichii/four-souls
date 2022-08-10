@@ -5,6 +5,7 @@
     "health": 3,
     "roll": 4,
     "power": 1,
+    "soulCount": 1,
     "rewards": "Greed_rewards",
     "on": {
         "damage": {

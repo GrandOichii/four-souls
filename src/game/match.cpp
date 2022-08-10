@@ -912,12 +912,13 @@ int Match::wrap_getMRoll(lua_State* L) {
     auto mid = getTopNumber(L, 2);
     MonsterData* mdata = nullptr;
     for (int i = 0; i < match->_monsters.size(); i++) {
+        if (!match->_monsters[i].size()) continue;
         if (match->_monsters[i].back()->id() == mid) {
             mdata = match->_monsterDataArr[i];
             break;
         }
     }
-    if (!mid) throw std::runtime_error("failed to find active monter with id: " + std::to_string(mid));
+    if (!mdata) throw std::runtime_error("failed to find active monter with id: " + std::to_string(mid));
     lua_pushnumber(L, mdata->baseRoll());
     return 1;
 }
@@ -928,12 +929,13 @@ int Match::wrap_getMPower(lua_State* L) {
     auto mid = getTopNumber(L, 2);
     MonsterData* mdata = nullptr;
     for (int i = 0; i < match->_monsters.size(); i++) {
+        if (!match->_monsters[i].size()) continue;
         if (match->_monsters[i].back()->id() == mid) {
             mdata = match->_monsterDataArr[i];
             break;
         }
     }
-    if (!mid) throw std::runtime_error("failed to find active monter with id: " + std::to_string(mid));
+    if (!mdata) throw std::runtime_error("failed to find active monter with id: " + std::to_string(mid));
     lua_pushnumber(L, mdata->basePower());
     return 1;
 }
@@ -1089,6 +1091,7 @@ int Match::wrap_getMonsterHealth(lua_State* L) {
     auto match = getTopMatch(L, 1);
     auto mid = getTopNumber(L, 2);
     for (int i = 0 ; i < match->_monsters.size(); i++) {
+        if (!match->_monsters[i].size()) continue;
         if (match->_monsters[i].back()->id() == mid) {
             lua_pushnumber(L, match->_monsterDataArr[i]->health());
             return 1;
@@ -2572,7 +2575,6 @@ MatchState Match::getState() {
         result.boards.push_back(p->getState());
     int rsi = 0;
     int dsp = 0;
-
     for (auto& si : _stack){
         auto s = si->getState();
         if (si->type == ROLL_TYPE) {
@@ -2627,6 +2629,7 @@ MatchState Match::getState() {
         }
         result.stack.push_back(s);
     }
+
     result.turnCounter = _turnCounter;
 
     result.currentI = _currentI;
@@ -2660,15 +2663,26 @@ MatchState Match::getState() {
         s.zone = Zones::MonsterDiscard;
         result.monsterDiscard.push_back(s);
     }
-    for (const auto& w : _monsters) {
-        auto s = w.back()->getState();
+    auto size = _monsters.size();
+    for (int i = 0; i < size; i++) {
+        auto& pile = _monsters[i];
+        auto& data = _monsterDataArr[i];
+        if (!pile.size()) {
+            auto s = emptyCardState();
+            s.zone = Zones::ActiveMonsters;
+            result.monsters.push_back(s);
+            result.monsterDataArr.push_back(emptyMonsterDataState());
+            continue;
+        }
+        auto s = pile.back()->getState();
         s.zone = Zones::ActiveMonsters;
         result.monsters.push_back(s);
-    }
-    for (const auto& data : _monsterDataArr) {
         result.monsterDataArr.push_back(data->getState());
     }
+
+
     result.isCombat = _isAttackPhase;
+
     return result;
 }
 
@@ -2706,9 +2720,11 @@ void Match::refillDeadMonsters() {
         // std::cout << "EXECUTING MONSTER LEAVE " << w->card()->name() << " -- " << w->card()->leaveFuncName() << std::endl;
         execMEnterLeave(w, w->card()->leaveFuncName());
         _monsters[i].pop_back();
+        _monsterDataArr[i] = nullptr;
         if (w->card()->soulCount()) {
             _activePlayer->addSoulCard(w);
             if (_activePlayer->soulCount() >= _soulsToWin) {
+                std::cout << "SETTING " << _activePlayer->name() << " TO WINNER" << std::endl;
                 _winner = _activePlayer;
                 updateAllPlayersEndMatch();
             }

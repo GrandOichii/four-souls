@@ -639,16 +639,27 @@ public:
         this->drawTexture(tex, pX + 10, pY + 10 + (48 + 2) * 2);
         SDL_DestroyTexture(tex);
         // draw souls
-        //  TODO
+        int betweenSouls = 20;
+        int sX = _playerSpaces[playerI][0] + _boardWidth / 2 - _assets->cardSize().first - 2;
+        int sY = _playerSpaces[playerI][1] + _boardHeight / 2 - _assets->cardSize().second - 2;
+        // int sX = pX;
+        // int sY = pY;
         int sresult = 0;
-        for (const auto& card : pboard.souls)
+        for (const auto& card : pboard.souls) {
             sresult += card.soulCount;
+            drawSoulCard(card, sX, sY);
+            sX -= betweenSouls;
+        }
         tex = this->_assets->getMessage(std::to_string(sresult), SDL_Color{ 255, 255, 255, 0 }, 48);
         this->drawTexture(tex, pX + 10, pY + 10 + (48 + 2) * 3);
         SDL_DestroyTexture(tex);
 
         // draw name
         this->drawPlayerName(pboard, x, y);
+    }
+
+    virtual void drawSoulCard(const CardState& card, int x, int y) {
+        this->drawTexture(_assets->getCard(card.cardName, CardSize::SMALL), x, y, 0);
     }
 
     virtual std::pair<int, int> drawPlayerName(PlayerBoardState& pboard, int x, int y) {

@@ -1,4 +1,3 @@
 function TheLamb_rewards(host, me, killer)
-	addCoins(host, killer["id"], 3)
-	addSouls(host, killer["id"], 1)
+	addCoins(host, killer.id, 3)
 end

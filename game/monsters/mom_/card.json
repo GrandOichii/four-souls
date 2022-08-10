@@ -5,6 +5,7 @@
     "health": 5,
     "roll": 4,
     "power": 2,
+    "soulCount": 2,
     "rewards": "Mom_rewards",
     "enter": "Mom_enter",
     "leave": "Mom_leave"

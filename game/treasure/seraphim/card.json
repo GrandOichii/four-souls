@@ -10,8 +10,8 @@
         },
         "turn_end": {
             "usesStack": false,
-            "check": "Seraphim_trigger1_check",
-            "effect": "Seraphim_trigger1"
+            "check": "Seraphim_trigger2_check",
+            "effect": "Seraphim_trigger2"
         }
     }
 }

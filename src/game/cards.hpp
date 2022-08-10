@@ -131,6 +131,8 @@ public:
     bool canBeAttacked();
 };
 
+MonsterDataState emptyMonsterDataState();
+
 class MonsterCard : public ScriptCard {
 private:
     int _baseHealth;
@@ -163,6 +165,8 @@ struct CardState {
     int ownerID;
     int activatedAbilityCount;
 };
+
+CardState emptyCardState();
 
 class CardWrapper {
 private:

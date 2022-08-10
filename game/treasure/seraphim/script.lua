@@ -20,11 +20,11 @@ function Seraphim_trigger1(host)
     Common_ModLastRoll(host, 1)
 end
 
-function Seraphim_trigger1_check(host, me)
+function Seraphim_trigger2_check(host, me)
     return true
 end
 
-function Seraphim_trigger1(host)
+function Seraphim_trigger2(host)
     local me = this(host)
     CardData[me.id].rCount = 0
 end

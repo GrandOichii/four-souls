@@ -121,6 +121,15 @@ MonsterDataState MonsterData::getState() {
     return result;
 }
 
+MonsterDataState emptyMonsterDataState() {
+    MonsterDataState result;
+    result.health = -1;
+    result.roll = -1;
+    result.power = -1;
+    return result;
+}
+
+
 int MonsterData::baseRoll() {
     return _baseRoll;
 }
@@ -132,7 +141,6 @@ int MonsterData::roll() {
     }
     lua_pushlightuserdata(_L, _parent);
     lua_pushnumber(_L, _mid);
-
     int r = lua_pcall(_L, 2, 1, 0);
     if (r != LUA_OK) {
         dumpstack(_L);
@@ -266,9 +274,7 @@ void CardWrapper::pushTable(lua_State* L) {
 }
 
 CardState CardWrapper::getState() {
-
     CardState result;
-    // std::cout << "NAME: " << _card->name() << std::endl;
     result.cardName = _card->name();
     result.active = !_tapped;
     result.id = _id;
@@ -278,6 +284,12 @@ CardState CardWrapper::getState() {
     result.ownerID = -1;
     if (_owner) result.ownerID = _owner->id();
     result.activatedAbilityCount = _card->abilities().size();
+    return result;
+}
+
+CardState emptyCardState() {
+    CardState result;
+    result.cardName = "--no-card--";
     return result;
 }
 

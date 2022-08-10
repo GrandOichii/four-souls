@@ -338,7 +338,7 @@ PlayerBoardState Player::getState() {
     for (const auto& w : _souls) {
         auto s = w->getState();
         s.zone = Zones::Souls;
-        result.hand.push_back(s);
+        result.souls.push_back(s);
     }
     return result;
 }

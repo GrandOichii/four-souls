@@ -5,6 +5,7 @@
     "health": 3,
     "roll": 4,
     "power": 1,
+    "soulCount": 1,
     "rewards": "DarkOne_rewards",
     "enter": "DarkOne_enter",
     "leave": "DarkOne_leave",
