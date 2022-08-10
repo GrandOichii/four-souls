@@ -69,6 +69,7 @@ struct ActivatedAbility {
 enum Zones : int {
     Unknown,
     Hand,
+    Souls,
     Board,
     CCard,
     Shop,

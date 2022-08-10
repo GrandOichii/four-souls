@@ -22,7 +22,6 @@ struct PlayerBoardState {
     int health;
     int maxHealth;
     int blueHealth;
-    int soulCount;
     int attack;
     int playableCount;
     int purchaseCount;
@@ -34,6 +33,7 @@ struct PlayerBoardState {
     CardState playerCard;
     std::vector<CardState> board;
     std::vector<CardState> hand;
+    std::vector<CardState> souls;
 
     void pushTable(lua_State* L);
 };
@@ -63,8 +63,6 @@ private:
 
     int _id;
 
-    int _soulCount;
-
     int _coinCount;
     int _additionalCoins;
 
@@ -75,6 +73,7 @@ private:
 
     std::vector<CardWrapper*> _board;
     std::vector<CardWrapper*> _hand;
+    std::vector<CardWrapper*> _souls;
 
     int _playableCount;
     int _maxPlayableCount;
@@ -166,7 +165,9 @@ public:
     void incAttack(int amount);
     void decAttack(int amount);
 
-    void addSouls(int amount);
+    // void addSouls(int amount);
+
+    void addSoulCard(CardWrapper* card);
 
     void resetEOT();
     void setStartingValues(int treasurePrice, int attackCount, int playableCount, int purchaseCount);

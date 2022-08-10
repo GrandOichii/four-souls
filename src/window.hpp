@@ -639,7 +639,11 @@ public:
         this->drawTexture(tex, pX + 10, pY + 10 + (48 + 2) * 2);
         SDL_DestroyTexture(tex);
         // draw souls
-        tex = this->_assets->getMessage(std::to_string(pboard.soulCount), SDL_Color{ 255, 255, 255, 0 }, 48);
+        //  TODO
+        int sresult = 0;
+        for (const auto& card : pboard.souls)
+            sresult += card.soulCount;
+        tex = this->_assets->getMessage(std::to_string(sresult), SDL_Color{ 255, 255, 255, 0 }, 48);
         this->drawTexture(tex, pX + 10, pY + 10 + (48 + 2) * 3);
         SDL_DestroyTexture(tex);
 

@@ -16,8 +16,6 @@ Player::Player(std::string name, CharacterCard* card, int id) :
     this->_characterActive = false;
     this->_startTurnLootAmount = 1;
 
-    this->_soulCount = 0;
-
     this->_coinCount = 0;
     this->_additionalCoins = 0;
 
@@ -106,8 +104,14 @@ std::vector<CardWrapper*> Player::hand() { return _hand; }
 bool Player::characterActive() { return _characterActive; }
 string Player::name() { return _name; }
 int Player::id() { return _id; }
-int Player::soulCount() { return _soulCount; }
 CardWrapper* Player::characterCard() { return _characterCard; }
+
+int Player::soulCount() { 
+    int result = 0;
+    for (const auto& w : _souls)
+        result += w->card()->soulCount();
+    return result;
+}
 
 void Player::rechargeCharacter() {
     this->_characterActive = true;
@@ -149,12 +153,12 @@ void Player::pushTable(lua_State* L) {
     l_pushtablenumber(L, "id", (float)this->_id);
     l_pushtablenumber(L, "startTurnLootAmount", (float)this->_startTurnLootAmount);
     l_pushtablenumber(L, "coins", (float)this->_coinCount);
-    l_pushtablenumber(L, "souls", (float)this->_soulCount);
     l_pushtablenumber(L, "playableCount", (float)_playableCount);
     l_pushtablenumber(L, "purchaseCount", (float)_purchaseCount);
     l_pushtablenumber(L, "attackCount", (float)_attackCount);
     l_pushtablenumber(L, "treasurePrice", _treasurePrice);
     l_pushtableboolean(L, "characterActive", _characterActive);
+
     // push cards in hand
     lua_pushstring(L, "hand");
     auto handSize = _hand.size();
@@ -165,8 +169,8 @@ void Player::pushTable(lua_State* L) {
         lua_settable(L, -3);
     }
     lua_settable(L, -3);
-    // push board
 
+    // push board
     lua_pushstring(L, "board");
     auto boardSize = _board.size();
     lua_createtable(L, boardSize, 0);
@@ -174,6 +178,18 @@ void Player::pushTable(lua_State* L) {
     for (int i = 0; i < boardSize; i++) {
         lua_pushnumber(L, i+1);
         _board[i]->pushTable(L);
+        lua_settable(L, -3);
+    }
+    lua_settable(L, -3);
+    
+    // push souls
+    lua_pushstring(L, "souls");
+    auto soulsSize = _souls.size();
+    lua_createtable(L, soulsSize, 0);
+
+    for (int i = 0; i < soulsSize; i++) {
+        lua_pushnumber(L, i+1);
+        _souls[i]->pushTable(L);
         lua_settable(L, -3);
     }
     lua_settable(L, -3);
@@ -308,7 +324,6 @@ PlayerBoardState Player::getState() {
     result.name = _name;
     result.maxHealth = maxHealth();
     result.blueHealth = _blueHealth;
-    result.soulCount = _soulCount;
     result.attack = attack();
     for (const auto& w : _board) {
         auto s = w->getState();
@@ -320,6 +335,11 @@ PlayerBoardState Player::getState() {
         s.zone = Zones::Hand;
         result.hand.push_back(s);
     }
+    for (const auto& w : _souls) {
+        auto s = w->getState();
+        s.zone = Zones::Souls;
+        result.hand.push_back(s);
+    }
     return result;
 }
 
@@ -328,7 +348,10 @@ void PlayerBoardState::pushTable(lua_State* L) {
 
 }
 
-void Player::addSouls(int amount) { _soulCount += amount; }
+// void Player::addSouls(int amount) { _soulCount += amount; }
+void Player::addSoulCard(CardWrapper* card) {
+    _souls.push_back(card);
+}
 
 void Player::setLuaENV(lua_State* L) { 
     this->L = L; 

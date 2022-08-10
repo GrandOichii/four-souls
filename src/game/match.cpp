@@ -14,6 +14,7 @@ static CardState cardFromJson(json j) {
     result.counters = j["counters"];
     result.zone = j["zone"];
     result.ownerID = j["ownerID"];
+    result.soulCount = j["soulCount"];
     result.activatedAbilityCount = j["activatedAbilityCount"];
     return result;
 }
@@ -33,7 +34,6 @@ static PlayerBoardState playerFromJson(json j) {
     result.maxHealth = j["maxHealth"];
     result.blueHealth = j["blueHealth"];
     result.treasurePrice = j["treasurePrice"];
-    result.soulCount = j["soulCount"];
     result.attack = j["attack"];
     result.health = j["health"];
     result.playableCount = j["playableCount"];
@@ -45,6 +45,7 @@ static PlayerBoardState playerFromJson(json j) {
     result.playerCard = cardFromJson(j["playerCard"]);
     result.board = cardVectorFromJson(j["board"]);
     result.hand = cardVectorFromJson(j["hand"]);
+    result.souls = cardVectorFromJson(j["souls"]);
     return result;
 }
 
@@ -111,6 +112,7 @@ static json cardToJson(const CardState& card) {
     result["counters"] = card.counters;
     result["zone"] = card.zone;
     result["ownerID"] = card.ownerID;
+    result["soulCount"] = card.soulCount;
     result["activatedAbilityCount"] = card.activatedAbilityCount;
     return result;
 }
@@ -160,7 +162,6 @@ static json playerToJson(const PlayerBoardState& player) {
     result["health"] = player.health;
     result["maxHealth"] = player.maxHealth;
     result["blueHealth"] = player.blueHealth;
-    result["soulCount"] = player.soulCount;
     result["treasurePrice"] = player.treasurePrice;
     result["attack"] = player.attack;
     result["playableCount"] = player.playableCount;
@@ -172,6 +173,7 @@ static json playerToJson(const PlayerBoardState& player) {
     result["playerCard"] = cardToJson(player.playerCard);
     result["board"] = cardVectorToJson(player.board);
     result["hand"] = cardVectorToJson(player.hand);
+    result["souls"] = cardVectorToJson(player.souls);
     return result;
 }
 
@@ -1009,28 +1011,18 @@ int Match::wrap_setNextPlayer(lua_State* L) {
     throw std::runtime_error("failed to set next player - can't find player with id " + std::to_string(pid));
 }
 
+//  TODO depricated
 int Match::wrap_addSouls(lua_State* L) {
-    if (lua_gettop(L) != 3) {
-        lua_err(L);
-        exit(1);
-    }
+    stackSizeIs(L, 3);
     auto match = getTopMatch(L, 1);
-    if (!lua_isnumber(L, 2)) {
-        lua_err(L);
-        exit(1);
-    }
-    auto pid = (int)lua_tonumber(L, 2);
-    if (!lua_isnumber(L, 3)) {
-        lua_err(L);
-        exit(1);
-    }
-    auto amount = (int)lua_tonumber(L, 3);
+    auto pid = getTopNumber(L, 2);
+    auto cid = getTopNumber(L, 3);
     Player* player = match->playerWithID(pid);
-    player->addSouls(amount);
-    if (player->soulCount() >= match->_soulsToWin) {
-        match->_winner = player;
-        match->updateAllPlayersEndMatch();
-    }
+    // player->addSouls(amount);
+    // if (player->soulCount() >= match->_soulsToWin) {
+    //     match->_winner = player;
+    //     match->updateAllPlayersEndMatch();
+    // }
     return 0;
 }
 
@@ -2711,10 +2703,18 @@ void Match::refillDeadMonsters() {
         if (_monsterDataArr[i]->health()) continue;
         auto w = _monsters[i].back();
         ((MonsterCard*)w->card())->deleteData();
-        std::cout << "EXECUTING MONSTER LEAVE " << w->card()->name() << " -- " << w->card()->leaveFuncName() << std::endl;
+        // std::cout << "EXECUTING MONSTER LEAVE " << w->card()->name() << " -- " << w->card()->leaveFuncName() << std::endl;
         execMEnterLeave(w, w->card()->leaveFuncName());
         _monsters[i].pop_back();
-        _monsterDiscard.push_back(w);
+        if (w->card()->soulCount()) {
+            _activePlayer->addSoulCard(w);
+            if (_activePlayer->soulCount() >= _soulsToWin) {
+                _winner = _activePlayer;
+                updateAllPlayersEndMatch();
+            }
+        } else {
+            _monsterDiscard.push_back(w);
+        }
         CardWrapper* newM = nullptr;
         if (!_monsters[i].size()) {
             newM = _monsterDeck.back();
@@ -2725,7 +2725,7 @@ void Match::refillDeadMonsters() {
         }
         auto mcard = ((MonsterCard*)newM->card());
         mcard->createData(L, this, newM->id());
-        std::cout << "EXECUTING ENTER " << mcard->name() << std::endl;
+        // std::cout << "EXECUTING ENTER " << mcard->name() << std::endl;
         execMEnterLeave(newM, mcard->enterFuncName());
 
         _monsterDataArr[i] = mcard->data();

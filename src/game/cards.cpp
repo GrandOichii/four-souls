@@ -7,10 +7,13 @@ Card::Card(string dir, json j, CardTypes type) :
     _name(j["name"]),
     _text(j["text"]),
     _type(type)
-{}
+{
+    if (j.contains("soulCount")) _soulCount = j["soulCount"];
+}
 
 string Card::name() { return _name; }
 string Card::text() { return _text; }
+int Card::soulCount() { return _soulCount; }
 CardTypes Card::type() { return _type; }
 
 void Card::print(string prefix) {
@@ -269,6 +272,7 @@ CardState CardWrapper::getState() {
     result.cardName = _card->name();
     result.active = !_tapped;
     result.id = _id;
+    result.soulCount = _card->soulCount();
     result.counters = _counters;
     result.zone = Zones::Unknown;
     result.ownerID = -1;
