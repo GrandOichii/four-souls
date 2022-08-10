@@ -709,6 +709,26 @@ function Common_OwnerDealtCombatDamage(host, cardID, targetType)
     local targetType = targetType or MONSTER
     local owner = getOwner(host, cardID)
     local damageEvent = getTopDamageEvent(host)
+    if damageEvent.sourceType ~= PLAYER then
+        return false
+    end
+    if damageEvent.sourceID ~= owner.id then
+        return false
+    end
+    if damageEvent.targetType ~= targetType then
+        return false
+    end
+    local monster = Common_MonsterWithID(host, damageEvent.targetID)
+    if not monster.isBeingAttacked then
+        return false
+    end
+    return true
+end
+
+function Common_OwnerDealtCombatDamage(host, cardID, targetType)
+    local targetType = targetType or MONSTER
+    local owner = getOwner(host, cardID)
+    local damageEvent = getTopDamageEvent(host)
     if not damageEvent.isCombatDamage then
         return false
     end

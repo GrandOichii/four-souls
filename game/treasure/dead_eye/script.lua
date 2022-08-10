@@ -1,5 +1,5 @@
 function DeadEye_trigger_check(host, me)
-    return Common_OwnerDealtCombatDamage(host, me.id)
+    return Common_OwnerDealtDamage(host, me.id)
 end
 
 function DeadEye_trigger(host)

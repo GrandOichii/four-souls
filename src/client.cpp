@@ -9,6 +9,9 @@
 
 const std::regex CARD_NAME_REGEX("\\$\\{([\\w\\ \\'\\!\\?\\.\\(\\)]+)\\}|[\\w\\?\\!\\$]+");
 
+const char YIELD_UNTIL_TURN_KEY = 'y';
+const char SKIP_STACK_KEY = 's';
+
 using Client = client_interface<PollType>;
 
 struct MessageMember {
@@ -43,6 +46,10 @@ private:
 
     SDL_Event* _event = new SDL_Event();
     bool _running = false;
+
+    bool _yield = false;
+    bool _skipStack = false;
+    int _lastTurnCounter = -1;
 public:
     ClientWrapper(string host, string title, string assetsPath, bool fullscreen) :
         Window(title, assetsPath, fullscreen),
@@ -229,6 +236,9 @@ public:
         switch (_lastRequestType) {
         case PollType::GetAction:
             this->getActionCalc();
+            if (!_state.stack.size()) _skipStack = false;
+            if (_skipStack) respondPass();
+            if (_yield) respondPass();
             break;
         case PollType::Prompt:
             this->promptCalc(j);
@@ -257,13 +267,14 @@ public:
                 auto j = nlohmann::json::parse(jstate);
                 if (msg.header.id == PollType::Setup) {
                     _myID = j["id"];
-                    for (const auto& [key, value] : j["cards"].items()){
-                        _assets->createCard(value["name"], value["text"]);
-                    }
+                    // for (const auto& [key, value] : j["cards"].items()){
+                    //     _assets->createCard(value["name"], value["text"]);
+                    // }
                     // load all cards
                     continue;
                 }
                 _state = MatchState(j);
+                if (_yield && _state.currentID == _myID && _lastTurnCounter != _state.turnCounter) _yield = false;
                 _hasState = true;
                 _lastRequestType = msg.header.id;
                 this->calcAllowedCards(j);
@@ -308,12 +319,25 @@ public:
             break;
         case SDLK_SPACE:
             if (!_waitingResponse || _lastRequestType != PollType::GetAction) return;
-            message<PollType> reply;
-            reply << ACTION_PASS;
-            _c->Send(reply);
-            _waitingResponse = false;
+            respondPass();
+            break;
+        case YIELD_UNTIL_TURN_KEY:
+            _yield = true;
+            _lastTurnCounter = _state.turnCounter;
+            respondPass();
+            break;
+        case SKIP_STACK_KEY:
+            _skipStack = true;
+            if (_state.stack.size()) respondPass();
             break;
         }
+    }
+
+    void respondPass() {
+        message<PollType> reply;
+        reply << ACTION_PASS;
+        _c->Send(reply);
+        _waitingResponse = false;
     }
 
     void playFunnySound() {

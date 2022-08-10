@@ -44,6 +44,7 @@ struct MatchState {
     int priorityI;
     int currentID;
     bool isMain;
+    int turnCounter;
 
     int lootDeckCount;
     int treasureDeckCount;

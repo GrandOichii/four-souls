@@ -3,7 +3,7 @@
     "text": "{T}: Till end of turn, each time a player rolls an attack roll of 1 or 2, deal 1 damage to each monster.",
     "script": "script.lua",
     "enter": "LemonMishap_enter",
-    "abilties": [
+    "abilities": [
         {
             "cost": "LemonMishap_cost",
             "ability": "LemonMishap_tap"

@@ -87,6 +87,7 @@ MatchState::MatchState(nlohmann::json j){
         rollStack.push_back(rollStackMemberFromJson(value));
     for (const auto& [key, value] : j["monsterData"].items())
         monsterDataArr.push_back(monsterDataFromJson(value));
+    turnCounter = j["turnCounter"];
     currentI = j["currentI"];
     priorityI = j["priorityI"];
     currentID = j["currentID"];
@@ -188,6 +189,8 @@ json MatchState::toJson() {
     result["monsterData"] = json::array();
     for (const auto& data : monsterDataArr)
         result["monsterData"].push_back(monsterDataToJson(data));
+
+    result["turnCounter"] = turnCounter;
     result["currentI"] = currentI;
     result["priorityI"] = priorityI;
     result["currentID"] = currentID;
@@ -2632,7 +2635,7 @@ MatchState Match::getState() {
         }
         result.stack.push_back(s);
     }
-
+    result.turnCounter = _turnCounter;
 
     result.currentI = _currentI;
 
