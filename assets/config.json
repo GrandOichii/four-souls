@@ -4,9 +4,21 @@
             "large": "images/polyphemus_large.bmp",
             "small": "images/polyphemus.bmp"
         },
+        "Sumptorium": {
+            "large": "images/sumptorium_large.bmp",
+            "small": "images/sumptorium.bmp"
+        },
+        "The Curdled": {
+            "large": "images/the_curdled_large.bmp",
+            "small": "images/the_curdled.bmp"
+        },
         "Placenta": {
             "large": "images/placenta_large.bmp",
             "small": "images/placenta.bmp"
+        },
+        "Abel": {
+            "large": "images/abel_large.bmp",
+            "small": "images/abel.bmp"
         },
         "Fire Mind": {
             "large": "images/fire_mind_large.bmp",

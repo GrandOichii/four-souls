@@ -1,0 +1,12 @@
+{
+    "name": "Abel",
+    "text": "Each time you deal combat damage to a monster, roll:\n4-6: Deal 1 damage to another monster or player.",
+    "script": "script.lua",
+    "on": {
+        "damage": {
+            "check": "Abel_trigger_check",
+            "cost": "Abel_trigger_cost",
+            "effect": "Abel_trigger"
+        }
+    }
+}

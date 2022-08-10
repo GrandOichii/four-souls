@@ -64,8 +64,12 @@ public:
         // check character card
         if (me.playerCard.active) _allowedCards.push_back(me.playerCard.id);
         // check board
-        for (const auto& value : me.board)
-            if (value.active && value.activatedAbilityCount) _allowedCards.push_back(value.id);
+        for (const auto& value : me.board) {
+            //  TODO if tapped, go through all abilities, if at least one of them is not marked "requiresTap", add to allowed cards
+            if (value.activatedAbilityCount) 
+                _allowedCards.push_back(value.id);
+
+        }
         // check loot cards
         if (me.playableCount) {
             for (const auto& value : me.hand){

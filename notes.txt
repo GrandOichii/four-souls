@@ -11,6 +11,7 @@
     -- holy keeper head
 
 - implement:
+    -- add "requiresTap" field
     -- add stealing cards
     -- implement viewing cards from simple requests
     -- implement testing records
