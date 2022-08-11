@@ -766,9 +766,9 @@ int Match::wrap_expandShopSize(lua_State* L) {
     auto match = getTopMatch(L, 1);
     int amount = getTopNumber(L, 2);
     auto card = match->getTopTreasureCard();
-    //  TODO figure out fix
     if (!card) throw std::runtime_error("shop is empty, can't expand shop size");
     match->_shop.push_back(card);
+    match->_treasureDeck.pop_back();
     return 1;
 }
 
@@ -783,7 +783,6 @@ int Match::wrap_popTarget(lua_State* L) {
     stackSizeIs(L, 1);
     auto match = getTopMatch(L, 1);
     auto pair = match->_targetStack.back();
-    std::cout << "POPPING TARGET STACK " << pair.first << " " << pair.second << std::endl;
     match->_targetStack.pop_back();
     lua_newtable(L);
     l_pushtablestring(L, "type", pair.first);
@@ -1131,7 +1130,9 @@ int Match::wrap_buyItem(lua_State* L) {
     auto match = getTopMatch(L, 1);
     CardWrapper* w = nullptr;
     auto top = match->getTopTreasureCard();
-    if (top) match->_treasureDeck.pop_back(); //  TODO fix
+    if (top) {
+        match->_treasureDeck.pop_back(); //  TODO fix if card is missing
+    }
     int lti = match->_lastTreasureIndex;
 
     if (lti == -1) {
@@ -1148,7 +1149,8 @@ int Match::wrap_buyItem(lua_State* L) {
 
     auto player = match->_stack.back()->player;
     match->addCardToBoard(w, player);
-    match->log("Player " + player->name() + " bought " + w->card()->name());
+    // match->log("Player " + player->name() + " bought " + w->card()->name());
+    std::cout << "Player " + player->name() + " bought " + w->card()->name() << std::endl;;
     return 0;
 }
 
@@ -2230,13 +2232,13 @@ void Match::start() {
     _record["actions"] = nlohmann::json::object();
     for (const auto player : _players)
         _record["actions"][player->name()] = nlohmann::json::array();
-
     std::cout << "\nThe game starts\n\n";
     // give starting hands
     for (auto& p : _players) {
         auto cards = this->getTopLootCards(_startingLootAmount);
         p->addLootCards(cards);
-        std::cout << p->name() << "\t" << p->id() << std::endl;
+        this->log(p->name() + "\t" + std::to_string(p->id()));
+
     }
     // setup shop
     auto tcards = getTopTreasureCards(_startingShopSize);
@@ -2317,7 +2319,7 @@ void Match::turn() {
     auto state = this->getState();
     while (!_turnEnd && (response != ACTION_PASS || _isAttackPhase)) {
         response = this->_activePlayer->promptAction(state);
-        std::cout << "\t" << _activePlayer->name() << ": " << response << std::endl;
+        this->log("\t" + _activePlayer->name() + ": " + response);
         this->executePlayerAction(_activePlayer, response);
         if (_isAttackPhase && response == ACTION_PASS) {
             response = "__passAttack";
@@ -2415,7 +2417,7 @@ int Match::applyTriggers(string triggerType) {
         auto effect = card->getTriggerWhen(triggerType);
         auto checkFuncName = effect.checkFuncName;
         if (!this->execCheck(checkFuncName, w)) {
-            std::cout << "Check failed" << std::endl;
+            this->log("Check failed");
             continue;
         }
         this->log(card->name() + " is triggered");
@@ -2442,7 +2444,6 @@ int Match::applyTriggers(string triggerType) {
         //     }
         // }
         if (!effect.usesStack) {
-            std::cout << "EXECUTING " << effect.effectFuncName << " WITHOUT STACK\n"; 
             execFunc(effect.effectFuncName);
             _stack.erase(std::find(_stack.begin(), _stack.end(), p));
             delete p;
@@ -2462,7 +2463,7 @@ int Match::applyTriggers(string triggerType) {
             auto effect = card->getTriggerWhen(triggerType);
             auto checkFuncName = effect.checkFuncName;
             if (!this->execCheck(checkFuncName, w)) {
-                std::cout << "Check failed" << std::endl;
+                this->log("Check failed");
                 continue;
             }
             this->log(card->name() + " is triggered");
@@ -2561,7 +2562,7 @@ string Match::promptPlayerWithPriority() {
 }
 
 void Match::log(string message, bool wait) {
-    // return;
+    return;
     std::cout << " - " << message << std::endl;
     if (wait) {
         // std::this_thread::sleep_for(std::chrono::seconds(1));

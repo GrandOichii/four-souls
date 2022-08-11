@@ -330,19 +330,19 @@ int main(int argc, char* argv[]) {
                 // ));
                 continue;
             }
-            // match->addPlayer(new BotPlayer(
-            //     name,
-            //     match->getRandomAvailableCharacter(),
-            //     match->newCardID(),
-            //     fs::readFile("bots/random.lua")
-            // ));
-
-            match->addPlayer(new ScriptedPlayer(
+            match->addPlayer(new BotPlayer(
                 name,
                 match->getRandomAvailableCharacter(),
                 match->newCardID(),
-                actions
+                fs::readFile("bots/random.lua")
             ));
+
+            // match->addPlayer(new ScriptedPlayer(
+            //     name,
+            //     match->getRandomAvailableCharacter(),
+            //     match->newCardID(),
+            //     actions
+            // ));
         }
         try {
             match->start();

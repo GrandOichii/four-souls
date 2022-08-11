@@ -3,7 +3,7 @@
     "text": "At the end of your turn, put a counter on this.\n($) Remove 2 counters from this:\nRecharge each item a player controls.",
     "script": "script.lua",
     "on": {
-        "turn_end": {
+        "turn_start": {
             "check": "BatteryPack_trigger_check",
             "effect": "BatteryPack_trigger"
         }
