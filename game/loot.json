@@ -1,11 +1,11 @@
 {
     "back": "images/loot_card_back.bmp",
-    "car1ds": {
+    "card1s": {
         "basic": {
             "loot/gold_bomb": 0
         },
         "trinkets": {
-            "loot/curved_horn": 30
+            "loot/lost_soul": 30
         }
     },
     "cards": {
@@ -36,7 +36,6 @@
             "loot/a_sack": 1,
             "loot/the_stars": 1,
             "loot/jera": 1,
-            "loot/lost_soul": 1,
             "loot/the_sun": 1,
             "loot/two_of_diamonds": 1,
             "loot/soul_heart": 2,
@@ -52,6 +51,7 @@
             "loot/strength": 1
         },
         "trinkets": {
+            "loot/lost_soul": 1,
             "loot/bloody_penny": 1,
             "loot/counterfeit_penny": 1,
             "loot/guppys_hairball": 1,

@@ -594,6 +594,42 @@ int Match::wrap_getTopOwner(lua_State* L) {
     return 1;
 }
 
+int Match::wrap_removeFromEverywhere(lua_State* L) {
+    stackSizeIs(L, 2);
+    auto match = getTopMatch(L, 1);
+    auto cid = getTopNumber(L, 2);
+    auto card = match->cardWithID(cid);
+    
+    // remove from all decks
+    bool removed = false;
+    removed = removeFromCollection(card, match->_treasureDeck);
+    if (removed) return 0;
+    removed = removeFromCollection(card, match->_monsterDeck);
+    if (removed) return 0;
+    removed = removeFromCollection(card, match->_lootDeck);
+    if (removed) return 0;
+    // remove from discards
+    removed = removeFromCollection(card, match->_treasureDiscard);
+    if (removed) return 0;
+    removed = removeFromCollection(card, match->_monsterDiscard);
+    if (removed) return 0;
+    removed = removeFromCollection(card, match->_lootDiscard);
+    if (removed) return 0;
+    // remove from players
+    for (const auto& player : match->_players) {
+        removed = player->removeCard(card);
+        if (removed) {
+            match->execLeave(card, player);
+            return 0;
+        }
+    }
+    // remove from shop
+    removed = removeFromCollection(card, match->_shop);
+    if (removed) return 0;
+    // TODO remove from monster piles
+    return 0;
+}
+
 int Match::wrap_getOwner(lua_State *L) {
     stackSizeIs(L, 2);
     auto match = getTopMatch(L, 1);
@@ -1013,17 +1049,19 @@ int Match::wrap_setNextPlayer(lua_State* L) {
 }
 
 //  TODO depricated
-int Match::wrap_addSouls(lua_State* L) {
+int Match::wrap_addSoulCard(lua_State* L) {
     stackSizeIs(L, 3);
     auto match = getTopMatch(L, 1);
     auto pid = getTopNumber(L, 2);
     auto cid = getTopNumber(L, 3);
     Player* player = match->playerWithID(pid);
-    // player->addSouls(amount);
-    // if (player->soulCount() >= match->_soulsToWin) {
-    //     match->_winner = player;
-    //     match->updateAllPlayersEndMatch();
-    // }
+    auto card = match->cardWithID(cid);
+    player->addSoulCard(card);
+    // std::cout << "ADDED SOUL CARD " << card->card()->name() << " TO PLAYER " << player->name() << std::endl;
+    if (player->soulCount() >= match->_soulsToWin) {
+        match->_winner = player;
+        match->updateAllPlayersEndMatch();
+    }
     return 0;
 }
 
@@ -1123,10 +1161,7 @@ int Match::wrap_subCoins(lua_State* L) {
 }
 
 int Match::wrap_buyItem(lua_State* L) {
-    if (lua_gettop(L) != 1) {
-        lua_err(L);
-        exit(1);
-    }
+    stackSizeIs(L, 1);
     auto match = getTopMatch(L, 1);
     CardWrapper* w = nullptr;
     auto top = match->getTopTreasureCard();
@@ -1149,8 +1184,8 @@ int Match::wrap_buyItem(lua_State* L) {
 
     auto player = match->_stack.back()->player;
     match->addCardToBoard(w, player);
-    // match->log("Player " + player->name() + " bought " + w->card()->name());
-    std::cout << "Player " + player->name() + " bought " + w->card()->name() << std::endl;;
+    match->log("Player " + player->name() + " bought " + w->card()->name());
+    // std::cout << "Player " + player->name() + " bought " + w->card()->name() << std::endl;;
     return 0;
 }
 
@@ -1422,6 +1457,8 @@ int Match::wrap_destroyCard(lua_State* L) {
                 break;
             case CardTypes::Loot:
                 match->_lootDiscard.push_back(card);
+                break;
+            default:
                 break;
             }
             card->setOwner(nullptr);
@@ -1899,6 +1936,8 @@ void Match::setupLua(string setupScript) {
     luaL_openlibs(L);
     // connect functions
     lua_register(L, "healPlayer", wrap_healPlayer);
+    lua_register(L, "addSoulCard", wrap_addSoulCard);
+    lua_register(L, "removeFromEverywhere", wrap_removeFromEverywhere);
     lua_register(L, "getActivations", wrap_getActivations);
     lua_register(L, "expandActiveMonsters", wrap_expandActiveMonsters);
     lua_register(L, "expandShopSize", wrap_expandShopSize);
@@ -1931,7 +1970,6 @@ void Match::setupLua(string setupScript) {
     lua_register(L, "gainTreasure", wrap_gainTreasure);
     lua_register(L, "addPlayableCount", wrap_addPlayableCount);
     lua_register(L, "getCurrentPlayer", wrap_getCurrentPlayer);
-    lua_register(L, "addSouls", wrap_addSouls);
     lua_register(L, "rechargeCard", wrap_rechargeCard);
     lua_register(L, "getDamageEvent", wrap_getDamageEvent);
     lua_register(L, "getTopDamageEvent", wrap_getTopDamageEvent);
@@ -2562,7 +2600,7 @@ string Match::promptPlayerWithPriority() {
 }
 
 void Match::log(string message, bool wait) {
-    return;
+    // return;
     std::cout << " - " << message << std::endl;
     if (wait) {
         // std::this_thread::sleep_for(std::chrono::seconds(1));

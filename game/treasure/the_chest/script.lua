@@ -1,3 +1,4 @@
 function TheChest_leave(host, me, owner)
-    addSouls(host, owner.id, 1)
+    removeFromEverywhere(host, me.id)
+    addSoulCard(host, owner.id, me.id)
 end

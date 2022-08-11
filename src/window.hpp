@@ -591,8 +591,8 @@ public:
             // this->drawCard(card, (card.active ? 0 : 90), pX + 10, pY);
             this->drawCard(card, (card.active ? 0 : 90), pX + 10, pY);
             pX += _cardSize.second + betweenCards;
-            if (pX >= _playerSpaces[playerI][0] + _boardWidth / 2) {
-                pX = _playerSpaces[playerI][0];
+            if (pX + _cardSize.second >= _playerSpaces[playerI][0] + _boardWidth / 2) {
+                pX = _playerSpaces[playerI][0] + _cardSize.second - _cardSize.first;
                 pY += _assets->cardSize().second + 20;
             }
         }

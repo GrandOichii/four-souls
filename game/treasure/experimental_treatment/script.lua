@@ -5,6 +5,7 @@ function ExperimentalTreatment_cost(host, cardInfo)
 end
 
 function ExperimentalTreatment_inject(host)
+    local me = this(host)
     local roll = getLastRoll(host).value
     local owner = getTopOwner(host)
     local t = {
@@ -24,7 +25,8 @@ function ExperimentalTreatment_inject(host)
             gainTreasure(host, owner.id, 2)
         end,
         function ()
-            addSouls(host, owner.id, 1)
+            removeFromEverywhere(host, me.id)
+            addSoulCard(host, owner.id, me.id)
         end
     }
     t[roll]()

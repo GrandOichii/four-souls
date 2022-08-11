@@ -1,6 +1,7 @@
 {
     "name": "Pandora's Box",
     "text": "{T}, Destroy this, then roll:\n1: Gain 1c.\n2: Gain 6c.\n3: Kill a monster.\n4: Loot 3.\n5: Gain 9c.\n6: This becomes a soul, gain it.",
+    "soulCount": 1,
     "script": "script.lua",
     "abilities": [
         {

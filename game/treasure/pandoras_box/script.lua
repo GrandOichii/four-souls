@@ -13,9 +13,9 @@ function PandorasBox_cost(host, cardInfo)
 end
 
 function PandorasBox_tap(host)
-    local card = this(host)
+    local me = this(host)
     local roll = getLastRoll(host).value
-    local owner = Common_PlayerWithID(host, CardData[card.id].prevOwnerID)
+    local owner = Common_PlayerWithID(host, CardData[me.id].prevOwnerID)
     if roll == 1 then
         addCoins(host, owner.id, 1)
         return
@@ -38,7 +38,8 @@ function PandorasBox_tap(host)
         return
     end
     if roll == 6 then
-        addSouls(host, owner.id, 1)
+        removeFromEverywhere(host, me.id)
+        addSoulCard(host, owner.id, me.id)
         return
     end
 end

@@ -348,10 +348,30 @@ void PlayerBoardState::pushTable(lua_State* L) {
 
 }
 
-// void Player::addSouls(int amount) { _soulCount += amount; }
 void Player::addSoulCard(CardWrapper* card) {
     _souls.push_back(card);
 }
+
+bool Player::removeCard(CardWrapper* card) {
+    // remove from hand
+    bool removed = false;
+    removed = removeFromCollection(card, _hand);
+    if (removed) {
+        return true;
+    }
+    // remove from board
+    removed = removeFromCollection(card, _board);
+    if (removed) {
+        return true;
+    }
+    // remove from souls
+    removed = removeFromCollection(card, _souls);
+    if (removed) {
+        return true;
+    }
+    return false;
+}
+
 
 void Player::setLuaENV(lua_State* L) { 
     this->L = L; 

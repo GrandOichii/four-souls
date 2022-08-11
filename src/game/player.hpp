@@ -91,6 +91,7 @@ public:
     CardWrapper* takeCard(int cardID);
     std::vector<CardWrapper*> board();
     std::vector<CardWrapper*> hand();
+    bool removeCard(CardWrapper* card);
     void tapCharacter();
     bool characterActive();
     void rechargeCharacter();
@@ -164,8 +165,6 @@ public:
 
     void incAttack(int amount);
     void decAttack(int amount);
-
-    // void addSouls(int amount);
 
     void addSoulCard(CardWrapper* card);
 

@@ -260,7 +260,7 @@ private:
             player->takeCard(cardID);
             this->log(player->name() + " plays card " + card->name());
             player->decPlayableAmount();
-            std::cout << "PLAYABLE AMOUNT LEFT: " << player->getPlayableAmount() << std::endl;
+            // std::cout << "PLAYABLE AMOUNT LEFT: " << player->getPlayableAmount() << std::endl;
             this->applyTriggers(PLAY_LOOT_CARD_TYPE);
         }},
         {ACTION_BUY_TREASURE, [this](Player* player, std::vector<string> args){
@@ -393,6 +393,7 @@ public:
     void refillDeadMonsters();
     //  TODO add wrap_popBonusCards, inside of it call refillDeadMonsters
     static int wrap_tapCharacterCard(lua_State* L);
+    static int wrap_removeFromEverywhere(lua_State* L);
     static int wrap_dealCombatDamageF(lua_State* L);
     static int wrap_incPurchaseAmount(lua_State* L);
     static int wrap_cancelCurrentAttack(lua_State* L);
@@ -454,7 +455,7 @@ public:
     static int wrap_killEntity(lua_State* L);
     static int wrap_topCardsOf(lua_State* L);
     static int wrap_getCurrentPlayer(lua_State* L);
-    static int wrap_addSouls(lua_State* L);
+    static int wrap_addSoulCard(lua_State* L);
     static int wrap_getActivations(lua_State* L);
     static int wrap_setNextPlayer(lua_State* L);
     static int wrap_getMonsterHealth(lua_State* L);

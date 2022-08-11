@@ -443,6 +443,9 @@ public:
         case Zones::ActiveMonsters:
             reply << attackMonsterReply(card);
             break;
+        default:
+            //  TODO
+            break;
         }
         _c->Send(reply);
     }

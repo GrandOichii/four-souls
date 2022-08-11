@@ -2,5 +2,6 @@
     "name": "Lost Soul",
     "text": "Gain this soul",
     "script": "script.lua",
-    "use": "LostSoul_use"
+    "soulCount": 1,
+    "enter": "LostSoul_enter"
 }

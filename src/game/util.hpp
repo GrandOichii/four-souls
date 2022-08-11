@@ -1,6 +1,7 @@
 #pragma once
 
 #include <string>
+#include <iostream>
 
 extern "C" {
 
@@ -16,6 +17,18 @@ void l_pushtablestring(lua_State* L, string key, string value);
 void l_pushtablenumber(lua_State* L, string key, float value);
 void l_pushtableboolean(lua_State* L, string key, bool value);
 void dumpstack(lua_State *L);
+
+template<class T, class cT>
+bool removeFromCollection(T card, cT& cards) {
+    if (std::find(cards.begin(), cards.end(), card) == cards.end()) return false;
+    for (auto it = cards.begin(); it != cards.end(); it++) {
+        if (*it == card) {
+            cards.erase(it);
+            break;
+        }
+    }
+    return true;
+}
 
 // string toJson(const string& v);
 // string toJson(const int& v);

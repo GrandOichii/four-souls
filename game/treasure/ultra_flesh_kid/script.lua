@@ -15,5 +15,6 @@ function UltraFleshKid_trigger2(host)
     local me = this(host)
     local owner = getTopOwner(host)
     destroyCard(host, me.id)
-    addSouls(host, owner.id, 1)
+    removeFromEverywhere(host, me.id)
+    addSoulCard(host, owner.id, me.id)
 end
