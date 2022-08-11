@@ -644,15 +644,26 @@ public:
         SDL_DestroyTexture(tex);
         // draw souls
         int betweenSouls = 20;
-        int sX = _playerSpaces[playerI][0] + _boardWidth / 2 - _assets->cardSize().first - 2;
-        int sY = _playerSpaces[playerI][1] + _boardHeight / 2 - _assets->cardSize().second - 2;
+        int sX = _playerSpaces[playerI][0] + _boardWidth / 2 - _cardSize.first - 2;
+        int sY = _playerSpaces[playerI][1] + _boardHeight / 2 - _cardSize.second - 2;
         // int sX = pX;
         // int sY = pY;
         int sresult = 0;
-        for (const auto& card : pboard.souls) {
-            sresult += card.soulCount;
-            drawSoulCard(card, sX, sY);
+        int scount = 0;
+        int ssize = pboard.souls.size();
+        for (auto& card : pboard.souls) {
+            ++scount;
+            Rect bBox{
+                sX, sY,
+                _cardSize.first, _cardSize.second
+            };
+            if (scount != ssize) {
+                bBox.x = sX + _cardSize.first - betweenSouls;
+                bBox.w = betweenSouls;
+            }
+            this->drawCard(card, 0, sX, sY, &bBox);
             sX -= betweenSouls;
+            sresult += card.soulCount;
         }
         tex = this->_assets->getMessage(std::to_string(sresult), SDL_Color{ 255, 255, 255, 0 }, 48);
         this->drawTexture(tex, pX + 10, pY + 10 + (48 + 2) * 3);
@@ -662,9 +673,9 @@ public:
         this->drawPlayerName(pboard, x, y);
     }
 
-    virtual void drawSoulCard(const CardState& card, int x, int y) {
-        this->drawTexture(_assets->getCard(card.cardName, CardSize::SMALL), x, y, 0);
-    }
+    // virtual void drawSoulCard(const CardState& card, int x, int y) {
+    //     this->drawTexture(_assets->getCard(card.cardName, CardSize::SMALL), x, y, 0);
+    // }
 
     virtual std::pair<int, int> drawPlayerName(PlayerBoardState& pboard, int x, int y) {
         SDL_Texture* nameTex = _assets->getMessage(pboard.name, SDL_Color{0, 255, 255, 0}, 24);

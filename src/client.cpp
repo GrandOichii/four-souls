@@ -11,6 +11,7 @@ const std::regex CARD_NAME_REGEX("\\$\\{([\\w\\ \\'\\!\\?\\.\\(\\)]+)\\}|[\\w\\?
 
 const char YIELD_UNTIL_TURN_KEY = 'y';
 const char SKIP_STACK_KEY = 's';
+const char CANCEL_YIELD_KEY = 'c';
 
 using Client = client_interface<PollType>;
 
@@ -332,6 +333,10 @@ public:
                 respondPass();
             }
             break;
+        case CANCEL_YIELD_KEY:
+            _skipStack = false;
+            _yield = false;
+            break;
         }
     }
 
@@ -501,7 +506,7 @@ public:
             }
         }
         Window::drawCard(card, angle, x, y, bBox);
-        if (!activatable) return;
+        if (!activatable && card.zone == Zones::Stack) return;
         if (_mouseLock) return;
         bool allowed = false;
         for (const auto& id : _allowedCards)
@@ -514,6 +519,8 @@ public:
         if (bBox) {
             cardWidth = bBox->w;
             cardHeight = bBox->h;
+            x = bBox->x;
+            y = bBox->y;
         }
         int w = (angle == 0) ? cardWidth : cardHeight;
         int h = (angle == 0) ? cardHeight : cardWidth;
