@@ -569,6 +569,17 @@ int Match::wrap_popRewardsStack(lua_State* L) {
     return 0;
 }
 
+int Match::wrap_moveToHand(lua_State* L) {
+    stackSizeIs(L, 3);
+    auto match = getTopMatch(L, 1);
+    auto pid = getTopNumber(L, 2);
+    auto cid = getTopNumber(L, 3);
+    auto player = match->playerWithID(pid);
+    auto card = match->cardWithID(cid);
+    player->addLootCards({card});
+    return 0;
+}
+
 int Match::wrap_setTurnEnd(lua_State* L) {
     stackSizeIs(L, 2);
     auto match = getTopMatch(L, 1);
@@ -1936,6 +1947,7 @@ void Match::setupLua(string setupScript) {
     luaL_openlibs(L);
     // connect functions
     lua_register(L, "healPlayer", wrap_healPlayer);
+    lua_register(L, "moveToHand", wrap_moveToHand);
     lua_register(L, "addSoulCard", wrap_addSoulCard);
     lua_register(L, "removeFromEverywhere", wrap_removeFromEverywhere);
     lua_register(L, "getActivations", wrap_getActivations);
