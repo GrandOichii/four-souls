@@ -487,7 +487,7 @@ public:
         _waitingResponse = false;
     }
 
-    void drawCard(CardState& card, int angle, int x, int y, Rect * bBox = nullptr) override {
+    void drawCard(CardState& card, int angle, int x, int y, Rect * bBox = nullptr, bool activatable = true) override {
         if (card.zone == Zones::Hand) {
             bool flag = false;
             for (const auto& aid : _allowedCards)
@@ -498,6 +498,7 @@ public:
             }
         }
         Window::drawCard(card, angle, x, y, bBox);
+        if (!activatable) return;
         if (_mouseLock) return;
         bool allowed = false;
         for (const auto& id : _allowedCards)

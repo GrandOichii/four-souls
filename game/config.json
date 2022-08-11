@@ -1,5 +1,5 @@
 {
-    "logWait": 0,
+    "logWait": 30,
     "logW1ait": 90,
     "soulsToWin": 4,
     "startingCoinCount": 3,

@@ -591,6 +591,10 @@ public:
             // this->drawCard(card, (card.active ? 0 : 90), pX + 10, pY);
             this->drawCard(card, (card.active ? 0 : 90), pX + 10, pY);
             pX += _cardSize.second + betweenCards;
+            if (pX >= _playerSpaces[playerI][0] + _boardWidth / 2) {
+                pX = _playerSpaces[playerI][0];
+                pY += _assets->cardSize().second + 20;
+            }
         }
         // draw hand
         int xDiff = _cardSize.first + betweenCards;
@@ -700,7 +704,7 @@ public:
         for (auto& si : state.stack) {
             ++stackI;
             if (si.isCard) {
-                this->drawCard(si.card, 0, x, y);
+                this->drawCard(si.card, 0, x, y, nullptr, false);
             }
             else {
                 this->drawSpecialStackMember(state, stackI, x, y);
@@ -713,7 +717,8 @@ public:
         }
     }
 
-    virtual void drawCard(CardState& card, int angle, int x, int y, Rect * bBox = nullptr) {
+    virtual void drawCard(CardState& card, int angle, int x, int y, Rect * bBox = nullptr, bool activatable = true) {
+        if (card.cardName == "--no-card--") return;
         auto cardTex = this->_assets->getCard(card.cardName, CardSize::SMALL);
         _cardLocs[card.id] = std::make_pair(x + 10, y + 10);
         this->drawTexture(cardTex, x, y, angle);

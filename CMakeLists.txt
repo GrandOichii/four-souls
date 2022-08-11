@@ -1,6 +1,7 @@
 cmake_minimum_required(VERSION 3.23.2)
 
 set (CMAKE_CXX_STANDARD 17)
+# add_compile_options(-Wdeprecated-declarations)
 
 project(four-souls)
 set(CMAKE_INSTALL_PREFIX ${CMAKE_BINARY_DIR})

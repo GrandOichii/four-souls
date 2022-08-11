@@ -18,7 +18,7 @@ function LemonMishap_trigger1_check(host, me)
         return false
     end
     local lr = Common_LastRoll(host).value
-    return lr == 1 and lr == 2
+    return lr == 1 or lr == 2
 end
 
 function LemonMishap_trigger1(host)

@@ -5,7 +5,7 @@ function FireMind_enter(host, me, owner)
             id = id,
 			func = function (host_, srcType, srcID, tgtType, tgtID, amount, roll)
                 local mult = 1
-                if tgtType == MONSTER and tgtID == owner.id and roll == 1 then
+                if tgtType == PLAYER and tgtID == owner.id and roll == 1 then
 					mult = 2
 				end
                 if srcType == PLAYER and srcID == owner.id and roll == 6 then
