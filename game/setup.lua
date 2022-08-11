@@ -413,6 +413,24 @@ function Common_Tap(host)
     return true
 end
 
+function Common_ChooseSoul(host, playerID, ownerID)
+    local ids = {}
+    local owner = Common_PlayerWithID(host, ownerID)
+    for _, card in ipairs(owner.souls) do
+        ids[#ids+1] = card.id
+    end
+    local choiceId, _ = requestChoice(host, playerID, 'Choose a soul card', SOUL, ids)
+    return choiceId
+end
+
+function Common_SoulCount(player)
+    local result = 0
+    for _, card in ipairs(player.souls) do
+        result = result + card.soulCount
+    end
+    return result
+end
+
 function Common_Discard(host, ownerID, amount)
     local player = Common_PlayerWithID(host, ownerID)
     if #player.hand < amount then
@@ -838,6 +856,10 @@ end
 
 function Common_RerollItem(host, cardID)
     local owner = getOwner(host, cardID)
+    if owner == nil then
+        -- fizzle
+        return
+    end
     destroyCard(host, cardID)
     gainTreasure(host, owner.id, 1)
 end

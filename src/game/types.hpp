@@ -45,6 +45,7 @@ const string PLAYER_TARGET = "player";
 const string CARD_TARGET = "card";
 const string STACK_MEMBER_TARGET = "stack_member";
 const string MONSTER_TARGET = "monster";
+const string SOUL_TARGET = "soul";
 
 const string PLAYER_TYPE = "player";
 const string MONSTER_TYPE = "monster";

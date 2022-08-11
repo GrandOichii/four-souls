@@ -4,6 +4,50 @@
             "large": "images/polyphemus_large.bmp",
             "small": "images/polyphemus.bmp"
         },
+        "X-Ray Vision": {
+            "large": "images/x_ray_vision_large.bmp",
+            "small": "images/x_ray_vision.bmp"
+        },
+        "Telepathy for Dummies": {
+            "large": "images/polyphemus_large.bmp",
+            "small": "images/polyphemus.bmp"
+        },
+        "Consolation Prize": {
+            "large": "images/consolation_prize_large.bmp",
+            "small": "images/consolation_prize.bmp"
+        },
+        "Guppy's Head": {
+            "large": "images/guppy_s_head_large.bmp",
+            "small": "images/guppy_s_head.bmp"
+        },
+        "Tarot Cloth": {
+            "large": "images/tarot_cloth_large.bmp",
+            "small": "images/tarot_cloth.bmp"
+        },
+        "XX. Judgement": {
+            "large": "images/xx__judgement_large.bmp",
+            "small": "images/xx__judgement.bmp"
+        },
+        "Hand-Me-Downs": {
+            "large": "images/hand_me_downs_large.bmp",
+            "small": "images/hand_me_downs.bmp"
+        },
+        "Chaos": {
+            "large": "images/chaos_large.bmp",
+            "small": "images/chaos.bmp"
+        },
+        "Cain's Eye": {
+            "large": "images/cain_s_eye_large.bmp",
+            "small": "images/cain_s_eye.bmp"
+        },
+        "Boomerang": {
+            "large": "images/boomerang_large.bmp",
+            "small": "images/boomerang.bmp"
+        },
+        "Joker": {
+            "large": "images/joker_large.bmp",
+            "small": "images/joker.bmp"
+        },
         "Lodestone": {
             "large": "images/lodestone_large.bmp",
             "small": "images/lodestone.bmp"

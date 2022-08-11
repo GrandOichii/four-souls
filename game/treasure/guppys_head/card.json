@@ -1,0 +1,11 @@
+{
+    "name": "Guppy's Head",
+    "text": "{T}: Choose a player. That player gives you a loot card.",
+    "script": "script.lua",
+    "abilities": [
+        {
+            "cost": "GuppysHead_cost",
+            "ability": "GuppysHead_tap"
+        }
+    ]
+}

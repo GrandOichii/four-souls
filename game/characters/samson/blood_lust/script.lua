@@ -44,7 +44,8 @@ function BloodLust_enter(host, me, owner)
                 if CardData[me.id].mids[mid] ~= nil then
                     add = CardData[me.id].mids[mid]
                 end
-                return add + MonsterPowerLayers._et[MonsterPowerLayers:posOf(id)-1].func(host_, mid)
+                local pos = MonsterPowerLayers:posOf(id)-1
+                return add + MonsterPowerLayers._et[pos].func(host_, mid)
             end
         }
     )
@@ -54,16 +55,16 @@ function BloodLust_enter(host, me, owner)
         ipID = id
     }
     -- player power
-    id = AttackLayers:top().id + 1
+    local aid = AttackLayers:top().id + 1
     AttackLayers:push(
         {
-            id = id,
+            id = aid,
             func = function (host_, pid)
                 local add = 0
                 if CardData[me.id].pids[pid] ~= nil then
                     add = CardData[me.id].pids[pid]
                 end
-                return add + AttackLayers._et[AttackLayers:posOf(id)-1].func(host_, pid)
+                return add + AttackLayers._et[AttackLayers:posOf(aid)-1].func(host_, pid)
             end
         }
     )

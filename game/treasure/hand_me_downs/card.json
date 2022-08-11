@@ -1,0 +1,11 @@
+{
+    "name": "Hand-Me-Downs",
+    "text": "{T}: Each other player may choose to loot 1. Each player that does gives you a loot card.",
+    "script": "script.lua",
+    "abilities": [
+        {
+            "cost": "HandMeDowns_cost",
+            "ability": "HandMeDowns_tap"
+        }
+    ]
+}

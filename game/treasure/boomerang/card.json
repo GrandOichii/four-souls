@@ -1,0 +1,11 @@
+{
+    "name": "Boomerang",
+    "text": "{T}: Choose another player. Steal a loot card from them at random.",
+    "script": "script.lua",
+    "abilities": [
+        {
+            "cost": "Boomerang_cost",
+            "ability": "Boomerang_tap"
+        }
+    ]
+}

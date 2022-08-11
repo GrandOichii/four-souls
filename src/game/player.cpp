@@ -345,11 +345,22 @@ PlayerBoardState Player::getState() {
 
 void PlayerBoardState::pushTable(lua_State* L) {
     // lua_createtable(L);
-
+    //  TODO
 }
 
 void Player::addSoulCard(CardWrapper* card) {
     _souls.push_back(card);
+}
+
+CardWrapper* Player::removeSoulCard(int cid) {
+    for (auto it = _souls.begin(); it != _souls.end(); it++) {
+        if ((*it)->id() == cid) {
+            auto result = *it;
+            _souls.erase(it);
+            return result;
+        }
+    }
+    throw std::runtime_error("can't remove soul card with id " + std::to_string(cid) + " from player " + _name);
 }
 
 bool Player::removeCard(CardWrapper* card) {
@@ -362,16 +373,17 @@ bool Player::removeCard(CardWrapper* card) {
     // remove from board
     removed = removeFromCollection(card, _board);
     if (removed) {
+        _parent->execLeave(card, this);
         return true;
     }
     // remove from souls
     removed = removeFromCollection(card, _souls);
     if (removed) {
+        _parent->execLeave(card, this);
         return true;
     }
     return false;
 }
-
 
 void Player::setLuaENV(lua_State* L) { 
     this->L = L; 

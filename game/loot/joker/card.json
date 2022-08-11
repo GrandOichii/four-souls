@@ -1,0 +1,7 @@
+{
+    "name": "Joker",
+    "text": "Loot at a player's hand. You may steal a loot card from them.",
+    "script": "script.lua",
+    "cost": "Joker_cost",
+    "use": "Joker_use"
+}

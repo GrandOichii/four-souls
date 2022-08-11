@@ -1,0 +1,16 @@
+{
+    "name": "Telepathy for Dummies",
+    "text": "At the start of your turn, roll.\nYou may change the result of your next roll this turn to this result.",
+    "script": "script.lua",
+    "on": {
+        "turn_start": {
+            "check": "TelepathyForDummies_trigger1_check",
+            "cost": "TelepathyForDummies_trigger1_cost",
+            "effect": "TelepathyForDummies_trigger1"
+        },
+        "roll": {
+            "check": "TelepathyForDummies_trigger2_check",
+            "effect": "TelepathyForDummies_trigger2"
+        }
+    }
+}

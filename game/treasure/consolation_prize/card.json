@@ -1,0 +1,11 @@
+{
+    "name": "Consolation Prize",
+    "text": "At the start of your turn, loot X, where X is the number of souls the player with the most souls controls minus the number of souls you control.",
+    "script": "script.lua",
+    "on": {
+        "turn_start": {
+            "check": "ConsolationPrize_trigger_check",
+            "effect": "ConsolationPrize_trigger"
+        }
+    }
+}

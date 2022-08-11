@@ -170,6 +170,9 @@ int MonsterData::power() {
 
     int r = lua_pcall(_L, 2, 1, 0);
     if (r != LUA_OK) {
+        dumpstack(_L);
+        string errormsg = lua_tostring(_L, -1);
+        std::cout << "LUA ERR: " << errormsg << std::endl;
         throw std::runtime_error("failed to call _getMPower function");
     }
     if (!lua_isnumber(_L, -1)) {
@@ -262,6 +265,7 @@ void CardWrapper::pushTable(lua_State* L) {
     lua_newtable(L);
     l_pushtablestring(L, "name", _card->name().c_str());
     l_pushtablenumber(L, "id", (float)this->_id);
+    l_pushtablenumber(L, "soulCount", (float)_card->soulCount());
     auto ownerID = -1;
     if (_owner) {
         ownerID = _owner->id();

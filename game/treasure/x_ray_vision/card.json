@@ -1,0 +1,17 @@
+{
+    "name": "X-Ray Vision",
+    "text": "{T}: Loot at a player's hand and the top card of a deck. You may put the top card of a deck into discard.\nAt the end of your turn, recharge this.",
+    "script": "script.lua",
+    "abilities": [
+        {
+            "cost": "XRayVision_cost",
+            "ability": "XRayVision_tap"
+        }
+    ],
+    "on": {
+        "turn_end": {
+            "check": "XRayVision_trigger_check",
+            "effect": "XRayVision_trigger"
+        }
+    }
+}

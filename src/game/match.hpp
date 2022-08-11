@@ -373,6 +373,7 @@ public:
     void updateAllPlayers();
     void updateAllPlayersEndMatch();
     CardWrapper* addWrapper(ScriptCard* card);
+    void sortToDiscard(CardWrapper* card);
     void addToLootDiscard(CardWrapper* card);
     CardWrapper* cardWithID(int id);
     Player* findOwner(CardWrapper* card);
@@ -393,6 +394,7 @@ public:
     void refillDeadMonsters();
     //  TODO add wrap_popBonusCards, inside of it call refillDeadMonsters
     static int wrap_tapCharacterCard(lua_State* L);
+    static int wrap_destroySoul(lua_State* L);
     static int wrap_moveToHand(lua_State* L);
     static int wrap_removeFromEverywhere(lua_State* L);
     static int wrap_dealCombatDamageF(lua_State* L);

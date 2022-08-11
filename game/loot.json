@@ -11,6 +11,7 @@
     "cards": {
         "basic": {
             "loot/jester": 1,
+            "loot/joker": 1,
             "loot/mega_bomb": 1,
             "loot/the_hanged_man": 1,
             "loot/two_of_spades": 1,
@@ -48,10 +49,12 @@
             "loot/justice": 1,
             "loot/black_rune": 1,
             "loot/the_world": 1,
+            "loot/judgement": 1,
             "loot/strength": 1
         },
         "trinkets": {
             "loot/lost_soul": 1,
+            "loot/cains_eye": 1,
             "loot/bloody_penny": 1,
             "loot/counterfeit_penny": 1,
             "loot/guppys_hairball": 1,

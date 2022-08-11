@@ -167,6 +167,7 @@ public:
     void decAttack(int amount);
 
     void addSoulCard(CardWrapper* card);
+    CardWrapper* removeSoulCard(int cid);
 
     void resetEOT();
     void setStartingValues(int treasurePrice, int attackCount, int playableCount, int purchaseCount);

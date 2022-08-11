@@ -629,10 +629,7 @@ int Match::wrap_removeFromEverywhere(lua_State* L) {
     // remove from players
     for (const auto& player : match->_players) {
         removed = player->removeCard(card);
-        if (removed) {
-            match->execLeave(card, player);
-            return 0;
-        }
+        if (removed) return 0;
     }
     // remove from shop
     removed = removeFromCollection(card, match->_shop);
@@ -648,7 +645,9 @@ int Match::wrap_getOwner(lua_State *L) {
     auto w = match->cardWithID(cid);
     if (!w->owner()) {
         std::cout << "CARD " << w->card()->name() << " DOESN'T HAVE AN OWNER\n";
-        std::cout << "FIX ME ALREADY" << std::endl;
+        // std::cout << "FIX ME ALREADY" << std::endl;
+        lua_pushnil(L);
+        return 1;
     }
     w->owner()->pushTable(L);
     return 1;
@@ -1462,16 +1461,7 @@ int Match::wrap_destroyCard(lua_State* L) {
             // destroy card
             //  TODO sort loot cards and treasure cards
             player->removeFromBoard(card);
-            switch (bcard->card()->type()) {
-            case CardTypes::Treasure:
-                match->_treasureDiscard.push_back(card);
-                break;
-            case CardTypes::Loot:
-                match->_lootDiscard.push_back(card);
-                break;
-            default:
-                break;
-            }
+            match->sortToDiscard(card);
             card->setOwner(nullptr);
             match->execLeave(card, player);
             return 0;
@@ -1810,6 +1800,17 @@ int Match::wrap_incAttackCount(lua_State* L) {
     return 0;
 }
 
+int Match::wrap_destroySoul(lua_State* L) {
+    stackSizeIs(L, 3);
+    auto match = getTopMatch(L, 1);
+    auto pid = getTopNumber(L, 2);
+    auto cid = getTopNumber(L, 3);
+    auto player = match->playerWithID(pid);
+    auto card = player->removeSoulCard(cid);
+    match->sortToDiscard(card);
+    return 0;
+}
+
 int Match::wrap_getRollStack(lua_State* L) {
     if (lua_gettop(L) != 1) {
         lua_err(L);
@@ -1941,6 +1942,23 @@ void Match::execLeave(CardWrapper* w, Player* owner) {
     }
 }
 
+void Match::sortToDiscard(CardWrapper* cardW) {
+    switch (cardW->card()->type()) {
+    case CardTypes::Loot:
+        _lootDiscard.push_back(cardW);
+        break;
+    case CardTypes::Treasure:
+        _treasureDiscard.push_back(cardW);
+        break;
+    case CardTypes::Monster:
+        _monsterDiscard.push_back(cardW);
+        break;
+    default:
+        std::cout << "WARN: Can't sort card " << cardW->card()->name() << " to discard pile\n";
+        break;
+    }
+}
+
 void Match::setupLua(string setupScript) {
     this->L = luaL_newstate();
     // connect common libs
@@ -1991,6 +2009,7 @@ void Match::setupLua(string setupScript) {
     lua_register(L, "incTreasureCost", wrap_incTreasureCost);
     lua_register(L, "decTreasureCost", wrap_decTreasureCost);
     lua_register(L, "getPlayers", wrap_getPlayers);
+    lua_register(L, "destroySoul", wrap_destroySoul);
     lua_register(L, "addBlueHealth", wrap_addBlueHealth);
     lua_register(L, "pushTarget", wrap_pushTarget);
     lua_register(L, "popTarget", wrap_popTarget);
@@ -2054,6 +2073,7 @@ void Match::setupLua(string setupScript) {
     "\nSTACK = \'" + STACK_MEMBER_TARGET + "\'"
     "\nPLAYER = \'" + PLAYER_TARGET + "\'"
     "\nMONSTER = \'" + MONSTER_TARGET + "\'"
+    "\nSOUL = \'" + SOUL_TARGET + "\'"
     "\nROLL = \'" + ROLL_TYPE + "\'"
     "\nPER_DEATH_LOOT = " + std::to_string(this->_perDeathLoot).c_str() + ""
     "\nPER_DEATH_COINS = " + std::to_string(this->_perDeathCoins).c_str() + ""
@@ -2834,6 +2854,7 @@ void Match::pushDeathEvent(string type, int id) {
 }
 
 void Match::killPlayer(int id) {
+    _lastKillerID = _stack.back()->player->id();
     auto player = playerWithID(id);
     if (player == _activePlayer) _turnEnd = true;
     lua_getglobal(L, "_deathPenalty");

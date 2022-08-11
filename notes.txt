@@ -33,7 +33,6 @@
     -- add bonus effects to the monster deck
     -- add bad treasure
     -- if a player gains +1 treasure due to rewards, and the card has a monster death trigger, the card is triggered immediately - decide whether to keep or not
-    -- change how gaining souls works
     -- add rooms
     -- add better console argument parsing
     -- think how to implement more complex cards (flipable cards, cards that turn into monsters)

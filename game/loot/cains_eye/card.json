@@ -1,0 +1,11 @@
+{
+    "name": "Cain's Eye",
+    "text": "At the start of your turn, look at the top card of the loot deck. You may put it on the bottom.",
+    "script": "script.lua",
+    "on": {
+        "turn_start": {
+            "check": "CainsEye_trigger_check",
+            "effect": "CainsEye_trigger"
+        }
+    }
+}

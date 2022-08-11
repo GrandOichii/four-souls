@@ -1,0 +1,11 @@
+{
+    "name": "Chaos",
+    "text": "{T}: Each player gives their hand to the player to their left.",
+    "script": "script.lua",
+    "abilities": [
+        {
+            "cost": "Chaos_cost",
+            "ability": "Chaos_tap"
+        }
+    ]
+}
