@@ -7,6 +7,7 @@
 #include "common.hpp"
 #include "window.hpp"
 
+
 const std::regex CARD_NAME_REGEX("\\$\\{([\\w\\ \\'\\!\\?\\.\\(\\)]+)\\}|[\\w\\?\\!\\$]+");
 
 const char YIELD_UNTIL_TURN_KEY = 'y';

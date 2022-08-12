@@ -21,7 +21,7 @@ function XRayVision_tap(host)
     local me = this(host)
     local player = Common_PlayerWithID(host, target.id)
     if #player.hand ~= 0 then
-        requestCardsInHand(host, owner.id, target.id, 'Looking at '..player.name..'\'s hand (click any card to continue)', 1)        
+        requestCardsInHand(host, owner.id, target.id, 'Looking at '..player.name..'\'s hand. Click any card to continue', 1)        
     end
     local deckT = CardData[me.id].dChoice
     local cards = topCardsOf(host, deckT, 1)

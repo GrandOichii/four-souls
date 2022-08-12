@@ -782,8 +782,9 @@ int Match::wrap_pushTarget(lua_State* L) {
     auto match = getTopMatch(L, 1);
     int id = getTopNumber(L, 2);
     auto targetType = getTopString(L, 3);
-    std::cout << "PUSHING TAGET " << targetType << " " << id << std::endl;
     match->_targetStack.push_back(std::make_pair(targetType, id));
+
+    match->_stack.back()->targets.push_back(id);
     return 0;
 }
 
@@ -1938,8 +1939,9 @@ void Match::execLeave(CardWrapper* w, Player* owner) {
     int r = lua_pcall(L, 3, 0, 0);
     if (r != LUA_OK) {
         lua_err(this->L);
-        exit(1);
+        throw std::runtime_error("failed to card function " + funcName);
     }
+    w->resetCounters();
 }
 
 void Match::sortToDiscard(CardWrapper* cardW) {
@@ -2545,18 +2547,18 @@ int Match::applyTriggers(string triggerType) {
             );
             this->pushToStack(p);
             if (effect.costFuncName.size()) {
-                int old = _targetStack.size();
+                // int old = _targetStack.size();
                 bool payed = this->requestPayCost(effect.costFuncName, player);
                 if (!payed) {
                     this->_stack.pop_back();
                     delete p;
                     continue;
                 }
-                int c = _targetStack.size() - old;
-                for (int i = 0; i < c; i++){
-                    auto it = _targetStack.end() - 1 - i;
-                    p->targets.push_back(it->second);
-                }
+                // int c = _targetStack.size() - old;
+                // for (int i = 0; i < c; i++){
+                //     auto it = _targetStack.end() - 1 - i;
+                //     p->targets.push_back(it->second);
+                // }
             }
             if (!effect.usesStack) {
                 execFunc(effect.effectFuncName);

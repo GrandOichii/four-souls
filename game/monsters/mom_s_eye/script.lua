@@ -13,5 +13,5 @@ function MomsEye_death(host)
 	if #target.hand == 0 then
 		return
 	end
-	requestCardsInHand(host, p.id, target.id, 'Looking at '..target.name..'\'s hand (click any card to continue)', 1)
+	requestCardsInHand(host, p.id, target.id, 'Looking at '..target.name..'\'s hand. Click any card to continue', 1)
 end

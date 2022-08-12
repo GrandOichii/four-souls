@@ -4,7 +4,7 @@ function TheWorld_use(host)
     for _, player in ipairs(players) do
         if player.id ~= owner.id then
             if #player.hand ~= 0 then
-                requestCardsInHand(host, owner.id, player.id, 'Looking at '..player.name..'\'s hand (click any card to continue)', 1)
+                requestCardsInHand(host, owner.id, player.id, 'Looking at '..player.name..'\'s hand. Click any card to continue', 1)
             end
         end
     end

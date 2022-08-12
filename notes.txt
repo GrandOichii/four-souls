@@ -9,9 +9,11 @@
     -- stars
     -- psy horf
     -- holy keeper head
+    -- cod worm
 
 - issues:
     -- when buying cards with curved horn effect and attacking again
+    -- targeting bug in client: d100 rolls a 3 + lodestone trigger, both cards will point to the same monster
 
 - implement:
     -- change how guppy's hairball works

@@ -188,4 +188,5 @@ public:
     CardState getState();
     void addCounters(int amount);
     void removeCounters(int amount);
+    void resetCounters();
 };
