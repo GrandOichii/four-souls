@@ -1,6 +1,6 @@
 {
     "name": "Fly",
-    "text": "",
+    "text": "Rewards: 1$",
     "script": "script.lua",
     "health": 1,
     "roll": 2,

@@ -1,6 +1,6 @@
 {
     "name": "Dank Globin",
-    "text": "",
+    "text": "When this dies, the active player forces a player to discard 2 loot cards.\nRewards: loot 2",
     "script": "script.lua",
     "health": 2,
     "roll": 4,

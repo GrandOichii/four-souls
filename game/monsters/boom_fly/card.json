@@ -1,6 +1,6 @@
 {
     "name": "Boom Fly",
-    "text": "",
+    "text": "When this dies, it deals 1 damage to each player.\nRewards: 4$",
     "script": "script.lua",
     "health": 1,
     "roll": 4,

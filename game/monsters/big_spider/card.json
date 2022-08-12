@@ -1,6 +1,6 @@
 {
     "name": "Big Spider",
-    "text": "",
+    "text": "When this dies, the active player may attack the monster deck an additional time.\nRewards: loot 1",
     "script": "script.lua",
     "health": 3,
     "roll": 4,

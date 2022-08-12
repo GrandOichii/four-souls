@@ -1,6 +1,6 @@
 {
     "name": "Delirium",
-    "text": "",
+    "text": "Other monsters have +1d.\nWhen this dies, put it in the monster deck 6 cards from the top.\nRewards: +2 treasure",
     "script": "script.lua",
     "health": 5,
     "roll": 4,

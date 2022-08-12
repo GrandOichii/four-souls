@@ -1,6 +1,6 @@
 {
     "name": "Hanger",
-    "text": "",
+    "text": "When this dies, expand the shop slots by 1.\nRewards: 7$",
     "script": "script.lua",
     "health": 2,
     "roll": 4,

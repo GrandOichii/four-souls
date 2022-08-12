@@ -1,6 +1,6 @@
 {
     "name": "Keeper Head",
-    "text": "",
+    "text": "Each time this deals combat damage to a player, they lose 2$.\nRewards: roll - gain X$",
     "script": "script.lua",
     "health": 2,
     "roll": 4,

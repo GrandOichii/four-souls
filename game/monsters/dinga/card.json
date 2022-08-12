@@ -1,6 +1,6 @@
 {
     "name": "Dinga",
-    "text": "",
+    "text": "When this dies on a roll of 6, double it's rewards.\nRewards: roll - gain X$",
     "script": "script.lua",
     "health": 3,
     "roll": 3,

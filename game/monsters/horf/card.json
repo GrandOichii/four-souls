@@ -1,6 +1,6 @@
 {
     "name": "Horf",
-    "text": "",
+    "text": "Combat damage this deals is increased by 1 on attack rolls of 2.\nRewards: 3$",
     "script": "script.lua",
     "health": 1,
     "roll": 4,

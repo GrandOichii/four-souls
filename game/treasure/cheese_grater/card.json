@@ -1,0 +1,11 @@
+{
+    "name": "Cheese Grater",
+    "text": "Each time a player rolls a 6, reveal the top card of any deck. Put it back or put it into discard.",
+    "script": "script.lua",
+    "on": {
+        "roll": {
+            "check": "CheeseGrater_trigger_check",
+            "effect": "CheeseGrater_trigger"
+        }
+    }
+}

@@ -1,6 +1,6 @@
 {
     "name": "Cod Worm",
-    "text": "",
+    "text": "Rewards: 3$",
     "script": "script.lua",
     "health": 2,
     "roll": 5,

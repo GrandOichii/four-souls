@@ -1,6 +1,6 @@
 {
     "name": "Greedling",
-    "text": "",
+    "text": "When this dies, the active player chooses a player. They lose 7$.\nRewards: 7$",
     "script": "script.lua",
     "health": 2,
     "roll": 5,

@@ -1,6 +1,6 @@
 {
     "name": "Black Bony",
-    "text": "",
+    "text": "When this dies, it deals 1 damage to the player that killed it.\nRewards: roll - loot X",
     "script": "script.lua",
     "health": 3,
     "roll": 4,

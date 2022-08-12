@@ -1,6 +1,6 @@
 {
     "name": "Dople",
-    "text": "",
+    "text": "Damage dealt to this is also dealt to the player to the active player's right.\nRewards: 7$",
     "script": "script.lua",
     "health": 2,
     "roll": 4,

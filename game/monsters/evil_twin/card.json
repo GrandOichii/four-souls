@@ -1,6 +1,6 @@
 {
     "name": "Evil Twin",
-    "text": "",
+    "text": "Damage dealt to this is also dealt to the player to the active player's left.\nRewards: +1 treasure",
     "script": "script.lua",
     "health": 3,
     "roll": 5,

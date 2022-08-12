@@ -1,0 +1,15 @@
+{
+    "name": "Head of the Keeper",
+    "text": "Each time you deal damage, gain 1$. Each time you kill a monster or player, gain 2$.",
+    "script": "script.lua",
+    "on": {
+        "damage": {
+            "check": "HeadOfTheKeeper_trigger1_check",
+            "effect": "HeadOfTheKeeper_trigger1"
+        },
+        "death": {
+            "check": "HeadOfTheKeeper_trigger2_check",
+            "effect": "HeadOfTheKeeper_trigger2"
+        }
+    }
+}

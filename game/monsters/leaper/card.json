@@ -1,6 +1,6 @@
 {
     "name": "Leaper",
-    "text": "",
+    "text": "Combat damage this deals is doubled on attack rolls of 1.\nRewards: 5$",
     "script": "script.lua",
     "health": 2,
     "roll": 4,

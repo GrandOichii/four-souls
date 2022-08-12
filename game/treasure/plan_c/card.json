@@ -1,0 +1,12 @@
+
+{
+    "name": "Plan C",
+    "text": "{T}: Destroy this. If you do, kill a monster. At the end of the turn, kill all players.",
+    "script": "script.lua",
+    "abilities": [
+        {
+            "cost": "PlanC_cost",
+            "ability": "PlanC_tap"
+        }
+    ]
+}
