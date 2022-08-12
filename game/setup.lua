@@ -404,6 +404,17 @@ function Common_IsCombat(host)
     return false
 end
 
+function Common_SacrificeMe(host, pid, cid)
+    local player = Common_PlayerWithID(host, pid)
+    for _, card in ipairs(player.board) do
+        if card.id == cid then
+            destroyCard(host, cid)
+            return true
+        end
+    end
+    return false
+end
+
 function Common_Tap(host)
     local card = this(host)
     if card.tapped then
@@ -411,6 +422,20 @@ function Common_Tap(host)
     end
     tapCard(host, card.id)
     return true
+end
+
+
+
+function Common_ChooseAnySoul(host, ownerID)
+    local ids = {}
+    local players = getPlayers(host)
+    for _, player in ipairs(players) do
+        for _, card in ipairs(player.souls) do
+            ids[#ids+1] = card.id
+        end
+    end
+    local choiceId, _ = requestChoice(host, ownerID, 'Choose a soul card', SOUL, ids)
+    return choiceId
 end
 
 function Common_ChooseSoul(host, playerID, ownerID)

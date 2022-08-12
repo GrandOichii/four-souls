@@ -1,0 +1,11 @@
+{
+    "name": "Chaos Card",
+    "text": "{T}: Destroy this. If you do, choose one:\n- Kill a player or monster.\n- Destroy an item or soul.",
+    "script": "script.lua",
+    "abilities": [
+        {
+            "cost": "ChaosCard_cost",
+            "ability": "ChaosCard_tap"
+        }
+    ]
+}

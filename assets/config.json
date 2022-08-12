@@ -4,6 +4,10 @@
             "large": "images/polyphemus_large.bmp",
             "small": "images/polyphemus.bmp"
         },
+        "Chaos Card": {
+            "large": "images/chaos_card_large.bmp",
+            "small": "images/chaos_card.bmp"
+        },
         "X-Ray Vision": {
             "large": "images/x_ray_vision_large.bmp",
             "small": "images/x_ray_vision.bmp"
