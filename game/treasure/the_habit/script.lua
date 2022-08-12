@@ -22,6 +22,10 @@ end
 function TheHabit_trigger(host)
     local _ = getDamageEvent(host)
     local owner = getTopOwner(host)
+    local choice = requestSimpleChoice(host, owner.id, 'Recharge an item?', {'Yes', 'No'})
+    if choice == 'No' then
+        return
+    end
     local choice, chosen = Common_ChooseTappedCard(host, owner.id)
     if not chosen then
         return

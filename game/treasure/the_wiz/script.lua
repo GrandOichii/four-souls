@@ -20,26 +20,27 @@ function TheWiz_trigger_check(host, me)
     if damageEvent.sourceID ~= owner.id then
         return false
     end
-    local choice = requestSimpleChoice(host, owner.id, 'Deal damage to what?', {'Monster', 'Player'})
+    CardData[me.id].lde = damageEvent
+end
+
+function TheWiz_trigger_cost(host, cardInfo)
+    local me = this(host)
+    local damageEvent = CardData[me.id].lde
+    local choice = requestSimpleChoice(host, cardInfo.ownerID, 'Deal damage to what?', {'Monster', 'Player'})
     if choice == 'Monster' then
         local monsters = getActiveMonsters(host)
         local ids = {}
-        print(damageEvent.targetID)
-        print(damageEvent.targetType)
         for _, monster in ipairs(monsters) do
-            print('\t', monster.id)
             if monster.id ~= damageEvent.targetID or damageEvent.targetType ~= MONSTER then
                 ids[#ids+1] = monster.id
             end
         end
-        print(#ids)
-        local choiceId, payed = requestChoice(host, owner.id, "Choose a monster", MONSTER, ids)
+        local choiceId, payed = requestChoice(host, cardInfo.ownerID, "Choose a monster", MONSTER, ids)
         if not payed then return false end
         pushTarget(host, choiceId, MONSTER)
         return true
     end
     if choice == 'Player' then
-        --  TODO? another player
         return Common_TargetPlayer(host, me)
     end
 end

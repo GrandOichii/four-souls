@@ -1,5 +1,5 @@
 function Horf_rewards(host, me, killer)
-	lootCards(host, killer.id, 1)
+	addCoins(host, killer.id, 3)
 end
 
 function Horf_enter(host, me)

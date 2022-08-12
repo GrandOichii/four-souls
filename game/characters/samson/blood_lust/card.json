@@ -6,7 +6,6 @@
     "leave": "BloodLust_leave",
     "on": {
         "turn_end": {
-            "usesStack": false,
             "check": "BloodLust_trigger_check",
             "effect": "BloodLust_trigger"
         }

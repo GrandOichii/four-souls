@@ -404,7 +404,11 @@ BotPlayer::BotPlayer(std::string name, CharacterCard* card, int id, string scrip
     // connect common libs
     luaL_openlibs(L);
     int r = luaL_dostring(L, script.c_str());
-    if (r != LUA_OK) throw std::runtime_error("failed to execute setup script for bot");
+    if (r != LUA_OK) {
+        string errormsg = lua_tostring(L, -1);
+        std::cout << "LUA ERR: " << errormsg << std::endl;
+        throw std::runtime_error("failed to execute setup script for bot");
+    }
 }
 
 BotPlayer::~BotPlayer() {

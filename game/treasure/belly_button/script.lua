@@ -1,3 +1,7 @@
+function BellyButton_enter(host, me, owner)
+    addPlayableCount(host, owner.id)
+end
+
 function BellyButton_trigger1_check(host, me)
     return Common_OwnersTurn(host, me.id)
 end

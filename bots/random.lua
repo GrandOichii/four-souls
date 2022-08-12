@@ -1,6 +1,30 @@
 -- This bot always plays a random loot card, buys a random treasure (if can), then passes the turn
 -- Targets are chosen randomly
 
+-- package.path = package.path..';bots/evolving/lua/?.lua'..';bots/evolving/lua/sha1/?.lua'
+-- local json = require "json"
+-- local sha1 = require "init"
+
+-- function PrintTable(tbl, indent)
+--     local res = json:encode(tbl)
+--     print(res)
+--     local hash = sha1.sha1(res)
+--     print('HASH: '..hash)
+--     -- if not indent then indent = 0 end
+--     -- for k, v in pairs(tbl) do
+--     --   local formatting = string.rep('  ', indent) .. k .. ': '
+--     --   if type(v) == 'table' then
+--     --     print(formatting)
+--     --     PrintTable(v, indent+1)
+--     --   elseif type(v) == 'boolean' then
+--     --     print(formatting .. tostring(v))      
+--     --   else
+--     --     print(formatting .. v)
+--     --   end
+--     -- end
+--   end
+  
+
 local function isSameState(state1, state2)
     for key, value in pairs(state1) do
         if value ~= state2[key] then
@@ -50,22 +74,22 @@ end
 local function AttemptPlayLoot(me, state)
     local lootCards = me.hand
     if #lootCards ~= 0 then
-        if me["playableCount"] ~= 0 then
+        if me.playableCount ~= 0 then
             local card, good = CalcBestCard(me, state)
             if good then
-                return true, "play_loot " .. card.id
+                return true, 'play_loot ' .. card.id
             end
         end
-        if me["characterActive"] then
-            return true, "activate_character"
+        if me.characterActive then
+            return true, 'activate_character'
         end
     end
     return false, ''
 end
 
 local function AttemptBuyTreasure(me, state)
-    if me["purchaseCount"] ~= 0 and me["coins"] >= me["treasurePrice"] then
-        return true, "buy_treasure -1"
+    if me.purchaseCount ~= 0 and me.coins >= me.treasurePrice then
+        return true, 'buy_treasure -1'
     end
     return false, ''
 end
@@ -75,7 +99,7 @@ local function ChooseBestToAttack(me, state)
 end
 
 local function AttemptAttack(me, state)
-    if me["attackCount"] ~= 0 then
+    if me.attackCount ~= 0 then
         return true, ChooseBestToAttack(me, state)
     end
     return false, ''
@@ -106,11 +130,11 @@ local function canActivate(me, state, trinket)
 end
 
 local function AttemptActivate(me, state)
-    local trinkets = me["board"]
+    local trinkets = me.board
     for _, trinket in pairs(trinkets) do
-        if not trinket["passive"] and not trinket["tapped"] then
+        if not trinket.passive and not trinket.tapped then
             if canActivate(me, state, trinket) then
-                return true, "activate " .. trinket["id"] .. " 0"
+                return true, 'activate ' .. trinket.id .. ' 0'
             end
         end
     end
@@ -118,7 +142,12 @@ local function AttemptActivate(me, state)
 end
 
 function Bot_PromptAction(me, state)
-    if me["id"] == state["currentID"] and state["isMain"] then
+    -- print('GAME STATE: ')
+    -- state.amogus = {
+    --     1, 2
+    -- }
+    -- PrintTable(state)
+    if me.id == state.currentID and state.isMain then
         -- main phase actions
         local played, message = AttemptPlayLoot(me, state)
         if played then
@@ -136,23 +165,23 @@ function Bot_PromptAction(me, state)
         if attacked then
             return message
         end
-        return "$PASS"
+        return '$PASS'
     end
     -- responses
-    return "$PASS"
+    return '$PASS'
 end
 
 -- local responseBlacklist = {
---     ""
+--     ''
 -- }
 
 function Bot_PromptResponse(me, state, text, choiceType, choices)
-    -- if choiceType == "player" then
-    --     return ""..me["id"]
+    -- if choiceType == 'player' then
+    --     return ''..me.id
     -- end
-    return "$FIRST"
+    return '$FIRST'
 end
 
 function Bot_PromptSimpleResponse(me, state, text, choices)
-    return "$FIRST"
+    return '$FIRST'
 end

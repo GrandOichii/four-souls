@@ -1,10 +1,3 @@
---  TODO untested
---  TODO unfinished
-
-function ShadowDeathFunc(host, player)
-    
-end
-
 function Shadow_enter(host, me, owner)
     DeathStack:push({
         name = 'death'..me.id,
@@ -24,7 +17,8 @@ function Shadow_enter(host, me, owner)
                     end
                     local cardIDs = requestCardsInHand(host, ownerID, ownerID, message, amount)
                     for _, cid in ipairs(cardIDs) do
-                        discardLoot(host, ownerID, cid)
+                        removeFromEverywhere(host, cid)
+                        moveToHand(host, owner.id, cid)
                     end
                 end
             end
