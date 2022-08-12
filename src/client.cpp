@@ -148,6 +148,10 @@ public:
             _allowedCards = choices;
             return;
         }
+        if (lastChoiceType == SOUL_TARGET) {
+            _allowedCards = choices;
+            return;
+        }
         //  TODO items in shop
     }
 

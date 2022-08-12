@@ -424,8 +424,6 @@ function Common_Tap(host)
     return true
 end
 
-
-
 function Common_ChooseAnySoul(host, ownerID)
     local ids = {}
     local players = getPlayers(host)
@@ -435,7 +433,16 @@ function Common_ChooseAnySoul(host, ownerID)
         end
     end
     local choiceId, _ = requestChoice(host, ownerID, 'Choose a soul card', SOUL, ids)
-    return choiceId
+    local pid = 0
+    for _, player in ipairs(players) do
+        for _, card in ipairs(player.souls) do
+            if card.id == choiceId then
+                pid = player.id
+                break
+            end
+        end
+    end
+    return choiceId, pid
 end
 
 function Common_ChooseSoul(host, playerID, ownerID)
@@ -465,8 +472,14 @@ function Common_Discard(host, ownerID, amount)
     if amount > 1 then
         message = "Choose "..amount.." cards to discard"
     end
-    local cardIDs = requestCardsInHand(host, ownerID, ownerID, message, amount)
-    --  TODO debug
+    local cardIDs = {}
+    if #player.hand == amount then
+        for _, card in ipairs(player.hand) do
+            cardIDs[#cardIDs+1] = card.id
+        end
+    else
+        cardIDs = requestCardsInHand(host, ownerID, ownerID, message, amount)
+    end
     for _, cid in ipairs(cardIDs) do
         discardLoot(host, ownerID, cid)
     end

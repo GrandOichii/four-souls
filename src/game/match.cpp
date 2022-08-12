@@ -1925,21 +1925,21 @@ void Match::execEnter(CardWrapper* w, Player* owner) {
 
 void Match::execLeave(CardWrapper* w, Player* owner) {
     auto funcName = w->card()->leaveFuncName();
-    if (!funcName.size()) return;
-
-    this->log("Executing leave function " + funcName);
-    lua_getglobal(L, funcName.c_str());
-    if (!lua_isfunction(L, -1)) {
-        lua_err(L);
-        throw std::runtime_error("failed to execute leave function " + funcName);
-    }
-    lua_pushlightuserdata(L, this);
-    w->pushTable(L);
-    owner->pushTable(L);
-    int r = lua_pcall(L, 3, 0, 0);
-    if (r != LUA_OK) {
-        lua_err(this->L);
-        throw std::runtime_error("failed to card function " + funcName);
+    if (funcName.size()) {
+        this->log("Executing leave function " + funcName);
+        lua_getglobal(L, funcName.c_str());
+        if (!lua_isfunction(L, -1)) {
+            lua_err(L);
+            throw std::runtime_error("failed to execute leave function " + funcName);
+        }
+        lua_pushlightuserdata(L, this);
+        w->pushTable(L);
+        owner->pushTable(L);
+        int r = lua_pcall(L, 3, 0, 0);
+        if (r != LUA_OK) {
+            lua_err(this->L);
+            throw std::runtime_error("failed to card function " + funcName);
+        }
     }
     w->resetCounters();
 }

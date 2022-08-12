@@ -7,5 +7,11 @@
             "cost": "BookOfBelial_cost",
             "ability": "BookOfBelial_tap"
         }
-    ]
+    ],
+    "on": {
+        "turn_end": {
+            "check": "BookOfBelial_trigger_check",
+            "effect": "BookOfBelial_trigger"
+        }
+    }
 }

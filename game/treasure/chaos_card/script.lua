@@ -23,11 +23,14 @@ function ChaosCard_tap(host)
     end
     if choice == choice2 then
         local target = Common_ChooseMonster(host, owner.id)
-        killEntity(host, PLAYER, target.id)
+        killEntity(host, MONSTER, target.id)
         return
     end
     if choice == choice3 then
-        local target, _ = Common_ChooseNonEternalCard(host, owner.id)
+        local target, flag = Common_ChooseNonEternalCard(host, owner.id)
+        if not flag then
+            return
+        end
         destroyCard(host, target)
         return
     end
