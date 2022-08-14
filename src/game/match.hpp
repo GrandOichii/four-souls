@@ -36,6 +36,7 @@ struct StackMemberState {
 };
 
 struct RollEventState;
+
 struct MatchState {
     vector<PlayerBoardState> boards;
     vector<StackMemberState> stack;
@@ -55,7 +56,7 @@ struct MatchState {
     vector<CardState> monsterDiscard;
 
     vector<CardState> shop;
-    vector<CardState> monsters; // turn monsters into card wrappers also
+    vector<CardState> monsters;
     vector<MonsterDataState> monsterDataArr;
     bool isCombat;
 

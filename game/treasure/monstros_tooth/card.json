@@ -5,6 +5,7 @@
     "on": {
         "turn_start": {
             "check": "MonstrosTooth_trigger_check",
+            "cost": "MonstrosToorh_trigger_cost",
             "effect": "MonstrosTooth_trigger"
         }
     }

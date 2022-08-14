@@ -18,6 +18,7 @@ function DeathsHead_enter(host, me)
 end
 
 function DeathsHead_leave(host, me)
+    print(CardData[me.id].ipID)
     MonsterPowerLayers:remove(CardData[me.id].ipID)
 end
 

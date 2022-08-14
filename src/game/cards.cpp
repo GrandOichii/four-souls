@@ -297,6 +297,12 @@ CardState emptyCardState() {
     return result;
 }
 
+void CardState::pushTable(lua_State* L) const{
+    lua_newtable(L);
+    l_pushtablestring(L, "name", cardName);
+}
+
 void CardWrapper::addCounters(int amount) { _counters += amount; }
 void CardWrapper::removeCounters(int amount) { _counters -= amount; }
 void CardWrapper::resetCounters() { _counters = 0; }
+

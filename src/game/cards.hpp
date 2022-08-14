@@ -164,6 +164,8 @@ struct CardState {
 
     int ownerID;
     int activatedAbilityCount;
+
+    void pushTable(lua_State* L) const;
 };
 
 CardState emptyCardState();

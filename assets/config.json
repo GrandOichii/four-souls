@@ -4,6 +4,18 @@
             "large": "images/polyphemus_large.bmp",
             "small": "images/polyphemus.bmp"
         },
+        "Head of the Keeper": {
+            "large": "images/head_of_the_keeper_large.bmp",
+            "small": "images/head_of_the_keeper.bmp"
+        },
+        "Plan C": {
+            "large": "images/plan_c_large.bmp",
+            "small": "images/plan_c.bmp"
+        },
+        "Cheese Grater": {
+            "large": "images/cheese_grater_large.bmp",
+            "small": "images/cheese_grater.bmp"
+        },
         "Chaos Card": {
             "large": "images/chaos_card_large.bmp",
             "small": "images/chaos_card.bmp"

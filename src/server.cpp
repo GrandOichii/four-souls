@@ -291,6 +291,8 @@ public:
     }
 };
 
+const char* BOT_SCRIPT_PATH = "bots/random.lua";
+
 int main(int argc, char* argv[]) {
     
     // the first argument is always the path to the game
@@ -314,35 +316,35 @@ int main(int argc, char* argv[]) {
             for (const auto& [n, v] : value.items()) actions.push(v);
             pcount++;
             if (pcount == 1) {
-                // match->addPlayer(new ObservingScriptedPlayer(
-                //     name,
-                //     match->getRandomAvailableCharacter(),
-                //     match->newCardID(),
-                //     actions,
-                //     allCards
-                // ));
-                
-                match->addPlayer(new ScriptedPlayer(
+                match->addPlayer(new ObservingScriptedPlayer(
                     name,
                     match->getRandomAvailableCharacter(),
                     match->newCardID(),
-                    actions
+                    actions,
+                    allCards
                 ));
+                
+                // match->addPlayer(new ScriptedPlayer(
+                //     name,
+                //     match->getRandomAvailableCharacter(),
+                //     match->newCardID(),
+                //     actions
+                // ));
                 continue;
             }
-            match->addPlayer(new BotPlayer(
-                name,
-                match->getRandomAvailableCharacter(),
-                match->newCardID(),
-                fs::readFile("bots/random.lua")
-            ));
-
-            // match->addPlayer(new ScriptedPlayer(
+            // match->addPlayer(new BotPlayer(
             //     name,
             //     match->getRandomAvailableCharacter(),
             //     match->newCardID(),
-            //     actions
+            //     fs::readFile(BOT_SCRIPT_PATH)
             // ));
+
+            match->addPlayer(new ScriptedPlayer(
+                name,
+                match->getRandomAvailableCharacter(),
+                match->newCardID(),
+                actions
+            ));
         }
         try {
             match->start();
@@ -389,7 +391,7 @@ int main(int argc, char* argv[]) {
             "player " + std::to_string(pcount),
             match->getRandomAvailableCharacter(),
             match->newCardID(),
-            fs::readFile("bots/random.lua")
+            fs::readFile(BOT_SCRIPT_PATH)
         ));
     }
     try {

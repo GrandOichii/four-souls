@@ -11,7 +11,7 @@ function PlanC_eot(host)
 end
 
 function PlanC_tap(host, cardInfo)
-    local owner = getTopowner(host)
+    local owner = getTopOwner(host)
     local me = this(host)
     destroyCard(host, me.id)
     local choice = Common_ChooseMonster(host, owner.id)

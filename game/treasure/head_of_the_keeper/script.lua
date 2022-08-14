@@ -1,5 +1,5 @@
 function HeadOfTheKeeper_trigger1_check(host, me)
-    local owner = getOwner(host, cardID)
+    local owner = getOwner(host, me.id)
     local damageEvent = getTopDamageEvent(host)
     if damageEvent.sourceType ~= PLAYER then
         return false

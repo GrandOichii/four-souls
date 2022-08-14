@@ -53,10 +53,6 @@
     -- the expansion heavily leans on the fact that non-monster cards can be attacked, think of implementing this in later stages
     -- card parser (?)
 
-- bots:
-    
-
-
 https://www.lua.org/pil/27.3.2.html
 callback_function = luaL_ref(L,LUA_REGISTRYINDEX);
 

@@ -1,48 +1,76 @@
--- This bot always plays a random loot card, buys a random treasure (if can), then passes the turn
--- Targets are chosen randomly
+--[[
+    killed a monster:
+    get the monster's danger level = mp
+    calculate the known items' power level = p
+    p > mp
+    yes:
+        do nothing
+    no:
+        p = 0
+        yes:
+            divide the mp equally between items, end
+        no:
+            
 
--- package.path = package.path..';bots/evolving/lua/?.lua'..';bots/evolving/lua/sha1/?.lua'
--- local json = require "json"
--- local sha1 = require "init"
+]]--
 
--- function PrintTable(tbl, indent)
---     local res = json:encode(tbl)
---     print(res)
---     local hash = sha1.sha1(res)
---     print('HASH: '..hash)
---     -- if not indent then indent = 0 end
---     -- for k, v in pairs(tbl) do
---     --   local formatting = string.rep('  ', indent) .. k .. ': '
---     --   if type(v) == 'table' then
---     --     print(formatting)
---     --     PrintTable(v, indent+1)
---     --   elseif type(v) == 'boolean' then
---     --     print(formatting .. tostring(v))      
---     --   else
---     --     print(formatting .. v)
---     --   end
---     -- end
---   end
-  
+package.path = package.path..';lua/?.lua'
+local json = require "json"
+
+local DATA_PATH = 'tools/data-gatherer/new-data.json'
+
+function FileExists(name)
+    local f=io.open(name,"r")
+    if f~=nil then io.close(f) return true else return false end
+end
+
+function CreateDataFile()
+    SaveData({
+        monsters = {}
+    })
+end
+
+function ReadData()
+    if not FileExists(DATA_PATH) then
+        CreateDataFile()
+    end
+
+    local file = io.open(DATA_PATH, "r")
+
+    -- sets the default input file as test.lua
+    io.input(file)
+    -- prints the first line of the file
+    local data = io.read()
+    -- closes the open file
+    io.close(file)
+    return json:decode(data)
+end
+
+function SaveData(data)
+    -- local res = json:encode(data, etc, {
+    --     pretty = true,
+    --     indent = "\t",
+    --     align_keys = false,
+    -- })
+    local res = json:encode(data)
+    -- Opens a file in append mode
+    local file = io.open(DATA_PATH, "w")
+
+    -- sets the default output file as test.lua
+    io.output(file)
+
+    -- appends a word test to the last line of the file
+    io.write(res)
+
+    io.close(file)
+end
 
 local function isSameState(state1, state2)
-    for key, value in pairs(state1) do
-        if value ~= state2[key] then
-            return false
-        end
-    end
-    return true
+    return json:encode(state1) == json:encode(state2)
 end
 
 local function isSameMe(me1, me2)
-    for key, value in pairs(me1) do
-        if key ~= 'board' and key ~= 'hand' then
-            if value ~= me2[key] then
-                return false
-            end
-        end
-    end
-    return true
+    return json:encode(me1) == json:encode(me2)
 end
 
 local lootBlacklist = {
@@ -95,6 +123,14 @@ local function AttemptBuyTreasure(me, state)
 end
 
 local function ChooseBestToAttack(me, state)
+    local items = {}
+    for _, card in ipairs(me.board) do
+        items[#items+1] = card.name
+    end
+    local mname = state.monsters[1].name
+    local md = ReadData()
+    md.monsters[mname] = items
+    SaveData(md)
     return 'attack 0'
 end
 
@@ -105,9 +141,6 @@ local function AttemptAttack(me, state)
     return false, ''
 end
 
--- local lastState = {}
--- local lastMe = {}
--- local lastActivatedID = ''
 local activationMap = {}
 
 local function canActivate(me, state, trinket)
@@ -142,11 +175,6 @@ local function AttemptActivate(me, state)
 end
 
 function Bot_PromptAction(me, state)
-    -- print('GAME STATE: ')
-    -- state.amogus = {
-    --     1, 2
-    -- }
-    -- PrintTable(state)
     if me.id == state.currentID and state.isMain then
         -- main phase actions
         local played, message = AttemptPlayLoot(me, state)
@@ -171,14 +199,7 @@ function Bot_PromptAction(me, state)
     return '$PASS'
 end
 
--- local responseBlacklist = {
---     ''
--- }
-
 function Bot_PromptResponse(me, state, text, choiceType, choices)
-    -- if choiceType == 'player' then
-    --     return ''..me.id
-    -- end
     return '$FIRST'
 end
 

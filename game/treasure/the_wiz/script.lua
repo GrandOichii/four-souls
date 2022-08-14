@@ -21,6 +21,7 @@ function TheWiz_trigger_check(host, me)
         return false
     end
     CardData[me.id].lde = damageEvent
+    return true
 end
 
 function TheWiz_trigger_cost(host, cardInfo)
