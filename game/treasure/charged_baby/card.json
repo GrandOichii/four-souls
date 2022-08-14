@@ -5,6 +5,7 @@
     "on": {
         "roll": {
             "check": "ChargedBaby_trigger_check",
+            "cost": "ChargedBaby_trigger_cost",
             "effect": "ChargedBaby_trigger"
         }
     }

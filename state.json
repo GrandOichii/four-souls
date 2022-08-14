@@ -1,0 +1,155 @@
+{
+    "boards": [
+        {
+            "attack": 1.0,
+            "attackCount": 1.0,
+            "blueHealth": 0.0,
+            "board": {
+                "name": "Judas"
+            },
+            "characterActive": true,
+            "hand": [
+                {
+                    "name": "2 cents!"
+                },
+                {
+                    "name": "A penny!"
+                },
+                {
+                    "name": "Cain's Eye"
+                }
+            ],
+            "health": 2.0,
+            "id": 313.0,
+            "maxHealth": 2.0,
+            "name": "player 1",
+            "playableCount": 1.0,
+            "purchaseCount": 1.0,
+            "souls": [],
+            "treasurePrice": 10.0
+        },
+        {
+            "attack": 1.0,
+            "attackCount": 1.0,
+            "blueHealth": 0.0,
+            "board": {
+                "name": "The Dauntless"
+            },
+            "characterActive": true,
+            "hand": [
+                {
+                    "name": "Two of Diamonds"
+                },
+                {
+                    "name": "2 cents!"
+                },
+                {
+                    "name": "The Left Hand"
+                }
+            ],
+            "health": 1.0,
+            "id": 315.0,
+            "maxHealth": 1.0,
+            "name": "player 2",
+            "playableCount": 0.0,
+            "purchaseCount": 0.0,
+            "souls": [],
+            "treasurePrice": 10.0
+        },
+        {
+            "attack": 1.0,
+            "attackCount": 1.0,
+            "blueHealth": 0.0,
+            "board": {
+                "name": "Bum-Bo"
+            },
+            "characterActive": true,
+            "hand": [
+                {
+                    "name": "VIII. Justice"
+                },
+                {
+                    "name": "3 cents!"
+                },
+                {
+                    "name": "3 cents!"
+                }
+            ],
+            "health": 2.0,
+            "id": 317.0,
+            "maxHealth": 2.0,
+            "name": "player 3",
+            "playableCount": 0.0,
+            "purchaseCount": 0.0,
+            "souls": [],
+            "treasurePrice": 10.0
+        },
+        {
+            "attack": 1.0,
+            "attackCount": 1.0,
+            "blueHealth": 0.0,
+            "board": {
+                "name": "The Deceiver"
+            },
+            "characterActive": true,
+            "hand": [
+                {
+                    "name": "2 cents!"
+                },
+                {
+                    "name": "Gold Bomb!!"
+                },
+                {
+                    "name": "3 cents!"
+                }
+            ],
+            "health": 2.0,
+            "id": 319.0,
+            "maxHealth": 2.0,
+            "name": "player 4",
+            "playableCount": 0.0,
+            "purchaseCount": 0.0,
+            "souls": [],
+            "treasurePrice": 10.0
+        }
+    ],
+    "currentID": 313.0,
+    "inCombat": false,
+    "isMain": false,
+    "lootDeckCount": 89.0,
+    "monsterDataArr": [
+        {
+            "blueHealth": 0.0,
+            "canBeAttacked": 1.0,
+            "health": 1.0,
+            "power": 1.0,
+            "roll": 5.0
+        },
+        {
+            "blueHealth": 0.0,
+            "canBeAttacked": 1.0,
+            "health": 5.0,
+            "power": 1.0,
+            "roll": 4.0
+        }
+    ],
+    "monsterDeckCount": 82.0,
+    "monsters": [
+        {
+            "name": "Psy Horf"
+        },
+        {
+            "name": "Gurdy"
+        }
+    ],
+    "shop": [
+        {
+            "name": "Starter Deck"
+        },
+        {
+            "name": "Lemon Mishap"
+        }
+    ],
+    "treasureDeckCount": 125.0,
+    "turnCounter": 1.0
+}

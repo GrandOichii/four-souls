@@ -306,3 +306,12 @@ void CardWrapper::addCounters(int amount) { _counters += amount; }
 void CardWrapper::removeCounters(int amount) { _counters -= amount; }
 void CardWrapper::resetCounters() { _counters = 0; }
 
+
+void MonsterDataState::pushTable(lua_State* L) const {
+    lua_newtable(L);
+    l_pushtablenumber(L, "health", health);
+    l_pushtablenumber(L, "roll", roll);
+    l_pushtablenumber(L, "power", power);
+    l_pushtablenumber(L, "blueHealth", blueHealth);
+    l_pushtablenumber(L, "canBeAttacked", canBeAttacked);
+}

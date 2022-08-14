@@ -39,3 +39,14 @@ function TelepathyForDummies_trigger2(host)
     local me = this(host)
     setRollValue(host, #rs-1, CardData[me.id].lr)
 end
+
+function TelepathyForDummies_trigger3_check(host, me)
+    return Common_OwnersTurn(host, me.id)
+end
+
+function TelepathyForDummies_trigger3(host)
+    local me = this(host)
+    if CardData[me.id].lr ~= nil then 
+        CarldData[me.id].lr = nil
+    end
+end

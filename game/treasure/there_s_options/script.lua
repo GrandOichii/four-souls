@@ -1,3 +1,7 @@
+function TheresOptions_enter(host, me, owner)
+    incPurchaseAmount(host, owner.id)
+end
+
 function TheresOptions_trigger_check(host, me)
     return Common_OwnersTurn(host, me.id)
 end
@@ -7,8 +11,8 @@ function TheresOptions_trigger(host)
     incPurchaseAmount(host, owner.id)
 end
 
-function TheresOptions_cost(host)
-    return true
+function TheresOptions_cost(host, cardInfo)
+    return getCurrentPlayer(host).id == cardInfo.ownerID
 end
 
 function TheresOptions_peek(host)

@@ -11,8 +11,8 @@ function Seraphim_trigger1_check(host, me)
     if not flag then
         return false
     end
+    CardData[me.id].rCount = CardData[me.id].rCount + 1
     local rCount = CardData[me.id].rCount
-    CardData[me.id].rCount = rCount + 1
     return rCount == 1 or rCount == 3 or rCount == 5
 end
 

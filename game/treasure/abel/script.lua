@@ -7,6 +7,8 @@ function Abel_trigger_cost(host, cardInfo)
 end
 
 function Abel_trigger(host)
+    local roll = getLastRoll(host)["value"]    
+    if roll < 4 then return end
     local dEvent = getDamageEvent(host)
     local owner = getTopOwner(host)
     local choice = requestSimpleChoice(host, owner.id, 'Deal damage to what?', {'Monster', 'Player'})

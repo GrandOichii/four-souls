@@ -303,6 +303,11 @@ void MatchState::pushTable(lua_State* L) const {
     l_pushtableboolean(L, "isMain", isMain);
     l_pushtablenumber(L, "currentID", currentID);
     l_pushtableboolean(L, "inCombat", isCombat);
+    l_pushtablenumber(L, "turnCounter", turnCounter);
+
+    l_pushtablenumber(L, "lootDeckCount", lootDeckCount);
+    l_pushtablenumber(L, "treasureDeckCount", treasureDeckCount);
+    l_pushtablenumber(L, "monsterDeckCount", monsterDeckCount);
 
     lua_pushstring(L, "monsters");
     auto size = monsters.size();
@@ -314,8 +319,41 @@ void MatchState::pushTable(lua_State* L) const {
     }
     lua_settable(L, -3);
 
-    l_pushtablenumber(L, "monsterDeckCount", monsterDeckCount);
+    lua_pushstring(L, "monsterDataArr");
+    size = monsterDataArr.size();
+    lua_createtable(L, size, 0);
+    for (int i = 0; i < size; i++) {
+        lua_pushnumber(L, i+1);
+        monsterDataArr[i].pushTable(L);
+        lua_settable(L, -3);
+    }
+    lua_settable(L, -3);
 
+    lua_pushstring(L, "shop");
+    size = shop.size();
+    lua_createtable(L, size, 0);
+    for (int i = 0; i < size; i++) {
+        lua_pushnumber(L, i+1);
+        shop[i].pushTable(L);
+        lua_settable(L, -3);
+    }
+    lua_settable(L, -3);
+
+    lua_pushstring(L, "boards");
+    size = boards.size();
+    lua_createtable(L, size, 0);
+    for (int i = 0; i < size; i++) {
+        lua_pushnumber(L, i+1);
+        boards[i].pushTable(L);
+        lua_settable(L, -3);
+    }
+    lua_settable(L, -3);
+
+
+
+    //  TODO push loot discard
+    //  TODO push monster discard
+    //  TODO push treasure discard
 }
 
 Match::Match(nlohmann::json config, int seed) {

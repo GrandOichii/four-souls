@@ -60,12 +60,11 @@ struct MatchState {
     vector<MonsterDataState> monsterDataArr;
     bool isCombat;
 
-    void pushTable(lua_State* L) const;
-    
-    nlohmann::json toJson();
-
     MatchState();
     MatchState(nlohmann::json j);
+    
+    void pushTable(lua_State* L) const;
+    nlohmann::json toJson();
 };
 
 struct StackEffect {

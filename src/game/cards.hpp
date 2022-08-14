@@ -97,6 +97,7 @@ struct MonsterDataState {
     int power;
     int blueHealth;
     bool canBeAttacked;
+    void pushTable(lua_State* L) const;
 };
 
 class Match;

@@ -35,7 +35,7 @@ struct PlayerBoardState {
     std::vector<CardState> hand;
     std::vector<CardState> souls;
 
-    void pushTable(lua_State* L);
+    void pushTable(lua_State* L) const;
 };
 
 // string toJson(const PlayerBoardState& state);

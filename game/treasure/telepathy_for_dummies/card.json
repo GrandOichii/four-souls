@@ -11,6 +11,11 @@
         "roll": {
             "check": "TelepathyForDummies_trigger2_check",
             "effect": "TelepathyForDummies_trigger2"
+        },
+        "turn_end": {
+            "usesStack": false,
+            "check": "TelepathyForDummies_trigger3_check",
+            "effect": "TelepathyForDummies_trigger3"
         }
     }
 }

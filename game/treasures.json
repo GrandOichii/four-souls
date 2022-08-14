@@ -31,6 +31,8 @@
         "treasure/chaos_card",
         "treasure/chaos_card",
         "treasure/chaos_card",
+        "treasure/telepathy_for_dummies",
+
         "treasure/chaos_card"
     ],
     "cards": [
@@ -41,7 +43,6 @@
         "treasure/chaos_card",
         "treasure/x_ray_vision",
         "treasure/guppys_head",
-        "treasure/telepathy_for_dummies",
         "treasure/consolation_prize",
         "treasure/hand_me_downs",
         "treasure/tarot_cloth",

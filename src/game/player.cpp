@@ -343,9 +343,54 @@ PlayerBoardState Player::getState() {
     return result;
 }
 
-void PlayerBoardState::pushTable(lua_State* L) {
-    // lua_createtable(L);
-    //  TODO
+void PlayerBoardState::pushTable(lua_State* L) const {
+    lua_newtable(L);
+    l_pushtablestring(L, "name", name);
+    l_pushtableboolean(L, "characterActive", characterActive);
+    l_pushtablenumber(L, "health", health);
+    l_pushtablenumber(L, "maxHealth", maxHealth);
+    l_pushtablenumber(L, "blueHealth", blueHealth);
+    l_pushtablenumber(L, "attack", attack);
+    l_pushtablenumber(L, "playableCount", playableCount);
+    l_pushtablenumber(L, "purchaseCount", purchaseCount);
+    l_pushtablenumber(L, "attackCount", attackCount);
+    l_pushtablenumber(L, "treasurePrice", treasurePrice);
+    l_pushtablenumber(L, "id", id);
+
+    //  TODO push character card, hand and souls
+    lua_pushstring(L, "board");
+    auto size = board.size();
+    lua_createtable(L, size, 0);
+    for (int i = 0; i < size; i++) {
+        lua_pushnumber(L, i+1);
+        board[i].pushTable(L);
+        lua_settable(L, -3);
+    }
+    lua_settable(L, -3);
+
+    lua_pushstring(L, "hand");
+    size = hand.size();
+    lua_createtable(L, size, 0);
+    for (int i = 0; i < size; i++) {
+        lua_pushnumber(L, i+1);
+        hand[i].pushTable(L);
+        lua_settable(L, -3);
+    }
+    lua_settable(L, -3);
+
+    lua_pushstring(L, "souls");
+    size = souls.size();
+    lua_createtable(L, size, 0);
+    for (int i = 0; i < size; i++) {
+        lua_pushnumber(L, i+1);
+        souls[i].pushTable(L);
+        lua_settable(L, -3);
+    }
+    lua_settable(L, -3);
+
+    lua_pushstring(L, "board");
+    playerCard.pushTable(L);
+    lua_settable(L, -3);
 }
 
 void Player::addSoulCard(CardWrapper* card) {
@@ -418,6 +463,7 @@ BotPlayer::~BotPlayer() {
 static const char* PROMPT_ACTION_FUNC = "Bot_PromptAction";
 static const char* PROMPT_RESPONSE_FUNC = "Bot_PromptResponse";
 static const char* PROMPT_SIMPLE_RESPONSE_FUNC = "Bot_PromptSimpleResponse";
+static const char* UPDATE_WINNER_FUNC = "Bot_UpdateWinner";
 
 string BotPlayer::promptAction(MatchState& state) {
     lua_getglobal(L, PROMPT_ACTION_FUNC);
@@ -440,7 +486,16 @@ void BotPlayer::update(MatchState& state) {
 }
 
 void BotPlayer::updateEndMatch(MatchState& state, int winnerID) {
-    
+    lua_getglobal(L, PROMPT_RESPONSE_FUNC);
+    if (!lua_isfunction(L, -1)) throw std::runtime_error("bot doesn't have updateEndMatch func");
+    // lua_pushlightuserdata(L, this);
+    lua_pushnumber(L, winnerID);
+    int r = lua_pcall(L, 1, 0, 0);
+    if (r != LUA_OK) {
+        string errormsg = lua_tostring(L, -1);
+        std::cout << "LUA ERR:" << errormsg << std::endl;
+        throw std::runtime_error("bot updateEndMatch func failed");
+    }
 }
 
 string BotPlayer::promptResponse(MatchState& state, string text, string choiceType, vector<int> choices) {
@@ -466,7 +521,6 @@ string BotPlayer::promptResponse(MatchState& state, string text, string choiceTy
     }
     if (!lua_isstring(L, -1)) throw std::runtime_error("bot action prompt didn't return a string");
     auto result = (string)lua_tostring(L, -1);
-    std::cout << "BOT RESPONSE " << result << std::endl;
     return (string)lua_tostring(L, -1);
 }
 

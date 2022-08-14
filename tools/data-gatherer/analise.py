@@ -49,7 +49,8 @@ for mname, pools in items.items():
         # if l <= av_item_count:
         actual_pool += [pool]
     for pool in actual_pool:
-        v = mdata[mname] / len(pool)
+        # v = mdata[mname] / len(pool)
+        v = mdata[mname]
         for item in pool:
             if not item in items_res:
                 items_res[item] = []

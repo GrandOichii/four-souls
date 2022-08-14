@@ -291,7 +291,7 @@ public:
     }
 };
 
-const char* BOT_SCRIPT_PATH = "bots/random.lua";
+const char* BOT_SCRIPT_PATH = "bots/tester.lua";
 
 int main(int argc, char* argv[]) {
     

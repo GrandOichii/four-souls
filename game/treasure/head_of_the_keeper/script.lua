@@ -1,10 +1,10 @@
 function HeadOfTheKeeper_trigger1_check(host, me)
     local owner = getOwner(host, me.id)
     local damageEvent = getTopDamageEvent(host)
-    if damageEvent.sourceType ~= PLAYER then
+    if damageEvent.targetType ~= PLAYER then
         return false
     end
-    if damageEvent.sourceID ~= owner.id then
+    if damageEvent.targetID ~= owner.id then
         return false
     end
     return true
