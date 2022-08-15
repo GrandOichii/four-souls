@@ -23,7 +23,7 @@ function FileExists(name)
 end
 
 function WriteTable(table, path)
-    local res = json:encode(table)
+    local res = json.encode(table)
     local file = io.open(path, "w")
     io.output(file)
     io.write(res)
@@ -32,10 +32,12 @@ end
 
 function ReadTable(path)
     local file = io.open(path, "r")
-    io.input(file)
-    local data = io.read()
+    local data = file:read("*all")
     io.close(file)
-    return json:decode(data)
+    print('READ: '..data)
+    local res = json.decode(data)
+    print('DECODED: '..#res)
+    return res
 end
 
 local DATA_PATH = 'bots/data.json'
@@ -48,11 +50,11 @@ local ITEMS = {}
 local WEIGHTS = ReadTable(DATA_PATH)
 
 local function isSameState(state1, state2)
-    return json:encode(state1) == json:encode(state2)
+    return json.encode(state1) == json.encode(state2)
 end
 
 local function isSameMe(me1, me2)
-    return json:encode(me1) == json:encode(me2)
+    return json.encode(me1) == json.encode(me2)
 end
 
 local lootBlacklist = {
@@ -98,14 +100,15 @@ local function AttemptPlayLoot(me, state)
 end
 
 local function GetW(iName)
-    for key, value in ipairs(WEIGHTS) do
+    WEIGHTS = ReadTable(DATA_PATH)
+    for key, value in pairs(WEIGHTS) do
         if key == iName then
             return value
         end
     end
-    WEIGHTS[iName] = 0.5
+    WEIGHTS[iName] = 50
     WriteTable(WEIGHTS, DATA_PATH)
-    return 0.5
+    return 50
 end
 
 local function AttemptBuyTreasure(me, state)
@@ -117,7 +120,7 @@ local function AttemptBuyTreasure(me, state)
     local cName = ''
     for i, card in ipairs(state.shop) do
         local w = GetW(card.name)
-        local v = math.random(1, 100*w)
+        local v = math.random(1, w)
         if v > mV then
             mV = v
             cI = i-1
@@ -125,6 +128,7 @@ local function AttemptBuyTreasure(me, state)
         end
     end
     ITEMS[#ITEMS+1] = cName
+    print('\tBOUGHT '..cName)
     return true, 'buy_treasure '..cI
 end
 
@@ -221,11 +225,19 @@ end
 
 function Bot_UpdateWinner(winnerID)
     local wFunc = function (w)
-        return w + (1 - w) / 2
+        local r = w + 2
+        if r > 100 then
+            return 100
+        end
+        return r
     end
     if winnerID ~= ME_ID then
         wFunc = function (w)
-            return w - w / 2
+            local r = w - 1
+            if r < 1 then
+                return 1
+            end
+            return r
         end
     end
     for _, iName in ipairs(ITEMS) do

@@ -73,3 +73,23 @@ import matplotlib.pyplot as plt
 # plt.bar(names, values)
 # plt.show()
 
+
+
+data = json.loads(open('../../bots/data.json', 'r').read())
+items = []
+for key, value in data.items():
+    items += [[key, value]]
+items = sorted(items, key=lambda x : x[1])
+names = []
+values = []
+for pair in items:
+    names += [pair[0]]
+    values += [pair[1]]
+fig = plt.figure(figsize = (30, 9))
+font = {'size': 7}
+
+matplotlib.rc('font', **font)
+
+plt.xticks(rotation='vertical')
+plt.bar(names, values)
+plt.show()
