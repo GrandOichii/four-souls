@@ -392,7 +392,7 @@ int main(int argc, char* argv[]) {
                 "player " + std::to_string(pcount),
                 match->getRandomAvailableCharacter(),
                 match->newCardID(),
-                fs::readFile("bots/test1.lua")
+                fs::readFile("bots/experimantal.lua")
             ));
             continue;
         }
