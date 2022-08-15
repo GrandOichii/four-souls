@@ -1,0 +1,11 @@
+{
+    "name": "Dead Bird",
+    "text": "Each time a player rolls a 3, you may look at their hand and steal a loot card from them.",
+    "script": "script.lua",
+    "on": {
+        "roll": {
+            "check": "DeadBird_trigger_check",
+            "effect": "DeadBird_trigger"
+        }
+    }
+}

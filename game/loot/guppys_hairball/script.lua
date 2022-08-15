@@ -7,7 +7,6 @@ function GuppysHairball_trigger_cost(host, cardInfo)
 end
 
 function GuppysHairball_trigger(host)
-    local _ = getDamageEvent(host)
     local owner = getTopOwner(host)
     local roll = getLastRoll(host).value
     if roll == 6 then

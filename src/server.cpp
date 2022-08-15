@@ -291,7 +291,7 @@ public:
     }
 };
 
-const char* BOT_SCRIPT_PATH = "bots/tester.lua";
+const char* BOT_SCRIPT_PATH = "bots/random.lua";
 
 int main(int argc, char* argv[]) {
     
@@ -316,20 +316,20 @@ int main(int argc, char* argv[]) {
             for (const auto& [n, v] : value.items()) actions.push(v);
             pcount++;
             if (pcount == 1) {
-                match->addPlayer(new ObservingScriptedPlayer(
-                    name,
-                    match->getRandomAvailableCharacter(),
-                    match->newCardID(),
-                    actions,
-                    allCards
-                ));
-                
-                // match->addPlayer(new ScriptedPlayer(
+                // match->addPlayer(new ObservingScriptedPlayer(
                 //     name,
                 //     match->getRandomAvailableCharacter(),
                 //     match->newCardID(),
-                //     actions
+                //     actions,
+                //     allCards
                 // ));
+                
+                match->addPlayer(new ScriptedPlayer(
+                    name,
+                    match->getRandomAvailableCharacter(),
+                    match->newCardID(),
+                    actions
+                ));
                 continue;
             }
             // match->addPlayer(new BotPlayer(
@@ -387,6 +387,15 @@ int main(int argc, char* argv[]) {
     }
     for (int i = 0; i < botC; i++) {
         pcount++;
+        if (i == 1) {
+            match->addPlayer(new BotPlayer(
+                "player " + std::to_string(pcount),
+                match->getRandomAvailableCharacter(),
+                match->newCardID(),
+                fs::readFile("bots/test1.lua")
+            ));
+            continue;
+        }
         match->addPlayer(new BotPlayer(
             "player " + std::to_string(pcount),
             match->getRandomAvailableCharacter(),

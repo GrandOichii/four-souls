@@ -34,7 +34,6 @@ end
 function Lodestone_trigger1(host)
     local me = this(host)
     local target = popTarget(host)
-    -- print(target.id, target.type)
     if CardData[me.id].mids[target.id] == nil then
         CardData[me.id].mids[target.id] = 0
     end

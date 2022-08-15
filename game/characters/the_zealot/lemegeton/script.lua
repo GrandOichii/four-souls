@@ -36,6 +36,7 @@ function Lemegeton_trigger(host)
     local owner = getTopOwner(host)
     while CardData[me.id].usedC ~= 0 do
         local ids = {}
+        owner = getTopOwner(host)
         for _, card in ipairs(owner.board) do
             if not card.isEternal then
                 ids[#ids+1] = card.id
@@ -45,6 +46,7 @@ function Lemegeton_trigger(host)
             CardData[me.id].usedC = 0
             return
         end
+        print(#ids)
         local choice, _ = requestChoice(host, owner.id, 'Choose an item to sacrifice', CARD, ids)
         destroyCard(host, choice)
         CardData[me.id].usedC = CardData[me.id].usedC - 1

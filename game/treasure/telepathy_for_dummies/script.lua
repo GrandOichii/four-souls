@@ -46,7 +46,10 @@ end
 
 function TelepathyForDummies_trigger3(host)
     local me = this(host)
-    if CardData[me.id].lr ~= nil then 
-        CarldData[me.id].lr = nil
+    if CardData[me.id] == nil then
+        CardData[me.id] = {}
+    end
+    if CardData[me.id].lr ~= nil then
+        CardData[me.id].lr = nil
     end
 end

@@ -486,7 +486,7 @@ void BotPlayer::update(MatchState& state) {
 }
 
 void BotPlayer::updateEndMatch(MatchState& state, int winnerID) {
-    lua_getglobal(L, PROMPT_RESPONSE_FUNC);
+    lua_getglobal(L, UPDATE_WINNER_FUNC);
     if (!lua_isfunction(L, -1)) throw std::runtime_error("bot doesn't have updateEndMatch func");
     // lua_pushlightuserdata(L, this);
     lua_pushnumber(L, winnerID);

@@ -206,3 +206,7 @@ end
 function Bot_PromptSimpleResponse(me, state, text, choices)
     return '$FIRST'
 end
+
+function Bot_UpdateWinner(winnerID)
+
+end

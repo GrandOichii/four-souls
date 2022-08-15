@@ -6,7 +6,7 @@ end
 
 function GuppysPaw_tap(host)
     local owner = getTopOwner(host)
-    dealDamage(host, PLAYER, owner["id"], PLAYER, owner["id"], 1)
     local target = popTarget(host)
-    addBlueHealth(host, target["id"], 2)
+    dealDamage(host, PLAYER, owner.id, PLAYER, owner.id, 1)
+    addBlueHealth(host, target.id, 2)
 end

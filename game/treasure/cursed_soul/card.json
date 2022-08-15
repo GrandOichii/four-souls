@@ -1,0 +1,17 @@
+{
+    "name": "Cursed Soul",
+    "text": "At the start of your turn, take 1 damage and put a counter on this. Then, it this has 6+ counters, it becomes a soul and loses all abilities.\nAt the end of your turn, give this to another player.",
+    "script": "script.lua",
+    "soulCount": 1,
+    "on": {
+        "turn_start": {
+            "check": "CursedSoul_trigger1_check",
+            "effect": "CursedSoul_trigger1"
+        },
+        "turn_end": {
+            "check": "CursedSoul_trigger2_check",
+            "cost": "CursedSoul_trigger2_cost",
+            "effect": "CursedSoul_trigger2"
+        }
+    }
+}

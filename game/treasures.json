@@ -31,12 +31,15 @@
         "treasure/chaos_card",
         "treasure/chaos_card",
         "treasure/chaos_card",
-        "treasure/telepathy_for_dummies",
-
         "treasure/chaos_card"
     ],
     "cards": [
         "treasure/lunch",
+        "treasure/decoy",
+        "treasure/baby_haunt",
+        "treasure/cursed_soul",
+        "treasure/dead_bird",
+        "treasure/telepathy_for_dummies",
         "treasure/head_of_the_keeper",
         "treasure/plan_c",
         "treasure/cheese_grater",

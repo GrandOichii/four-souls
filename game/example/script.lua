@@ -9,7 +9,7 @@ end
 
 function TheD6_trigger(host)
     local owner = getTopOwner(host)
-    deferEOT(host, this(host)["id"], "TheD6_eot", false)
+    deferEOT(host, this(host).id, "TheD6_eot", false)
 end
 
 function TheD6_trigger_check(host, me)

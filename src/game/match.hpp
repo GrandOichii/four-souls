@@ -396,6 +396,7 @@ public:
     static int wrap_tapCharacterCard(lua_State* L);
     static int wrap_destroySoul(lua_State* L);
     static int wrap_moveToHand(lua_State* L);
+    static int wrap_moveToBoard(lua_State* L);
     static int wrap_removeFromEverywhere(lua_State* L);
     static int wrap_dealCombatDamageF(lua_State* L);
     static int wrap_incPurchaseAmount(lua_State* L);

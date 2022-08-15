@@ -1,0 +1,11 @@
+{
+    "name": "Decoy",
+    "text": "{T}: Swap this with a non-eternal item another player controls.",
+    "script": "script.lua",
+    "abilities": [
+        {
+            "cost": "Decoy_cost",
+            "ability": "Decoy_tap"
+        }
+    ]
+}

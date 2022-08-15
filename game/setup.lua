@@ -349,6 +349,7 @@ function Common_TargetPlayer(host, cardInfo)
     end
     local choiceId, payed = requestChoice(host, ownerID, "Choose a player", PLAYER, ids)
     if not payed then return false end
+    print('Choice: '..choiceId)
     pushTarget(host, choiceId, PLAYER)
     return true
 end
@@ -801,6 +802,10 @@ function Common_OwnerDealtCombatDamage(host, cardID, targetType)
     if not monster.isBeingAttacked then
         return false
     end
+    if CardData[cardID] == nil then
+        CardData[cardID] = {}
+    end
+    CardData[cardID].damageEvent = damageEvent
     return true
 end
 

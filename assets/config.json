@@ -4,6 +4,22 @@
             "large": "images/polyphemus_large.bmp",
             "small": "images/polyphemus.bmp"
         },
+        "Decoy": {
+            "large": "images/decoy_large.bmp",
+            "small": "images/decoy.bmp"
+        },
+        "Dead Bird": {
+            "large": "images/dead_bird_large.bmp",
+            "small": "images/dead_bird.bmp"
+        },
+        "Cursed Soul": {
+            "large": "images/cursed_soul_large.bmp",
+            "small": "images/cursed_soul.bmp"
+        },
+        "Baby Haunt": {
+            "large": "images/baby_haunt_large.bmp",
+            "small": "images/baby_haunt.bmp"
+        },
         "Head of the Keeper": {
             "large": "images/head_of_the_keeper_large.bmp",
             "small": "images/head_of_the_keeper.bmp"
@@ -25,8 +41,8 @@
             "small": "images/x_ray_vision.bmp"
         },
         "Telepathy for Dummies": {
-            "large": "images/polyphemus_large.bmp",
-            "small": "images/polyphemus.bmp"
+            "large": "images/telepathy_for_dummies_large.bmp",
+            "small": "images/telepathy_for_dummies.bmp"
         },
         "Consolation Prize": {
             "large": "images/consolation_prize_large.bmp",

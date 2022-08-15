@@ -632,6 +632,17 @@ int Match::wrap_moveToHand(lua_State* L) {
     return 0;
 }
 
+int Match::wrap_moveToBoard(lua_State* L) {
+    stackSizeIs(L, 3);
+    auto match = getTopMatch(L, 1);
+    auto pid = getTopNumber(L, 2);
+    auto cid = getTopNumber(L, 3);
+    auto player = match->playerWithID(pid);
+    auto card = match->cardWithID(cid);
+    match->addCardToBoard(card, player);
+    return 0;
+}
+
 int Match::wrap_setTurnEnd(lua_State* L) {
     stackSizeIs(L, 2);
     auto match = getTopMatch(L, 1);
@@ -1351,10 +1362,7 @@ int Match::wrap_healPlayer(lua_State* L) {
 }
 
 int Match::wrap_this(lua_State *L) {
-    if (lua_gettop(L) != 1) {
-        lua_err(L);
-        exit(1);
-    }
+    stackSizeIs(L, 1);
     auto match = getTopMatch(L, 1);
     match->_stack.back()->cardW->pushTable(match->L);
     return 1;
@@ -2020,6 +2028,7 @@ void Match::setupLua(string setupScript) {
     // connect functions
     lua_register(L, "healPlayer", wrap_healPlayer);
     lua_register(L, "moveToHand", wrap_moveToHand);
+    lua_register(L, "moveToBoard", wrap_moveToBoard);
     lua_register(L, "addSoulCard", wrap_addSoulCard);
     lua_register(L, "removeFromEverywhere", wrap_removeFromEverywhere);
     lua_register(L, "getActivations", wrap_getActivations);
@@ -2599,18 +2608,12 @@ int Match::applyTriggers(string triggerType) {
             );
             this->pushToStack(p);
             if (effect.costFuncName.size()) {
-                // int old = _targetStack.size();
                 bool payed = this->requestPayCost(effect.costFuncName, player);
                 if (!payed) {
-                    this->_stack.pop_back();
+                    _stack.erase(std::find(_stack.begin(), _stack.end(), p));
                     delete p;
                     continue;
                 }
-                // int c = _targetStack.size() - old;
-                // for (int i = 0; i < c; i++){
-                //     auto it = _targetStack.end() - 1 - i;
-                //     p->targets.push_back(it->second);
-                // }
             }
             if (!effect.usesStack) {
                 execFunc(effect.effectFuncName);

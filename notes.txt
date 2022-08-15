@@ -17,6 +17,9 @@
     -- does callus save from evil twins effect
 
 - implement:
+    -- addListener(host, <owner id>, <card id>, <on what>, <check func name>, <cost func name>, <effect func name>), returns listener id
+    -- removeListener(host, <listener id>)
+    -- add rewards cost
     -- change how guppy's hairball works
     -- fix bag o trash
     -- add "requiresTap" field

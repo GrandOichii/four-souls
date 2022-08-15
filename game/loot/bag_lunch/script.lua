@@ -44,7 +44,6 @@ function BL_ModDestroyStack(host, me, owner)
         name = 'destroy'..me.id,
         func = function (host_, cardID)
             local me_ = getMe()
-            print('ME: id - '..me_.id..'  COUNTERS: '..me_.counters)
             if cardID ~= me.id or me_.counters > 0 then
                 DestroyFuncStack._et[DestroyFuncStack:posOf('destroy'..me.id)-1].func(host_, cardID)
                 return
