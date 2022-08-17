@@ -5,6 +5,7 @@
     "health": 3,
     "roll": 3,
     "power": 1,
+    "rewardsCost": "HolyDinga_rewards_cost",
     "rewards": "HolyDinga_rewards",
     "on": {
         "roll": {

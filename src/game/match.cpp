@@ -437,23 +437,44 @@ void Match::killMonster(CardWrapper* w) {
         applyTriggers(COMBAT_END_TYPE);
     }
     this->log(card->name() + " dies!");
+    // rewards
     _rewardsStack.push(RewardEvent{
         w,
     });
-    pushToStack(new StackEffect(
+    auto rp = new StackEffect(
         "_popRewardsStack",
         _activePlayer,
         w,
         REWARDS_TYPE
-    ));
-    // std::cout << "DEATH FUNC NAME: " << card->deathFuncName() << std::endl;
+    );
+    pushToStack(rp);
+    auto rcfn = card->rewardsCostFuncName();
+    if (rcfn.size()) {
+        auto payed = this->requestPayCost(rcfn, _activePlayer); //  TODO? active player always receives rewards for monster, so this should be good
+        if (!payed) {
+            delete rp;
+            _stack.pop_back();
+        }
+    }
+    // death
     if (!card->deathFuncName().size()) return;
-    pushToStack(new StackEffect(
+    auto dp = new StackEffect(
         card->deathFuncName(),
         _activePlayer,
         w,
         REWARDS_TYPE
-    ));
+    );
+    pushToStack(dp);
+    auto dcfn = card->deathCostFuncName();
+    // std::cout << dcfn << std::endl;
+    if (dcfn.size()) {
+        bool payed = this->requestPayCost(dcfn, _activePlayer); //  TODO? active player always receives rewards for monster, so this should be good
+        //  TODO request pay cost
+        if (!payed) {
+            delete dp;
+            _stack.pop_back();
+        }
+    }
 }
 
 void Match::addToLootDiscard(CardWrapper* wrapper) {
@@ -560,7 +581,7 @@ vector<CardWrapper*> Match::getTopMonsterCards(int amount) {
 
 void Match::pushDamageEvent(DamageTrigger event) {
     _lastDamageEvent = event;
-    auto triggerCount = this->applyTriggers(DAMAGE_TRIGGER);
+    this->applyTriggers(DAMAGE_TRIGGER);
 }
 
 void Match::pushPlayers(lua_State* L) {
@@ -577,7 +598,7 @@ bool Match::requestPayCost(string costFuncName, Player* player) {
     lua_getglobal(L, costFuncName.c_str());
     if (!lua_isfunction(L, -1)) {
         lua_err(L);
-        exit(1);
+        throw std::runtime_error("failed to execute cost func " + costFuncName);
     }
     lua_pushlightuserdata(L, this);
 
@@ -2539,92 +2560,123 @@ void Match::executePlayerAction(Player* player, string action) {
     this->_actionMap[split[0]](player, split);
 }
 
-int Match::applyTriggers(string triggerType) {
+void Match::queueTrigger(CardWrapper* wrapper, string triggerType, Player* owner, std::queue<QueuedTrigger>& out) {
+    auto card = wrapper->card();
+    if (!card->hasTrigger(triggerType)) return;
+    this->log("Card " + card->name() + "[" + std::to_string(wrapper->id()) + "] has a " + triggerType + " trigger");
+    auto effect = card->getTriggerWhen(triggerType);
+    auto checkFuncName = effect.checkFuncName;
+    if (!this->execCheck(checkFuncName, wrapper)) {
+        this->log("Check failed");
+        return;
+    }
+    this->log(card->name() + " is triggered");
+    out.push(QueuedTrigger{
+        effect,
+        wrapper,
+        owner
+    });
+}
+
+void Match::applyTriggers(string triggerType) {
     int result = 0;
+    std::queue<QueuedTrigger> queue;
     // first the monsters
     for(const auto& pile : _monsters) {
         auto w = pile.back();
-        auto card = w->card();
-        if (!card->hasTrigger(triggerType)) continue;
-        this->log("Card " + card->name() + "[" + std::to_string(w->id()) + "] has a " + triggerType + " trigger");
-        auto effect = card->getTriggerWhen(triggerType);
-        auto checkFuncName = effect.checkFuncName;
-        if (!this->execCheck(checkFuncName, w)) {
-            this->log("Check failed");
-            continue;
+        queueTrigger(w, triggerType, nullptr, queue);
+    }
+    for (int i = 0; i < _players.size(); i++) {
+        auto player = _players[(_currentI + i) % _players.size()];
+        auto board = player->board();
+        for (const auto& w : board) {
+            queueTrigger(w, triggerType, player, queue);
+            // auto p = new StackEffect(
+            //     effect.effectFuncName, 
+            //     player, 
+            //     w,
+            //     TRIGGER_TYPE    
+            // );
+            // this->pushToStack(p);
+            // if (!effect.usesStack) {
+            //     execFunc(effect.effectFuncName);
+            //     _stack.erase(std::find(_stack.begin(), _stack.end(), p));
+            //     delete p;
+            //     continue;
+            // }
         }
-        this->log(card->name() + " is triggered");
+    }
+    while (!queue.empty()) {
+        auto qt = queue.front();
+        auto& effect = qt.effect;
+        queue.pop();
         auto p = new StackEffect(
             effect.effectFuncName, 
-            nullptr, 
-            w,
+            qt.owner, 
+            qt.cardW,
             TRIGGER_TYPE    
         );
         this->pushToStack(p);
-        //  TODO? add costs back
-        // if (effect.costFuncName.size()) {
-        //     int old = _targetStack.size();
-        //     bool payed = this->requestPayCost(effect.costFuncName, player);
-        //     if (!payed) {
-        //         this->_stack.pop_back();
-        //         delete p;
-        //         continue;
-        //     }
-        //     int c = _targetStack.size() - old;
-        //     for (int i = 0; i < c; i++){
-        //         auto it = _targetStack.end() - 1 - i;
-        //         p->targets.push_back(it->second);
-        //     }
-        // }
+        if (effect.costFuncName.size()) {
+            bool payed = this->requestPayCost(effect.costFuncName, qt.owner ? qt.owner : _activePlayer);
+            if (!payed) {
+                _stack.erase(std::find(_stack.begin(), _stack.end(), p));
+                delete p;
+                continue;
+            }
+        }
         if (!effect.usesStack) {
             execFunc(effect.effectFuncName);
             _stack.erase(std::find(_stack.begin(), _stack.end(), p));
             delete p;
             continue;
         }
-        ++result;
     }
     // then the items, starting with the current player
     //  TODO prompt the player to choose the order of triggers
-    for (int i = 0; i < _players.size(); i++) {
-        auto player = _players[(_currentI + i) % _players.size()];
-        auto board = player->board();
-        for (const auto& w : board) {
-            auto card = w->card();
-            if (!card->hasTrigger(triggerType)) continue;
-            this->log("Card " + card->name() + "[" + std::to_string(w->id()) + "] has a " + triggerType + " trigger");
-            auto effect = card->getTriggerWhen(triggerType);
-            auto checkFuncName = effect.checkFuncName;
-            if (!this->execCheck(checkFuncName, w)) {
-                this->log("Check failed");
-                continue;
-            }
-            this->log(card->name() + " is triggered");
-            auto p = new StackEffect(
-                effect.effectFuncName, 
-                player, 
-                w,
-                TRIGGER_TYPE    
-            );
-            this->pushToStack(p);
-            if (effect.costFuncName.size()) {
-                bool payed = this->requestPayCost(effect.costFuncName, player);
-                if (!payed) {
-                    _stack.erase(std::find(_stack.begin(), _stack.end(), p));
-                    delete p;
-                    continue;
-                }
-            }
-            if (!effect.usesStack) {
-                execFunc(effect.effectFuncName);
-                _stack.erase(std::find(_stack.begin(), _stack.end(), p));
-                delete p;
-                continue;
-            }
-            ++result;
-        }
-    }
-    return result;
+    //  TODO PROBLEM
+    //  suppose active player deals combat damage to evil twin, the player to the left has lard
+    //  evil twin's ability doesn't use the stack, so when it pushes the damage event, lard is triggered twice due to reading the same top event
+    //  SOLUTIONS: 
+    //  1) first apply all the checks, then apply the costs and the effects of those, whose checks returned true
+    //  2) add new effect queue, move its' contents to the stack after applying all the effects
+    // for (int i = 0; i < _players.size(); i++) {
+    //     auto player = _players[(_currentI + i) % _players.size()];
+    //     auto board = player->board();
+    //     for (const auto& w : board) {
+    //         auto card = w->card();
+    //         if (!card->hasTrigger(triggerType)) continue;
+    //         this->log("Card " + card->name() + "[" + std::to_string(w->id()) + "] has a " + triggerType + " trigger");
+    //         auto effect = card->getTriggerWhen(triggerType);
+    //         auto checkFuncName = effect.checkFuncName;
+    //         if (!this->execCheck(checkFuncName, w)) {
+    //             this->log("Check failed");
+    //             continue;
+    //         }
+    //         this->log(card->name() + " is triggered");
+    //         auto p = new StackEffect(
+    //             effect.effectFuncName, 
+    //             player, 
+    //             w,
+    //             TRIGGER_TYPE    
+    //         );
+    //         this->pushToStack(p);
+    //         if (effect.costFuncName.size()) {
+    //             bool payed = this->requestPayCost(effect.costFuncName, player);
+    //             if (!payed) {
+    //                 _stack.erase(std::find(_stack.begin(), _stack.end(), p));
+    //                 delete p;
+    //                 continue;
+    //             }
+    //         }
+    //         if (!effect.usesStack) {
+    //             execFunc(effect.effectFuncName);
+    //             _stack.erase(std::find(_stack.begin(), _stack.end(), p));
+    //             delete p;
+    //             continue;
+    //         }
+    //     }
+    // }
 }
 
 void Match::triggerLastEffectType() {

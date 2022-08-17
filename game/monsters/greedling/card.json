@@ -6,5 +6,6 @@
     "roll": 5,
     "power": 1,
     "rewards": "Greedling_rewards",
+    "deathCost": "Greedling_death_cost",
     "death": "Greedling_death"
 }

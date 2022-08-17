@@ -37,7 +37,7 @@ function ForeverAlone_tap(host)
     end
     if choice == ForeverAlone_choice2 then
         local dc = CardData[me.id].dc
-        local cards = topCardsOf(host, dc)
+        local cards = topCardsOf(host, dc, 1)
         if #cards == 0 then
             return false
         end

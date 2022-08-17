@@ -8,7 +8,7 @@
 #include "window.hpp"
 
 
-const std::regex CARD_NAME_REGEX("\\$\\{([\\w\\ \\'\\!\\?\\.\\(\\)]+)\\}|[\\w\\?\\!\\$]+");
+const std::regex CARD_NAME_REGEX("\\$\\{([\\w\\ \\'\\!\\?\\.\\(\\)\\-]+)\\}|[\\w\\?\\!\\$]+");
 
 const char YIELD_UNTIL_TURN_KEY = 'y';
 const char SKIP_STACK_KEY = 's';
@@ -330,6 +330,7 @@ public:
         case YIELD_UNTIL_TURN_KEY:
             _yield = true;
             _lastTurnCounter = _state.turnCounter;
+            if (_lastRequestType != PollType::GetAction) return;
             respondPass();
             break;
         case SKIP_STACK_KEY:

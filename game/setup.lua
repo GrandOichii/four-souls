@@ -634,12 +634,11 @@ function Common_RemoveCounter(host)
 end
 
 function Common_RemoveCounters(host, amount)
-    for i = 1, amount do
-        local flag = Common_RemoveCounter(host)
-        if not flag then
-            return false
-        end
+    local card = this(host)
+    if card.counters < amount then
+        return false
     end
+    removeCounters(host, card.id, amount)
     return true
 end
 

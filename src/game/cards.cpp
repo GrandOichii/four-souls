@@ -220,6 +220,8 @@ MonsterCard::MonsterCard(string dir, json j) :
     ScriptCard(dir, j, CardTypes::Monster, true)
 {
     _rewardsFuncName = j["rewards"];
+    if (j.contains("rewardsCost"))
+        _rewardsCostFuncName = j["rewardsCost"];
     _baseHealth = j["health"];
     _baseRoll = j["roll"];
     _basePower = j["power"];
@@ -227,6 +229,8 @@ MonsterCard::MonsterCard(string dir, json j) :
         _canBeAttacked = j["canBeAttacked"];
     if (j.contains("death"))
         _deathFuncName = j["death"];
+    if (j.contains("deathCost"))
+        _deathCostFuncName = j["deathCost"];
     // std::cout << "MONSTER " << name() << "\t" << _baseHealth << " " << _baseRoll << " " << _basePower << std::endl;
 }
 
@@ -235,7 +239,9 @@ MonsterCard::~MonsterCard() {
 }
 
 string MonsterCard::deathFuncName() { return _deathFuncName; }
+string MonsterCard::deathCostFuncName() { return _deathCostFuncName; }
 string MonsterCard::rewardsFuncName() { return _rewardsFuncName; }
+string MonsterCard::rewardsCostFuncName() { return _rewardsCostFuncName; }
 
 MonsterData* MonsterCard::data() { return _data; }
 bool MonsterData::isBeingAttacked() { return _isBeingAttacked; }

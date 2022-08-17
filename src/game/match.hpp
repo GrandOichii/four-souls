@@ -7,6 +7,7 @@
 #include <deque>
 #include <map>
 #include <stack>
+#include <queue>
 #include <random>
 #include <stdlib.h>
 
@@ -161,6 +162,12 @@ struct DeathEvent {
         l_pushtablestring(L, "type", type.c_str());
         l_pushtablenumber(L, "id", id);
     }
+};
+
+struct QueuedTrigger {
+    Trigger effect;
+    CardWrapper* cardW;
+    Player* owner = nullptr;
 };
 
 class Match {
@@ -392,6 +399,7 @@ public:
     void pushPlayers(lua_State* L);
     void pushDamageEvent(DamageTrigger event);
     void refillDeadMonsters();
+    void queueTrigger(CardWrapper* wrapper, string triggerType, Player* owner, std::queue<QueuedTrigger>& out);
     //  TODO add wrap_popBonusCards, inside of it call refillDeadMonsters
     static int wrap_tapCharacterCard(lua_State* L);
     static int wrap_destroySoul(lua_State* L);
@@ -501,7 +509,7 @@ public:
     void currentPlayerLoot();
     void turn();
     void executePlayerAction(Player* player, string action);
-    int applyTriggers(string triggerType);
+    void applyTriggers(string triggerType);
     void pushToStack(StackEffect* effect);
     void resolveStack();
     void resolveTop();

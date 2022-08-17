@@ -5,6 +5,7 @@
     "health": 2,
     "roll": 4,
     "power": 1,
+    "rewardsCost": "KeeperHead_rewards_cost",
     "rewards": "KeeperHead_rewards",
     "on": {
         "damage": {

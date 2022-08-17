@@ -1,14 +1,24 @@
 {
     "back": "images/monster_card_back.bmp",
     "cards": {
-        "monste1rs": [
-            "monsters/black_bony",
-            "monsters/boom_fly",
-            "monsters/clotty",
-            "monsters/cod_worm",
-            "monsters/conjoined_fatty",
-            "monsters/dank_globin",
-            "monsters/hopper"
+        "monsters1": [
+            "monsters/wrath",
+            "monsters/wrath",
+            "monsters/wrath",
+            "monsters/wrath",
+            "monsters/wrath",
+            "monsters/wrath",
+            "monsters/wrath",
+            "monsters/wrath",
+            "monsters/wrath",
+            "monsters/wrath",
+            "monsters/wrath",
+            "monsters/wrath",
+            "monsters/wrath",
+            "monsters/wrath",
+            "monsters/wrath",
+            "monsters/wrath",
+            "monsters/wrath"
         ],
         "monsters": [
             "monsters/big_spider",

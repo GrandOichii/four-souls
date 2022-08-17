@@ -6,5 +6,7 @@
     "roll": 3,
     "power": 6,
     "soulCount": 1,
-    "rewards": "TheLamb_rewards"
+    "rewards": "TheLamb_rewards",
+    "deathCost": "TheLamb_death_cost",
+    "death": "TheLamb_death"
 }

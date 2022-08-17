@@ -1,4 +1,4 @@
 #!/bin/sh
 cd "$(dirname "$0")"
-# ./build/four-souls-server game records/record1660557463.fsr
-./build/four-souls-server game 4 0
+./build/four-souls-server game records/record1660721185.fsr
+# ./build/four-souls-server game 3 1

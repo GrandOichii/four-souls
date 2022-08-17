@@ -2,8 +2,11 @@ function Death_rewards(host, me, killer)
     gainTreasure(host, killer.id, 1)
 end
 
+function Death_death_cost(host, info)
+    return Common_TargetPlayer(host, info)
+end
+
 function Death_death(host)
-    local p = getCurrentPlayer(host)
-    local target = Common_ChoosePlayer(host, p.id)
+    local target = popTarget(host).id
     killEntity(host, PLAYER, target)
 end

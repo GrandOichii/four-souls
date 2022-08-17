@@ -26,8 +26,9 @@ end
 
 function TelepathyForDummies_trigger2(host)
     local owner = getTopOwner(host)
+    local me = this(host)
     local lr = Common_LastRoll(host)
-    local choice = requestSimpleChoice(host, owner.id, 'Change the result to '..lr.value..'?', {'Yes', 'No'})
+    local choice = requestSimpleChoice(host, owner.id, 'Change the result to '..CardData[me.id].lr..'?', {'Yes', 'No'})
     if choice == 'No' then
         return
     end

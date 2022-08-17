@@ -5,6 +5,7 @@
     "health": 3,
     "roll": 4,
     "power": 1,
+    "rewardsCost": "BlackBony_rewards_cost",
     "rewards": "BlackBony_rewards",
     "death": "BlackBony_death"
 }

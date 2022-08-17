@@ -1,6 +1,10 @@
+function KeeperHead_rewards_cost(host, info)
+	return Common_Roll(host, info.ownerID)
+end
+
 function KeeperHead_rewards(host, me, killer)
-	--  TODO
-	addCoins(host, killer.id, math.random(1, 6))
+	local roll = getLastRoll(host)
+	addCoins(host, killer.id, roll.value)
 end
 
 function KeeperHead_trigger_check(host, me)

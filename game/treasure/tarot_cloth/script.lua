@@ -9,7 +9,7 @@ function TarotCloth_trigger(host)
     if #player.hand == 0 then
         return
     end
-    local cardID = requestCardsInHand(host, owner.id, player.id, "Choose a card to give to "..owner.id, 1)[1]
+    local cardID = requestCardsInHand(host, owner.id, player.id, "Choose a card to give to "..owner.name, 1)[1]
     removeFromEverywhere(host, cardID)
     moveToHand(host, owner.id, cardID)
 end

@@ -11,11 +11,11 @@ function Lard_leave(host, me, owner)
 end
 
 function Lard_trigger_check(host, me)
-    return Common_OwnerDamaged(host, me["id"])
+    return Common_OwnerDamaged(host, me.id)
 end
 
 function Lard_trigger(host)
     local _ = getDamageEvent(host)
     local owner = getTopOwner(host)
-    Common_Discard(host, owner["id"], 1)
+    Common_Discard(host, owner.id, 1)
 end

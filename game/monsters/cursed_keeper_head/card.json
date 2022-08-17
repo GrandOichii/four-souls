@@ -5,6 +5,7 @@
     "health": 2,
     "roll": 4,
     "power": 1,
+    "rewardsCost": "CursedKeeperHead_rewards_cost",
     "rewards": "CursedKeeperHead_rewards",
     "on": {
         "roll": {

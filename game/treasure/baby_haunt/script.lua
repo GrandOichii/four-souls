@@ -9,7 +9,7 @@ function BabyHaunt_leave(host, me, owner)
 end
 
 function BabyHaunt_trigger_check(host, me)
-    return Common_OwnerDied(host, me.id)
+    return Common_OwnerDied(host, me.ownerID)
 end
 
 function BabyHaunt_trigger_cost(host, cardInfo)

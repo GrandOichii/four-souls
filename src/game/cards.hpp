@@ -142,14 +142,19 @@ private:
     bool _canBeAttacked = true;
 
     string _deathFuncName = "";
+    string _deathCostFuncName = "";
+
+    string _rewardsFuncName;
+    string _rewardsCostFuncName = "";
 
     MonsterData* _data = nullptr;
-    string _rewardsFuncName;
 public:
     MonsterCard(string dir, json j);
     ~MonsterCard();
     string rewardsFuncName();
+    string rewardsCostFuncName();
     string deathFuncName();
+    string deathCostFuncName();
     MonsterData* data();
     void deleteData();
     void createData(lua_State* L, Match* parent, int id);

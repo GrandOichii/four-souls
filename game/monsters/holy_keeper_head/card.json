@@ -5,6 +5,7 @@
     "health": 2,
     "roll": 4,
     "power": 1,
+    "rewardsCost": "HolyKeeperHead_rewards_cost",
     "rewards": "HolyKeeperHead_rewards",
     "on": {
         "roll": {

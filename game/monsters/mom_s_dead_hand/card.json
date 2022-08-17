@@ -5,5 +5,7 @@
     "health": 2,
     "roll": 5,
     "power": 1,
-    "rewards": "MomsDeadHand_rewards"
+    "rewards": "MomsDeadHand_rewards",
+    "deathCost": "MomsDeadHand_death_cost",
+    "death": "MomsDeadHand_death"
 }

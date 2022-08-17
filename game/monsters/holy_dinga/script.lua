@@ -1,6 +1,10 @@
+function HolyDinga_rewards_cost(host, info)
+	return Common_Roll(host, info.ownerID)
+end
+
 function HolyDinga_rewards(host, me, killer)
-	--  TODO
-	addCoins(host, killer.id, math.random(1, 6))
+	local roll = getLastRoll(host)
+	addCoins(host, killer.id, roll.value)
 end
 
 function HolyDinga_trigger_check(host, me)
