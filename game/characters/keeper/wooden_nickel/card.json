@@ -5,7 +5,7 @@
     "abilities": [
         {
             "cost": "WoodenNickel_cost",
-            "ability": "WoodenNickel_tap"
+            "effect": "WoodenNickel_tap"
         }
     ]
 }

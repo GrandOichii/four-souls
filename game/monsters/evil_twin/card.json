@@ -5,7 +5,9 @@
     "health": 3,
     "roll": 5,
     "power": 2,
-    "rewards": "EvilTwin_rewards",
+    "rewards": {
+        "effect": "EvilTwin_rewards"
+    },
     "on": {
         "damage": {
             "usesStack": false,

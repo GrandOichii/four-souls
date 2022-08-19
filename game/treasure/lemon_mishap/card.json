@@ -6,7 +6,7 @@
     "abilities": [
         {
             "cost": "LemonMishap_cost",
-            "ability": "LemonMishap_tap"
+            "effect": "LemonMishap_tap"
         }
     ],
     "on": {

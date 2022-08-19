@@ -1,5 +1,5 @@
 function Joker_cost(host, cardInfo)
-    return Common_TargetPlayer(host, cardInfo)
+    return Common_TargetPlayer(host, cardInfo.ownerID)
 end
 
 function Joker_use(host)

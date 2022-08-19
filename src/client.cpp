@@ -90,7 +90,7 @@ public:
             for (const auto& value : _state.shop)
                 _allowedCards.push_back(value.id);
         // check monsters
-        if (me.attackCount && _state.stack.size() == 0) {
+        if (!_state.isCombat && me.attackCount && _state.stack.size() == 0) {
             for (int i = 0; i < _state.monsters.size(); i++) {
                 if (_state.monsterDataArr[i].canBeAttacked)
                     _allowedCards.push_back(_state.monsters[i].id);
@@ -331,12 +331,12 @@ public:
             _yield = true;
             _lastTurnCounter = _state.turnCounter;
             if (_lastRequestType != PollType::GetAction) return;
-            respondPass();
+            if (_waitingResponse) respondPass();
             break;
         case SKIP_STACK_KEY:
             if (_state.stack.size()) {
                 _skipStack = true;
-                respondPass();
+                if (_waitingResponse) respondPass();
             }
             break;
         case CANCEL_YIELD_KEY:

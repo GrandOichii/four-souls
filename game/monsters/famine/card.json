@@ -6,5 +6,7 @@
     "roll": 3,
     "power": 1,
     "soulCount": 1,
-    "rewards": "Famine_rewards"
+    "rewards": {
+        "effect": "Famine_rewards"
+    }
 }

@@ -5,7 +5,9 @@
     "health": 1,
     "roll": 5,
     "power": 1,
-    "rewards": "CursedPsyHorf_rewards",
+    "rewards": {
+        "effect": "CursedPsyHorf_rewards"
+    },
     "on": {
         "activate": {
             "check": "CursedPsyHorf_trigger_check",

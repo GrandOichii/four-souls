@@ -3,7 +3,7 @@ function Wizoob_rewards(host, me, killer)
 end
 
 function Wizoob_death_cost(host, info)
-	return Common_TargetPlayer(host, info)
+	return Common_TargetPlayer(host, info.ownerID)
 end
 
 function Wizoob_death(host)

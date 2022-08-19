@@ -5,7 +5,7 @@
     "abilities": [
         {
             "cost": "PageantBoy_cost",
-            "ability": "PageantBoy_tap"
+            "effect": "PageantBoy_tap"
         }
     ]
 }

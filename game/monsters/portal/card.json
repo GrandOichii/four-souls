@@ -5,5 +5,7 @@
     "health": 2,
     "roll": 4,
     "power": 1,
-    "rewards": "Portal_rewards"
+    "rewards": {
+        "effect": "Portal_rewards"
+    }
 }

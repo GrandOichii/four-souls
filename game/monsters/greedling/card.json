@@ -5,7 +5,11 @@
     "health": 2,
     "roll": 5,
     "power": 1,
-    "rewards": "Greedling_rewards",
-    "deathCost": "Greedling_death_cost",
-    "death": "Greedling_death"
+    "rewards": {
+        "effect": "Greedling_rewards"
+    },
+    "death": {
+        "cost": "Greedling_death_cost",
+        "effect": "Greedling_death"
+    }
 }

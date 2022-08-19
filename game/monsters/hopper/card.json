@@ -5,7 +5,9 @@
     "health": 2,
     "roll": 3,
     "power": 1,
-    "rewards": "Hopper_rewards",
+    "rewards": {
+        "effect": "Hopper_rewards"
+    },
     "enter": "Hopper_enter",
     "leave": "Hopper_leave"
 }

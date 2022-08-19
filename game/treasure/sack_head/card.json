@@ -5,7 +5,7 @@
     "abilities": [
         {
             "cost": "SackHead_cost",
-            "ability": "SackHead_tap"
+            "effect": "SackHead_tap"
         }
     ]
 }

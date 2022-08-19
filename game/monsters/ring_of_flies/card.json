@@ -5,5 +5,7 @@
     "health": 3,
     "roll": 3,
     "power": 1,
-    "rewards": "RingOfFlies_rewards"
+    "rewards": {
+        "effect": "RingOfFlies_rewards"
+    }
 }

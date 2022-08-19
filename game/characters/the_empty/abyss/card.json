@@ -6,7 +6,7 @@
     "abilities": [
         {
             "cost": "Abyss_cost",
-            "ability": "Abyss_tap"
+            "effect": "Abyss_tap"
         }
     ]
 }

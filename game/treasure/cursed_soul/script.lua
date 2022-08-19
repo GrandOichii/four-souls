@@ -19,7 +19,7 @@ function CursedSoul_trigger2_check(host, me)
 end
 
 function CursedSoul_trigger2_cost(host, cardInfo)
-    return Common_TargetOpponent(host, cardInfo)
+    return Common_TargetOpponent(host, cardInfo.ownerID)
 end
 
 function CursedSoul_trigger2(host)

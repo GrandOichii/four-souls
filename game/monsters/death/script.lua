@@ -3,7 +3,7 @@ function Death_rewards(host, me, killer)
 end
 
 function Death_death_cost(host, info)
-    return Common_TargetPlayer(host, info)
+    return Common_TargetPlayer(host, info.ownerID)
 end
 
 function Death_death(host)

@@ -158,6 +158,7 @@ void Player::pushTable(lua_State* L) {
     l_pushtablenumber(L, "attackCount", (float)_attackCount);
     l_pushtablenumber(L, "treasurePrice", _treasurePrice);
     l_pushtableboolean(L, "characterActive", _characterActive);
+    l_pushtableboolean(L, "isDead", _isDead);
 
     // push cards in hand
     lua_pushstring(L, "hand");
@@ -322,6 +323,7 @@ PlayerBoardState Player::getState() {
     result.treasurePrice = _treasurePrice;
     result.id = _id;
     result.name = _name;
+    result.isDead = _isDead;
     result.maxHealth = maxHealth();
     result.blueHealth = _blueHealth;
     result.attack = attack();
@@ -346,6 +348,7 @@ PlayerBoardState Player::getState() {
 void PlayerBoardState::pushTable(lua_State* L) const {
     lua_newtable(L);
     l_pushtablestring(L, "name", name);
+    l_pushtableboolean(L, "isDead", isDead);
     l_pushtableboolean(L, "characterActive", characterActive);
     l_pushtablenumber(L, "health", health);
     l_pushtablenumber(L, "maxHealth", maxHealth);
@@ -418,13 +421,13 @@ bool Player::removeCard(CardWrapper* card) {
     // remove from board
     removed = removeFromCollection(card, _board);
     if (removed) {
-        _parent->execLeave(card, this);
+        card->card()->leaveEffect().pushMe(_parent, card, this, ITEM_LEAVE_TYPE);
         return true;
     }
     // remove from souls
     removed = removeFromCollection(card, _souls);
     if (removed) {
-        _parent->execLeave(card, this);
+        card->card()->leaveEffect().pushMe(_parent, card, this, ITEM_LEAVE_TYPE);
         return true;
     }
     return false;

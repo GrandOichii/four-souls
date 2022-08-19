@@ -5,7 +5,7 @@
     "abilities": [
         {
             "cost": "CrookedPenny_cost",
-            "ability": "CrookedPenny_tap"
+            "effect": "CrookedPenny_tap"
         }
     ]
 }

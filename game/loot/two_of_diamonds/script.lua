@@ -1,5 +1,5 @@
 function TwoOfDiamonds_cost(host, cardInfo)
-    return Common_TargetPlayer(host, cardInfo)
+    return Common_TargetPlayer(host, cardInfo.ownerID)
 end
 
 function TwoOfDiamonds_use(host)

@@ -6,7 +6,11 @@
     "roll": 4,
     "power": 2,
     "soulCount": 1,
-    "rewards": "Death_rewards",
-    "deathCost": "Death_death_cost",
-    "death": "Death_death"
+    "rewards": {
+        "effect": "Death_rewards"
+    },
+    "death": {
+        "cost": "Death_death_cost",
+        "effect": "Death_death"
+    }
 }

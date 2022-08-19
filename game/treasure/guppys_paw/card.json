@@ -5,7 +5,7 @@
     "abilities": [
         {
             "cost": "GuppysPaw_cost",
-            "ability": "GuppysPaw_tap"
+            "effect": "GuppysPaw_tap"
         }
     ]
 }

@@ -6,5 +6,7 @@
     "roll": 4,
     "power": 1,
     "soulCount": 1,
-    "rewards": "TheHaunt_rewards"
+    "rewards": {
+        "effect": "TheHaunt_rewards"
+    }
 }

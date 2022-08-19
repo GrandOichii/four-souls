@@ -1,5 +1,5 @@
 function EpicFetus_cost(host, cardInfo)
-    return Common_Tap(host) and Common_TargetPlayer(host, cardInfo) and Common_TargetMonster(host, cardInfo.ownerID)
+    return Common_Tap(host) and Common_TargetPlayer(host, cardInfo.ownerID) and Common_TargetMonster(host, cardInfo.ownerID)
 end
 
 function EpicFetus_tap(host)

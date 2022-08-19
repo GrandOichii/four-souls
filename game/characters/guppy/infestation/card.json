@@ -5,7 +5,7 @@
     "abilities": [
         {
             "cost": "Infestation_cost",
-            "ability": "Infestation_tap"
+            "effect": "Infestation_tap"
         }
     ]
 }

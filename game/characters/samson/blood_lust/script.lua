@@ -5,7 +5,7 @@ function BloodLust_cost(host, cardInfo)
     end
     local choice = requestSimpleChoice(host, cardInfo.ownerID, 'Increase power of what?', {'Player', 'Monster'})
     if choice == 'Player' then
-        return Common_TargetPlayer(host, cardInfo)
+        return Common_TargetPlayer(host, cardInfo.ownerID)
     end
     if choice == 'Monster' then
         return Common_TargetMonster(host, cardInfo.ownerID)

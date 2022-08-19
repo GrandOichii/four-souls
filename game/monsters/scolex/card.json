@@ -6,7 +6,9 @@
     "roll": 5,
     "power": 1,
     "soulCount": 1,
-    "rewards": "Scolex_rewards",
+    "rewards": {
+        "effect": "Scolex_rewards"
+    },
     "on": {
         "damage": {
             "check": "Scolex_trigger_check",

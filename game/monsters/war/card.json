@@ -6,7 +6,9 @@
     "roll": 3,
     "power": 1,
     "soulCount": 1,
-    "rewards": "War_rewards",
+    "rewards": {
+        "effect": "War_rewards"
+    },
     "enter": "War_enter",
     "leave": "War_leave",
     "on": {
@@ -17,7 +19,7 @@
         "turn_end": {
             "usesStack": false,
             "check": "War_trigger2_check",
-            "effect": "War_trigger2"    
+            "effect": "War_trigger2"
         }
     }
 }

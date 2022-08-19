@@ -11,7 +11,7 @@
     "abilities": [
         {
             "cost": "SacDagger_cost",
-            "ability": "SacDagger_activate"
+            "effect": "SacDagger_activate"
         }
     ]
 }

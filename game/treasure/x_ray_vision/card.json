@@ -5,7 +5,7 @@
     "abilities": [
         {
             "cost": "XRayVision_cost",
-            "ability": "XRayVision_tap"
+            "effect": "XRayVision_tap"
         }
     ],
     "on": {

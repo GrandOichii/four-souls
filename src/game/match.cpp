@@ -39,6 +39,7 @@ static PlayerBoardState playerFromJson(json j) {
     result.playableCount = j["playableCount"];
     result.purchaseCount = j["purchaseCount"];
     result.attackCount = j["attackCount"];
+    result.isDead = j["isDead"];
     result.id = j["id"];
     result.name = j["name"];
 
@@ -167,6 +168,7 @@ static json playerToJson(const PlayerBoardState& player) {
     result["playableCount"] = player.playableCount;
     result["purchaseCount"] = player.purchaseCount;
     result["attackCount"] = player.attackCount;
+    result["isDead"] = player.isDead;
     result["id"] = player.id;
     result["name"] = player.name;
 
@@ -438,43 +440,11 @@ void Match::killMonster(CardWrapper* w) {
     }
     this->log(card->name() + " dies!");
     // rewards
-    _rewardsStack.push(RewardEvent{
-        w,
-    });
-    auto rp = new StackEffect(
-        "_popRewardsStack",
-        _activePlayer,
-        w,
-        REWARDS_TYPE
-    );
-    pushToStack(rp);
-    auto rcfn = card->rewardsCostFuncName();
-    if (rcfn.size()) {
-        auto payed = this->requestPayCost(rcfn, _activePlayer); //  TODO? active player always receives rewards for monster, so this should be good
-        if (!payed) {
-            delete rp;
-            _stack.pop_back();
-        }
-    }
+    Effect& effect = card->rewardsEffect();
+    effect.pushMe(this, w, _activePlayer, REWARDS_TYPE);
     // death
-    if (!card->deathFuncName().size()) return;
-    auto dp = new StackEffect(
-        card->deathFuncName(),
-        _activePlayer,
-        w,
-        REWARDS_TYPE
-    );
-    pushToStack(dp);
-    auto dcfn = card->deathCostFuncName();
-    // std::cout << dcfn << std::endl;
-    if (dcfn.size()) {
-        bool payed = this->requestPayCost(dcfn, _activePlayer); //  TODO? active player always receives rewards for monster, so this should be good
-        //  TODO request pay cost
-        if (!payed) {
-            delete dp;
-            _stack.pop_back();
-        }
-    }
+    effect = card->deathEffect();
+    effect.pushMe(this, w, _activePlayer, DEATH_TYPE);
 }
 
 void Match::addToLootDiscard(CardWrapper* wrapper) {
@@ -608,11 +578,11 @@ bool Match::requestPayCost(string costFuncName, Player* player) {
     int r = lua_pcall(L, 2, 1, 0);
     if (r != LUA_OK) {
         lua_err(this->L);
-        exit(1);
+        throw std::runtime_error("failed to call cost function " + costFuncName);
     }
     if (!lua_isboolean(L, -1)) {
         lua_err(this->L);
-        exit(1);
+        throw std::runtime_error("cost func " + costFuncName + " didn't return a boolean");
     }
     return (bool)lua_toboolean(L, -1);
 
@@ -622,23 +592,26 @@ bool Match::requestPayCost(string costFuncName, Player* player) {
 
 int Match::wrap_popRewardsStack(lua_State* L) {
     stackSizeIs(L, 1);
-    auto match = getTopMatch(L, 1);
-    auto rewardsEvent = match->_rewardsStack.top();
-    match->_rewardsStack.pop();
-    auto funcName = ((MonsterCard*)rewardsEvent.monsterW->card())->rewardsFuncName();
-    lua_getglobal(L, funcName.c_str());
-    if (!lua_isfunction(L, -1)) {
-        throw std::runtime_error("unknown function: " + funcName);
-    }
-    lua_pushlightuserdata(L, match);
-    rewardsEvent.monsterW->pushTable(L);
-    match->_activePlayer->pushTable(L);
-    // rewardsEvent.killer->pushTable(L);
-    int r = lua_pcall(L, 3, 0, 0);
-    if (r != LUA_OK) {
-        throw std::runtime_error("failed to execute rewards function");
-    }
-    match->refillDeadMonsters();
+    // auto match = getTopMatch(L, 1);
+    // auto rewardsEvent = match->_rewardsStack.top();
+    // match->_rewardsStack.pop();
+    // auto cardW = rewardsEvent.monsterW;
+    // auto effect = ((MonsterCard*)cardW->card())->rewardsEffect();
+    // auto owner = match->_activePlayer;
+    // effect->pushMe(match, cardW, );
+    // lua_getglobal(L, funcName.c_str());
+    // if (!lua_isfunction(L, -1)) {
+    //     throw std::runtime_error("unknown function: " + funcName);
+    // }
+    // lua_pushlightuserdata(L, match);
+    // rewardsEvent.monsterW->pushTable(L);
+    // match->_activePlayer->pushTable(L);
+    // // rewardsEvent.killer->pushTable(L);
+    // int r = lua_pcall(L, 3, 0, 0);
+    // if (r != LUA_OK) {
+    //     throw std::runtime_error("failed to execute rewards function");
+    // }
+    // match->refillDeadMonsters();
     return 0;
 }
 
@@ -750,9 +723,7 @@ int Match::wrap_expandActiveMonsters(lua_State *L) {
     pile.push_back(w);
     match->_monsters.push_back(pile);
     match->_monsterDataArr.push_back(monster->data());
-
-    match->execMEnterLeave(w, w->card()->enterFuncName());
-
+    monster->enterEffect().pushMe(match, w, match->_activePlayer, MONSTER_ENTER_TYPE);
     return 0;
 }
 
@@ -1285,22 +1256,10 @@ int Match::wrap_buyItem(lua_State* L) {
 }
 
 int Match::wrap_lootCards(lua_State *L) {
-    if (lua_gettop(L) != 3) {
-        lua_err(L);
-        exit(1);
-    }
+    stackSizeIs(L, 3);
     auto match = getTopMatch(L, 1);
-    if (!lua_isnumber(L, 2)) {
-        lua_err(L);
-        exit(1);
-    }
-    auto pid = (int)lua_tonumber(L, 2);
-    
-    if (!lua_isnumber(L, 3)) {
-        lua_err(L);
-        exit(1);
-    }
-    auto amount = (int)lua_tonumber(L, 3);
+    auto pid = getTopNumber(L, 2);    
+    auto amount = getTopNumber(L, 3);
     Player* player = match->playerWithID(pid);
     match->log(player->name() + " loots " + std::to_string(amount) + " cards");
     auto cards = match->getTopLootCards(amount);
@@ -1309,10 +1268,7 @@ int Match::wrap_lootCards(lua_State *L) {
 }
 
 int Match::wrap_playTopLootCard(lua_State* L) {
-    if (lua_gettop(L) != 1) {
-        lua_err(L);
-        exit(1);
-    }
+    stackSizeIs(L, 1);
     auto match = getTopMatch(L, 1);
     auto last = match->_stack.back();
     auto cardW = last->cardW;
@@ -1330,28 +1286,13 @@ int Match::wrap_playTopLootCard(lua_State* L) {
 }
 
 int Match::wrap_deferEOT(lua_State *L) {
-    if (lua_gettop(L) != 4) {
-        lua_err(L);
-        exit(1);
-    }
+    stackSizeIs(L, 4);
     auto match = getTopMatch(L, 1);
-    if (!lua_isstring(L, 2)) {
-        lua_err(L);
-        exit(1);
-    }
-    auto cardID = (int)lua_tonumber(L, 2);
+    auto cardID = getTopNumber(L, 2);
+    auto funcName = getTopString(L, 3);
+    auto isTrigger = getTopBool(L, 4);
     auto w = match->cardWithID(cardID);
     auto owner = w->owner();
-    if (!lua_isstring(L, 3)) {
-        lua_err(L);
-        exit(1);
-    }
-    auto funcName = (string)lua_tostring(L, 3);
-    if (!lua_isboolean(L, 4)) {
-        lua_err(L);
-        exit(1);
-    }
-    auto isTrigger = (bool)lua_toboolean(L, 4);
     if (isTrigger) {
         auto effect = new StackEffect();;
         effect->funcName = funcName;
@@ -1545,7 +1486,7 @@ int Match::wrap_destroyCard(lua_State* L) {
             player->removeFromBoard(card);
             match->sortToDiscard(card);
             card->setOwner(nullptr);
-            match->execLeave(card, player);
+            card->card()->leaveEffect().pushMe(match, card, player, ITEM_LEAVE_TYPE);
             return 0;
         }
     }
@@ -1555,10 +1496,7 @@ int Match::wrap_destroyCard(lua_State* L) {
 }
 
 int Match::wrap_incAdditionalCoins(lua_State* L) {
-    if (lua_gettop(L) != 2) {
-        lua_err(L);
-        exit(1);
-    }
+    stackSizeIs(L, 2);
     auto match = getTopMatch(L, 1);
     if (!lua_isnumber(L, 2)) {
         lua_err(L);
@@ -1571,10 +1509,7 @@ int Match::wrap_incAdditionalCoins(lua_State* L) {
 }
 
 int Match::wrap_decAdditionalCoins(lua_State* L) {
-    if (lua_gettop(L) != 2) {
-        lua_err(L);
-        exit(1);
-    }
+    stackSizeIs(L, 2);
     auto match = getTopMatch(L, 1);
     if (!lua_isnumber(L, 2)) {
         lua_err(L);
@@ -1587,10 +1522,7 @@ int Match::wrap_decAdditionalCoins(lua_State* L) {
 }
 
 int Match::wrap_getLastRoll(lua_State* L) {
-    if (lua_gettop(L) != 1) {
-        lua_err(L);
-        exit(1);
-    }
+    stackSizeIs(L, 1);
     auto match = getTopMatch(L, 1);
     lua_newtable(L);
     l_pushtablenumber(L, "value", match->_lastRoll);
@@ -1609,24 +1541,12 @@ static void millDeck(std::deque<CardWrapper*>* deck, std::deque<CardWrapper*>* d
 }
 
 int Match::wrap_millDeck(lua_State* L) {
-    if (lua_gettop(L) != 3) {
-        lua_err(L);
-        exit(1);
-    }
+    stackSizeIs(L, 3);
     auto match = getTopMatch(L, 1);
-    if (!lua_isstring(L, 2)) {
-        lua_err(L);
-        exit(1);
-    }
-    auto deckType = (string)lua_tostring(L, 2);
-    if (!lua_isnumber(L, 3)) {
-        lua_err(L);
-        exit(1);
-    }
-    int amount = (int)lua_tonumber(L, 3);
+    auto deckType = getTopString(L, 2);
+    int amount = getTopNumber(L, 3);
     auto deck = match->_deckMap[deckType];
     auto discard = match->_discardMap[deckType];
-    // auto pair = match->_deckDiscardMap[deckType];
     millDeck(deck, discard, amount);
     return 0;
 }
@@ -1641,21 +1561,10 @@ static void fromTopToBottom(std::deque<CardWrapper*>* deck, int amount) {
 }
 
 int Match::wrap_putFromTopToBottom(lua_State* L) {
-    if (lua_gettop(L) != 3) {
-        lua_err(L);
-        exit(1);
-    }
+    stackSizeIs(L, 3);
     auto match = getTopMatch(L, 1);
-    if (!lua_isstring(L, 2)) {
-        lua_err(L);
-        exit(1);
-    }
-    auto deckType = (string)lua_tostring(L, 2);
-    if (!lua_isnumber(L, 3)) {
-        lua_err(L);
-        exit(1);
-    }
-    int amount = (int)lua_tonumber(L, 3);
+    auto deckType = getTopString(L, 2);
+    int amount = getTopNumber(L, 3);
     auto deck = match->_deckMap[deckType];
     fromTopToBottom(deck, amount);
     return 0;
@@ -1947,7 +1856,7 @@ int Match::wrap_getActiveMonsters(lua_State* L) {
 
 void Match::addCardToBoard(CardWrapper* w, Player* owner) {
     owner->addToBoard(w);
-    this->execEnter(w, owner);
+    w->card()->enterEffect().pushMe(this, w, owner, ITEM_ENTER_TYPE);
 }
 
 void Match::removeFromShop(CardWrapper* cardW) {
@@ -1983,47 +1892,47 @@ void Match::execEOTDefers() {
     }
 }
 
-void Match::execEnter(CardWrapper* w, Player* owner) {
-    auto funcName = w->card()->enterFuncName();
-    if (!funcName.size()) return;
+// void Match::execEnter(CardWrapper* w, Player* owner) {
+//     auto funcName = w->card()->enterFuncName();
+//     if (!funcName.size()) return;
 
-    // this->execFunc(efn);
-    this->log("Executing enter function " + funcName);
-    lua_getglobal(L, funcName.c_str());
-    if (!lua_isfunction(L, -1)) {
-        lua_err(L);
-        throw std::runtime_error("failed to execute enter function " + funcName);
-    }
-    lua_pushlightuserdata(L, this);
-    w->pushTable(L);
-    owner->pushTable(L);
-    int r = lua_pcall(L, 3, 0, 0);
-    if (r != LUA_OK) {
-        lua_err(this->L);
-        throw std::runtime_error("failed to execute enter func of card " + w->card()->name());
-    }
-}
+//     // this->execFunc(efn);
+//     this->log("Executing enter function " + funcName);
+//     lua_getglobal(L, funcName.c_str());
+//     if (!lua_isfunction(L, -1)) {
+//         lua_err(L);
+//         throw std::runtime_error("failed to execute enter function " + funcName);
+//     }
+//     lua_pushlightuserdata(L, this);
+//     w->pushTable(L);
+//     owner->pushTable(L);
+//     int r = lua_pcall(L, 3, 0, 0);
+//     if (r != LUA_OK) {
+//         lua_err(this->L);
+//         throw std::runtime_error("failed to execute enter func of card " + w->card()->name());
+//     }
+// }
 
-void Match::execLeave(CardWrapper* w, Player* owner) {
-    auto funcName = w->card()->leaveFuncName();
-    if (funcName.size()) {
-        this->log("Executing leave function " + funcName);
-        lua_getglobal(L, funcName.c_str());
-        if (!lua_isfunction(L, -1)) {
-            lua_err(L);
-            throw std::runtime_error("failed to execute leave function " + funcName);
-        }
-        lua_pushlightuserdata(L, this);
-        w->pushTable(L);
-        owner->pushTable(L);
-        int r = lua_pcall(L, 3, 0, 0);
-        if (r != LUA_OK) {
-            lua_err(this->L);
-            throw std::runtime_error("failed to card function " + funcName);
-        }
-    }
-    w->resetCounters();
-}
+// void Match::execLeave(CardWrapper* w, Player* owner) {
+//     auto funcName = w->card()->leaveFuncName();
+//     if (funcName.size()) {
+//         this->log("Executing leave function " + funcName);
+//         lua_getglobal(L, funcName.c_str());
+//         if (!lua_isfunction(L, -1)) {
+//             lua_err(L);
+//             throw std::runtime_error("failed to execute leave function " + funcName);
+//         }
+//         lua_pushlightuserdata(L, this);
+//         w->pushTable(L);
+//         owner->pushTable(L);
+//         int r = lua_pcall(L, 3, 0, 0);
+//         if (r != LUA_OK) {
+//             lua_err(this->L);
+//             throw std::runtime_error("failed to card function " + funcName);
+//         }
+//     }
+//     w->resetCounters();
+// }
 
 void Match::sortToDiscard(CardWrapper* cardW) {
     switch (cardW->card()->type()) {
@@ -2407,7 +2316,8 @@ void Match::start() {
         auto mcard = ((MonsterCard*)c->card());
         mcard->createData(L, this, c->id());
         _monsterDataArr.push_back(mcard->data());
-        execMEnterLeave(c, mcard->enterFuncName());
+        mcard->enterEffect().pushMe(this, c, _activePlayer, MONSTER_ENTER_TYPE);
+        // execMEnterLeave(c, mcard->enterFuncName());
     }
 
     this->_priorityI = this->_currentI;
@@ -2581,102 +2491,26 @@ void Match::queueTrigger(CardWrapper* wrapper, string triggerType, Player* owner
 void Match::applyTriggers(string triggerType) {
     int result = 0;
     std::queue<QueuedTrigger> queue;
-    // first the monsters
+    // monsters
     for(const auto& pile : _monsters) {
         auto w = pile.back();
         queueTrigger(w, triggerType, nullptr, queue);
     }
+    // players
     for (int i = 0; i < _players.size(); i++) {
         auto player = _players[(_currentI + i) % _players.size()];
         auto board = player->board();
         for (const auto& w : board) {
             queueTrigger(w, triggerType, player, queue);
-            // auto p = new StackEffect(
-            //     effect.effectFuncName, 
-            //     player, 
-            //     w,
-            //     TRIGGER_TYPE    
-            // );
-            // this->pushToStack(p);
-            // if (!effect.usesStack) {
-            //     execFunc(effect.effectFuncName);
-            //     _stack.erase(std::find(_stack.begin(), _stack.end(), p));
-            //     delete p;
-            //     continue;
-            // }
         }
     }
+    // empty queue
     while (!queue.empty()) {
         auto qt = queue.front();
         auto& effect = qt.effect;
         queue.pop();
-        auto p = new StackEffect(
-            effect.effectFuncName, 
-            qt.owner, 
-            qt.cardW,
-            TRIGGER_TYPE    
-        );
-        this->pushToStack(p);
-        if (effect.costFuncName.size()) {
-            bool payed = this->requestPayCost(effect.costFuncName, qt.owner ? qt.owner : _activePlayer);
-            if (!payed) {
-                _stack.erase(std::find(_stack.begin(), _stack.end(), p));
-                delete p;
-                continue;
-            }
-        }
-        if (!effect.usesStack) {
-            execFunc(effect.effectFuncName);
-            _stack.erase(std::find(_stack.begin(), _stack.end(), p));
-            delete p;
-            continue;
-        }
+        effect.pushMe(this, qt.cardW, qt.owner, TRIGGER_TYPE);
     }
-    // then the items, starting with the current player
-    //  TODO prompt the player to choose the order of triggers
-    //  TODO PROBLEM
-    //  suppose active player deals combat damage to evil twin, the player to the left has lard
-    //  evil twin's ability doesn't use the stack, so when it pushes the damage event, lard is triggered twice due to reading the same top event
-    //  SOLUTIONS: 
-    //  1) first apply all the checks, then apply the costs and the effects of those, whose checks returned true
-    //  2) add new effect queue, move its' contents to the stack after applying all the effects
-    // for (int i = 0; i < _players.size(); i++) {
-    //     auto player = _players[(_currentI + i) % _players.size()];
-    //     auto board = player->board();
-    //     for (const auto& w : board) {
-    //         auto card = w->card();
-    //         if (!card->hasTrigger(triggerType)) continue;
-    //         this->log("Card " + card->name() + "[" + std::to_string(w->id()) + "] has a " + triggerType + " trigger");
-    //         auto effect = card->getTriggerWhen(triggerType);
-    //         auto checkFuncName = effect.checkFuncName;
-    //         if (!this->execCheck(checkFuncName, w)) {
-    //             this->log("Check failed");
-    //             continue;
-    //         }
-    //         this->log(card->name() + " is triggered");
-    //         auto p = new StackEffect(
-    //             effect.effectFuncName, 
-    //             player, 
-    //             w,
-    //             TRIGGER_TYPE    
-    //         );
-    //         this->pushToStack(p);
-    //         if (effect.costFuncName.size()) {
-    //             bool payed = this->requestPayCost(effect.costFuncName, player);
-    //             if (!payed) {
-    //                 _stack.erase(std::find(_stack.begin(), _stack.end(), p));
-    //                 delete p;
-    //                 continue;
-    //             }
-    //         }
-    //         if (!effect.usesStack) {
-    //             execFunc(effect.effectFuncName);
-    //             _stack.erase(std::find(_stack.begin(), _stack.end(), p));
-    //             delete p;
-    //             continue;
-    //         }
-    //     }
-    // }
 }
 
 void Match::triggerLastEffectType() {
@@ -2726,7 +2560,7 @@ void Match::resolveTop() {
         return;
     } while (last != this->_priorityI);
     // resolve the ability
-    if (effect->resolve) this->execFunc(effect->funcName);
+    this->execFunc(effect->funcName);
     this->log("Popping " + effect->funcName + " from stack");
     _stack.erase(std::find(_stack.begin(), _stack.end(), effect));
     delete effect;
@@ -2896,9 +2730,10 @@ void Match::refillDeadMonsters() {
     for (int i = 0; i < _monsters.size(); i++) {
         if (_monsterDataArr[i]->health()) continue;
         auto w = _monsters[i].back();
-        ((MonsterCard*)w->card())->deleteData();
+        auto mc = ((MonsterCard*)w->card());
+        mc->deleteData();
         // std::cout << "EXECUTING MONSTER LEAVE " << w->card()->name() << " -- " << w->card()->leaveFuncName() << std::endl;
-        execMEnterLeave(w, w->card()->leaveFuncName());
+        mc->enterEffect().pushMe(this, w, _activePlayer, MONSTER_LEAVE_TYPE);
         _monsters[i].pop_back();
         _monsterDataArr[i] = nullptr;
         if (w->card()->soulCount()) {
@@ -2923,9 +2758,7 @@ void Match::refillDeadMonsters() {
         }
         auto mcard = ((MonsterCard*)newM->card());
         mcard->createData(L, this, newM->id());
-        // std::cout << "EXECUTING ENTER " << mcard->name() << std::endl;
-        execMEnterLeave(newM, mcard->enterFuncName());
-
+        mcard->enterEffect().pushMe(this, newM, _activePlayer, MONSTER_ENTER_TYPE);
         _monsterDataArr[i] = mcard->data();
         pushDeathEvent(MONSTER_TYPE, w->id());
     }
@@ -2934,24 +2767,23 @@ void Match::refillDeadMonsters() {
     }
 }
 
-void Match::execMEnterLeave(CardWrapper* cardW, string funcName) {
-    if (!funcName.size()) return;
+// void Match::execMEnterLeave(CardWrapper* cardW, string funcName) {
+//     if (!funcName.size()) return;
 
-    // this->execFunc(efn);
-    this->log("Executing monster function " + funcName);
-    lua_getglobal(L, funcName.c_str());
-    if (!lua_isfunction(L, -1)) {
-        lua_err(L);
-        throw std::runtime_error("failed to execute monster function " + funcName);
-    }
-    lua_pushlightuserdata(L, this);
-    cardW->pushTable(L);
-    int r = lua_pcall(L, 2, 0, 0);
-    if (r != LUA_OK) {
-        lua_err(this->L);
-        throw std::runtime_error("failed to execute monster func of card " + cardW->card()->name());
-    }
-}
+//     this->log("Executing monster function " + funcName);
+//     lua_getglobal(L, funcName.c_str());
+//     if (!lua_isfunction(L, -1)) {
+//         lua_err(L);
+//         throw std::runtime_error("failed to execute monster function " + funcName);
+//     }
+//     lua_pushlightuserdata(L, this);
+//     cardW->pushTable(L);
+//     int r = lua_pcall(L, 2, 0, 0);
+//     if (r != LUA_OK) {
+//         lua_err(this->L);
+//         throw std::runtime_error("failed to execute monster func of card " + cardW->card()->name());
+//     }
+// }
 
 void Match::pushDeathEvent(string type, int id) {
     _deathStack.push_back(DeathEvent{type, id});
@@ -2967,6 +2799,8 @@ void Match::pushDeathEvent(string type, int id) {
 void Match::killPlayer(int id) {
     _lastKillerID = _stack.back()->player->id();
     auto player = playerWithID(id);
+    if (player->isDead()) return;
+    player->setIsDead(true);
     if (player == _activePlayer) _turnEnd = true;
     lua_getglobal(L, "_deathPenalty");
     if (!lua_isfunction(L, -1)) {

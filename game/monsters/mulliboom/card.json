@@ -5,6 +5,8 @@
     "health": 1,
     "roll": 2,
     "power": 6,
-    "rewards": "Mulliboom_rewards",
+    "rewards": {
+        "effect": "Mulliboom_rewards"
+    },
     "death": "Mulliboom_death"
 }

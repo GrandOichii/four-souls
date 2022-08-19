@@ -5,7 +5,7 @@
     "abilities": [
         {
             "cost": "MiniMush_cost",
-            "ability": "MiniMush_tap"
+            "effect": "MiniMush_tap"
         }
     ]
 }

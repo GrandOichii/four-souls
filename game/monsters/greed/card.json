@@ -6,7 +6,9 @@
     "roll": 4,
     "power": 1,
     "soulCount": 1,
-    "rewards": "Greed_rewards",
+    "rewards": {
+        "effect": "Greed_rewards"
+    },
     "on": {
         "damage": {
             "check": "Greed_trigger_check",

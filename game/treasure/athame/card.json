@@ -5,7 +5,7 @@
     "abilities": [
         {
             "cost": "Athame_cost",
-            "ability": "Athame_force"
+            "effect": "Athame_force"
         }
     ]
 }

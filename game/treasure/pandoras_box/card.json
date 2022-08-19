@@ -6,7 +6,7 @@
     "abilities": [
         {
             "cost": "PandorasBox_cost",
-            "ability": "PandorasBox_tap"
+            "effect": "PandorasBox_tap"
         }
     ]
 }

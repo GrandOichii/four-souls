@@ -5,7 +5,7 @@
     "abilities": [
         {
             "cost": "GuppysHead_cost",
-            "ability": "GuppysHead_tap"
+            "effect": "GuppysHead_tap"
         }
     ]
 }

@@ -5,7 +5,7 @@
     "abilities": [
         {
             "cost": "C2020_cost",
-            "ability": "C2020_tap"
+            "effect": "C2020_tap"
         }
     ]
 }

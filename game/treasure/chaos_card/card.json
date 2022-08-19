@@ -5,7 +5,7 @@
     "abilities": [
         {
             "cost": "ChaosCard_cost",
-            "ability": "ChaosCard_tap"
+            "effect": "ChaosCard_tap"
         }
     ]
 }

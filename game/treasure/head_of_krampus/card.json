@@ -5,7 +5,7 @@
     "abilities": [
         {
             "cost": "HeadOfKrampus_cost",
-            "ability": "HeadOfKrampus_tap"
+            "effect": "HeadOfKrampus_tap"
         }
     ]
 }

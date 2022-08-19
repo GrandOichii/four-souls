@@ -5,7 +5,7 @@
     "abilities": [
         {
             "cost": "MysterySack_cost",
-            "ability": "MysterySack_tap"
+            "effect": "MysterySack_tap"
         }
     ]
 }

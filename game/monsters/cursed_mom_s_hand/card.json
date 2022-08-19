@@ -5,5 +5,7 @@
     "health": 2,
     "roll": 4,
     "power": 1,
-    "rewards": "CursedMomsHand_rewards"
+    "rewards": {
+        "effect": "CursedMomsHand_rewards"
+    }
 }

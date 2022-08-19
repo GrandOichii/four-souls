@@ -5,7 +5,7 @@
     "abilities": [
         {
             "cost": "BagOfCrafting_cost",
-            "ability": "BagOfCrafting_craft"
+            "effect": "BagOfCrafting_craft"
         }
     ]
 }

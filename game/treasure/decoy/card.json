@@ -5,7 +5,7 @@
     "abilities": [
         {
             "cost": "Decoy_cost",
-            "ability": "Decoy_tap"
+            "effect": "Decoy_tap"
         }
     ]
 }

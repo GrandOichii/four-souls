@@ -7,7 +7,7 @@
     "abilities": [
         {
             "cost": "KeepersBargain_cost",
-            "ability": "KeepersBargain_tap"
+            "effect": "KeepersBargain_tap"
         }
     ]
 }

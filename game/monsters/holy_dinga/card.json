@@ -5,8 +5,10 @@
     "health": 3,
     "roll": 3,
     "power": 1,
-    "rewardsCost": "HolyDinga_rewards_cost",
-    "rewards": "HolyDinga_rewards",
+    "rewards": {
+        "cost": "HolyDinga_rewards_cost",
+        "effect": "HolyDinga_rewards"
+    },
     "on": {
         "roll": {
             "check": "HolyDinga_trigger_check",

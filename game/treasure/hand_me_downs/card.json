@@ -5,7 +5,7 @@
     "abilities": [
         {
             "cost": "HandMeDowns_cost",
-            "ability": "HandMeDowns_tap"
+            "effect": "HandMeDowns_tap"
         }
     ]
 }

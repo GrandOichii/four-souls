@@ -13,7 +13,7 @@ function BabyHaunt_trigger_check(host, me)
 end
 
 function BabyHaunt_trigger_cost(host, cardInfo)
-    return Common_TargetOpponent(host, cardInfo)
+    return Common_TargetOpponent(host, cardInfo.ownerID)
 end
 
 function BabyHaunt_trigger(host)

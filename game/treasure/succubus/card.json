@@ -5,7 +5,7 @@
     "abilities": [
         {
             "cost": "Succubus_cost",
-            "ability": "Succubus_succ"
+            "effect": "Succubus_succ"
         }
     ]
 }

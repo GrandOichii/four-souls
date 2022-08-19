@@ -5,5 +5,7 @@
     "health": 2,
     "roll": 4,
     "power": 1,
-    "rewards": "CursedGaper_rewards"
+    "rewards": {
+        "effect": "CursedGaper_rewards"
+    }
 }

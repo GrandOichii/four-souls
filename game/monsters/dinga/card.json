@@ -5,6 +5,8 @@
     "health": 3,
     "roll": 3,
     "power": 1,
-    "rewardsCost": "Dinga_rewards_cost",
-    "rewards": "Dinga_rewards"
+    "rewards": {
+        "cost": "Dinga_rewards_cost",
+        "effect": "Dinga_rewards"
+    }
 }

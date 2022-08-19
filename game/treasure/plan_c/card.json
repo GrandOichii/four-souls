@@ -6,7 +6,7 @@
     "abilities": [
         {
             "cost": "PlanC_cost",
-            "ability": "PlanC_tap"
+            "effect": "PlanC_tap"
         }
     ]
 }

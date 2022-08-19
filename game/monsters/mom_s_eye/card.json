@@ -5,6 +5,11 @@
     "health": 1,
     "roll": 4,
     "power": 2,
-    "rewards": "MomsEye_rewards",
-    "death": "MomsEye_death"
+    "rewards": {
+        "effect": "MomsEye_rewards"
+    },
+    "death": {
+        "cost": "MomsEye_death_cost",
+        "effect": "MomsEye_death"
+    }
 }

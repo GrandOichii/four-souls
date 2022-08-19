@@ -6,5 +6,7 @@
     "roll": 3,
     "power": 2,
     "soulCount": 1,
-    "rewards": "RagMan_rewards"
+    "rewards": {
+        "effect": "RagMan_rewards"
+    }
 }

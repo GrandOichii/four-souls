@@ -5,7 +5,7 @@
     "abilities": [
         {
             "cost": "TheButterBean_cost",
-            "ability": "TheButterBean_tap"
+            "effect": "TheButterBean_tap"
         }
     ]
 }

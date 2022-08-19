@@ -5,7 +5,7 @@
     "abilities": [
         {
             "cost": "TheBattery_cost",
-            "ability": "TheBattery_tap"
+            "effect": "TheBattery_tap"
         }
     ]
 }

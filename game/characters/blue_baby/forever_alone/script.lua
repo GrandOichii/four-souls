@@ -13,7 +13,7 @@ function ForeverAlone_cost(host, cardInfo)
         choice = choice
     }
     if choice == ForeverAlone_choice1 then
-        return Common_TargetOpponent(host, cardInfo)
+        return Common_TargetOpponent(host, cardInfo.ownerID)
     end
     if choice == ForeverAlone_choice2 then
         local dc = requestSimpleChoice(host, cardInfo.ownerID, 'Look at the top of which deck?', {LOOT_DECK, TREASURE_DECK, MONSTER_DECK})

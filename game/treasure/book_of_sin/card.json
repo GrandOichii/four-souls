@@ -5,7 +5,7 @@
     "abilities": [
         {
             "cost": "BookOfSin_cost",
-            "ability": "BookOfSin_tap"
+            "effect": "BookOfSin_tap"
         }
     ]
 }

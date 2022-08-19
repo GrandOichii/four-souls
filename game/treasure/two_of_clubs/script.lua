@@ -23,7 +23,7 @@ function TwoOfClubs_leave(host, me, owner)
 end
 
 function TwoOfClubs_cost(host, cardInfo)
-    return Common_Tap(host) and Common_TargetPlayer(host, cardInfo)
+    return Common_Tap(host) and Common_TargetPlayer(host, cardInfo.ownerID)
 end
 
 function TwoOfClubs_tap(host)

@@ -3,7 +3,7 @@ function XRayVision_cost(host, cardInfo)
     if not tapped then
         return false
     end
-    local chosen = Common_TargetPlayer(host, cardInfo)
+    local chosen = Common_TargetPlayer(host, cardInfo.ownerID)
     if not chosen then
         return false
     end

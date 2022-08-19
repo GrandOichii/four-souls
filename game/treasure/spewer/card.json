@@ -5,7 +5,7 @@
     "abilities": [
         {
             "cost": "Spewer_cost",
-            "ability": "Spewer_eat"
+            "effect": "Spewer_eat"
         }
     ]
 }

@@ -6,6 +6,10 @@
     "roll": 4,
     "power": 1,
     "soulCount": 1,
-    "rewards": "Sloth_rewards",
-    "death": "Sloth_death"
+    "rewards": {
+        "effect": "Sloth_rewards"
+    },
+    "death": {
+        "effect": "Sloth_death"
+    }
 }

@@ -6,7 +6,9 @@
     "roll": 4,
     "power": 1,
     "soulCount": 1,
-    "rewards": "CarrionQueen_rewards",
+    "rewards": {
+        "effect": "CarrionQueen_rewards"
+    },
     "enter": "CarrionQueen_enter",
     "leave": "CarrionQueen_leave"
 }

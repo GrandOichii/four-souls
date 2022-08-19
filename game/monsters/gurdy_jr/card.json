@@ -6,5 +6,7 @@
     "roll": 5,
     "power": 1,
     "soulCount": 1,
-    "rewards": "GurdyJr_rewards"
+    "rewards": {
+        "effect": "GurdyJr_rewards"
+    }
 }

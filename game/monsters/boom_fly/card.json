@@ -5,6 +5,10 @@
     "health": 1,
     "roll": 4,
     "power": 1,
-    "rewards": "BoomFly_rewards",
-    "death": "BoomFly_death"
+    "rewards": {
+        "effect": "BoomFly_rewards"
+    },
+    "death": {
+        "effect": "BoomFly_death"
+    }
 }

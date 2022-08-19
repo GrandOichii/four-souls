@@ -5,5 +5,7 @@
     "health": 4,
     "roll": 3,
     "power": 1,
-    "rewards": "PaleFatty_rewards"
+    "rewards": {
+        "effect": "PaleFatty_rewards"
+    }
 }

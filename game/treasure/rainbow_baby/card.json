@@ -5,7 +5,7 @@
     "abilities": [
         {
             "cost": "RainbowBaby_cost",
-            "ability": "RainbowBaby_tap"
+            "effect": "RainbowBaby_tap"
         }
     ]
 }

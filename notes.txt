@@ -18,17 +18,14 @@
     -- does callus save from evil twins effect
 
 - implement:
+    -- add wouldRoll trigger (???)
+    -- change how rolling dice works (first the roll is added, then, when it resolves, the corresponding effect is added + all the triggers from that roll)
     -- move from name-based indexing to key indexing
     -- addListener(host, <owner id>, <card id>, <on what>, <check func name>, <cost func name>, <effect func name>), returns listener id
     -- removeListener(host, <listener id>)
     -- change how guppy's hairball works
     -- fix bag o trash
     -- add "requiresTap" field
-    -- add stealing cards
-    -- implement viewing cards from simple requests
-    -- implement testing records
-    -- remove declaring attack while in combat
-    -- when stealing item, call their "leave", then call their "enter", so that the effects know who the owner is
     -- add custom counters (egg counters mostly)
     -- remove killing players multiple times per turn
     -- add refilling shops/monsters to the stack

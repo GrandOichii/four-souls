@@ -1,5 +1,5 @@
 function Death_cost(host, cardInfo)
-    return Common_TargetPlayer(host, cardInfo)
+    return Common_TargetPlayer(host, cardInfo.ownerID)
 end
 
 function Death_use(host)

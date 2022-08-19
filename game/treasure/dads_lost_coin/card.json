@@ -3,7 +3,7 @@
     "text": "When anyone rolls a 1, you may force that player to reroll it.",
     "script": "script.lua",
     "on": {
-        "roll": {
+        "would_roll": {
             "check": "DadsLostCoin_trigger_check",
             "effect": "DadsLostCoin_trigger"
         }

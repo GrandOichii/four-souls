@@ -340,16 +340,28 @@ function Common_ChooseOpponent(host, ownerID)
     return choiceId
 end
 
-function Common_TargetPlayer(host, cardInfo)
-    local ownerID = cardInfo.ownerID
+function Common_TargetPlayer(host, ownerID)
     local players = getPlayers(host)
     local ids = {}
-    for i, p in ipairs(players) do
-        ids[i] = p["id"]
+    for _, player in ipairs(players) do
+        ids[#ids+1] = player.id
     end
     local choiceId, payed = requestChoice(host, ownerID, "Choose a player", PLAYER, ids)
     if not payed then return false end
-    print('Choice: '..choiceId)
+    pushTarget(host, choiceId, PLAYER)
+    return true
+end
+
+function Common_TargetLivingPlayer(host, ownerID)
+    local players = getPlayers(host)
+    local ids = {}
+    for _, player in ipairs(players) do
+        if not player.isDead then
+            ids[#ids+1] = player.id
+        end
+    end
+    local choiceId, payed = requestChoice(host, ownerID, "Choose a player", PLAYER, ids)
+    if not payed then return false end
     pushTarget(host, choiceId, PLAYER)
     return true
 end
@@ -378,8 +390,7 @@ function Common_CardCount(player)
     return count
 end
 
-function Common_TargetOpponent(host, cardInfo)
-    local ownerID = cardInfo["ownerID"]
+function Common_TargetOpponent(host, ownerID)
     local players = getPlayers(host)
     local ids = {}
     local realI = 1

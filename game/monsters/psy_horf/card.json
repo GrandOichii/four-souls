@@ -5,6 +5,10 @@
     "health": 1,
     "roll": 5,
     "power": 1,
-    "rewards": "PsyHorf_rewards",
-    "death": "PsyHorf_death"
+    "rewards": {
+        "effect": "PsyHorf_rewards"
+    },
+    "death": {
+        "effect": "PsyHorf_death"
+    }
 }

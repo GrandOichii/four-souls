@@ -5,7 +5,9 @@
     "health": 2,
     "roll": 4,
     "power": 1,
-    "rewards": "Leaper_rewards",
+    "rewards": {
+        "effect": "Leaper_rewards"
+    },
     "enter": "Leaper_enter",
     "leave": "Leaper_leave"
 }

@@ -5,5 +5,7 @@
     "health": 1,
     "roll": 2,
     "power": 1,
-    "rewards": "Fly_rewards"
+    "rewards": {
+        "effect": "Fly_rewards"
+    }
 }

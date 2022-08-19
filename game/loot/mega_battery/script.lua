@@ -1,5 +1,5 @@
 function MegaBattery_cost(host, cardInfo)
-    return Common_TargetPlayer(host, cardInfo)
+    return Common_TargetPlayer(host, cardInfo.ownerID)
 end
 
 function MegaBattery_use(host)

@@ -3,7 +3,7 @@ function TheLamb_rewards(host, me, killer)
 end
 
 function TheLamb_death_cost(host, info)
-	return Common_TargetOpponent(host, info)
+	return Common_TargetOpponent(host, info.ownerID)
 end
 
 function TheLamb_death(host)
@@ -14,6 +14,6 @@ function TheLamb_death(host)
 		return
 	end
 	local choice = Common_ChooseSoul(host, target, target)
-	removeFromEverywhere(host, choice)
+	destroySoul(host, target, choice)
 	addSoulCard(host, owner.id, choice)
 end

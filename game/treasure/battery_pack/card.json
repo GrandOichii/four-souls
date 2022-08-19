@@ -11,7 +11,7 @@
     "abilities": [
         {
             "cost": "BatteryPack_cost",
-            "ability": "BatteryPack_recharge"
+            "effect": "BatteryPack_recharge"
         }
     ]
 }

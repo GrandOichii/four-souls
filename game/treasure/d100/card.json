@@ -5,7 +5,8 @@
     "abilities": [
         {
             "cost": "D100_cost",
-            "ability": "D100_tap"
+            "effect": "D100_tap",
+            "requiresRoll": true
         }
     ]
 }

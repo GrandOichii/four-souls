@@ -5,7 +5,7 @@
     "abilities": [
         {
             "cost": "Smelter_cost",
-            "ability": "Smelter_smelt"
+            "effect": "Smelter_smelt"
         }
     ]
 }

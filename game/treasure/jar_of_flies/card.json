@@ -11,7 +11,7 @@
     "abilities": [
         {
             "cost": "JarOfFlies_cost",
-            "ability": "JarOfFlies_tap"
+            "effect": "JarOfFlies_tap"
         }
     ]
 }

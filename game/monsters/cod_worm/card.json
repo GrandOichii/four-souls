@@ -5,5 +5,7 @@
     "health": 2,
     "roll": 5,
     "power": 0,
-    "rewards": "CodWorm_rewards"
+    "rewards": {
+        "effect": "CodWorm_rewards"
+    }
 }

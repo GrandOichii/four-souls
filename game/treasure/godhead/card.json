@@ -5,7 +5,7 @@
     "abilities": [
         {
             "cost": "Godhead_cost",
-            "ability": "Godhead_tap"
+            "effect": "Godhead_tap"
         }
     ]
 }

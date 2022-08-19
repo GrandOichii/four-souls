@@ -5,7 +5,7 @@
     "abilities": [
         {
             "cost": "BookOfBelial_cost",
-            "ability": "BookOfBelial_tap"
+            "effect": "BookOfBelial_tap"
         }
     ],
     "on": {

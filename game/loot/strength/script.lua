@@ -1,6 +1,6 @@
 function Strength_cost(host, cardInfo)
 
-    return Common_TargetPlayer(host, cardInfo)
+    return Common_TargetPlayer(host, cardInfo.ownerID)
 
 end
 

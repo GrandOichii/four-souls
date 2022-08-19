@@ -5,7 +5,7 @@
     "abilities": [
         {
             "cost": "EpicFetus_cost",
-            "ability": "EpicFetus_tap"
+            "effect": "EpicFetus_tap"
         }
     ]
 }

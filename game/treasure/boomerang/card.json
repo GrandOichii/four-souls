@@ -5,7 +5,7 @@
     "abilities": [
         {
             "cost": "Boomerang_cost",
-            "ability": "Boomerang_tap"
+            "effect": "Boomerang_tap"
         }
     ]
 }

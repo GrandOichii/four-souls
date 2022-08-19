@@ -27,6 +27,7 @@ struct PlayerBoardState {
     int purchaseCount;
     int attackCount;
     int treasurePrice;
+    bool isDead;
     int id;
     string name; 
 

@@ -42,7 +42,7 @@ function TheWiz_trigger_cost(host, cardInfo)
         return true
     end
     if choice == 'Player' then
-        return Common_TargetPlayer(host, me)
+        return Common_TargetPlayer(host, me.ownerID)
     end
 end
 

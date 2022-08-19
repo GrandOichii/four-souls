@@ -5,7 +5,7 @@
     "abilities": [
         {
             "cost": "Lemegeton_cost",
-            "ability": "Lemegeton_use"
+            "effect": "Lemegeton_use"
         }
     ],
     "on": {

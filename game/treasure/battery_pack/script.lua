@@ -8,7 +8,7 @@ function BatteryPack_trigger(host)
 end
 
 function BatteryPack_cost(host, cardInfo)
-    return Common_RemoveCounters(host, 2) and Common_TargetPlayer(host, cardInfo)
+    return Common_RemoveCounters(host, 2) and Common_TargetPlayer(host, cardInfo.ownerID)
 end
 
 function BatteryPack_recharge(host)

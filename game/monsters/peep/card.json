@@ -6,5 +6,7 @@
     "roll": 4,
     "power": 1,
     "soulCount": 1,
-    "rewards": "Peep_rewards"
+    "rewards": {
+        "effect": "Peep_rewards"
+    }
 }

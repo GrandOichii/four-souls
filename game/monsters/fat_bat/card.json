@@ -5,5 +5,7 @@
     "health": 3,
     "roll": 5,
     "power": 1,
-    "rewards": "FatBat_rewards"
+    "rewards": {
+        "effect": "FatBat_rewards"
+    }
 }

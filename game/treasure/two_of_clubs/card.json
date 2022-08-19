@@ -7,7 +7,7 @@
     "abilities": [
         {
             "cost": "TwoOfClubs_cost",
-            "ability": "TwoOfClubs_tap"
+            "effect": "TwoOfClubs_tap"
         }
     ],
     "on": {

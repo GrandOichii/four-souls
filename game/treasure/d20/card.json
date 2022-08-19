@@ -5,7 +5,7 @@
     "abilities": [
         {
             "cost": "D20_cost",
-            "ability": "D20_tap"
+            "effect": "D20_tap"
         }
     ]
 }

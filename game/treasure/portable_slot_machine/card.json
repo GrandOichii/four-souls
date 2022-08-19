@@ -5,7 +5,7 @@
     "abilities": [
         {
             "cost": "PortableSlotMachine_cost",
-            "ability": "PortableSlotMachine_play"
+            "effect": "PortableSlotMachine_play"
         }
     ]
 }

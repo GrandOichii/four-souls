@@ -3,6 +3,37 @@
 #include "match.hpp"
 #include "player.hpp"
 
+Effect::Effect() {
+
+}
+
+Effect::Effect(json j) {
+    funcName = j["effect"];
+    if (j.contains("cost"))
+        costFuncName = j["cost"];
+    if (j.contains("usesStack"))
+        usesStack = j["usesStack"];
+    if (j.contains("requiresRoll"))
+        requiresRoll = j["requiresRoll"];
+}
+
+ActivatedAbility::ActivatedAbility(json j) : 
+    Effect(j)
+{
+    if (j.contains("requiresTap"))
+        requiresTap = j["requiresTap"];
+}
+
+Trigger::Trigger() :
+    Effect() {}
+
+Trigger::Trigger(json j) :
+    Effect(j)
+{
+    checkFuncName = j["check"];
+}
+
+
 Card::Card(string dir, json j, CardTypes type) : 
     _name(j["name"]),
     _text(j["text"]),
@@ -32,27 +63,17 @@ ScriptCard::ScriptCard(string dir, json j, CardTypes type, bool isTrinket, bool 
             auto triggers = j["on"];
             for (const auto& pair : triggers.items()) {
                 auto v = pair.value();
-                Trigger trigger;
-                trigger.checkFuncName = v["check"];
-                trigger.effectFuncName = v["effect"];
-                if (v.contains("usesStack")) trigger.usesStack = v["usesStack"];
-                if (v.contains("cost")) trigger.costFuncName = v["cost"];
-                _triggerMap[pair.key()] = trigger;
+                _triggerMap[pair.key()] = Trigger(v);
             }
         }
         if (j.contains("enter"))
-            this->_enterFuncName = j["enter"];
+            this->_enterEffect = Effect(j["enter"]);
         if (j.contains("leave"))
-            this->_leaveFuncName = j["leave"];
+            this->_leaveEffect = Effect(j["leave"]);
         if (j.contains("abilities")) {
             for (const auto& jj : j["abilities"].items()) {
                 auto a = jj.value();
-                ActivatedAbility ability;
-                ability.funcName = a["ability"];
-                ability.costFuncName = a["cost"];
-                if (a.contains("usesStack"))
-                    ability.usesStack = a["usesStack"];
-                _abilities.push_back(ability);
+                _abilities.push_back(ActivatedAbility(jj));
             }
         }
         if (j.contains("eternal"))
@@ -74,11 +95,11 @@ string ScriptCard::script() { return _script; }
 
 std::vector<ActivatedAbility> ScriptCard::abilities() { return _abilities; }
 bool ScriptCard::hasTrigger(string triggerName) { return _triggerMap.count(triggerName); }
-Trigger ScriptCard::getTriggerWhen(string triggerName) { return _triggerMap[triggerName]; }
+Trigger& ScriptCard::getTriggerWhen(string triggerName) { return _triggerMap[triggerName]; }
 
 string ScriptCard::useFuncName() { return _useFuncName; }
-string ScriptCard::enterFuncName() { return _enterFuncName; }
-string ScriptCard::leaveFuncName() { return _leaveFuncName; }
+Effect& ScriptCard::enterEffect() { return _enterEffect; }
+Effect& ScriptCard::leaveEffect() { return _leaveEffect; }
 
 string ScriptCard::costFuncName() { return _costFuncName; }
 bool ScriptCard::isTrinket() { return _isTrinket; }
@@ -218,30 +239,24 @@ void MonsterData::nullHealth() {
 
 MonsterCard::MonsterCard(string dir, json j) :
     ScriptCard(dir, j, CardTypes::Monster, true)
+    // _rewardsEffect(Effect(j["rewards"])),
 {
-    _rewardsFuncName = j["rewards"];
-    if (j.contains("rewardsCost"))
-        _rewardsCostFuncName = j["rewardsCost"];
+    _rewardsEffect = Effect(j["rewards"]);
     _baseHealth = j["health"];
     _baseRoll = j["roll"];
     _basePower = j["power"];
     if (j.contains("canBeAttacked"))
         _canBeAttacked = j["canBeAttacked"];
     if (j.contains("death"))
-        _deathFuncName = j["death"];
-    if (j.contains("deathCost"))
-        _deathCostFuncName = j["deathCost"];
-    // std::cout << "MONSTER " << name() << "\t" << _baseHealth << " " << _baseRoll << " " << _basePower << std::endl;
+        _deathEffect = Effect(j["death"]);
 }
 
 MonsterCard::~MonsterCard() {
     delete _data;
 }
 
-string MonsterCard::deathFuncName() { return _deathFuncName; }
-string MonsterCard::deathCostFuncName() { return _deathCostFuncName; }
-string MonsterCard::rewardsFuncName() { return _rewardsFuncName; }
-string MonsterCard::rewardsCostFuncName() { return _rewardsCostFuncName; }
+Effect& MonsterCard::rewardsEffect() { return _rewardsEffect; }
+Effect& MonsterCard::deathEffect() { return _deathEffect; }
 
 MonsterData* MonsterCard::data() { return _data; }
 bool MonsterData::isBeingAttacked() { return _isBeingAttacked; }

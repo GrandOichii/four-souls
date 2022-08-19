@@ -5,7 +5,7 @@
     "abilities": [
         {
             "cost": "ForeverAlone_cost",
-            "ability": "ForeverAlone_tap"
+            "effect": "ForeverAlone_tap"
         }
     ],
     "on": {

@@ -5,7 +5,7 @@
     "abilities": [
         {
             "cost": "SpoonBender_cost",
-            "ability": "SpoonBender_tap"
+            "effect": "SpoonBender_tap"
         }
     ]
 }

@@ -5,5 +5,7 @@
     "health": 2,
     "roll": 3,
     "power": 1,
-    "rewards": "Pooter_rewards"
+    "rewards": {
+        "effect": "Pooter_rewards"
+    }
 }

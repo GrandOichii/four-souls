@@ -12,7 +12,7 @@
     "abilities": [
         {
             "cost": "CrystalBall_cost",
-            "ability": "CrystalBall_tap"
+            "effect": "CrystalBall_tap"
         }
     ]
 }

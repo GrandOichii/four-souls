@@ -6,7 +6,9 @@
     "roll": 4,
     "power": 1,
     "soulCount": 1,
-    "rewards": "MaskOfInfamy_rewards",
+    "rewards": {
+        "effect": "MaskOfInfamy_rewards"
+    },
     "enter": "MaskOfInfamy_enter",
     "leave": "MaskOfInfamy_leave"
 }

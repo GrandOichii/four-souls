@@ -5,7 +5,7 @@
     "abilities": [
         {
             "cost": "GoldenRazor_cost",
-            "ability": "GoldenRazor_tap"
+            "effect": "GoldenRazor_tap"
         }
     ]
 }

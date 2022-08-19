@@ -5,6 +5,10 @@
     "health": 2,
     "roll": 4,
     "power": 2,
-    "rewards": "Hanger_rewards",
-    "death": "Hanger_death"
+    "rewards": {
+        "effect": "Hanger_rewards"
+    },
+    "death": {
+        "effect": "Hanger_death"
+    }
 }

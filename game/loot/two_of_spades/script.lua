@@ -1,7 +1,7 @@
 --  TODO untested
 
 function TwoOfSpades_cost(host, cardInfo)
-    return Common_TargetOpponent(host, cardInfo)
+    return Common_TargetOpponent(host, cardInfo.ownerID)
 end
 
 function TwoOfSpades_use(host)

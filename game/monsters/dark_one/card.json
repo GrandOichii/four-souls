@@ -6,7 +6,9 @@
     "roll": 4,
     "power": 1,
     "soulCount": 1,
-    "rewards": "DarkOne_rewards",
+    "rewards": {
+        "effect": "DarkOne_rewards"
+    },
     "enter": "DarkOne_enter",
     "leave": "DarkOne_leave",
     "on": {
@@ -17,7 +19,7 @@
         "turn_end": {
             "usesStack": false,
             "check": "DarkOne_trigger2_check",
-            "effect": "DarkOne_trigger2"    
+            "effect": "DarkOne_trigger2"
         }
     }
 }

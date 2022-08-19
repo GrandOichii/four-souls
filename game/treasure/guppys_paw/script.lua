@@ -1,7 +1,7 @@
 --  TODO untested
 
 function GuppysPaw_cost(host, cardInfo)
-    return Common_TargetPlayer(host, cardInfo) and Common_Tap(host)
+    return Common_TargetPlayer(host, cardInfo.ownerID) and Common_Tap(host)
 end
 
 function GuppysPaw_tap(host)

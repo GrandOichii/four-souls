@@ -1,9 +1,13 @@
 function DankGlobin_rewards(host, me, killer)
-	lootCards(host, killer["id"], 2)
+	lootCards(host, killer.id, 2)
+end
+
+function DankGlobin_death_cost(host, cardInfo)
+	local killerID = getLastKillerID(host)
+	return Common_TargetPlayer(host, killerID)
 end
 
 function DankGlobin_death(host)
-	local killerID = getLastKillerID(host)
-	local choice = Common_ChoosePlayer(host, killerID)
-	Common_Discard(host, choice, 2)
+	local target = popTarget(host)
+	Common_Discard(host, target.id, 2)
 end

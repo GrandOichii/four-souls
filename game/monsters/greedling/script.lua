@@ -3,7 +3,7 @@ function Greedling_rewards(host, me, killer)
 end
 
 function Greedling_death_cost(host, info)
-	return Common_TargetPlayer(host, info)
+	return Common_TargetPlayer(host, info.ownerID)
 end
 
 function Greedling_death(host)

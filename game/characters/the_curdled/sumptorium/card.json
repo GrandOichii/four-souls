@@ -18,7 +18,7 @@
     "abilities": [
         {
             "cost": "Sumptorium_cost",
-            "ability": "Sumptorium_use"
+            "effect": "Sumptorium_use"
         }
     ]
 }

@@ -5,7 +5,9 @@
     "health": 1,
     "roll": 4,
     "power": 2,
-    "rewards": "HolyMomsEye_rewards",
+    "rewards": {
+        "effect": "HolyMomsEye_rewards"
+    },
     "on": {
         "roll": {
             "check": "HolyMomsEye_trigger_check",

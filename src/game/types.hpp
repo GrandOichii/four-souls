@@ -16,7 +16,7 @@ const string CARD_TYPE_LOOT = "loot";
 const string CARD_TYPE_TREASURE = "treasure";
 const string CARD_TYPE_MONSTER = "monster";
 
-const string ACTION_PLAY_LOOT = "play_loot"; // [0] - the index of the card 
+const string ACTION_PLAY_LOOT = "play_loot"; 
 const string ACTION_ATTACK_MONSTER = "attack"; // [0] - the index of the card being attacked, if -1 then the top
 const string ACTION_BUY_TREASURE = "buy_treasure"; // [0] - the index of the card being purchased, if -1 then the top
 const string ACTION_ACTIVATE_CARD = "activate";
@@ -27,6 +27,7 @@ const string PLAY_LOOT_CARD_TYPE = "loot_card";
 const string REWARDS_TYPE = "rewards";
 const string STACK_MEMBER_TYPE = "stack_member";
 const string ROLL_TYPE = "roll";
+const string WOULD_ROLL_TYPE = "would_roll";
 const string COMBAT_DAMAGE_TYPE = "combat_damage";
 const string DEATH_TYPE = "death";
 const string AFTER_DEATH_TYPE = "after_death";
@@ -36,6 +37,11 @@ const string ATTACK_MONSTER_TYPE = "attack";
 const string ACTIVATE_ITEM_TYPE = "activate";
 const string ACTIVATE_CHARACTER_TYPE = "activate_character";
 const string COMBAT_END_TYPE = "combat_end";
+const string MONSTER_ENTER_TYPE = "monster_enter";
+const string MONSTER_LEAVE_TYPE = "monster_leave";
+const string ITEM_ENTER_TYPE = "item_enter";
+const string ITEM_LEAVE_TYPE = "item_leave";
+
 
 const string LOOT_DECK = "loot";
 const string TREASURE_DECK = "treasure";
@@ -55,17 +61,6 @@ const string RESPONSE_CANCEL = "$CANCEL";
 const string RESPONSE_FIRST = "$FIRST";
 
 const string ACTION_PASS = "$PASS";
-
-struct ActivatedAbility {
-    string costFuncName;
-    string funcName;
-    bool usesStack = true;
-
-    void print() {
-        std::cout << "Cost: " << costFuncName << std::endl;
-        std::cout << "funcName: " << funcName << std::endl;
-    }
-};
 
 enum Zones : int {
     Unknown,
@@ -87,4 +82,36 @@ enum CardTypes : int {
     Monster,
     Character,
     StartingItem
+};
+
+class Match;
+struct StackEffect;
+class CardWrapper;
+class Player;
+
+struct Effect {
+    string costFuncName = "";
+    string funcName = "";
+    bool usesStack = true;
+    bool requiresRoll = false;
+
+    Effect();
+    Effect(json j);
+
+    virtual StackEffect* pushMe(Match* match, CardWrapper* cardW, Player* owner, string type);
+};
+
+struct ActivatedAbility : public Effect {
+    bool requiresTap = false;
+
+    ActivatedAbility(json j);
+    StackEffect* pushMe(Match* match, CardWrapper* cardW, Player* owner, string type) override;
+};
+
+struct Trigger : public Effect {
+    string checkFuncName;
+
+    Trigger();
+    Trigger(json j);
+    StackEffect* pushMe(Match* match, CardWrapper* cardW, Player* owner, string type) override;
 };

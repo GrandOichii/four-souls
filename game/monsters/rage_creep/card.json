@@ -5,7 +5,9 @@
     "health": 1,
     "roll": 5,
     "power": 1,
-    "rewards": "RageCreep_rewards",
+    "rewards": {
+        "effect": "RageCreep_rewards"
+    },
     "on": {
         "damage": {
             "usesStack": false,

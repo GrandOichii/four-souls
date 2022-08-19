@@ -5,5 +5,7 @@
     "health": 1,
     "roll": 5,
     "power": 1,
-    "rewards": "Trite_rewards"
+    "rewards": {
+        "effect": "Trite_rewards"
+    }
 }

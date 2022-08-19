@@ -5,5 +5,7 @@
     "health": 1,
     "roll": 4,
     "power": 2,
-    "rewards": "Leech_rewards"
+    "rewards": {
+        "effect": "Leech_rewards"
+    }
 }

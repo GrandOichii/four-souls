@@ -5,7 +5,7 @@
     "abilities": [
         {
             "cost": "LordOfThePit_cost",
-            "ability": "LordOfThePit_tap"
+            "effect": "LordOfThePit_tap"
         }
     ]
 }

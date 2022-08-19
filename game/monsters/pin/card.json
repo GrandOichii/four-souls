@@ -6,8 +6,9 @@
     "roll": 4,
     "power": 1,
     "soulCount": 1,
-
-    "rewards": "Pin_rewards",
+    "rewards": {
+        "effect": "Pin_rewards"
+    },
     "enter": "Pin_enter",
     "leave": "Pin_leave"
 }

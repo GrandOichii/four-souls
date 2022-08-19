@@ -5,5 +5,7 @@
     "health": 2,
     "roll": 3,
     "power": 2,
-    "rewards": "RedHost_rewards"
+    "rewards": {
+        "effect": "RedHost_rewards"
+    }
 }

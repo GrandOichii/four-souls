@@ -5,7 +5,7 @@
     "abilities": [
         {
             "cost": "Bagotrash_cost",
-            "ability": "Bagotrash_pay"
+            "effect": "Bagotrash_pay"
         }
     ]
 }

@@ -6,5 +6,7 @@
     "roll": 3,
     "power": 1,
     "soulCount": 1,
-    "rewards": "Conquest_rewards"
+    "rewards": {
+        "effect": "Conquest_rewards"
+    }
 }

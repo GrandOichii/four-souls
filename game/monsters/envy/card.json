@@ -6,5 +6,7 @@
     "roll": 5,
     "power": 1,
     "soulCount": 1,
-    "rewards": "Envy_rewards"
+    "rewards": {
+        "effect": "Envy_rewards"
+    }
 }

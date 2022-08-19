@@ -5,5 +5,7 @@
     "health": 1,
     "roll": 4,
     "power": 1,
-    "rewards": "Dip_rewards"
+    "rewards": {
+        "effect": "Dip_rewards"
+    }
 }

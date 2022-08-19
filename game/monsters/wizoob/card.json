@@ -5,7 +5,11 @@
     "health": 3,
     "roll": 5,
     "power": 1,
-    "rewards": "Wizoob_rewards",
-    "deathCost": "Wizoob_death_cost",
-    "death": "Wizoob_death"
+    "rewards": {
+        "effect": "Wizoob_rewards"
+    },
+    "death": {
+        "cost": "Wizoob_death_cost",
+        "effect": "Wizoob_death"
+    }
 }

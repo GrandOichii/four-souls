@@ -5,11 +5,11 @@
     "abilities": [
         {
             "cost": "TechX_cost1",
-            "ability": "TechX_ability1"
+            "effect": "TechX_ability1"
         },
         {
             "cost": "TechX_cost2",
-            "ability": "TechX_ability2"
+            "effect": "TechX_ability2"
         }
     ]
 }

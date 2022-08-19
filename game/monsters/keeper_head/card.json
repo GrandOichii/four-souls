@@ -5,8 +5,10 @@
     "health": 2,
     "roll": 4,
     "power": 1,
-    "rewardsCost": "KeeperHead_rewards_cost",
-    "rewards": "KeeperHead_rewards",
+    "rewards": {
+        "cost": "KeeperHead_rewards_cost",
+        "effect": "KeeperHead_rewards"
+    },
     "on": {
         "damage": {
             "check": "KeeperHead_trigger_check",

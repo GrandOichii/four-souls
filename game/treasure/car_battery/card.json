@@ -7,11 +7,11 @@
     "abilities": [
         {
             "cost": "CarBattery_cost1",
-            "ability": "CarBattery_tap"
+            "effect": "CarBattery_tap"
         },
         {
             "cost": "CarBattery_cost2",
-            "ability": "CarBattery_recharge"
+            "effect": "CarBattery_recharge"
         }
     ]
 }

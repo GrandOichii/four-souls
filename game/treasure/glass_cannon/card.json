@@ -5,7 +5,7 @@
     "abilities": [
         {
             "cost": "GlassCannon_cost",
-            "ability": "GlassCannon_tap"
+            "effect": "GlassCannon_tap"
         }
     ]
 }

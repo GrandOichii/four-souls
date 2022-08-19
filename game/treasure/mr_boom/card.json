@@ -5,7 +5,7 @@
     "abilities": [
         {
             "cost": "MrBoom_cost",
-            "ability": "MrBoom_tap"
+            "effect": "MrBoom_tap"
         }
     ]
 }

@@ -5,7 +5,7 @@ function TheHighPriestess_cost(host, cardInfo)
     local choice2 = 'Monster'
     local choice = requestSimpleChoice(host, cardInfo.ownerID, 'Deal damage to who?', {choice1, choice2})
     if choice == choice1 then
-        Common_TargetPlayer(host, cardInfo)
+        Common_TargetPlayer(host, cardInfo.ownerID)
     else
         Common_TargetMonster(host, cardInfo.ownerID)
     end

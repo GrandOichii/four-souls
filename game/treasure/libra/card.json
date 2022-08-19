@@ -5,7 +5,7 @@
     "abilities": [
         {
             "cost": "Libra_cost",
-            "ability": "Libra_tap"
+            "effect": "Libra_tap"
         }
     ]
 }

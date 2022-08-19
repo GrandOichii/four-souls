@@ -6,5 +6,7 @@
     "roll": 6,
     "power": 1,
     "soulCount": 1,
-    "rewards": "LittleHorn_rewards"
+    "rewards": {
+        "effect": "LittleHorn_rewards"
+    }
 }

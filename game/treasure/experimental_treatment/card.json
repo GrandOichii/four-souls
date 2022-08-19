@@ -6,7 +6,7 @@
     "abilities": [
         {
             "cost": "ExperimentalTreatment_cost",
-            "ability": "ExperimentalTreatment_inject"
+            "effect": "ExperimentalTreatment_inject"
         }
     ]
 }

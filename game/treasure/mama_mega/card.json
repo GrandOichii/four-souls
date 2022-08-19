@@ -5,7 +5,7 @@
     "abilities": [
         {
             "cost": "MamaMega_cost",
-            "ability": "MamaMega_tap"
+            "effect": "MamaMega_tap"
         }
     ]
 }

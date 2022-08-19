@@ -11,7 +11,7 @@
     "abilities": [
         {
             "cost": "ThePoop_cost",
-            "ability": "ThePoop_activate"
+            "effect": "ThePoop_activate"
         }
     ]
 }

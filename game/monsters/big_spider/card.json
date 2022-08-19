@@ -5,5 +5,7 @@
     "health": 3,
     "roll": 4,
     "power": 1,
-    "rewards": "BigSpider_rewards"
+    "rewards": {
+        "effect": "BigSpider_rewards"
+    }
 }

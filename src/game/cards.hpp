@@ -19,17 +19,7 @@ extern "C" {
 #include "../util.hpp"
 
 using std::string;
-
-struct Trigger {
-    string checkFuncName;
-    string costFuncName = "";
-    string effectFuncName;
-    bool usesStack = true;
-
-    // Trigger(string checkFuncName, string effectFuncName) :
-    //     checkFuncName(checkFuncName),
-    //     effectFuncName(effectFuncName) {}
-};
+class Match;
 
 class Card {
 protected:
@@ -56,8 +46,10 @@ private:
     std::map<string, Trigger> _triggerMap;
     std::vector<ActivatedAbility> _abilities;
 
-    string _enterFuncName = "";
-    string _leaveFuncName = "";
+    Effect _enterEffect;
+    Effect _leaveEffect;
+    // string _enterFuncName = "";
+    // string _leaveFuncName = "";
 
     bool _isTrinket;
     string _useFuncName;
@@ -68,10 +60,10 @@ public:
     ~ScriptCard();
     string script();
     bool hasTrigger(string triggerName);
-    Trigger getTriggerWhen(string triggerName);
+    Trigger& getTriggerWhen(string triggerName);
     string useFuncName();
-    string enterFuncName();
-    string leaveFuncName();
+    Effect& enterEffect();
+    Effect& leaveEffect();
     std::vector<ActivatedAbility> abilities();
     bool isTrinket();
     bool isEternal();
@@ -100,7 +92,6 @@ struct MonsterDataState {
     void pushTable(lua_State* L) const;
 };
 
-class Match;
 
 class MonsterData {
 private:
@@ -141,20 +132,15 @@ private:
     int _baseRoll;
     bool _canBeAttacked = true;
 
-    string _deathFuncName = "";
-    string _deathCostFuncName = "";
-
-    string _rewardsFuncName;
-    string _rewardsCostFuncName = "";
+    Effect _deathEffect;
+    Effect _rewardsEffect;
 
     MonsterData* _data = nullptr;
 public:
     MonsterCard(string dir, json j);
     ~MonsterCard();
-    string rewardsFuncName();
-    string rewardsCostFuncName();
-    string deathFuncName();
-    string deathCostFuncName();
+    Effect& rewardsEffect();
+    Effect& deathEffect();
     MonsterData* data();
     void deleteData();
     void createData(lua_State* L, Match* parent, int id);

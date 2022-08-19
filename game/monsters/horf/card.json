@@ -5,7 +5,9 @@
     "health": 1,
     "roll": 4,
     "power": 1,
-    "rewards": "Horf_rewards",
+    "rewards": {
+        "effect": "Horf_rewards"
+    },
     "enter": "Horf_enter",
     "leave": "Horf_leave"
 }

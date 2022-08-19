@@ -6,7 +6,9 @@
     "roll": 3,
     "power": 1,
     "soulCount": 1,
-    "rewards": "LarryJr_rewards",
+    "rewards": {
+        "effect": "LarryJr_rewards"
+    },
     "enter": "LarryJr_enter",
     "leave": "LarryJr_leave"
 }

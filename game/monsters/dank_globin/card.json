@@ -5,6 +5,11 @@
     "health": 2,
     "roll": 4,
     "power": 2,
-    "rewards": "DankGlobin_rewards",
-    "death": "DankGlobin_death"
+    "rewards": {
+        "effect": "DankGlobin_rewards"
+    },
+    "death": {
+        "cost": "DankGlobin_death_cost",
+        "effect": "DankGlobin_death"
+    }
 }

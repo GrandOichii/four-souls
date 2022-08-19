@@ -5,7 +5,7 @@
     "abilities": [
         {
             "cost": "BatteryBum_cost",
-            "ability": "BatteryBum_pay"
+            "effect": "BatteryBum_pay"
         }
     ]
 }

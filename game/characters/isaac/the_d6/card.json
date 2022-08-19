@@ -5,7 +5,7 @@
     "abilities": [
         {
             "cost": "TheD6_cost",
-            "ability": "TheD6_tap"
+            "effect": "TheD6_tap"
         }
     ],
     "on": {

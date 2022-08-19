@@ -8,7 +8,7 @@ function D4_cost(host, cardInfo)
         ownerID = cardInfo.ownerID
     }
     destroyCard(host, card.id)
-    return Common_TargetPlayer(host, cardInfo)
+    return Common_TargetPlayer(host, cardInfo.ownerID)
 end
 
 function D4_tap(host)

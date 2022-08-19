@@ -11,7 +11,7 @@
     "abilities": [
         {
             "cost": "SackOfPennies_cost",
-            "ability": "SackOfPennies_tap"
+            "effect": "SackOfPennies_tap"
         }
     ]
 }

@@ -1,5 +1,5 @@
 function Boomerang_cost(host, cardInfo)
-    return Common_Tap(host) and Common_TargetOpponent(host, cardInfo)
+    return Common_Tap(host) and Common_TargetOpponent(host, cardInfo.ownerID)
 end
 
 function Boomerang_tap(host)

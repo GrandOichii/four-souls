@@ -5,7 +5,7 @@
     "abilities": [
         {
             "cost": "LibraryCard_cost",
-            "ability": "LibraryCard_tap"
+            "effect": "LibraryCard_tap"
         }
     ]
 }

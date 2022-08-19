@@ -5,7 +5,7 @@
     "abilities": [
         {
             "cost": "LuckyFoot_cost",
-            "ability": "LuckyFoot_tap"
+            "effect": "LuckyFoot_tap"
         }
     ]
 }

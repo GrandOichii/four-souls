@@ -5,7 +5,9 @@
     "health": 2,
     "roll": 3,
     "power": 1,
-    "rewards": "HolySquirt_rewards",
+    "rewards": {
+        "effect": "HolySquirt_rewards"
+    },
     "on": {
         "roll": {
             "check": "HolySquirt_trigger_check",

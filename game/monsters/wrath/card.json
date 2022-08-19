@@ -6,7 +6,11 @@
     "roll": 3,
     "power": 1,
     "soulCount": 1,
-    "rewards": "Wrath_rewards",
-    "deathCost": "Wrath_death_cost",
-    "death": "Wrath_death"
+    "rewards": {
+        "effect": "Wrath_rewards"
+    },
+    "death": {
+        "cost": "Wrath_death_cost",
+        "effect": "Wrath_death"
+    }
 }

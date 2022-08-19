@@ -5,7 +5,7 @@
     "abilities": [
         {
             "cost": "TheCrowdfunder_cost",
-            "ability": "TheCrowdfunder_fund"
+            "effect": "TheCrowdfunder_fund"
         }
     ]
 }

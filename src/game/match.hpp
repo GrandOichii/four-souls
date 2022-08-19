@@ -73,7 +73,6 @@ struct StackEffect {
     Player* player = nullptr;
     CardWrapper* cardW = nullptr;
     string type;
-    bool resolve = true;
 
     //  TODO maybe fix to pair<string, int>
     vector<int> targets;
@@ -330,7 +329,6 @@ private:
             this->pushToStack(p);
             this->log(player->name() + " activates his characted card");
             this->triggerLastEffectType();
-            // std::cout << "PLAYING " << ->card()->useFuncName() << std::endl;
         }},
         {ACTION_ATTACK_MONSTER, [this](Player* player, std::vector<string> args) {
             //  TODO add -1
@@ -400,6 +398,7 @@ public:
     void pushDamageEvent(DamageTrigger event);
     void refillDeadMonsters();
     void queueTrigger(CardWrapper* wrapper, string triggerType, Player* owner, std::queue<QueuedTrigger>& out);
+    void pushEffect(string funcName, Effect& effect, CardWrapper* cardW, Player* owner, string type);
     //  TODO add wrap_popBonusCards, inside of it call refillDeadMonsters
     static int wrap_tapCharacterCard(lua_State* L);
     static int wrap_destroySoul(lua_State* L);
@@ -488,10 +487,10 @@ public:
     void setupLua(string setupScript);
     static void lua_err(lua_State *L);
     void execScript(string script);
-    void execEnter(CardWrapper* w, Player* owner);
-    void execLeave(CardWrapper* w, Player* owner);
+    // void execEnter(CardWrapper* w, Player* owner);
+    // void execLeave(CardWrapper* w, Player* owner);
     void execFunc(string funcName);
-    void execMEnterLeave(CardWrapper* cardW, string funcName);
+    // void execMEnterLeave(CardWrapper* cardW, string funcName);
     bool execCheck(string funcName, CardWrapper* card);
     void addToCharacterPool(CharacterCard* card);
     void addPlayer(Player* player);
@@ -519,4 +518,8 @@ public:
     int newCardID();
     void pushDeathEvent(string type, int id);
     void dumpStacks();
+
+    friend StackEffect* Effect::pushMe(Match* match, CardWrapper* cardW, Player* owner, string type);
+    friend StackEffect* ActivatedAbility::pushMe(Match* match, CardWrapper* cardW, Player* owner, string type);
+    friend StackEffect* Trigger::pushMe(Match* match, CardWrapper* cardW, Player* owner, string type);
 };
