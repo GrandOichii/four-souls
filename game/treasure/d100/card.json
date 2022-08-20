@@ -6,7 +6,7 @@
         {
             "cost": "D100_cost",
             "effect": "D100_tap",
-            "requiresRoll": true
+            "requires": ["roll", "tap"]
         }
     ]
 }

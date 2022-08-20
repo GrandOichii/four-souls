@@ -4,8 +4,43 @@
 #include "cards.hpp"
 #include "player.hpp"
 
+Effect::Effect() {
+
+}
+
+Effect::Effect(json j) {
+    funcName = j["effect"];
+    if (j.contains("cost"))
+        costFuncName = j["cost"];
+    if (j.contains("usesStack"))
+        usesStack = j["usesStack"];
+    if (j.contains("requires")) {
+        for (const auto& [key, value] : j["requires"].items())
+            requirements.push_back(value);
+    }
+}
+
+bool Effect::hasRequirement(string req) {
+    for (const auto& r : requirements)
+        if (req == r) return true;
+    return false;
+}
+
+Trigger::Trigger() :
+    Effect() {}
+
+Trigger::Trigger(json j) :
+    Effect(j)
+{
+    checkFuncName = j["check"];
+}
+
 StackEffect* Effect::pushMe(Match* match, CardWrapper* cardW, Player* owner, string type) {
-    match->_stack.pop_back();
+    if (hasRequirement(TAP_REQUIREMENT)){
+        if (!cardW->isActive())return nullptr;
+        cardW->tap();
+    } 
+    if (!funcName.size()) return nullptr;
     auto p = new StackEffect(
         funcName, 
         owner, 
@@ -28,10 +63,6 @@ StackEffect* Effect::pushMe(Match* match, CardWrapper* cardW, Player* owner, str
         return nullptr;
     }
     return p;
-}
-
-StackEffect* ActivatedAbility::pushMe(Match* match, CardWrapper* cardW, Player* owner, string type) {
-    return Effect::pushMe(match, cardW, owner, type);
 }
 
 StackEffect* Trigger::pushMe(Match* match, CardWrapper* cardW, Player* owner, string type) {

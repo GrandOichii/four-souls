@@ -2,6 +2,12 @@
     "name": "Steamy Sale!",
     "text": "You may buy shop items for 5c.",
     "script": "script.lua",
-    "enter": "SteamySale_enter",
-    "leave": "SteamySale_leave"
+    "enter": {
+        "usesStack": false,
+        "effect": "SteamySale_enter"
+    },
+    "leave": {
+        "usesStack": false,
+        "effect": "SteamySale_leave"
+    }
 }

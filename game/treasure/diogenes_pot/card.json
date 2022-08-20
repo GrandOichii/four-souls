@@ -2,8 +2,14 @@
     "name": "Diogenes' Pot",
     "text": "You take no combat damage on attack rolls of 2 or 3.\nEach time you roll an attack roll of 1, you die.",
     "script": "script.lua",
-    "enter": "DiogenesPot_enter",
-    "leave": "DiogenesPot_leave",
+    "enter": {
+        "usesStack": false,
+        "effect": "DiogenesPot_enter"
+    },
+    "leave": {
+        "usesStack": false,
+        "effect": "DiogenesPot_leave"
+    },
     "on": {
         "roll": {
             "check": "DiogenesPot_trigger_check",

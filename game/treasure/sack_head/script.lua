@@ -1,5 +1,6 @@
 function SackHead_cost(host, cardInfo)
-    return Common_Tap(host)
+    --  TODO move choice to cost
+    return true
 end
 
 function SackHead_tap(host)

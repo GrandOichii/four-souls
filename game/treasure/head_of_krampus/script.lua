@@ -1,12 +1,6 @@
---  TODO untested
-
-function HeadOfKrampus_cost(host, cardInfo)
-    return Common_Tap(host) and Common_Roll(host, cardInfo.ownerID)
-end
-
 function HeadOfKrampus_tap(host)
     local owner = getTopOwner(host)
-    local roll = getLastRoll(host).value
+    local roll = popRollStack(host).value
     if roll < 4 then
         local players = getPlayers(host)
         for _, player in ipairs(players) do

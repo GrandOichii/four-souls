@@ -9,6 +9,12 @@
     "rewards": {
         "effect": "Pin_rewards"
     },
-    "enter": "Pin_enter",
-    "leave": "Pin_leave"
+    "enter": {
+        "usesStack": false,
+        "effect": "Pin_enter"
+    },
+    "leave": {
+        "usesStack": false,
+        "effect": "Pin_leave"
+    }
 }

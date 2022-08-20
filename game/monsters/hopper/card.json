@@ -8,6 +8,12 @@
     "rewards": {
         "effect": "Hopper_rewards"
     },
-    "enter": "Hopper_enter",
-    "leave": "Hopper_leave"
+    "enter": {
+        "usesStack": false,
+        "effect": "Hopper_enter"
+    },
+    "leave": {
+        "usesStack": false,
+        "effect": "Hopper_leave"
+    }
 }

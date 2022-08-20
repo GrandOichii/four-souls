@@ -5,5 +5,7 @@
     "item": "book_of_virtues",
     "text": "{T}: Play an additional loot card this turn.\nStarting item: Book of Virtues",
     "script": "script.lua",
-    "use": "Bethany_tap"
+    "use": {
+        "effect": "Bethany_tap"
+    }
 }

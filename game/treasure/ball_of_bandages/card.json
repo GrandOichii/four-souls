@@ -2,6 +2,12 @@
     "name": "Ball of Bandages",
     "text": "You take no damage on attack rolls of 1.",
     "script": "script.lua",
-    "enter": "BallOfBandages_enter",
-    "leave": "BallOfBandages_leave"
+    "enter": {
+        "usesStack": false,
+        "effect": "BallOfBandages_enter"
+    },
+    "leave": {
+        "usesStack": false,
+        "effect": "BallOfBandages_leave"
+    }
 }

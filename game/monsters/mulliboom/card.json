@@ -8,5 +8,7 @@
     "rewards": {
         "effect": "Mulliboom_rewards"
     },
-    "death": "Mulliboom_death"
+    "death": {
+        "effect": "Mulliboom_death"
+    }
 }

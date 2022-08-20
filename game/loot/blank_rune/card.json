@@ -2,6 +2,8 @@
     "name": "Blank Rune",
     "text": "Roll:\n1: Everyone gains 1c.\n2: Everyone loots 2.\n3: Everyone takes 3 damage.\n4: Everyone gains 4c.\n5: Everyone loots 5.\n6: Everyone gains 6c.",
     "script": "script.lua",
-    "cost": "BlankRune_cost",
-    "use": "BlankRune_use"
+    "use": {
+        "requires": ["roll"],
+        "effect": "BlankRune_use"
+    }
 }

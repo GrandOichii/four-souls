@@ -1,6 +1,8 @@
 --  TODO untested
 
-function NewgroundsTank_enter(host, me, owner)
+function NewgroundsTank_enter(host)
+	local owner = getTopOwner(host)
+	local me = this(host)
     CardData[me.id] = {
         iaID = Common_IncAttack(owner.id, 1),
         ihID = Common_IncMaxLife(host, owner.id, 1),

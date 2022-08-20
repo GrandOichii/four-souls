@@ -1,6 +1,8 @@
 --  TODO untested
 
-function Ipecac_enter(host, me, owner)
+function Ipecac_enter(host)
+	local owner = getTopOwner(host)
+	local me = this(host)
     CardData[me.id] = {
         iaID = Common_IncAttack(owner.id, 1)
     }

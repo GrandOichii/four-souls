@@ -5,7 +5,7 @@
     "on": {
         "damage": {
             "check": "CurseOfTheTower_trigger_check",
-            "cost": "CurseOfTheTower_trigger_cost",
+            "requires": ["roll"],
             "effect": "CurseOfTheTower_trigger"
         }
     }

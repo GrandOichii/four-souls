@@ -2,6 +2,8 @@
     "name": "XX. Judgement",
     "text": "Choose a player who controls the most souls or tied for the most. That player destroys a soul they control.",
     "script": "script.lua",
-    "cost": "Judgement_cost",
-    "use": "Judgement_use"
+    "use": {
+        "effect": "Judgement_use",
+        "cost": "Judgement_cost"
+    }
 }

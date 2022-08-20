@@ -2,5 +2,7 @@
     "name": "Wishbone",
     "text": "When this is destroyed, gain +1 treasure.",
     "script": "script.lua",
-    "leave": "Wishbone_leave"
+    "leave": {
+        "effect": "Wishbone_leave"
+    }
 }

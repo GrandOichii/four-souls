@@ -1,5 +1,5 @@
 function GuppysHead_cost(host, cardInfo)
-    return Common_Tap(host) and Common_TargetPlayer(host, cardInfo.ownerID)
+    return Common_TargetPlayer(host, cardInfo.ownerID)
 end
 
 function GuppysHead_tap(host)

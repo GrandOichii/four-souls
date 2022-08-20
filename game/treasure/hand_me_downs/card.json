@@ -4,7 +4,7 @@
     "script": "script.lua",
     "abilities": [
         {
-            "cost": "HandMeDowns_cost",
+            "requires": ["tap"],
             "effect": "HandMeDowns_tap"
         }
     ]

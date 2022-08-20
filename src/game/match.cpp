@@ -1273,15 +1273,15 @@ int Match::wrap_playTopLootCard(lua_State* L) {
     auto last = match->_stack.back();
     auto cardW = last->cardW;
     auto card = cardW->card();
-    if (!card->isTrinket()) {
-        match->execFunc(card->useFuncName());
-        if (card->goesToBottom())
-            match->_lootDeck.push_front(cardW);
-        else
-            match->addToLootDiscard(cardW);
-    } else {
-        match->addCardToBoard(cardW, last->player);
-    }
+    // if (!card->isTrinket()) {
+    //     match->execFunc(card->useFuncName());
+    //     if (card->goesToBottom())
+    //         match->_lootDeck.push_front(cardW);
+    //     else
+    //         match->addToLootDiscard(cardW);
+    // } else {
+    //     match->addCardToBoard(cardW, last->player);
+    // }
     return 0;
 }
 
@@ -2250,8 +2250,8 @@ void Match::shuffleMonsterDeck() {
 
 CardWrapper* Match::addWrapper(ScriptCard* card) {
     auto id = newCardID();
-    std::cout << card->name() + " -> " + std::to_string(id) << std::endl;
-    // this->log(card->name() + " -> " + std::to_string(id), false);
+    // std::cout << card->name() + " -> " + std::to_string(id) << std::endl;
+    this->log(card->name() + " -> " + std::to_string(id), false);
     auto w = new CardWrapper(card, id);
     _allWrappers.push_back(w);
     return w;
@@ -2316,7 +2316,6 @@ void Match::start() {
         auto mcard = ((MonsterCard*)c->card());
         mcard->createData(L, this, c->id());
         _monsterDataArr.push_back(mcard->data());
-        mcard->enterEffect().pushMe(this, c, _activePlayer, MONSTER_ENTER_TYPE);
         // execMEnterLeave(c, mcard->enterFuncName());
     }
 

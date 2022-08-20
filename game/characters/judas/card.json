@@ -5,5 +5,7 @@
     "item": "book_of_belial",
     "text": "{T}: Play an additional loot card this turn.\nStarting item: Book of Belial",
     "script": "script.lua",
-    "use": "Judas_tap"
+    "use": {
+        "effect": "Judas_tap"
+    }
 }

@@ -5,5 +5,7 @@
     "item": "berserk",
     "text": "{T}: Play an additional loot card this turn.\nStarting item: Berserk",
     "script": "script.lua",
-    "use": "TheSavage_tap"
+    "use": {
+        "effect": "TheSavage_tap"
+    }
 }

@@ -4,6 +4,7 @@
     "script": "script.lua",
     "abilities": [
         {
+            "requires": ["tap"],
             "cost": "Libra_cost",
             "effect": "Libra_tap"
         }

@@ -2,6 +2,12 @@
     "name": "Dry Baby",
     "text": "Damage you would take is reduced to 1.",
     "script": "script.lua",
-    "enter": "DryBaby_enter",
-    "leave": "DryBaby_leave"
+    "enter": {
+        "usesStack": false,
+        "effect": "DryBaby_enter"
+    },
+    "leave": {
+        "usesStack": false,
+        "effect": "DryBaby_leave"
+    }
 }

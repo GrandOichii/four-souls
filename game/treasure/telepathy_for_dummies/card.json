@@ -5,7 +5,7 @@
     "on": {
         "turn_start": {
             "check": "TelepathyForDummies_trigger1_check",
-            "cost": "TelepathyForDummies_trigger1_cost",
+            "requires": ["roll"],
             "effect": "TelepathyForDummies_trigger1"
         },
         "roll": {

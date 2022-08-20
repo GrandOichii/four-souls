@@ -10,7 +10,7 @@
     },
     "abilities": [
         {
-            "cost": "SackOfPennies_cost",
+            "requires": ["tap"],
             "effect": "SackOfPennies_tap"
         }
     ]

@@ -1,4 +1,6 @@
-function Callus_enter(host, me, owner)
+function Callus_enter(host)
+    local me = this(host)
+    local owner = getTopOwner(host)
     local key = 'damage'..me.id
     DamageFuncStack:push({
         name = key,
@@ -11,6 +13,8 @@ function Callus_enter(host, me, owner)
     })
 end
 
-function Callus_leave(host, me, owner)
+function Callus_leave(host)
+    local me = this(host)
+    local owner = getTopOwner(host)
     DamageFuncStack:remove('damage'..me.id)
 end

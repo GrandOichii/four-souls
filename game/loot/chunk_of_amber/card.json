@@ -2,6 +2,8 @@
     "name": "Chunk of Amber",
     "text": "Roll:\nGain Xc, where X is 2 times the result.",
     "script": "script.lua",
-    "cost": "ChunkOfAmber_cost",
-    "use": "ChunkOfAmber_use"
+    "use": {
+        "requires": ["roll"],
+        "effect": "ChunkOfAmber_use"
+    }
 }

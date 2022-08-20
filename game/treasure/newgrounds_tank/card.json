@@ -2,6 +2,12 @@
     "name": "Newgrounds Tank",
     "text": "You have +1h and +1a.\nMonsters have +1d on your turn.",
     "script": "script.lua",
-    "enter": "NewgroundsTank_enter",
-    "leave": "NewgroundsTank_leave"
+    "enter": {
+        "usesStack": false,
+        "effect": "NewgroundsTank_enter"
+    },
+    "leave": {
+        "usesStack": false,
+        "effect": "NewgroundsTank_leave"
+    }
 }

@@ -9,6 +9,12 @@
     "rewards": {
         "effect": "CarrionQueen_rewards"
     },
-    "enter": "CarrionQueen_enter",
-    "leave": "CarrionQueen_leave"
+    "enter": {
+        "usesStack": false,
+        "effect": "CarrionQueen_enter"
+    },
+    "leave": {
+        "usesStack": false,
+        "effect": "CarrionQueen_leave"
+    }
 }

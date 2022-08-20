@@ -2,10 +2,13 @@
     "name": "Lemon Mishap",
     "text": "{T}: Till end of turn, each time a player rolls an attack roll of 1 or 2, deal 1 damage to each monster.",
     "script": "script.lua",
-    "enter": "LemonMishap_enter",
+    "enter": {
+        "usesStack": false,
+        "effect": "LemonMishap_enter"
+    },
     "abilities": [
         {
-            "cost": "LemonMishap_cost",
+            "requires": ["tap"],
             "effect": "LemonMishap_tap"
         }
     ],

@@ -1,8 +1,4 @@
 function BloodLust_cost(host, cardInfo)
-    local tapped = Common_Tap(host)
-    if not tapped then
-        return false
-    end
     local choice = requestSimpleChoice(host, cardInfo.ownerID, 'Increase power of what?', {'Player', 'Monster'})
     if choice == 'Player' then
         return Common_TargetPlayer(host, cardInfo.ownerID)
@@ -33,7 +29,9 @@ function BloodLust_tap(host)
     end
 end
 
-function BloodLust_enter(host, me, owner)
+function BloodLust_enter(host)
+    local me = this(host)
+    local owner = getTopOwner(host)
     -- monster power
     local id = MonsterPowerLayers:top().id + 1
     MonsterPowerLayers:push(

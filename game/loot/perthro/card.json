@@ -2,6 +2,8 @@
     "name": "Perthro",
     "text": "Destroy an item, then replace it with the top card of the treasure deck.",
     "script": "script.lua",
-    "cost": "Prethro_cost",
-    "use": "Perthro_use"
+    "use": {
+        "effect": "Perthro_use",
+        "cost": "Prethro_cost"
+    }
 }

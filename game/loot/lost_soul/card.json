@@ -3,5 +3,8 @@
     "text": "Gain this soul",
     "script": "script.lua",
     "soulCount": 1,
-    "enter": "LostSoul_enter"
+    "enter": {
+        "usesStack": false,
+        "effect": "LostSoul_enter"
+    }
 }

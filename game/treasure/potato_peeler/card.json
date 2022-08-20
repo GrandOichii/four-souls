@@ -4,7 +4,7 @@
     "script": "script.lua",
     "abilities": [
         {
-            "cost": "PotatoPeeler_cost",
+            "requires": ["tap"],
             "effect": "PotatoPeeler_tap"
         }
     ]

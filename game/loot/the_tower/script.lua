@@ -1,12 +1,6 @@
---  TODO untested
-
-function TheTower_cost(host, cardInfo)
-    return Common_Roll(host, cardInfo.ownerID)
-end
-
 function TheTower_use(host)
     local owner = getTopOwner(host)
-    local roll = getLastRoll(host).value
+    local roll = popRollStack(host).value
     if roll == 1 or roll == 2 then
         local players = getPlayers(host)
         for _, player in ipairs(players) do

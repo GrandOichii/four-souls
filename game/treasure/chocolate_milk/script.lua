@@ -1,4 +1,6 @@
-function ChocolateMilk_enter(host, me, owner)
+function ChocolateMilk_enter(host)
+	local owner = getTopOwner(host)
+	local me = this(host)
     local id = AttackLayers:top().id + 1
     local function getMe()
         local p = Common_PlayerWithID(host, owner.id)

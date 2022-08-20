@@ -2,6 +2,12 @@
     "name": "Shadow",
     "text": "Each time another player dies, you choose what item they destroy.\nEach time another player dies, you gain any loot or c they lose.",
     "script": "script.lua",
-    "enter": "Shadow_enter",
-    "leave": "Shadow_leave"
+    "enter": {
+        "usesStack": false,
+        "effect": "Shadow_enter"
+    },
+    "leave": {
+        "usesStack": false,
+        "effect": "Shadow_leave"
+    }
 }

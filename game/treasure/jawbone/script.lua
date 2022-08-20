@@ -1,6 +1,5 @@
 function Jawbone_cost(host, cardInfo)
-    --  TODO? change to target player?
-    return Common_TargetOpponent(host, cardInfo.ownerID) and Common_Tap(host)
+    return Common_TargetOpponent(host, cardInfo.ownerID)
 end
 
 function Jawbone_tap(host)

@@ -427,15 +427,6 @@ function Common_SacrificeMe(host, pid, cid)
     return false
 end
 
-function Common_Tap(host)
-    local card = this(host)
-    if card.tapped then
-        return false
-    end
-    tapCard(host, card.id)
-    return true
-end
-
 function Common_ChooseAnySoul(host, ownerID)
     local ids = {}
     local players = getPlayers(host)
@@ -495,11 +486,6 @@ function Common_Discard(host, ownerID, amount)
     for _, cid in ipairs(cardIDs) do
         discardLoot(host, ownerID, cid)
     end
-    return true
-end
-
-function Common_Roll(host, ownerID)
-    pushRollEvent(host, ownerID)
     return true
 end
 

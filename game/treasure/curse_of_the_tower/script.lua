@@ -1,17 +1,13 @@
---  TODO untested
 
 function CurseOfTheTower_trigger_check(host, me)
     return Common_OwnerDamaged(host, me.id)
 end
 
-function CurseOfTheTower_trigger_cost(host, cardInfo)
-    return Common_Roll(host, cardInfo.ownerID)
-end
 
 function CurseOfTheTower_trigger(host)
     local _ = getDamageEvent(host)
     local owner = getTopOwner(host)
-    local roll = getLastRoll(host).value
+    local roll = popRollStack(host).value
     if roll < 4 then
         local players = getPlayers(host)
         for _, player in ipairs(players) do

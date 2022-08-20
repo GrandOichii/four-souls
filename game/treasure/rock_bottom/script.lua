@@ -1,4 +1,6 @@
-function RockBottom_enter(host, me, owner)
+function RockBottom_enter(host)
+	local owner = getTopOwner(host)
+	local me = this(host)
     addCounters(host, me.id, #owner.hand)
 end
 

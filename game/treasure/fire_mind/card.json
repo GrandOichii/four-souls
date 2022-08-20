@@ -2,6 +2,12 @@
     "name": "Fire Mind",
     "text": "Combat damage tou deal is doubled on attack rolls of 6.\nCombat damage you take take is doubled on attack rolls of 1.",
     "script": "script.lua",
-    "enter": "FireMind_enter",
-    "leave": "FireMind_leave"
+    "enter": {
+        "usesStack": false,
+        "effect": "FireMind_enter"
+    },
+    "leave": {
+        "usesStack": false,
+        "effect": "FireMind_leave"
+    }
 }

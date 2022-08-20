@@ -12,10 +12,6 @@ function JarOfFlies_cost(host, cardInfo)
     if me.counters == 0 then
         return false
     end
-    local flag = Common_Tap(host)
-    if not flag then
-        return false
-    end
     local choices = {}
     for i = 1, me.counters do
         choices[#choices+1] = tostring(i)

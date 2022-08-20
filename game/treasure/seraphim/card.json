@@ -2,7 +2,10 @@
     "name": "Seraphim",
     "text": "You have +1 to the 1st, 3rd, and 5th attack roll you make each turn.",
     "script": "script.lua",
-    "enter": "Seraphim_enter",
+    "enter": {
+        "usesStack": false,
+        "effect": "Seraphim_enter"
+    },
     "on": {
         "would_roll": {
             "check": "Seraphim_trigger1_check",

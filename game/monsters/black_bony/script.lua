@@ -1,9 +1,7 @@
-function BlackBony_rewards_cost(host, info)
-	return Common_Roll(host, info.ownerID)
-end
-
-function BlackBony_rewards(host, me, killer)
-	local roll = getLastRoll(host)
+function BlackBony_rewards(host)
+	local killerID = getLastKillerID(host)
+	local killer = Common_PlayerWithID(host, killerID)
+	local roll = popRollStack(host)
 	lootCards(host, killer.id, roll.value)
 end
 

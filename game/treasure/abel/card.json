@@ -5,7 +5,7 @@
     "on": {
         "damage": {
             "check": "Abel_trigger_check",
-            "cost": "Abel_trigger_cost",
+            "requires": ["roll"],
             "effect": "Abel_trigger"
         }
     }

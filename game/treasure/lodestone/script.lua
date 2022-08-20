@@ -1,4 +1,6 @@
-function Lodestone_enter(host, me, owner)
+function Lodestone_enter(host)
+	local owner = getTopOwner(host)
+	local me = this(host)
     local id = MonsterRollLayers:top().id + 1
     MonsterRollLayers:push(
         {

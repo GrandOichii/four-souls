@@ -5,5 +5,7 @@
     "item": "wooden_nickel",
     "text": "{T}: Play an additional loot card this turn.\nStarting item: The D6",
     "script": "script.lua",
-    "use": "Keeper_tap"
+    "use": {
+        "effect": "Keeper_tap"
+    }
 }

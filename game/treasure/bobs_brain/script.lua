@@ -2,12 +2,8 @@ function BobsBrain_trigger_check(host, me)
     return Common_OwnersTurn(host, me.id)
 end
 
-function BobsBrain_trigger_cost(host, cardInfo)
-    return Common_Roll(host, cardInfo.ownerID)
-end
-
 function BobsBrain_trigger(host)
-    local roll = getLastRoll(host).value
+    local roll = popRollStack(host).value
     local owner = getTopOwner(host)
     if roll == 1 or roll == 2 then
         local target = Common_ChooseMonster(host, owner.id)

@@ -2,6 +2,8 @@
     "name": "XVI. The Tower",
     "text": "Roll:\n1-2: Each player takes 1 damage.\n3-4: Each monster takes 1 damage.\n5-6: Each player takes 2 damage.",
     "script": "script.lua",
-    "cost": "TheTower_cost",
-    "use": "TheTower_use"
+    "use": {
+        "requires": ["roll"],
+        "effect": "TheTower_use"
+    }
 }

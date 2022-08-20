@@ -1,4 +1,6 @@
-function BellyButton_enter(host, me, owner)
+function BellyButton_enter(host)
+	local owner = getTopOwner(host)
+	local me = this(host)
     addPlayableCount(host, owner.id)
 end
 

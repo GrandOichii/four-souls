@@ -2,5 +2,7 @@
     "name": "Bible Thump!",
     "text": "Loot 2, then loot 2 for each player that died this turn.",
     "script": "script.lua",
-    "use": "BibleThump_use"
+    "use": {
+        "effect": "BibleThump_use"
+    }
 }

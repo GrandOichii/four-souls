@@ -2,11 +2,17 @@
     "name": "Car Battery",
     "text": "This can't be recharged except by it's own abilities.\n{T} Recharge up to 3 other items in play.\n($) Pay 7$: Recharge this.",
     "script": "script.lua",
-    "enter": "CarBattery_enter",
-    "leave": "CarBattery_leave",
+    "enter": {
+        "usesStack": false,
+        "effect": "CarBattery_enter"
+    },
+    "leave": {
+        "usesStack": false,
+        "effect": "CarBattery_leave"
+    },
     "abilities": [
         {
-            "cost": "CarBattery_cost1",
+            "requires": ["tap"],
             "effect": "CarBattery_tap"
         },
         {

@@ -1,4 +1,6 @@
-function Polyphemus_enter(host, me, owner)
+function Polyphemus_enter(host)
+	local owner = getTopOwner(host)
+	local me = this(host)
     CardData[me.id] = {
         iaID = Common_IncAttack(owner.id, 2),
         irID = Common_IncMonsterRolls(owner.id, 1)

@@ -1,7 +1,9 @@
 --  TODO untested
 --  TODO figure out how to use the stack
 
-function OneUP_enter(host, me, owner)
+function OneUP_enter(host)
+	local owner = getTopOwner(host)
+	local me = this(host)
     DeathStack:push({
         name = 'death'..me.id,
         func = function (host_, player)

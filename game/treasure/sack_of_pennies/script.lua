@@ -3,7 +3,6 @@ function SackOfPennies_trigger_check(host, me)
 end
 
 function SackOfPennies_trigger(host)
-
     local owner = getTopOwner(host)
     local choice = requestSimpleChoice(host, owner["id"], "Recharge Sack of Pennies?", {"Yes", "No"})
     if (choice == "No") then
@@ -11,11 +10,6 @@ function SackOfPennies_trigger(host)
     end
     local id = this(host)["id"]
     rechargeCard(host, id)
-
-end
-
-function SackOfPennies_cost(host, cardInfo)
-    return Common_Tap(host)
 end
 
 function SackOfPennies_tap(host)

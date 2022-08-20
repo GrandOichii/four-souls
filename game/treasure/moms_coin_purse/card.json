@@ -2,6 +2,12 @@
     "name": "Mom's Coin Purse",
     "text": "Loot +1 at the start of your turn",
     "script": "script.lua",
-    "enter": "MomsCoinPurse_enter",
-    "leave": "MomsCoinPurse_leave"
+    "enter": {
+        "usesStack": false,
+        "effect": "MomsCoinPurse_enter"
+    },
+    "leave": {
+        "usesStack": false,
+        "effect": "MomsCoinPurse_leave"
+    }
 }

@@ -4,14 +4,10 @@ function BookOfVirtues_trigger1_check(host, me)
     return Common_OwnerDealtCombatDamage(host, me.id)
 end
 
-function BookOfVirtues_trigger1_cost(host, cardInfo)
-    return Common_Roll(host, cardInfo.ownerID)
-end
-
 function BookOfVirtues_trigger1(host)
     local _ = getDamageEvent(host)
     local owner = getTopOwner(host)
-    local roll = getLastRoll(host)
+    local roll = popRollStack(host)
     if roll.value <= 4 then
         return
     end

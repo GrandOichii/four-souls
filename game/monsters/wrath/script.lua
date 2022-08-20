@@ -1,9 +1,5 @@
-function Wrath_death_cost(host, info)
-	return Common_Roll(host, info.ownerID)
-end
-
 function Wrath_death(host)
-	local roll = getLastRoll(host)
+	local roll = popRollStack(host)
 	local me = this(host)
 	local amount = 1
 	if roll.value > 3 then
@@ -15,6 +11,8 @@ function Wrath_death(host)
 	end
 end
 
-function Wrath_rewards(host, me, killer)
+function Wrath_rewards(host)
+	local killerID = getLastKillerID(host)
+	local killer = Common_PlayerWithID(host, killerID)
 	addCoins(host, killer.id, 6)
 end

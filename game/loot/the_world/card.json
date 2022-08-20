@@ -2,5 +2,7 @@
     "name": "XXI. The World",
     "text": "Look at each player's hand, then loot 2.",
     "script": "script.lua",
-    "use": "TheWorld_use"
+    "use": {
+        "effect": "TheWorld_use"
+    }
 }

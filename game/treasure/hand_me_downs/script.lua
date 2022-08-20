@@ -1,7 +1,3 @@
-function HandMeDowns_cost(host, cardInfo)
-    return Common_Tap(host)
-end
-
 function HandMeDowns_tap(host)
     local owner = getTopOwner(host)
     local players = getPlayers(host)

@@ -5,5 +5,7 @@
     "item": "infestation",
     "text": "{T}: Play an additional loot card this turn.\nStarting item: The D6",
     "script": "script.lua",
-    "use": "Guppy_tap"
+    "use": {
+        "effect": "Guppy_tap"
+    }
 }

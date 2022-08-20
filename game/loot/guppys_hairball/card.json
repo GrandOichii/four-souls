@@ -5,7 +5,7 @@
     "on": {
         "damage": {
             "check": "GuppysHairball_trigger_check",
-            "cost": "GuppysHairball_trigger_cost",
+            "requires": ["roll"],
             "effect": "GuppysHairball_trigger"
         }
     }

@@ -4,6 +4,7 @@
     "script": "script.lua",
     "abilities": [
         {
+            "requires": ["tap"],
             "cost": "TheD6_cost",
             "effect": "TheD6_tap"
         }

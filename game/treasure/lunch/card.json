@@ -2,6 +2,12 @@
     "name": "Lunch",
     "text": "+1 H",
     "script": "script.lua",
-    "enter": "Lunch_enter",
-    "leave": "Lunch_leave"
+    "enter": {
+        "usesStack": false,
+        "effect": "Lunch_enter"
+    },
+    "leave": {
+        "usesStack": false,
+        "effect": "Lunch_leave"
+    }
 }

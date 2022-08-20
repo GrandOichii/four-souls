@@ -1,4 +1,6 @@
-function Shadow_enter(host, me, owner)
+function Shadow_enter(host)
+	local owner = getTopOwner(host)
+	local me = this(host)
     DeathStack:push({
         name = 'death'..me.id,
         func = function (host_, player)

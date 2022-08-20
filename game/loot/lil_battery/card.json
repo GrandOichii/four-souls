@@ -2,6 +2,8 @@
     "name": "Lil Battery",
     "text": "Recharge an item",
     "script": "script.lua",
-    "cost": "LilBattery_cost",
-    "use": "LilBattery_use"
+    "use": {
+        "effect": "LilBattery_use",
+        "cost": "LilBattery_cost"
+    }
 }

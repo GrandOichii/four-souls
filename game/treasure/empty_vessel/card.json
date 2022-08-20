@@ -2,8 +2,14 @@
     "name": "Empty Vessel",
     "text": "While you have 0 loot cards in your hand, you have +1a.\nWhile you have 0c, you have +1 to attack rolls.",
     "script": "script.lua",
-    "enter": "EmptyVessel_enter",
-    "leave": "EmptyVessel_leave",
+    "enter": {
+        "usesStack": false,
+        "effect": "EmptyVessel_enter"
+    },
+    "leave": {
+        "usesStack": false,
+        "effect": "EmptyVessel_leave"
+    },
     "on": {
         "roll": {
             "check": "EmptyVessel_trigger_check",

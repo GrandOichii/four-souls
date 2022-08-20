@@ -1,5 +1,5 @@
 function TheD6_cost(host, cardInfo)
-    return Common_TargetRoll(host, cardInfo.ownerID) and Common_Tap(host)
+    return Common_TargetRoll(host, cardInfo.ownerID)
 end
 
 function TheD6_tap(host)

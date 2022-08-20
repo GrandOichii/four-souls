@@ -5,5 +5,7 @@
     "item": "gimpy",
     "text": "{T}: Play an additional loot card this turn.\nStarting item: The D6",
     "script": "script.lua",
-    "use": "WOB_tap"
+    "use": {
+        "effect": "WOB_tap"
+    }
 }

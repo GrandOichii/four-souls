@@ -1,5 +1,5 @@
 function MrBoom_cost(host, cardInfo)
-    return Common_TargetMonster(host, cardInfo["ownerID"]) and Common_Tap(host)
+    return Common_TargetMonster(host, cardInfo["ownerID"])
 end
 
 function MrBoom_tap(host)

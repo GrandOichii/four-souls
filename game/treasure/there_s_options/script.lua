@@ -1,4 +1,6 @@
-function TheresOptions_enter(host, me, owner)
+function TheresOptions_enter(host)
+	local owner = getTopOwner(host)
+	local me = this(host)
     incPurchaseAmount(host, owner.id)
 end
 

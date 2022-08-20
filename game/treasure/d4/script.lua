@@ -1,8 +1,4 @@
 function D4_cost(host, cardInfo)
-    local isUntapped = Common_Tap(host)
-    if not isUntapped then
-        return false
-    end
     local card = this(host)
     CardData[card.id] = {
         ownerID = cardInfo.ownerID

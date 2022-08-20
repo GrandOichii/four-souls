@@ -1,7 +1,3 @@
-function Chaos_cost(host, cardInfo)
-    return Common_Tap(host)
-end
-
 function Chaos_tap(host)
     local players = getPlayers(host)
     local cmap = {}

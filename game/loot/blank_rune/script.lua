@@ -1,7 +1,3 @@
-function BlankRune_cost(host, cardInfo)
-    return Common_Roll(host, cardInfo["ownerID"])
-end
-
 function BlankRune_use(host)
     local owner = getTopOwner(host)
     local dealDamageF = function(host, targetID, amount)
@@ -17,7 +13,7 @@ function BlankRune_use(host)
         addCoins
     }
 
-    local roll = getLastRoll(host)["value"]
+    local roll = popRollStack(host).value
     local players = getPlayers(host)
     local action = d[roll]
     for _, player in ipairs(players) do

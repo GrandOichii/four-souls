@@ -1,5 +1,5 @@
 function C2020_cost(host, cardInfo)
-    return Common_TargetCombatRoll(host, cardInfo.ownerID) and Common_Tap(host)
+    return Common_TargetCombatRoll(host, cardInfo.ownerID)
 end
 
 function C2020_tap(host)

@@ -1,4 +1,6 @@
-function Wizoob_rewards(host, me, killer)
+function Wizoob_rewards(host)
+	local killerID = getLastKillerID(host)
+	local killer = Common_PlayerWithID(host, killerID)
 	lootCards(host, killer.id, 3)
 end
 

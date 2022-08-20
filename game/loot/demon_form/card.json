@@ -2,5 +2,7 @@
     "name": "Demon Form",
     "text": "Gain +2a till end of turn",
     "script": "script.lua",
-    "use": "DemonForm_use"
+    "use": {
+        "effect": "DemonForm_use"
+    }
 }

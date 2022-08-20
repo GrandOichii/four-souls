@@ -5,5 +5,7 @@
     "item": "bag_of_crafting",
     "text": "{T}: Play an additional loot card this turn.\nStarting item: The D6",
     "script": "script.lua",
-    "use": "Hoarder_tap"
+    "use": {
+        "effect": "Hoarder_tap"
+    }
 }

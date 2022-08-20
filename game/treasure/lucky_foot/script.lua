@@ -1,5 +1,5 @@
 function LuckyFoot_cost(host, cardInfo)
-    return Common_TargetNonCombatRoll(host, cardInfo.ownerID) and Common_Tap(host)
+    return Common_TargetNonCombatRoll(host, cardInfo.ownerID)
 end
 
 function LuckyFoot_tap(host)

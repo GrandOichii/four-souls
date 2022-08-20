@@ -1,4 +1,6 @@
-function CarBattery_enter(host, me, owner)
+function CarBattery_enter(host)
+	local owner = getTopOwner(host)
+	local me = this(host)
     CardData[me.id] = {
         activated = false
     }
@@ -19,10 +21,6 @@ end
 
 function CarBattery_leave(host, me, owner)
     RechargeFuncStack:remove('recharge'..me.id)
-end
-
-function CarBattery_cost1(host, cardInfo)
-    return Common_Tap(host)
 end
 
 function CarBattery_tap(host)

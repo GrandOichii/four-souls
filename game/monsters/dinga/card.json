@@ -6,7 +6,7 @@
     "roll": 3,
     "power": 1,
     "rewards": {
-        "cost": "Dinga_rewards_cost",
+        "requires": ["roll"],
         "effect": "Dinga_rewards"
     }
 }

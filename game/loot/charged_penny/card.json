@@ -2,5 +2,7 @@
     "name": "Charged Penny",
     "text": "Gain 1c, then recharge an item",
     "script": "script.lua",
-    "use": "ChargedPenny_use"
+    "use": {
+        "effect": "ChargedPenny_use"
+    }
 }

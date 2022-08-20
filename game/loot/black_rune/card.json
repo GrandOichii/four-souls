@@ -2,6 +2,8 @@
     "name": "Black Rune",
     "text": "Roll:\n1-2: Deal 1 damage to all active monsters.\n3-4: Destroy an item and replace it with the top card of the treasure deck.5-6: Discard your hand then loot 3.",
     "script": "script.lua",
-    "cost": "BlackRune_cost",
-    "use": "BlackRune_use"
+    "use": {
+        "requires": ["roll"],
+        "effect": "BlackRune_use"
+    }
 }

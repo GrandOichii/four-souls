@@ -9,6 +9,12 @@
     "rewards": {
         "effect": "LarryJr_rewards"
     },
-    "enter": "LarryJr_enter",
-    "leave": "LarryJr_leave"
+    "enter": {
+        "usesStack": false,
+        "effect": "LarryJr_enter"
+    },
+    "leave": {
+        "usesStack": false,
+        "effect": "LarryJr_leave"
+    }
 }

@@ -3,10 +3,6 @@ local RainbowBaby_choice2 = "All players gain 2c."
 local RainbowBaby_choice3 = "All players take 1 damage."
 
 function RainbowBaby_cost(host, cardInfo)
-    local tapped = Common_Tap(host)
-    if not tapped then
-        return false
-    end
     local choice = requestSimpleChoice(host, cardInfo.ownerID, "Choose:", {RainbowBaby_choice1, RainbowBaby_choice2, RainbowBaby_choice3})
     CardData[this(host).id] = {
         choice = choice

@@ -5,5 +5,7 @@
     "item": "abyss",
     "text": "{T}: Play an additional loot card this turn.\nStarting item: Abyss",
     "script": "script.lua",
-    "use": "TheEmpty_tap"
+    "use": {
+        "effect": "TheEmpty_tap"
+    }
 }

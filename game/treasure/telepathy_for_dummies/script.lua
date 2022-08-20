@@ -2,12 +2,8 @@ function TelepathyForDummies_trigger1_check(host, me)
     return Common_OwnersTurn(host, me.id)
 end
 
-function TelepathyForDummies_trigger1_cost(host, cardInfo)
-    return Common_Roll(host, cardInfo.ownerID)
-end
-
 function TelepathyForDummies_trigger1(host)
-    local roll = getLastRoll(host)
+    local roll = popRollStack(host)
     local me = this(host)
     CardData[me.id] = {
         lr = roll.value

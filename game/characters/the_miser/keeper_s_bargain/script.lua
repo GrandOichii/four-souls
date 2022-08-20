@@ -1,13 +1,13 @@
-function KeepersBargain_enter(host, me, owner)
+function KeepersBargain_enter(host)
+    local me = this(host)
+    local owner = getTopOwner(host)
     decTreasureCost(host, owner.id, 3)
 end
 
-function KeepersBargain_leave(host, me, owner)
+function KeepersBargain_leave(host)
+    local me = this(host)
+    local owner = getTopOwner(host)
     incTreasureCost(host, owner.id, 3)
-end
-
-function KeepersBargain_cost(host, cardInfo)
-    return Common_Tap(host)
 end
 
 function KeepersBargain_tap(host)

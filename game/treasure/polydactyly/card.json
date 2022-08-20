@@ -2,8 +2,14 @@
     "name": "Polydactyly",
     "text": "You may play an additional loot card on your turn.\nYou have +1a for your first attack roll each turn.",
     "script": "script.lua",
-    "enter": "Polydactyly_enter",
-    "leave": "Polydactyly_leave",
+    "enter": {
+        "usesStack": false,
+        "effect": "Polydactyly_enter"
+    },
+    "leave": {
+        "usesStack": false,
+        "effect": "Polydactyly_leave"
+    },
     "on": {
         "roll": {
             "usesStack": false,

@@ -5,5 +5,7 @@
     "item": "bagotrash",
     "text": "{T}: Play an additional loot card this turn.\nStarting item: The D6",
     "script": "script.lua",
-    "use": "Bumbo_tap"
+    "use": {
+        "effect": "Bumbo_tap"
+    }
 }

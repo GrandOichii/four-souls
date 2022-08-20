@@ -5,7 +5,7 @@
     "on": {
         "turn_end": {
             "check": "AAABattery_trigger_check",
-            "cost": "AAABattery_trigger_cost",
+            "requires": ["roll"],
             "effect": "AAABattery_trigger"
         }
     }

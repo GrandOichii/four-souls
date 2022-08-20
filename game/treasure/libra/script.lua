@@ -1,5 +1,5 @@
 function Libra_cost(host, cardInfo)
-    return Common_TargetRoll(host, cardInfo.ownerID) and Common_Tap(host)
+    return Common_TargetRoll(host, cardInfo.ownerID)
 end
 
 function Libra_tap(host)

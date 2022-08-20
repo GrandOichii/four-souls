@@ -5,5 +5,7 @@
     "item": "hypercoagulation",
     "text": "{T}: Play an additional loot card this turn.\nStarting item: Hypercoagulation",
     "script": "script.lua",
-    "use": "TheDauntless_tap"
+    "use": {
+        "effect": "TheDauntless_tap"
+    }
 }

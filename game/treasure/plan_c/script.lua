@@ -1,7 +1,3 @@
-function PlanC_cost(host, cardInfo)
-    return Common_Tap(host)
-end
-
 function PlanC_eot(host)
     --  TODO may not work
     local players = getPlayers(host)

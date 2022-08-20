@@ -1,7 +1,7 @@
 --  TODO untested
 
 function LordOfThePit_cost(host, cardInfo)
-    return Common_IsCombat(host) and Common_Tap(host)
+    return Common_IsCombat(host)
 end
 
 function LordOfThePit_tap(host)

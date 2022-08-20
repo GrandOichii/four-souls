@@ -2,11 +2,17 @@
     "name": "Keeper's Bargain",
     "text": "{T}: Each other player may choose to gain 1$. Gain 1$, then 1$ for each player who did.\nShop items you purchase cost 3$ less.",
     "script": "script.lua",
-    "enter": "KeepersBargain_enter",
-    "leave": "KeepersBargain_leave",
+    "enter": {
+        "usesStack": false,
+        "effect": "KeepersBargain_enter"
+    },
+    "leave": {
+        "usesStack": false,
+        "effect": "KeepersBargain_leave"
+    },
     "abilities": [
         {
-            "cost": "KeepersBargain_cost",
+            "requires": ["tap"],
             "effect": "KeepersBargain_tap"
         }
     ]

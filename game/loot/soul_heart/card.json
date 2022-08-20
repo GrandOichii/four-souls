@@ -2,6 +2,8 @@
     "name": "Soul Heart",
     "text": "Prevent 1 damage to any player.",
     "script": "script.lua",
-    "use": "SoulHeart_use",
-    "cost": "SoulHeart_cost"
+    "use": {
+        "effect": "SoulHeart_use",
+        "cost": "SoulHeart_cost"
+    }
 }

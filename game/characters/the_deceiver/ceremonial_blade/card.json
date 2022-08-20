@@ -14,7 +14,7 @@
     },
     "abilities": [
         {
-            "cost": "CeremonialBlade_cost",
+            "requires": ["tap"],
             "effect": "CeremonialBlade_tap"
         }
     ]

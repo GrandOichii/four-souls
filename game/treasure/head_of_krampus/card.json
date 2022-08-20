@@ -4,7 +4,7 @@
     "script": "script.lua",
     "abilities": [
         {
-            "cost": "HeadOfKrampus_cost",
+            "requires": ["tap", "roll"],
             "effect": "HeadOfKrampus_tap"
         }
     ]

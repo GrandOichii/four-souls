@@ -8,6 +8,12 @@
     "rewards": {
         "effect": "Leaper_rewards"
     },
-    "enter": "Leaper_enter",
-    "leave": "Leaper_leave"
+    "enter": {
+        "usesStack": false,
+        "effect": "Leaper_enter"
+    },
+    "leave": {
+        "usesStack": false,
+        "effect": "Leaper_leave"
+    }
 }

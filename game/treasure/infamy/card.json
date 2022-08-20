@@ -2,6 +2,12 @@
     "name": "Infamy",
     "text": "You take no combat damage on attack rolls of 1.",
     "script": "script.lua",
-    "enter": "Infamy_enter",
-    "leave": "Infamy_leave"
+    "enter": {
+        "usesStack": false,
+        "effect": "Infamy_enter"
+    },
+    "leave": {
+        "usesStack": false,
+        "effect": "Infamy_leave"
+    }
 }

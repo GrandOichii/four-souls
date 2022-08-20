@@ -1,9 +1,5 @@
 --  TODO? move destroying the card to ChaosCard_cost
 
-function ChaosCard_cost(host, cardInfo)
-    return Common_Tap(host)
-end
-
 function ChaosCard_tap(host)
     local owner = getTopOwner(host)
     local me = this(host)

@@ -2,6 +2,8 @@
     "name": "Dice Shard",
     "text": "Force a player to reroll any dice roll.",
     "script": "script.lua",
-    "cost": "DiceShard_cost",
-    "use": "DiceShard_use"
+    "use": {
+        "effect": "DiceShard_use",
+        "cost": "DiceShard_cost"
+    }
 }

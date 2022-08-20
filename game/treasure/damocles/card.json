@@ -2,8 +2,14 @@
     "name": "Damocles",
     "text": "If you would gain any number of treasures, instead gain that many +1.\nWhen you die, before paying penalties, destroy this.",
     "script": "script.lua",
-    "enter": "Damocles_enter",
-    "leave": "Damocles_leave",
+    "enter": {
+        "usesStack": false,
+        "effect": "Damocles_enter"
+    },
+    "leave": {
+        "usesStack": false,
+        "effect": "Damocles_leave"
+    },
     "on": {
         "death": {
             "check": "Damocles_trigger_check",

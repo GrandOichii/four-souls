@@ -1,6 +1,8 @@
 --  TODO untested
 
-function Lard_enter(host, me, owner)
+function Lard_enter(host)
+	local owner = getTopOwner(host)
+	local me = this(host)
     CardData[me.id] = {
         imlID = Common_IncMaxLife(host, owner.id, 2)
     }

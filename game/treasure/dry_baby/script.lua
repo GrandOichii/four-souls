@@ -1,6 +1,8 @@
 --  TODO untested
 
-function DryBaby_enter(host, me, owner)
+function DryBaby_enter(host)
+	local owner = getTopOwner(host)
+	local me = this(host)
     local key = 'damage'..me.id
     DamageFuncStack:push({
         name = key,

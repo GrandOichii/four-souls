@@ -43,6 +43,7 @@ void Game::loadLootCards(string dir) {
     this->_lootCardBackPath = fs::join(dir, j["back"]);
     auto loadF = [this, j, dir](string key, bool isTrinket) {
         for (const auto& [key, value] : j["cards"][key].items()) {
+            std::cout << "LOADING " << key << std::endl;
             auto cardPath = fs::join(dir, key);
             int amount = value;
             auto cardJS = fs::readJS(fs::join(cardPath, CARD_INFO_FILE));

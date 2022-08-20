@@ -1,10 +1,5 @@
 function PandorasBox_cost(host, cardInfo)
     local card = this(host)
-    local isUntapped = Common_Tap(host)
-    if not isUntapped then
-        return false
-    end
-    Common_Roll(host, cardInfo.ownerID)
     CardData[card.id] = {
         prevOwnerID = cardInfo.ownerID
     }
@@ -14,7 +9,7 @@ end
 
 function PandorasBox_tap(host)
     local me = this(host)
-    local roll = getLastRoll(host).value
+    local roll = popRollStack(host).value
     local owner = Common_PlayerWithID(host, CardData[me.id].prevOwnerID)
     if roll == 1 then
         addCoins(host, owner.id, 1)

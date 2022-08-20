@@ -16,18 +16,13 @@ function GlassCannon_cost(host, cardInfo)
     end
     local choice, _ = requestChoice(host, cardInfo.ownerID, 'Choose card', CARD, cardIDs)
     destroyCard(host, choice)
-    local isUntapped = Common_Tap(host)
-    if not isUntapped then
-        return false
-    end
-    Common_Roll(host, cardInfo.ownerID)
     return true
 end
 
 function GlassCannon_tap(host)
     local owner = getTopOwner(host)
     local me = this(host)
-    local roll = getLastRoll(host).value
+    local roll = popRollStack(host).value
     if roll == 6 then
         rechargeCard(host, me.id)
         return

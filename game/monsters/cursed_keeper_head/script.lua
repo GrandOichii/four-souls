@@ -1,9 +1,8 @@
-function CursedKeeperHead_rewards_cost(host, info)
-	return Common_Roll(host, info.ownerID)
-end
 
-function CursedKeeperHead_rewards(host, me, killer)
-	local roll = getLastRoll(host)
+function CursedKeeperHead_rewards(host)
+	local killerID = getLastKillerID(host)
+	local killer = Common_PlayerWithID(host, killerID)
+	local roll = popRollStack(host)
 	addCoins(host, killer.id, roll.value)
 end
 

@@ -5,5 +5,7 @@
     "item": "sumptorium",
     "script": "script.lua",
     "text": "{T}: Play an additional loot card this turn.\nStarting item: Sumptorium",
-    "use": "TheCurdled_use"
+    "use": {
+        "effect": "TheCurdled_use"
+    }
 }

@@ -2,7 +2,10 @@
     "name": "Rock Bottom",
     "text": "When you gain or purchase this, put counters on it equal to the number of loot cards in you hand.\nAt the end of your turn, if you have fewer loot cards in your hand than there are counters on this, loot 2.",
     "script": "script.lua",
-    "enter": "RockBottom_enter",
+    "enter": {
+        "usesStack": false,
+        "effect": "RockBottom_enter"
+    },
     "on": {
         "turn_end": {
             "check": "RockBottom_trigger_check",

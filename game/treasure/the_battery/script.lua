@@ -1,5 +1,5 @@
 function TheBattery_cost(host, cardInfo)
-    return Common_TargetTappedCard(host, cardInfo["ownerID"]) and Common_Tap(host)
+    return Common_TargetTappedCard(host, cardInfo["ownerID"])
 end
 
 function TheBattery_tap(host)

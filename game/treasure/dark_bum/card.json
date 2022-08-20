@@ -5,7 +5,7 @@
     "on": {
         "turn_start": {
             "check": "DarkBum_trigger_check",
-            "cost": "DarkBum_trigger_cost",
+            "requires": ["roll"],
             "effect": "DarkBum_trigger"
         }
     }

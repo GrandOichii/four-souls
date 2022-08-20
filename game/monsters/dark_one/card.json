@@ -9,8 +9,14 @@
     "rewards": {
         "effect": "DarkOne_rewards"
     },
-    "enter": "DarkOne_enter",
-    "leave": "DarkOne_leave",
+    "enter": {
+        "usesStack": false,
+        "effect": "DarkOne_enter"
+    },
+    "leave": {
+        "usesStack": false,
+        "effect": "DarkOne_leave"
+    },
     "on": {
         "damage": {
             "check": "DarkOne_trigger1_check",

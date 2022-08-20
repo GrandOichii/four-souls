@@ -2,13 +2,9 @@ function DarkBum_trigger_check(host, me)
     return Common_OwnersTurn(host, me.id)
 end
 
-function DarkBum_trigger_cost(host, cardInfo)
-    return Common_Roll(host, cardInfo.ownerID)
-end
-
 function DarkBum_trigger(host)
     local owner = getTopOwner(host)
-    local roll = getLastRoll(host).value
+    local roll = popRollStack(host).value
     if roll == 1 or roll == 2 then
         addCoins(host, owner.id, 3)
         return

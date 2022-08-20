@@ -22,6 +22,8 @@ function MaskOfInfamy_leave(host, me)
     MonsterRollLayers:remove(CardData[me.id].irID)
 end
 
-function MaskOfInfamy_rewards(host, me, killer)
+function MaskOfInfamy_rewards(host)
+	local killerID = getLastKillerID(host)
+	local killer = Common_PlayerWithID(host, killerID)
     gainTreasure(host, killer.id, 1)
 end

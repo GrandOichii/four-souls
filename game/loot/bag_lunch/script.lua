@@ -55,12 +55,14 @@ function BL_ModDestroyStack(host, me, owner)
 
 end
 
-function BagLunch_enter(host, me, owner)
+function BagLunch_enter(host)
+    local me = this(host)
+    local owner = getTopOwner(host)
     BL_ModDestroyStack(host, me, owner)
     BL_IncLife(host, me, owner)
 end
 
-function BagLunch_leave(host, me, owner)
+function BagLunch_leave(host)
     DestroyFuncStack:remove('destroy'..me.id)
     Common_DecMaxLife(host, CardData[me.id].ihID, owner.id)
 end

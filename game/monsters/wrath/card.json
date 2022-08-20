@@ -10,7 +10,7 @@
         "effect": "Wrath_rewards"
     },
     "death": {
-        "cost": "Wrath_death_cost",
+        "requires": ["roll"],
         "effect": "Wrath_death"
     }
 }

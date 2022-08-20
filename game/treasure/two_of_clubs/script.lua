@@ -1,6 +1,8 @@
 -- TODO untested
 
-function TwoOfClubs_enter(host, me, owner)
+function TwoOfClubs_enter(host)
+	local owner = getTopOwner(host)
+	local me = this(host)
     CardData[me.id] = {
         activated = false,
         targetID = -1
@@ -23,7 +25,7 @@ function TwoOfClubs_leave(host, me, owner)
 end
 
 function TwoOfClubs_cost(host, cardInfo)
-    return Common_Tap(host) and Common_TargetPlayer(host, cardInfo.ownerID)
+    return Common_TargetPlayer(host, cardInfo.ownerID)
 end
 
 function TwoOfClubs_tap(host)

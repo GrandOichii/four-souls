@@ -1,5 +1,5 @@
 function D20_cost(host, cardInfo)
-    return Common_Tap(host) and Common_TargetNonEternalCard(host, cardInfo.ownerID)
+    return Common_TargetNonEternalCard(host, cardInfo.ownerID)
 end
 
 function D20_tap(host)

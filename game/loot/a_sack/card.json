@@ -2,5 +2,7 @@
     "name": "A sack",
     "text": "Loot 3",
     "script": "script.lua",
-    "use": "ASack_use"
+    "use": {
+        "effect": "ASack_use"
+    }
 }

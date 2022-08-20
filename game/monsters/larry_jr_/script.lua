@@ -21,6 +21,8 @@ function LarryJr_leave(host, me)
     MonsterRollLayers:remove(CardData[me.id].irID)
 end
 
-function LarryJr_rewards(host, me, killer)
+function LarryJr_rewards(host)
+	local killerID = getLastKillerID(host)
+	local killer = Common_PlayerWithID(host, killerID)
 	addCoins(host, killer.id, 6)
 end

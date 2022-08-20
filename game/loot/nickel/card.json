@@ -2,5 +2,7 @@
     "name": "A nickel!",
     "text": "Gain 5c",
     "script": "script.lua",
-    "use": "ANickel_use"
+    "use": {
+        "effect": "ANickel_use"
+    }
 }

@@ -2,6 +2,12 @@
     "name": "Tony",
     "text": "+1a.\nYou have +1a while you control no other non-eternal items.",
     "script": "script.lua",
-    "enter": "Tony_enter",
-    "leave": "Tony_leave"
+    "enter": {
+        "usesStack": false,
+        "effect": "Tony_enter"
+    },
+    "leave": {
+        "usesStack": false,
+        "effect": "Tony_leave"
+    }
 }

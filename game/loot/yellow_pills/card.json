@@ -2,6 +2,8 @@
     "name": "Pills! (Yellow)",
     "text": "Roll:\n1-2: Gain 4c.\n3-4: Gain 7c.\n5-6: Lose 4c.",
     "script": "script.lua",
-    "cost": "YellowPills_cost",
-    "use": "YellowPills_use"
+    "use": {
+        "requires": ["roll"],
+        "effect": "YellowPills_use"
+    }
 }

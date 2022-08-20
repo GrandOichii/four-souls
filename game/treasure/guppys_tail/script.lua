@@ -1,5 +1,7 @@
 --  TODO untested
-function GuppysTail_enter(host, me, owner)
+function GuppysTail_enter(host)
+	local owner = getTopOwner(host)
+	local me = this(host)
 
     incBeginningLoot(host, owner["id"])
 

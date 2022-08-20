@@ -6,7 +6,7 @@
     "roll": 4,
     "power": 1,
     "rewards": {
-        "cost": "CursedKeeperHead_rewards_cost",
+        "requires": ["roll"],
         "effect": "CursedKeeperHead_rewards"
     },
     "on": {

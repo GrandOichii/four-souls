@@ -1,7 +1,3 @@
-function Lemegeton_cost(host, cardInfo)
-    return Common_Tap(host)
-end
-
 function Lemegeton_use(host)
     local me = this(host)
     local owner = getTopOwner(host)

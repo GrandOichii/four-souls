@@ -2,5 +2,7 @@
     "name": "A Dime!!",
     "text": "Gain 10c",
     "script": "script.lua",
-    "use": "Dime_use"
+    "use": {
+        "effect": "Dime_use"
+    }
 }

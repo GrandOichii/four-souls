@@ -3,36 +3,6 @@
 #include "match.hpp"
 #include "player.hpp"
 
-Effect::Effect() {
-
-}
-
-Effect::Effect(json j) {
-    funcName = j["effect"];
-    if (j.contains("cost"))
-        costFuncName = j["cost"];
-    if (j.contains("usesStack"))
-        usesStack = j["usesStack"];
-    if (j.contains("requiresRoll"))
-        requiresRoll = j["requiresRoll"];
-}
-
-ActivatedAbility::ActivatedAbility(json j) : 
-    Effect(j)
-{
-    if (j.contains("requiresTap"))
-        requiresTap = j["requiresTap"];
-}
-
-Trigger::Trigger() :
-    Effect() {}
-
-Trigger::Trigger(json j) :
-    Effect(j)
-{
-    checkFuncName = j["check"];
-}
-
 
 Card::Card(string dir, json j, CardTypes type) : 
     _name(j["name"]),
@@ -73,35 +43,30 @@ ScriptCard::ScriptCard(string dir, json j, CardTypes type, bool isTrinket, bool 
         if (j.contains("abilities")) {
             for (const auto& jj : j["abilities"].items()) {
                 auto a = jj.value();
-                _abilities.push_back(ActivatedAbility(jj));
+                _abilities.push_back(Effect(a));
             }
         }
         if (j.contains("eternal"))
             _isEternal = j["eternal"];
     } else {
-        this->_useFuncName = j["use"];
+        this->_useEffect = Effect(j["use"]);
         if (j.contains("goes_to_bottom"))
             this->_goesToBottom = j["goes_to_bottom"];
-        if (j.contains("cost"))
-            this->_costFuncName = j["cost"];
     }
 }
 
-ScriptCard::~ScriptCard() {
-
-}
+ScriptCard::~ScriptCard() {}
 
 string ScriptCard::script() { return _script; }
 
-std::vector<ActivatedAbility> ScriptCard::abilities() { return _abilities; }
+std::vector<Effect>& ScriptCard::abilities() { return _abilities; }
 bool ScriptCard::hasTrigger(string triggerName) { return _triggerMap.count(triggerName); }
 Trigger& ScriptCard::getTriggerWhen(string triggerName) { return _triggerMap[triggerName]; }
 
-string ScriptCard::useFuncName() { return _useFuncName; }
+Effect& ScriptCard::useEffect() { return _useEffect; }
 Effect& ScriptCard::enterEffect() { return _enterEffect; }
 Effect& ScriptCard::leaveEffect() { return _leaveEffect; }
 
-string ScriptCard::costFuncName() { return _costFuncName; }
 bool ScriptCard::isTrinket() { return _isTrinket; }
 bool ScriptCard::isEternal() { return _isEternal; }
 bool ScriptCard::goesToBottom() { return _goesToBottom; }

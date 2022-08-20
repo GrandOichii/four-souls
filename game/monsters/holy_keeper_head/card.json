@@ -6,7 +6,7 @@
     "roll": 4,
     "power": 1,
     "rewards": {
-        "cost": "HolyKeeperHead_rewards_cost",
+        "requires": ["roll"],
         "effect": "HolyKeeperHead_rewards"
     },
     "on": {

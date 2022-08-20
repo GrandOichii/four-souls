@@ -1,12 +1,12 @@
 function ExperimentalTreatment_cost(host, cardInfo)
     local me = this(host)
     destroyCard(host, me.id)
-    return Common_Roll(host, cardInfo.ownerID)
+    return true
 end
 
 function ExperimentalTreatment_inject(host)
     local me = this(host)
-    local roll = getLastRoll(host).value
+    local roll = popRollStack(host).value
     local owner = getTopOwner(host)
     local t = {
         function ()

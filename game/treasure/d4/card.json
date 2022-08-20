@@ -4,6 +4,8 @@
     "script": "script.lua",
     "abilities": [
         {
+            "requires": ["tap"],
+
             "cost": "D4_cost",
             "effect": "D4_tap"
         }

@@ -2,6 +2,8 @@
     "name": "X. Wheel of Fortune",
     "text": "Roll:\n1: Gain 1c.\n2: Take 2 damage.\n3: Loot 3.\n4: Lose 4c.\n5: Gain 5c.\n5: Gain +1 treasure.",
     "script": "script.lua",
-    "cost": "WheelOfFortune_cost",
-    "use": "WheelOfFortune_use"
+    "use": {
+        "requires": ["roll"],
+        "effect": "WheelOfFortune_use"
+    }
 }

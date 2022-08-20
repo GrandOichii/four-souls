@@ -4,6 +4,7 @@
     "script": "script.lua",
     "abilities": [
         {
+            "requires": ["tap"],
             "cost": "ForeverAlone_cost",
             "effect": "ForeverAlone_tap"
         }

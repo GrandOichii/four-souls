@@ -8,6 +8,12 @@
     "rewards": {
         "effect": "Delirium_rewards"
     },
-    "enter": "Delirium_enter",
-    "leave": "Delirium_leave"
+    "enter": {
+        "usesStack": false,
+        "effect": "Delirium_enter"
+    },
+    "leave": {
+        "usesStack": false,
+        "effect": "Delirium_leave"
+    }
 }

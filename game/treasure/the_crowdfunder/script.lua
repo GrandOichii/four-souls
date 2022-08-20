@@ -1,9 +1,9 @@
 function TheCrowdfunder_cost(host, cardInfo)
-    return Common_Pay(host, cardInfo.ownerID, 2) and Common_Roll(host, cardInfo.ownerID)
+    return Common_Pay(host, cardInfo.ownerID, 2)
 end
 
 function TheCrowdfunder_fund(host)
-    local roll = getLastRoll(host).value
+    local roll = popRollStack(host).value
     local owner = getTopOwner(host)
     if roll == 3 or roll == 4 then
         local choice = Common_ChoosePlayer(host, owner.id)

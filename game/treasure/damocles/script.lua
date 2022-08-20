@@ -1,4 +1,6 @@
-function Damocles_enter(host, me, owner)
+function Damocles_enter(host)
+	local owner = getTopOwner(host)
+	local me = this(host)
     GainTreasureFuncStack:push({
         name = 'gain'..me.id,
         func = function (host_, pid, amount)

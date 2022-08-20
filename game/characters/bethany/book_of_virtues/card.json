@@ -5,7 +5,7 @@
     "on": {
         "damage": {
             "check": "BookOfVirtues_trigger1_check",
-            "cost": "BookOfVirtues_trigger1_cost",
+            "requires": ["roll"],
             "effect": "BookOfVirtues_trigger1"
         },
         "death": {

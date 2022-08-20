@@ -44,16 +44,13 @@ private:
     bool _isEternal;
 
     std::map<string, Trigger> _triggerMap;
-    std::vector<ActivatedAbility> _abilities;
+    std::vector<Effect> _abilities;
 
     Effect _enterEffect;
     Effect _leaveEffect;
-    // string _enterFuncName = "";
-    // string _leaveFuncName = "";
 
     bool _isTrinket;
-    string _useFuncName;
-    string _costFuncName;
+    Effect _useEffect;
     bool _goesToBottom = false;
 public:
     ScriptCard(string dir, json j, CardTypes type, bool isTrinket, bool isEternal=false);
@@ -61,14 +58,13 @@ public:
     string script();
     bool hasTrigger(string triggerName);
     Trigger& getTriggerWhen(string triggerName);
-    string useFuncName();
+    Effect& useEffect();
     Effect& enterEffect();
     Effect& leaveEffect();
-    std::vector<ActivatedAbility> abilities();
+    std::vector<Effect>& abilities();
     bool isTrinket();
     bool isEternal();
     bool goesToBottom();
-    string costFuncName();
 };
 
 class CharacterCard : public ScriptCard {

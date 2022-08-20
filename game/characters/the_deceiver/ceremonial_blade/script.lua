@@ -19,10 +19,6 @@ function CeremonialBlade_trigger2(host)
     lootCards(host, owner.id, 1)
 end
 
-function CeremonialBlade_cost(host, cardInfo)
-    return Common_Tap(host)
-end
-
 function CeremonialBlade_tap(host)
     local owner = getTopOwner(host)
     addPlayableCount(host, owner.id)

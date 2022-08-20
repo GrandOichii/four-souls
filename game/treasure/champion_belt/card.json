@@ -2,8 +2,14 @@
     "name": "Champion Belt",
     "text": "You have +1a for your first attack roll each turn.\nYou may attack an additional time on your turn.",
     "script": "script.lua",
-    "enter": "ChampionBelt_enter",
-    "leave": "ChampionBelt_leave",
+    "enter": {
+        "usesStack": false,
+        "effect": "ChampionBelt_enter"
+    },
+    "leave": {
+        "usesStack": false,
+        "effect": "ChampionBelt_leave"
+    },
     "on": {
         "roll": {
             "usesStack": false,

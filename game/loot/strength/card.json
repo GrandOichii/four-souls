@@ -2,6 +2,8 @@
     "name": "XI. Strength",
     "text": "A player gains +1 a till the ned of turn and may attack and additional time.",
     "script": "script.lua",
-    "use": "Strength_use",
-    "cost": "Strength_cost"
+    "use": {
+        "effect": "Strength_use",
+        "cost": "Strength_cost"
+    }
 }

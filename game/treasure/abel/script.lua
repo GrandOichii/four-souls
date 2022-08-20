@@ -2,12 +2,8 @@ function Abel_trigger_check(host, me)
     return Common_OwnerDealtCombatDamage(host, me.id, MONSTER)
 end
 
-function Abel_trigger_cost(host, cardInfo)
-    return Common_Roll(host, cardInfo.ownerID)
-end
-
 function Abel_trigger(host)
-    local roll = getLastRoll(host).value
+    local roll = popRollStack(host).value
     if roll < 4 then return end
     local me = this(host)
     local dEvent = CardData[me.id].damageEvent

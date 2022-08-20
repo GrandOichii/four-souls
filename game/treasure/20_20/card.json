@@ -4,6 +4,7 @@
     "script": "script.lua",
     "abilities": [
         {
+            "requires": ["tap"],
             "cost": "C2020_cost",
             "effect": "C2020_tap"
         }

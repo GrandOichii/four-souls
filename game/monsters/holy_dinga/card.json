@@ -6,7 +6,7 @@
     "roll": 3,
     "power": 1,
     "rewards": {
-        "cost": "HolyDinga_rewards_cost",
+        "requires": ["roll"],
         "effect": "HolyDinga_rewards"
     },
     "on": {

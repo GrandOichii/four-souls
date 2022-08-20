@@ -6,8 +6,14 @@
     "roll": 0,
     "power": 0,
     "canBeAttacked": false,
-    "enter": "Stoney_enter",
-    "leave": "Stoney_leave",
+    "enter": {
+        "usesStack": false,
+        "effect": "Stoney_enter"
+    },
+    "leave": {
+        "usesStack": false,
+        "effect": "Stoney_leave"
+    },
     "rewards": {
         "effect": "Stoney_rewards"
     },

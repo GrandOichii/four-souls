@@ -21,6 +21,8 @@ function Delirium_leave(host, me)
     MonsterRollLayers:remove(CardData[me.id].irID)
 end
 
-function Delirium_rewards(host, me, killer)
+function Delirium_rewards(host)
+	local killerID = getLastKillerID(host)
+	local killer = Common_PlayerWithID(host, killerID)
     gainTreasure(host, killer.id, 2)
 end

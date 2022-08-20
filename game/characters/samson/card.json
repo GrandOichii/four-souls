@@ -5,5 +5,7 @@
     "item": "blood_lust",
     "script": "script.lua",
     "text": "{T}: Play an additional loot card this turn.\nStarting item: Blood Lust",
-    "use": "Samson_use"
+    "use": {
+        "effect": "Samson_use"
+    }
 }

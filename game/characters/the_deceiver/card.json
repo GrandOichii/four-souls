@@ -5,5 +5,7 @@
     "item": "ceremonial_blade",
     "text": "{T}: Play an additional loot card this turn.\nStarting item: Ceremonial Blade",
     "script": "script.lua",
-    "use": "TheDeceiver_tap"
+    "use": {
+        "effect": "TheDeceiver_tap"
+    }
 }

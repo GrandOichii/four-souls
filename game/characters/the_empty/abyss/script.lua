@@ -1,7 +1,3 @@
-function Abyss_cost(host, cardInfo)
-    return Common_Tap(host)
-end
-
 function Abyss_tap(host)
     local owner = getTopOwner(host)
     local me = this(host)
@@ -19,7 +15,9 @@ function Abyss_tap(host)
     addCounters(host, me.id, 1)
 end
 
-function Abyss_enter(host, me, owner)
+function Abyss_enter(host)
+    local me = this(host)
+    local owner = getTopOwner(host)
     local meID = me.id
     local function getMe()
         local p = Common_PlayerWithID(host, owner.id)

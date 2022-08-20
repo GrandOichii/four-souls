@@ -1,4 +1,6 @@
-function BallOfBandages_enter(host, me, owner)
+function BallOfBandages_enter(host)
+	local owner = getTopOwner(host)
+	local me = this(host)
     local id = CombatDamageLayers:top().id + 1
     CombatDamageLayers:push(
         {

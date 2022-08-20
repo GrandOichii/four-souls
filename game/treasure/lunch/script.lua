@@ -1,4 +1,6 @@
-function Lunch_enter(host, me, owner)
+function Lunch_enter(host)
+	local owner = getTopOwner(host)
+	local me = this(host)
     CardData[me.id] = {
         imlID = Common_IncMaxLife(host, owner.id, 1)
     }

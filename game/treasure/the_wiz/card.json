@@ -2,8 +2,14 @@
     "name": "The Wiz",
     "text": "Monsters have +1d on your turn.\nEach time you deal combat damage, deal 1 damage to another monster or player.",
     "script": "script.lua",
-    "enter": "TheWiz_enter",
-    "leave": "TheWiz_leave",
+    "enter": {
+        "usesStack": false,
+        "effect": "TheWiz_enter"
+    },
+    "leave": {
+        "usesStack": false,
+        "effect": "TheWiz_leave"
+    },
     "on": {
         "damage": {
             "check": "TheWiz_trigger_check",

@@ -17,8 +17,8 @@ const string CARD_TYPE_TREASURE = "treasure";
 const string CARD_TYPE_MONSTER = "monster";
 
 const string ACTION_PLAY_LOOT = "play_loot"; 
-const string ACTION_ATTACK_MONSTER = "attack"; // [0] - the index of the card being attacked, if -1 then the top
-const string ACTION_BUY_TREASURE = "buy_treasure"; // [0] - the index of the card being purchased, if -1 then the top
+const string ACTION_ATTACK_MONSTER = "attack";
+const string ACTION_BUY_TREASURE = "buy_treasure";
 const string ACTION_ACTIVATE_CARD = "activate";
 const string ACTION_ACTIVATE_CHARACTER_CARD = "activate_character";
 
@@ -42,10 +42,12 @@ const string MONSTER_LEAVE_TYPE = "monster_leave";
 const string ITEM_ENTER_TYPE = "item_enter";
 const string ITEM_LEAVE_TYPE = "item_leave";
 
-
 const string LOOT_DECK = "loot";
 const string TREASURE_DECK = "treasure";
 const string MONSTER_DECK = "monster";
+
+const string ROLL_REQUIREMENT = "roll";
+const string TAP_REQUIREMENT = "tap";
 
 const string PLAYER_TARGET = "player";
 const string CARD_TARGET = "card";
@@ -93,19 +95,13 @@ struct Effect {
     string costFuncName = "";
     string funcName = "";
     bool usesStack = true;
-    bool requiresRoll = false;
+    vector<string> requirements;
 
     Effect();
     Effect(json j);
 
+    bool hasRequirement(string req);
     virtual StackEffect* pushMe(Match* match, CardWrapper* cardW, Player* owner, string type);
-};
-
-struct ActivatedAbility : public Effect {
-    bool requiresTap = false;
-
-    ActivatedAbility(json j);
-    StackEffect* pushMe(Match* match, CardWrapper* cardW, Player* owner, string type) override;
 };
 
 struct Trigger : public Effect {

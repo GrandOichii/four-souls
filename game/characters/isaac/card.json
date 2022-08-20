@@ -5,5 +5,7 @@
     "item": "the_d6",
     "text": "{T}: Play an additional loot card this turn.\nStarting item: The D6",
     "script": "script.lua",
-    "use": "Isaac_tap"
+    "use": {
+        "effect": "Isaac_tap"
+    }
 }

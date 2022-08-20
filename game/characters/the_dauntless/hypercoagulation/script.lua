@@ -1,6 +1,8 @@
 
 
-function Hypercoagulation_enter(host, me, owner)
+function Hypercoagulation_enter(host)
+    local me = this(host)
+    local owner = getTopOwner(host)
     local meID = me.id
     local function getMe()
         local p = Common_PlayerWithID(host, owner.id)

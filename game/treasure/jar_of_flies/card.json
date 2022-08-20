@@ -10,6 +10,7 @@
     },
     "abilities": [
         {
+            "requires": ["tap"],
             "cost": "JarOfFlies_cost",
             "effect": "JarOfFlies_tap"
         }

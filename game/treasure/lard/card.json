@@ -2,8 +2,14 @@
     "name": "Lard",
     "text": "+2h.\nEach time tou take damage, discard a loot card.",
     "script": "script.lua",
-    "enter": "Lard_enter",
-    "leave": "Lard_leave",
+    "enter": {
+        "usesStack": false,
+        "effect": "Lard_enter"
+    },
+    "leave": {
+        "usesStack": false,
+        "effect": "Lard_leave"
+    },
     "on": {
         "damage": {
             "check": "Lard_trigger_check",

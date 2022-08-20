@@ -8,6 +8,12 @@
     "rewards": {
         "effect": "Horf_rewards"
     },
-    "enter": "Horf_enter",
-    "leave": "Horf_leave"
+    "enter": {
+        "usesStack": false,
+        "effect": "Horf_enter"
+    },
+    "leave": {
+        "usesStack": false,
+        "effect": "Horf_leave"
+    }
 }

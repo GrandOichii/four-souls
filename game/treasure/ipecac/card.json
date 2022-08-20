@@ -2,8 +2,14 @@
     "name": "Ipecac",
     "text": "+1a\nEach time you roll a 6 while attacking, deal 1 damage to all other players.",
     "script": "script.lua",
-    "enter": "Ipecac_enter",
-    "leave": "Ipecac_leave",
+    "enter": {
+        "usesStack": false,
+        "effect": "Ipecac_enter"
+    },
+    "leave": {
+        "usesStack": false,
+        "effect": "Ipecac_leave"
+    },
     "on": {
         "roll": {
             "check": "Ipecac_trigger_check",

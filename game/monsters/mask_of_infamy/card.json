@@ -9,6 +9,12 @@
     "rewards": {
         "effect": "MaskOfInfamy_rewards"
     },
-    "enter": "MaskOfInfamy_enter",
-    "leave": "MaskOfInfamy_leave"
+    "enter": {
+        "usesStack": false,
+        "effect": "MaskOfInfamy_enter"
+    },
+    "leave": {
+        "usesStack": false,
+        "effect": "MaskOfInfamy_leave"
+    }
 }

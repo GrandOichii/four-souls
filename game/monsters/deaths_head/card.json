@@ -9,8 +9,14 @@
     "rewards": {
         "effect": "DeathsHead_rewards"
     },
-    "enter": "DeathsHead_enter",
-    "leave": "DeathsHead_leave",
+    "enter": {
+        "usesStack": false,
+        "effect": "DeathsHead_enter"
+    },
+    "leave": {
+        "usesStack": false,
+        "effect": "DeathsHead_leave"
+    },
     "on": {
         "death": {
             "check": "DeathsHead_trigger_check",

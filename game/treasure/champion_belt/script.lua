@@ -1,4 +1,6 @@
-function ChampionBelt_enter(host, me, owner)
+function ChampionBelt_enter(host)
+	local owner = getTopOwner(host)
+	local me = this(host)
     local id = AttackLayers:top().id + 1
     AttackLayers:push(
         {

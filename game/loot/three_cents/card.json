@@ -2,5 +2,7 @@
     "name": "3 cents!",
     "text": "Gain 3c",
     "script": "script.lua",
-    "use": "ThreeCents_use"
+    "use": {
+        "effect": "ThreeCents_use"
+    }
 }

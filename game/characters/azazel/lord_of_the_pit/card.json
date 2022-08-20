@@ -4,6 +4,7 @@
     "script": "script.lua",
     "abilities": [
         {
+            "requires": ["tap"],
             "cost": "LordOfThePit_cost",
             "effect": "LordOfThePit_tap"
         }

@@ -2,6 +2,8 @@
     "name": "Two of Spades",
     "text": "Choose another player. Loot X, where X is the number of loot cards in that player's hand.",
     "script": "script.lua",
-    "cost": "TwoOfSpades_cost",
-    "use": "TwoOfSpades_use"
+    "use": {
+        "effect": "TwoOfSpades_use",
+        "cost": "TwoOfSpades_cost"
+    }
 }

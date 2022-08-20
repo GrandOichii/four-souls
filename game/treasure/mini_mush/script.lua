@@ -1,5 +1,5 @@
 function MiniMush_cost(host, cardInfo)
-    return Common_TargetRoll(host, cardInfo.ownerID) and Common_Tap(host)
+    return Common_TargetRoll(host, cardInfo.ownerID)
 end
 
 function MiniMush_tap(host)

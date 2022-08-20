@@ -2,8 +2,14 @@
     "name": "Blood Lust",
     "text": "{T}: Add +1d to a player or monster till the end of turn.\n - Eternal -",
     "script": "script.lua",
-    "enter": "BloodLust_enter",
-    "leave": "BloodLust_leave",
+    "enter": {
+        "usesStack": false,
+        "effect": "BloodLust_enter"
+    },
+    "leave": {
+        "usesStack": false,
+        "effect": "BloodLust_leave"
+    },
     "on": {
         "turn_end": {
             "check": "BloodLust_trigger_check",
@@ -12,6 +18,7 @@
     },
     "abilities": [
         {
+            "requires": ["tap"],
             "cost": "BloodLust_cost",
             "effect": "BloodLust_tap"
         }

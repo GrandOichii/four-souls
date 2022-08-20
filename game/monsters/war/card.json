@@ -9,8 +9,14 @@
     "rewards": {
         "effect": "War_rewards"
     },
-    "enter": "War_enter",
-    "leave": "War_leave",
+    "enter": {
+        "usesStack": false,
+        "effect": "War_enter"
+    },
+    "leave": {
+        "usesStack": false,
+        "effect": "War_leave"
+    },
     "on": {
         "damage": {
             "check": "War_trigger1_check",

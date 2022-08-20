@@ -5,5 +5,7 @@
     "item": "dark_arts",
     "text": "{T}: Play an additional loot card this turn.\nStarting item: The D6",
     "script": "script.lua",
-    "use": "DarkJudas_tap"
+    "use": {
+        "effect": "DarkJudas_tap"
+    }
 }

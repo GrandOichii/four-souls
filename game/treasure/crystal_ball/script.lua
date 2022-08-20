@@ -1,12 +1,10 @@
-function CrystalBall_enter(host, me, owner)
+function CrystalBall_enter(host)
+	local owner = getTopOwner(host)
+	local me = this(host)
     CardData[me.id] = {
         activated = false,
         roll = -1
     }
-end
-
-function CrystalBall_cost(host, cardInfo)
-    return Common_Tap(host)
 end
 
 function CrystalBall_tap(host)

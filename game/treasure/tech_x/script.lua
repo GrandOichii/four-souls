@@ -1,9 +1,5 @@
 --  TODO untested
 
-function TechX_cost1(host, cardInfo)
-    return Common_Tap(host)
-end
-
 function TechX_ability1(host)
     local card = this(host)
     addCounters(host, card.id, 1)

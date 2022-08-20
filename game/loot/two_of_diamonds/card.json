@@ -2,6 +2,8 @@
     "name": "Two of Diamonds",
     "text": "Double the number of c a player has.",
     "script": "script.lua",
-    "use": "TwoOfDiamonds_use",
-    "cost": "TwoOfDiamonds_cost"
+    "use": {
+        "effect": "TwoOfDiamonds_use",
+        "cost": "TwoOfDiamonds_cost"
+    }
 }

@@ -5,7 +5,7 @@
     "on": {
         "attack": {
             "check": "BobsBrain_trigger_check",
-            "cost": "BobsBrain_trigger_cost",
+            "requires": ["roll"],
             "effect": "BobsBrain_trigger"
         }
     }

@@ -2,8 +2,14 @@
     "name": "Curved Horn",
     "text": "You have +1a for your first attack roll each turn.",
     "script": "script.lua",
-    "enter": "CurvedHorn_enter",
-    "leave": "CurvedHorn_leave",
+    "enter": {
+        "usesStack": false,
+        "effect": "CurvedHorn_enter"
+    },
+    "leave": {
+        "usesStack": false,
+        "effect": "CurvedHorn_leave"
+    },
     "on": {
         "roll": {
             "usesStack": false,

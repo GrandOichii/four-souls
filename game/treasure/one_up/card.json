@@ -2,6 +2,12 @@
     "name": "1-UP",
     "text": "When you would die on your turn, prevent death, heal to full <3, and cancel your attack. You may attack an additional time.",
     "script": "script.lua",
-    "enter": "OneUP_enter",
-    "leave": "OneUP_leave"
+    "enter": {
+        "usesStack": false,
+        "effect": "OneUP_enter"
+    },
+    "leave": {
+        "usesStack": false,
+        "effect": "OneUP_leave"
+    }
 }

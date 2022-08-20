@@ -1,4 +1,6 @@
-function Sumptorium_enter(host, me, owner)
+function Sumptorium_enter(host)
+    local me = this(host)
+    local owner = getTopOwner(host)
     local id = MonsterRollLayers:top().id + 1
     MonsterRollLayers:push(
         {
@@ -19,7 +21,9 @@ function Sumptorium_enter(host, me, owner)
     }
 end
 
-function Sumptorium_leave(host, me, owner)
+function Sumptorium_leave(host)
+    local me = this(host)
+    local owner = getTopOwner(host)
     Common_DecMonsterRolls(host, CardData[me.id].irID, owner.id)
 end
 

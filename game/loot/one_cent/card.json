@@ -2,5 +2,7 @@
     "name": "A penny!",
     "text": "Gain 1c",
     "script": "script.lua",
-    "use": "APenny_use"
+    "use": {
+        "effect": "APenny_use"
+    }
 }

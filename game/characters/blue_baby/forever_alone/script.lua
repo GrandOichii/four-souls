@@ -3,10 +3,6 @@ local ForeverAlone_choice2 = "Loot at the top card of a deck."
 local ForeverAlone_choice3 = "Discard a loot card, then loot 1."
 
 function ForeverAlone_cost(host, cardInfo)
-    local tapped = Common_Tap(host)
-    if not tapped then
-        return false
-    end
     local choice = requestSimpleChoice(host, cardInfo.ownerID, "Choose:", {ForeverAlone_choice1, ForeverAlone_choice2, ForeverAlone_choice3})
     local me = this(host)
     CardData[me.id] = {

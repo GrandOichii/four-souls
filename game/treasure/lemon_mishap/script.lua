@@ -1,11 +1,9 @@
-function LemonMishap_enter(host, me, owner)
+function LemonMishap_enter(host)
+	local owner = getTopOwner(host)
+	local me = this(host)
     CardData[me.id] = {
         activated = false
     }
-end
-
-function LemonMishap_cost(host)
-    return Common_Tap(host)
 end
 
 function LemonMishap_tap(host)
