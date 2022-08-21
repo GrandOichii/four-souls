@@ -14,7 +14,7 @@
         "treasure/d100",
         "treasure/d100"
     ],
-    "cards_record1660982387": [
+    "cards": [
         "treasure/d100",
         "treasure/d100",
         "treasure/d100",
@@ -52,7 +52,7 @@
         "treasure/synthoil",
         "treasure/synthoil"
     ],
-    "cards": [
+    "card1s": [
         "treasure/lunch",
         "treasure/decoy",
         "treasure/baby_haunt",

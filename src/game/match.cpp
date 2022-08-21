@@ -262,7 +262,8 @@ StackEffect::StackEffect(string funcName, Player* player, CardWrapper* cardW, st
     funcName(funcName),
     player(player),
     cardW(cardW),
-    type(type) {}
+    type(type) {
+    }
 
 StackEffect::StackEffect() {}
 
@@ -1442,7 +1443,6 @@ int Match::wrap_activateRoll(lua_State* L) {
         match->pushToStack(roll.effect);
         roll.visible = false;
         match->applyTriggers(POST_ROLL_TYPE);
-        // printStack(match->_stack);
         return 0;
     }
     match->_lastCRollValue = roll.value;
@@ -2595,10 +2595,12 @@ void Match::resolveTop() {
     } while (last != this->_priorityI);
     // resolve the ability
     this->execFunc(effect->funcName);
+    // std::cout << "STACK SIZE: " << _stack.size() << std::endl;
     this->log("Popping " + effect->funcName + " from stack");
     // std::cout << "BEFORE ERASE" << std::endl;
     // printStack(_stack);
     _stack.erase(std::find(_stack.begin(), _stack.end(), effect));
+    // std::cout << "STACK SIZE: " << _stack.size() << std::endl;
     // std::cout << "AFTER ERASE" << std::endl;
     // printStack(_stack);
     delete effect;

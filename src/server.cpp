@@ -293,7 +293,6 @@ public:
 const char* BOT_SCRIPT_PATH = "bots/experimental.lua";
 
 int main(int argc, char* argv[]) {
-    
     // the first argument is always the path to the game
     if (argc == 1 || argc > 5) {
         std::cout << "Invalid number of arguments" << std::endl;

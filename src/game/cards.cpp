@@ -228,7 +228,8 @@ void MonsterCard::createData(lua_State* L, Match* parent, int id) {
 
 CardWrapper::CardWrapper(ScriptCard* card, int id) :
     _card(card),
-    _id(id) {}
+    _id(id) {
+    }
 
 ScriptCard* CardWrapper::card() { return _card; }
 int CardWrapper::id() { return _id; }
@@ -274,9 +275,11 @@ CardState emptyCardState() {
     return result;
 }
 
-void CardState::pushTable(lua_State* L) const{
+void CardState::pushTable(lua_State* L) const {
     lua_newtable(L);
+    std::cout << "PUSHING NAME " << cardName << std::endl;
     l_pushtablestring(L, "name", cardName);
+    dumpstack(L);
 }
 
 void CardWrapper::addCounters(int amount) { _counters += amount; }

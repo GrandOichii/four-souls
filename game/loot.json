@@ -1,13 +1,5 @@
 {
-    "card1s": {
-        "basic": {
-            "loot/gold_bomb": 0
-        },
-        "trinkets": {
-            "loot/lost_soul": 30
-        }
-    },
-    "cards_record1660982387": {
+    "cards": {
         "loot/jester": 1,
         "loot/joker": 1,
         "loot/mega_bomb": 1,
@@ -64,7 +56,7 @@
         "loot/callus": 1,
         "loot/aaa_battery": 1
     },
-    "cards": {
+    "card1s": {
         "loot/jester": 1,
         "loot/joker": 1,
         "loot/mega_bomb": 1,

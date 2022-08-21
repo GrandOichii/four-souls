@@ -34,9 +34,7 @@ function ReadTable(path)
     local file = io.open(path, "r")
     local data = file:read("*all")
     io.close(file)
-    print('READ: '..data)
     local res = json.decode(data)
-    print('DECODED: '..#res)
     return res
 end
 
