@@ -1,5 +1,5 @@
 function CheeseGrater_trigger_check(host, me)
-    return Common_LastRoll(host).value == 6
+    return Common_LastRoll(host, me).value == 6
 end
 
 function CheeseGrater_trigger(host)

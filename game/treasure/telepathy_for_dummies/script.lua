@@ -17,13 +17,13 @@ function TelepathyForDummies_trigger2_check(host, me)
     if CardData[me.id].lr == nil then
         return false
     end
-    return Common_LastRoll(host).ownerID == me.ownerID and Common_OncePerTurn(host, me.id)
+    return Common_LastRoll(host, me).ownerID == me.ownerID and Common_OncePerTurn(host, me.id)
 end
 
 function TelepathyForDummies_trigger2(host)
     local owner = getTopOwner(host)
     local me = this(host)
-    local lr = Common_LastRoll(host)
+    local lr = CardData[me.id].lastRoll
     local choice = requestSimpleChoice(host, owner.id, 'Change the result to '..CardData[me.id].lr..'?', {'Yes', 'No'})
     if choice == 'No' then
         return

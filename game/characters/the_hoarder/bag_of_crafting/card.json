@@ -2,6 +2,8 @@
     "name": "Bag of Crafting",
     "text": "($) Discard 4 loot card:\nGain +1 treasure.",
     "script": "script.lua",
+    "eternal": true,
+
     "abilities": [
         {
             "cost": "BagOfCrafting_cost",

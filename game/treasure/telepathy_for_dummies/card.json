@@ -8,7 +8,7 @@
             "requires": ["roll"],
             "effect": "TelepathyForDummies_trigger1"
         },
-        "roll": {
+        "post_roll": {
             "check": "TelepathyForDummies_trigger2_check",
             "effect": "TelepathyForDummies_trigger2"
         },

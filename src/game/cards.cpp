@@ -21,38 +21,31 @@ void Card::print(string prefix) {
     std::cout << prefix << _name << std::endl;
 }
 
-ScriptCard::ScriptCard(string dir, json j, CardTypes type, bool isTrinket, bool isEternal) : 
-    Card(dir, j, type),
-    _isTrinket(isTrinket),
-    _isEternal(isEternal)
-
+ScriptCard::ScriptCard(string dir, json j, CardTypes type) : 
+    Card(dir, j, type)
 { 
     this->_script = fs::readFile(fs::join(dir, j["script"]).c_str());
-    if (_isTrinket) {
-        if (j.contains("on")) {
-            auto triggers = j["on"];
-            for (const auto& pair : triggers.items()) {
-                auto v = pair.value();
-                _triggerMap[pair.key()] = Trigger(v);
-            }
+    if (j.contains("on")) {
+        auto triggers = j["on"];
+        for (const auto& pair : triggers.items()) {
+            auto v = pair.value();
+            _triggerMap[pair.key()] = Trigger(v);
         }
-        if (j.contains("enter"))
-            this->_enterEffect = Effect(j["enter"]);
-        if (j.contains("leave"))
-            this->_leaveEffect = Effect(j["leave"]);
-        if (j.contains("abilities")) {
-            for (const auto& jj : j["abilities"].items()) {
-                auto a = jj.value();
-                _abilities.push_back(Effect(a));
-            }
-        }
-        if (j.contains("eternal"))
-            _isEternal = j["eternal"];
-    } else {
-        this->_useEffect = Effect(j["use"]);
-        if (j.contains("goes_to_bottom"))
-            this->_goesToBottom = j["goes_to_bottom"];
     }
+    if (j.contains("enter"))
+        this->_enterEffect = Effect(j["enter"]);
+    if (j.contains("leave"))
+        this->_leaveEffect = Effect(j["leave"]);
+    if (j.contains("abilities")) {
+        for (const auto& jj : j["abilities"].items()) {
+            auto a = jj.value();
+            _abilities.push_back(Effect(a));
+        }
+    }
+    if (j.contains("eternal"))
+        this->_isEternal = j["eternal"];
+    if (j.contains("use"))
+        this->_useEffect = Effect(j["use"]);
 }
 
 ScriptCard::~ScriptCard() {}
@@ -67,18 +60,16 @@ Effect& ScriptCard::useEffect() { return _useEffect; }
 Effect& ScriptCard::enterEffect() { return _enterEffect; }
 Effect& ScriptCard::leaveEffect() { return _leaveEffect; }
 
-bool ScriptCard::isTrinket() { return _isTrinket; }
 bool ScriptCard::isEternal() { return _isEternal; }
-bool ScriptCard::goesToBottom() { return _goesToBottom; }
 
 CharacterCard::CharacterCard(string dir, json j) : 
-    ScriptCard(dir, j, CardTypes::Character, false),
+    ScriptCard(dir, j, CardTypes::Character),
     _attack(j["attack"]),
     _health(j["health"])
 {
     auto itemDir = fs::join(dir, j["item"]);
     auto jj = fs::readJS(fs::join(itemDir, CARD_INFO_FILE));
-    this->_startingItem = new ScriptCard(itemDir, jj, CardTypes::StartingItem, true, true);
+    this->_startingItem = new ScriptCard(itemDir, jj, CardTypes::StartingItem);
 }
 
 int CharacterCard::attack() { return _attack; }
@@ -203,7 +194,7 @@ void MonsterData::nullHealth() {
 }
 
 MonsterCard::MonsterCard(string dir, json j) :
-    ScriptCard(dir, j, CardTypes::Monster, true)
+    ScriptCard(dir, j, CardTypes::Monster)
     // _rewardsEffect(Effect(j["rewards"])),
 {
     _rewardsEffect = Effect(j["rewards"]);

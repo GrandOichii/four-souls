@@ -2,8 +2,10 @@
     "name": "Dark Arts",
     "text": "When anyone rolls a 6, gain 3c.\nEach time another player dies, loot 2.",
     "script": "script.lua",
+    "eternal": true,
+
     "on": {
-        "roll": {
+        "post_roll": {
             "check": "DarkArts_roll_trigger_check",
             "effect": "DarkArts_roll_trigger"
         },

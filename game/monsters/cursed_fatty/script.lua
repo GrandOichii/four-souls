@@ -5,10 +5,10 @@ function CursedFatty_rewards(host)
 end
 
 function CursedFatty_trigger_check(host, me)
-	return Common_LastRoll(host).value == 5
+	return Common_LastRoll(host, me).value == 5
 end
 
 function CursedFatty_trigger(host)
-	local roll = Common_LastRoll(host)
+	local roll = CardData[this(host).id].lastRoll
 	Common_Discard(host, roll.ownerID, 1)
 end

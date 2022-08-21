@@ -2,6 +2,9 @@
     "name": "AAA Battery",
     "text": "At the end of your turn roll:\n1-3: Nothing.\n4-6: Recharge an item.",
     "script": "script.lua",
+    "use": {
+        "effect": "Common_TrinketEnter"
+    },
     "on": {
         "turn_end": {
             "check": "AAABattery_trigger_check",

@@ -2,6 +2,8 @@
     "name": "The D6",
     "text": "{T}: Force a player to reroll any dice roll.",
     "script": "script.lua",
+    "eternal": true,
+
     "abilities": [
         {
             "requires": ["tap"],

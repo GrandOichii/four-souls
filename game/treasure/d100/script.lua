@@ -15,7 +15,6 @@ function D100_tap(host)
         addCoins(host, owner.id, 4)
     end
     if roll == 5 then
-        --  TODO untested
         Common_TempIncMaxLife(host, me.id, owner.id, 1)
     end
     if roll == 6 then

@@ -4,7 +4,9 @@ function War_rewards(host)
 	addCoins(host, killer.id, 8)
 end
 
-function War_enter(host, me)
+function War_enter(host)
+    local me = this(host)
+
     local id = MonsterPowerLayers:top().id + 1
     MonsterPowerLayers:push(
         {
@@ -24,7 +26,9 @@ function War_enter(host, me)
     }
 end
 
-function War_leave(host, me)
+function War_leave(host)
+    local me = this(host)
+
     MonsterPowerLayers:remove(CardData[me.id].ipID)
 end
 

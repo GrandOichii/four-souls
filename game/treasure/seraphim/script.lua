@@ -7,7 +7,7 @@ function Seraphim_enter(host)
 end
 
 function Seraphim_trigger1_check(host, me)
-    local lr = Common_LastRoll(host)
+    local lr = Common_LastRoll(host, me)
     local owner = getOwner(host, me.id)
     local flag = lr.ownerID == owner.id and lr.isCombatRoll
     if not flag then

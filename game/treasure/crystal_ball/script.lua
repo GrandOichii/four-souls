@@ -18,7 +18,7 @@ function CrystalBall_tap(host)
 end
 
 function CrystalBall_trigger_check(host, me)
-    local roll = Common_LastRoll(host)
+    local roll = Common_LastRoll(host, me)
     if not CardData[me.id].activated then
         return false
     end

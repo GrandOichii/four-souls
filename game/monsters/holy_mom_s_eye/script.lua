@@ -5,11 +5,12 @@ function HolyMomsEye_rewards(host)
 end
 
 function HolyMomsEye_trigger_check(host, me)
-	return Common_LastRoll(host).value == 2
+	return Common_LastRoll(host, me).value == 2
 end
 
 function HolyMomsEye_trigger(host)
-	local ownerID = Common_LastRoll(host).ownerID
+	local me = this(host)
+	local ownerID = CardData[me.id].lastRoll.ownerID
 	local choice = requestSimpleChoice(host, ownerID, 'Recharge an item?', {'Yes', 'No'})
 	if choice == 'No' then
 		return

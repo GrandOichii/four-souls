@@ -2,6 +2,8 @@
     "name": "Wooden Nickel",
     "text": "{T}, choose a player, then roll:\nThat player gains c equal to the dice roll.",
     "script": "script.lua",
+    "eternal": true,
+
     "abilities": [
         {
             "requires": ["tap", "roll"],

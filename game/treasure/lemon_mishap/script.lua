@@ -15,7 +15,7 @@ function LemonMishap_trigger1_check(host, me)
     if not CardData[me.id].activated then
         return false
     end
-    local lr = Common_LastRoll(host)
+    local lr = Common_LastRoll(host, me)
     return lr.isCombatRoll and (lr.value == 1 or lr.value == 2)
 end
 

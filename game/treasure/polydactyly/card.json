@@ -11,7 +11,7 @@
         "effect": "Polydactyly_leave"
     },
     "on": {
-        "roll": {
+        "post_roll": {
             "usesStack": false,
             "check": "Polydactyly_trigger1_check",
             "effect": "Polydactyly_trigger1"

@@ -2,6 +2,9 @@
     "name": "The Left Hand",
     "text": "Each time another player dies, you may recharge an item.",
     "script": "script.lua",
+    "use": {
+        "effect": "Common_TrinketEnter"
+    },
     "on": {
         "death": {
             "check": "TheLeftHand_trigger_check",

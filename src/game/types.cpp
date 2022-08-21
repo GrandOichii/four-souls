@@ -36,10 +36,7 @@ Trigger::Trigger(json j) :
 }
 
 StackEffect* Effect::pushMe(Match* match, CardWrapper* cardW, Player* owner, string type) {
-    if (hasRequirement(TAP_REQUIREMENT)){
-        if (!cardW->isActive())return nullptr;
-        cardW->tap();
-    } 
+    if (hasRequirement(TAP_REQUIREMENT) && !cardW->isActive()) return nullptr;
     if (!funcName.size()) return nullptr;
     auto p = new StackEffect(
         funcName, 
@@ -55,6 +52,24 @@ StackEffect* Effect::pushMe(Match* match, CardWrapper* cardW, Player* owner, str
             delete p;
             return nullptr;
         }
+    }
+    if (hasRequirement(TAP_REQUIREMENT)) cardW->tap();
+    if (hasRequirement(ROLL_REQUIREMENT)) {
+        match->pushToStack(new StackEffect(
+            "_activateRoll",
+            owner, 
+            nullptr,
+            ROLL_TYPE
+        ));
+        match->_stack.erase(std::find(match->_stack.begin(), match->_stack.end(), p));
+        RollEvent re(
+            owner,
+            false,
+            p
+        );
+        match->log(owner->name() + " rolls a " + std::to_string(re.value));
+        match->_rollStack.push_back(re);
+        match->applyTriggers(ROLL_TYPE);
     }
     if (!usesStack) {
         match->execFunc(funcName);

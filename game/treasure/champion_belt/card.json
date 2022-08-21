@@ -11,7 +11,7 @@
         "effect": "ChampionBelt_leave"
     },
     "on": {
-        "roll": {
+        "post_roll": {
             "usesStack": false,
             "check": "ChampionBelt_trigger1_check",
             "effect": "ChampionBelt_trigger1"

@@ -3,7 +3,7 @@
     "text": "When anyone rolls a 5, you may force that player to reroll it.",
     "script": "script.lua",
     "on": {
-        "would_roll": {
+        "roll": {
             "check": "MissingPage_trigger_check",
             "effect": "MissingPage_trigger"
         }

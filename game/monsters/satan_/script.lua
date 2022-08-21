@@ -5,7 +5,7 @@ function Satan_rewards(host)
 end
 
 function Satan_trigger_check(host, me)
-    local lr = Common_LastRoll(host)
+    local lr = Common_LastRoll(host, me)
     local flag = lr.value == 6 and lr.isCombatRoll
     if not flag then
         return false

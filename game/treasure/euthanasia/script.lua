@@ -2,7 +2,7 @@
 
 function Euthanasia_trigger_check(host, me)
     local turnC = getTurnCounter(host)
-    local roll = Common_LastRoll(host)
+    local roll = Common_LastRoll(host, me)
     local owner = getOwner(host, me.id)
     -- check if is combat roll
     if not roll.isCombatRoll then

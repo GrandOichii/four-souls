@@ -28,4 +28,6 @@ function Judgement_use(host)
     local target = popTarget(host)
     local choice = Common_ChooseSoul(host, target.id, target.id)
     destroySoul(host, target.id, choice)
+    discardMe(host, this(host).id)
+
 end

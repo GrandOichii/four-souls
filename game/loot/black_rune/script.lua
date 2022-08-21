@@ -20,4 +20,6 @@ function BlackRune_use(host)
         discardLoot(host, owner.id, card.id)
     end
     lootCards(host, owner.id, 3)
+    discardMe(host, this(host).id)
+
 end

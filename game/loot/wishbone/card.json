@@ -2,6 +2,9 @@
     "name": "Wishbone",
     "text": "When this is destroyed, gain +1 treasure.",
     "script": "script.lua",
+    "use": {
+        "effect": "Common_TrinketEnter"
+    },
     "leave": {
         "effect": "Wishbone_leave"
     }

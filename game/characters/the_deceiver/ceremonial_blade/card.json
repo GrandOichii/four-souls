@@ -2,6 +2,8 @@
     "name": "Ceremonial Blade",
     "text": "{T}: Play an additional loot card this turn.\nAt the end of your turn, loot 1 and discard a loot card.\nEach time you kill a monster, loot 1.",
     "script": "script.lua",
+    "eternal": true,
+
     "on": {
         "turn_end": {
             "check": "CeremonialBlade_trigger1_check",

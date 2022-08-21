@@ -2,6 +2,8 @@
     "name": "Berserk",
     "text": "You may attack an additional time on your turn.\nEach time you kill a monster, gain +1h till the end of turn.",
     "script": "script.lua",
+    "eternal": true,
+
     "on": {
         "turn_start": {
             "check": "Berserk_trigger1_check",

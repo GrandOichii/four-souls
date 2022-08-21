@@ -1,4 +1,6 @@
-function MaskOfInfamy_enter(host, me)
+function MaskOfInfamy_enter(host)
+    local me = this(host)
+
     local id = MonsterRollLayers:top().id + 1
     MonsterRollLayers:push(
         {
@@ -18,7 +20,9 @@ function MaskOfInfamy_enter(host, me)
 	}
 end
 
-function MaskOfInfamy_leave(host, me)
+function MaskOfInfamy_leave(host)
+    local me = this(host)
+
     MonsterRollLayers:remove(CardData[me.id].irID)
 end
 

@@ -340,6 +340,12 @@ function Common_ChooseOpponent(host, ownerID)
     return choiceId
 end
 
+function Common_TrinketEnter( host )
+    local me = this(host)
+    local owner = getTopOwner(host)
+    moveToBoard(host, owner.id, me.id)
+end
+
 function Common_TargetPlayer(host, ownerID)
     local players = getPlayers(host)
     local ids = {}
@@ -502,9 +508,13 @@ function Common_ModLastRoll(host, value)
     setRollValue(host, #rs-1, roll.value + 1)
 end
 
-function Common_LastRoll(host)
+function Common_LastRoll(host, me)
     local rolls = getRollStack(host)
     local roll = rolls[#rolls]
+    if CardData[me.id] == nil then
+        CardData[me.id] = {}
+    end
+    CardData[me.id].lastRoll = roll
     return roll
 end
 
@@ -520,7 +530,7 @@ function Common_OwnerDied(host, ownerID)
 end
 
 function Common_OwnerRolled(host, ownerID, value)
-    local roll = Common_LastRoll(host)
+    local roll = Common_LastRoll(host, me)
     if roll.ownerID ~= ownerID then
         return false
     end
@@ -556,7 +566,7 @@ function Common_TargetRoll(host, ownerID)
         end
     end
     if #choices == 0 then
-        return
+        return false
     end
 
     local choice, payed = requestChoice(host, ownerID, "Choose a roll", STACK, choices)

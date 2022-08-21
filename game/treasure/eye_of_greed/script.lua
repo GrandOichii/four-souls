@@ -1,5 +1,5 @@
 function EyeOfGreed_trigger_check(host)
-    return Common_LastRoll(host)["value"] == 5
+    return Common_LastRoll(host, me)["value"] == 5
 end
 
 function EyeOfGreed_trigger(host)

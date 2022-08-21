@@ -1,4 +1,6 @@
-function LarryJr_enter(host, me)
+function LarryJr_enter(host)
+    local me = this(host)
+
 	local id = MonsterRollLayers:top().id + 1
     MonsterRollLayers:push(
         {
@@ -17,7 +19,9 @@ function LarryJr_enter(host, me)
 	}
 end
 
-function LarryJr_leave(host, me)
+function LarryJr_leave(host)
+    local me = this(host)
+
     MonsterRollLayers:remove(CardData[me.id].irID)
 end
 

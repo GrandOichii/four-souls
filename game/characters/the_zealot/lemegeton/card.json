@@ -2,6 +2,8 @@
     "name": "Lemegeton",
     "text": "{T}: Gain +1 treasure. The next time your turn ends, destroy an item you control.",
     "script": "script.lua",
+    "eternal": true,
+
     "abilities": [
         {
             "requires": ["tap"],

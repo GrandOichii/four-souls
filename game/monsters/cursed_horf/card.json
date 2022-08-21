@@ -9,7 +9,7 @@
         "effect": "CursedHorf_rewards"
     },
     "on": {
-        "roll": {
+        "post_roll": {
             "check": "CursedHorf_trigger_check",
             "effect": "CursedHorf_trigger"
         }

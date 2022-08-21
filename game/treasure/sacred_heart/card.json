@@ -3,7 +3,7 @@
     "text": "Each time you roll a 1, you may turn it into a 6.",
     "script": "script.lua",
     "on": {
-        "would_roll": {
+        "roll": {
             "check": "SacredHeart_trigger_check",
             "effect": "SacredHeart_trigger"
         }

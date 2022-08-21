@@ -7,13 +7,11 @@ function CursedKeeperHead_rewards(host)
 end
 
 function CursedKeeperHead_trigger_check(host, me)
-	return Common_LastRoll(host).value == 1
+	return Common_LastRoll(host, me).value == 1
 end
 
 function CursedKeeperHead_trigger(host)
-	local roll = Common_LastRoll(host)
-	-- print('OWNER ID: '..roll.ownerID)
+	local roll = CardData[this(host).id].lastRoll
 	local owner = Common_PlayerWithID(host, roll.ownerID)
-	-- print('OWNER: '..owner.id)
 	subCoins(host, owner.id, math.min(2, owner.coins))
 end

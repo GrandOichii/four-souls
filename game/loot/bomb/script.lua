@@ -16,4 +16,6 @@ end
 function Bomb_use(host)
     local target = popTarget(host)
     dealDamage(host, PLAYER, getTopOwner(host).id, target.type, target.id, 1)
+    discardMe(host, this(host).id)
+
 end

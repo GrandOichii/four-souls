@@ -11,7 +11,7 @@
         "effect": "Ipecac_leave"
     },
     "on": {
-        "roll": {
+        "post_roll": {
             "check": "Ipecac_trigger_check",
             "effect": "Ipecac_trigger"
         }

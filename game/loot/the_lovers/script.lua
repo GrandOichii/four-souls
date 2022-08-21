@@ -14,6 +14,7 @@ end
 function TheLovers_use(host)
     local me = this(host)
     local target = popTarget(host)
-    --  TODO untested
     Common_TempIncMaxLife(host, me.id, target.id, 2)
+    discardMe(host, this(host).id)
+
 end

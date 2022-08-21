@@ -5,10 +5,10 @@ function HolyDip_rewards(host)
 end
 
 function HolyDip_trigger_check(host, me)
-	return Common_LastRoll(host).value == 1
+	return Common_LastRoll(host, me).value == 1
 end
 
 function HolyDip_trigger(host)
-	local roll = Common_LastRoll(host)
+	local roll = CardData[this(host).id].lastRoll
 	addCoins(host, roll.ownerID, 1)
 end

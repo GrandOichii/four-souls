@@ -1,9 +1,9 @@
 function DeadBird_trigger_check(host, me)
-    return Common_LastRoll(host).value == 3
+    return Common_LastRoll(host, me).value == 3
 end
 
 function DeadBird_trigger(host)
-    local lr = Common_LastRoll(host)
+    local lr = CardData[this(host).id].lastRoll
     local player = Common_PlayerWithID(host, lr.ownerID)
     local owner = getTopOwner(host)
     if #player.hand == 0 then

@@ -10,4 +10,6 @@ function BluePills_use(host, me)
         return
     end
     Common_Discard(host, owner.id, 1)
+    discardMe(host, this(host).id)
+
 end

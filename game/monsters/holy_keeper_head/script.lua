@@ -6,10 +6,10 @@ function HolyKeeperHead_rewards(host)
 end
 
 function HolyKeeperHead_trigger_check(host, me)
-	return Common_LastRoll(host).value == 4
+	return Common_LastRoll(host, me).value == 4
 end
 
 function HolyKeeperHead_trigger(host)
-	local roll = Common_LastRoll(host)
+	local roll = CardData[this(host).id].lastRoll
 	addCoins(host, roll.ownerID, 2)
 end

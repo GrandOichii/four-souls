@@ -4,7 +4,8 @@ function CarrionQueen_rewards(host)
     gainTreasure(host, killer.id, 1)
 end
 
-function CarrionQueen_enter(host, me)
+function CarrionQueen_enter(host)
+    local me = this(host)
     local id = CombatDamageLayers:top().id + 1
     CombatDamageLayers:push(
         {
@@ -22,6 +23,8 @@ function CarrionQueen_enter(host, me)
 	}
 end
 
-function CarrionQueen_leave(host, me)
+function CarrionQueen_leave(host)
+    local me = this(host)
+
     CombatDamageLayers:remove(CardData[me.id].ipID)
 end

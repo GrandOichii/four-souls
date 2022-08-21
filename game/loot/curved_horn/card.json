@@ -2,6 +2,9 @@
     "name": "Curved Horn",
     "text": "You have +1a for your first attack roll each turn.",
     "script": "script.lua",
+    "use": {
+        "effect": "Common_TrinketEnter"
+    },
     "enter": {
         "usesStack": false,
         "effect": "CurvedHorn_enter"
@@ -11,7 +14,7 @@
         "effect": "CurvedHorn_leave"
     },
     "on": {
-        "roll": {
+        "post_roll": {
             "usesStack": false,
             "check": "CurvedHorn_trigger1_check",
             "effect": "CurvedHorn_trigger1"

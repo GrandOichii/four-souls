@@ -3,7 +3,7 @@
     "text": "Each time a player rolls a 1, put a counter on this.\n($) Remove 3 counters from this: deal 1 damage to a player or a monster.",
     "script": "script.lua",
     "on": {
-        "roll": {
+        "post_roll": {
             "check": "SacDagger_trigger_check",
             "effect": "SacDagger_trigger"
         }

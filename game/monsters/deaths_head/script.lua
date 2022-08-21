@@ -4,7 +4,9 @@ function DeathsHead_rewards(host)
     lootCards(host, killer.id, 1)
 end
 
-function DeathsHead_enter(host, me)
+function DeathsHead_enter(host)
+    local me = this(host)
+
     local id = MonsterPowerLayers:top().id + 1
     MonsterPowerLayers:push(
         {
@@ -19,8 +21,9 @@ function DeathsHead_enter(host, me)
 	}
 end
 
-function DeathsHead_leave(host, me)
-    print(CardData[me.id].ipID)
+function DeathsHead_leave(host)
+    local me = this(host)
+
     MonsterPowerLayers:remove(CardData[me.id].ipID)
 end
 

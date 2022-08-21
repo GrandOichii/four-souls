@@ -2,6 +2,8 @@
     "name": "Lazarus' Rags",
     "text": "Whenever you die, after paying penalties:\nGain 1 treasure",
     "script": "script.lua",
+    "eternal": true,
+
     "on": {
         "after_death": {
             "check": "LazarusRags_trigger_check",

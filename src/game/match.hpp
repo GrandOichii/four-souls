@@ -118,9 +118,12 @@ struct RollEvent {
     int value;
     Player* owner;
     bool isCombatRoll;
+    StackEffect* effect = nullptr;
+    bool visible = true;
 
-    RollEvent(Player* owner, bool isCombatRoll) :
+    RollEvent(Player* owner, bool isCombatRoll, StackEffect* effect = nullptr) :
         owner(owner),
+        effect(effect),
         isCombatRoll(isCombatRoll) 
     {
         value = rand() % 6 + 1;
@@ -204,10 +207,10 @@ private:
     bool _isMainPhase;
     Player* _activePlayer = nullptr;
 
-    int _lastRoll = -1;
-    int _lastRollOwnerID = -1;
-    bool _lastRollIsCombat = false;
     std::vector<RollEvent> _rollStack;
+    int _lastRoll = -1;
+    bool _lastRollIsCombat = false;
+    int _lastRollOwnerID = -1;
     int _lastCRollValue = -1;
 
     std::deque<CardWrapper*> _lootDeck;
@@ -288,6 +291,7 @@ private:
             auto abilityI = std::stoi(args[2].c_str());
             auto w = this->cardWithID(cardID);
             auto card = w->card();
+            std::cout << "ACTIVATING CARD " << card->name() << std::endl;
             auto ability = card->abilities()[abilityI];
             ability.pushMe(this, w, player, ACTIVATE_ITEM_TYPE);
             // auto p = new StackEffect(
@@ -429,7 +433,7 @@ public:
     static int wrap_getRollStack(lua_State* L);
     static int wrap_setRollValue(lua_State* L);
     static int wrap_addBlueHealth(lua_State* L);
-    static int wrap_pushRollEvent(lua_State* L);
+    static int wrap_activateRoll(lua_State* L);
     static int wrap_getLastRoll(lua_State* L);
     static int wrap_popRollStack(lua_State* L);
     static int wrap_putFromTopToBottom(lua_State* L);
@@ -468,6 +472,7 @@ public:
     static int wrap_incBeginningLoot(lua_State* L);
     static int wrap_decBeginningLoot(lua_State* L);
     static int wrap_discardLoot(lua_State* L);
+    static int wrap_discardMe(lua_State* L);
     static int wrap_gainTreasure(lua_State* L);
     static int wrap_killEntity(lua_State* L);
     static int wrap_topCardsOf(lua_State* L);

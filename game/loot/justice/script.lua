@@ -29,4 +29,6 @@ function Justice_use(host)
     if diff > 0 then
         lootCards(host, owner["id"], diff)
     end
+    discardMe(host, this(host).id)
+
 end

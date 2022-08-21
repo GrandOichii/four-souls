@@ -3,7 +3,7 @@
     "text": "When anyone rolls a 1, loot 1.",
     "script": "script.lua",
     "on": {
-        "roll": {
+        "post_roll": {
             "check": "TheRelic_trigger_check",
             "effect": "TheRelic_trigger"
         }

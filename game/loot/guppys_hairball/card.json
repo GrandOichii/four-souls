@@ -2,6 +2,9 @@
     "name": "Guppy's Hairball",
     "text": "Each time you take damage, roll:\n1-5: Nothing\n6: Prevent 1 damage.",
     "script": "script.lua",
+    "use": {
+        "effect": "Common_TrinketEnter"
+    },
     "on": {
         "damage": {
             "check": "GuppysHairball_trigger_check",

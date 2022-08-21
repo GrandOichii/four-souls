@@ -5,4 +5,6 @@ function TheSun_use(host)
         return
     end
     setNextPlayer(host, owner["id"])
+    discardMe(host, this(host).id)
+
 end

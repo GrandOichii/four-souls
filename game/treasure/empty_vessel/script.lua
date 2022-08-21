@@ -27,7 +27,7 @@ function EmptyVessel_leave(host, me, owner)
 end
 
 function EmptyVessel_trigger_check(host, me)
-    local roll = Common_LastRoll(host)
+    local roll = Common_LastRoll(host, me)
     local owner = getOwner(host, me.id)
     return roll.ownerID == owner.id and owner.coins == 0 and roll.isCombatRoll
 end

@@ -9,4 +9,6 @@ function TheWorld_use(host)
         end
     end
     lootCards(host, owner.id, 2)
+    discardMe(host, this(host).id)
+
 end

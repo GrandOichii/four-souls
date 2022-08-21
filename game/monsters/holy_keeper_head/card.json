@@ -10,7 +10,7 @@
         "effect": "HolyKeeperHead_rewards"
     },
     "on": {
-        "roll": {
+        "post_roll": {
             "check": "HolyKeeperHead_trigger_check",
             "effect": "HolyKeeperHead_trigger"
         }

@@ -8,4 +8,6 @@ function MegaBattery_use(host)
     for _, card in ipairs(player.board) do
         rechargeCard(host, card.id)
     end
+    discardMe(host, this(host).id)
+
 end

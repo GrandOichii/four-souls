@@ -9,7 +9,7 @@
         "effect": "CursedFatty_rewards"
     },
     "on": {
-        "roll": {
+        "post_roll": {
             "check": "CursedFatty_trigger_check",
             "effect": "CursedFatty_trigger"
         }

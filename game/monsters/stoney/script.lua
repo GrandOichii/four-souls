@@ -1,6 +1,8 @@
 --  TODO
 
-function Stoney_enter(host, me)
+function Stoney_enter(host)
+    local me = this(host)
+
 	local id = MonsterRollLayers:top().id + 1
     MonsterRollLayers:push(
         {
@@ -15,7 +17,9 @@ function Stoney_enter(host, me)
 	}
 end
 
-function Stoney_leave(host, me)
+function Stoney_leave(host)
+    local me = this(host)
+
     MonsterRollLayers:remove(CardData[me.id].irID)
 end
 

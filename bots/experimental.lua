@@ -191,6 +191,7 @@ function Bot_PromptAction(me, state)
     if ME_ID == nil then
         ME_ID = me.id
     end
+    -- print(json.encode(me))
     -- if me.id == state.currentID and state.isMain then
     --     -- main phase actions
     --     local played, message = AttemptPlayLoot(me, state)
@@ -224,24 +225,24 @@ function Bot_PromptSimpleResponse(me, state, text, choices)
 end
 
 function Bot_UpdateWinner(winnerID)
-    local wFunc = function (w)
-        local r = w + 2
-        if r > 100 then
-            return 100
-        end
-        return r
-    end
-    if winnerID ~= ME_ID then
-        wFunc = function (w)
-            local r = w - 1
-            if r < 1 then
-                return 1
-            end
-            return r
-        end
-    end
-    for _, iName in ipairs(ITEMS) do
-        WEIGHTS[iName] = wFunc(WEIGHTS[iName])
-    end
-    WriteTable(WEIGHTS, DATA_PATH)
+    -- local wFunc = function (w)
+    --     local r = w + 2
+    --     if r > 100 then
+    --         return 100
+    --     end
+    --     return r
+    -- end
+    -- if winnerID ~= ME_ID then
+    --     wFunc = function (w)
+    --         local r = w - 1
+    --         if r < 1 then
+    --             return 1
+    --         end
+    --         return r
+    --     end
+    -- end
+    -- for _, iName in ipairs(ITEMS) do
+    --     WEIGHTS[iName] = wFunc(WEIGHTS[iName])
+    -- end
+    -- WriteTable(WEIGHTS, DATA_PATH)
 end

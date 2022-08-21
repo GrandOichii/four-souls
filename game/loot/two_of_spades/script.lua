@@ -9,4 +9,6 @@ function TwoOfSpades_use(host)
     local player = Common_PlayerWithID(host, target.id)
     local owner = getTopOwner(host)
     lootCards(host, owner.id, #player.hand)
+    discardMe(host, this(host).id)
+
 end

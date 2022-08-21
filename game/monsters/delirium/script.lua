@@ -1,4 +1,6 @@
-function Delirium_enter(host, me)
+function Delirium_enter(host)
+    local me = this(host)
+
 	local id = MonsterRollLayers:top().id + 1
     MonsterRollLayers:push(
         {
@@ -17,7 +19,9 @@ function Delirium_enter(host, me)
 	}
 end
 
-function Delirium_leave(host, me)
+function Delirium_leave(host)
+    local me = this(host)
+
     MonsterRollLayers:remove(CardData[me.id].irID)
 end
 

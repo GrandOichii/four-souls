@@ -21,19 +21,10 @@ private:
 
     std::vector<std::pair<ScriptCard*, int>> _lootDeckTemplate;
 
-    //  TODO move this to client
-    // card backs
-    string _lootCardBackPath;
-    string _treasureCardBackPath;
-    string _monsterCardBackPath;
-
     string _setupScript;
 public:
     Game(string path);
     ~Game();
-    string lootCardBackPath();
-    string treasureCardBackPath();
-    string monsterCardBackPath();
     void loadLootCards(string dir);
     void loadTreasureCards(string dir);
     void loadMonsterCards(string dir);

@@ -12,4 +12,6 @@ function BlackPills_use(host)
         return
     end
     dealDamage(host, PLAYER, owner.id, PLAYER, owner.id, 1)
+    discardMe(host, this(host).id)
+
 end

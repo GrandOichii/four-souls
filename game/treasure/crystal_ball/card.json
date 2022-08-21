@@ -7,7 +7,7 @@
         "effect": "CrystalBall_enter"
     },
     "on": {
-        "roll": {
+        "post_roll": {
             "check": "CrystalBall_trigger_check",
             "effect": "CrystalBall_trigger"
         }

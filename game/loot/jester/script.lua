@@ -31,4 +31,6 @@ function Jester_use(host)
     for _, id in ipairs(results) do
         Common_RerollItem(host, id)
     end
+    discardMe(host, this(host).id)
+
 end

@@ -4,7 +4,9 @@ function Horf_rewards(host)
 	addCoins(host, killer.id, 3)
 end
 
-function Horf_enter(host, me)
+function Horf_enter(host)
+    local me = this(host)
+
     local id = CombatDamageLayers:top().id + 1
     CombatDamageLayers:push(
         {
@@ -24,8 +26,7 @@ function Horf_enter(host, me)
 	}
 end
 
-function Horf_leave(host, me)
-    print('LEFT: '..me.id)
-    print(CardData[me.id])
+function Horf_leave(host)
+    local me = this(host)
     CombatDamageLayers:remove(CardData[me.id].ipID)
 end

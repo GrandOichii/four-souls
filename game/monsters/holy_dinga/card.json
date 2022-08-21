@@ -10,7 +10,7 @@
         "effect": "HolyDinga_rewards"
     },
     "on": {
-        "roll": {
+        "post_roll": {
             "check": "HolyDinga_trigger_check",
             "effect": "HolyDinga_trigger"
         }

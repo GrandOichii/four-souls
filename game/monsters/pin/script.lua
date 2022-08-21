@@ -4,7 +4,9 @@ function Pin_rewards(host)
 	addCoins(host, killer.id, 5)
 end
 
-function Pin_enter(host, me)
+function Pin_enter(host)
+    local me = this(host)
+
     local id = CombatDamageLayers:top().id + 1
     CombatDamageLayers:push(
         {
@@ -22,6 +24,8 @@ function Pin_enter(host, me)
 	}
 end
 
-function Pin_leave(host, me)
+function Pin_leave(host)
+    local me = this(host)
+
     CombatDamageLayers:remove(CardData[me.id].ipID)
 end

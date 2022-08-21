@@ -20,13 +20,8 @@ Game::Game(string dir) {
     this->_matchConfig = fs::readJS(fs::join(dir, CONFIG_FILE).c_str());
 }
 
-string Game::lootCardBackPath(){ return _lootCardBackPath;}
-string Game::treasureCardBackPath(){ return _treasureCardBackPath;}
-string Game::monsterCardBackPath(){ return _monsterCardBackPath;}
-
 void Game::loadMonsterCards(string dir) {
     auto j = fs::readJS(fs::join(dir, MONSTER_CARDS_FILE));
-    this->_monsterCardBackPath = fs::join(dir, j["back"]);
     auto jcards = j["cards"];
     auto mcards = jcards["monsters"];
     for (const auto& jj : mcards.items()) {
@@ -40,32 +35,23 @@ void Game::loadMonsterCards(string dir) {
 
 void Game::loadLootCards(string dir) {
     auto j = fs::readJS(fs::join(dir, LOOT_CARDS_FILE));
-    this->_lootCardBackPath = fs::join(dir, j["back"]);
-    auto loadF = [this, j, dir](string key, bool isTrinket) {
-        for (const auto& [key, value] : j["cards"][key].items()) {
-            std::cout << "LOADING " << key << std::endl;
-            auto cardPath = fs::join(dir, key);
-            int amount = value;
-            auto cardJS = fs::readJS(fs::join(cardPath, CARD_INFO_FILE));
-            auto card = new ScriptCard(cardPath, cardJS, CardTypes::Loot, isTrinket);
-            this->_lootCards.push_back(card);
-            // add cards to the deck template
-            this->_lootDeckTemplate.push_back(std::make_pair(card, amount));
-        }
-    };
-
-    loadF("basic", false);
-    loadF("trinkets", true);
+    auto jcards = j["cards"];
+    for (const auto& jj : jcards.items()) {
+        string tdir = fs::join(dir, jj.key());
+        auto jjj = fs::readJS(fs::join(tdir, CARD_INFO_FILE));
+        auto card = new ScriptCard(tdir, jjj, CardTypes::Treasure);
+        this->_lootCards.push_back(card);
+        this->_lootDeckTemplate.push_back(std::make_pair(card, jj.value()));
+    }
 }
 
 void Game::loadTreasureCards(string dir) {
     auto j = fs::readJS(fs::join(dir, TREASURE_CARDS_FILE));
-    this->_treasureCardBackPath = fs::join(dir, j["back"]);
     auto jcards = j["cards"];
     for (const auto& jj : jcards.items()) {
         string tdir = fs::join(dir, jj.value());
         auto jjj = fs::readJS(fs::join(tdir, CARD_INFO_FILE));
-        this->_treasureCards.push_back(new ScriptCard(tdir, jjj, CardTypes::Treasure, true));
+        this->_treasureCards.push_back(new ScriptCard(tdir, jjj, CardTypes::Treasure));
     }
     // for (const auto& c : _treasureCards)
     //     c->print("");

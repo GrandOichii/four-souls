@@ -14,4 +14,6 @@ end
 function SoulHeart_use(host)
     local targetID = popTarget(host)["id"]
     addBlueHealth(host, targetID, 1)
+    discardMe(host, this(host).id)
+
 end

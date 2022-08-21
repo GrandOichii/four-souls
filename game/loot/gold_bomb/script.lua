@@ -16,4 +16,6 @@ end
 function GoldBomb_use(host)
     local target = popTarget(host)
     dealDamage(host, PLAYER, getTopOwner(host).id, target.type, target.id, 3)
+    discardMe(host, this(host).id)
+
 end

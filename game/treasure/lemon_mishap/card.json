@@ -13,7 +13,7 @@
         }
     ],
     "on": {
-        "roll": {
+        "post_roll": {
             "check": "LemonMishap_trigger1_check",
             "effect": "LemonMishap_trigger1"
         },

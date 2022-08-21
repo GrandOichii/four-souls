@@ -1,5 +1,5 @@
 function ChargedBaby_trigger_check(host, me)
-    return Common_LastRoll(host).value == 2
+    return Common_LastRoll(host, me).value == 2
 end
 
 function ChargedBaby_trigger_cost(host, me)

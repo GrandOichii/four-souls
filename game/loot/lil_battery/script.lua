@@ -5,4 +5,6 @@ end
 function LilBattery_use(host)
     local target = popTarget(host)
     rechargeCard(host, target.id)
+    discardMe(host, this(host).id)
+
 end

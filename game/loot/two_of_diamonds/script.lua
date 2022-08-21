@@ -7,4 +7,6 @@ function TwoOfDiamonds_use(host)
     print(targetID)
     local player = Common_PlayerWithID(host, targetID)
     addCoins(host, targetID, player["coins"])
+    discardMe(host, this(host).id)
+
 end

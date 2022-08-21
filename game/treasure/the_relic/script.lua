@@ -1,7 +1,7 @@
 --  TODO untested
 
 function TheRelic_trigger_check(host, me)
-    return Common_LastRoll(host).value == 1
+    return Common_LastRoll(host, me).value == 1
 end
 
 function TheRelic_trigger(host)

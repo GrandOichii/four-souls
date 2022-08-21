@@ -6,10 +6,10 @@ function HolyDinga_rewards(host)
 end
 
 function HolyDinga_trigger_check(host, me)
-	return Common_LastRoll(host).value == 6
+	return Common_LastRoll(host, me).value == 6
 end
 
 function HolyDinga_trigger(host)
-	local roll = Common_LastRoll(host)
+	local roll = CardData[me.id].lastROll
 	healPlayer(host, roll.ownerID, 1)
 end

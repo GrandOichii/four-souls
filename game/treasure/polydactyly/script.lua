@@ -29,7 +29,7 @@ function Polydactyly_leave(host, me, owner)
 end
 
 function Polydactyly_trigger1_check(host, me)
-    local roll = Common_LastRoll(host)
+    local roll = Common_LastRoll(host, me)
     return roll.isCombatRoll
 end
 

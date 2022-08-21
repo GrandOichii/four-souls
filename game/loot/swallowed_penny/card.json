@@ -2,6 +2,9 @@
     "name": "Swallowed Penny",
     "text": "Each time you take damage, gain 1c.",
     "script": "script.lua",
+    "use": {
+        "effect": "Common_TrinketEnter"
+    },
     "on": {
         "damage": {
             "check": "SwallowedPenny_trigger_check",

@@ -3,7 +3,7 @@
     "text": "Each time a player rolls a 4, they must give you a loot card.",
     "script": "script.lua",
     "on": {
-        "roll": {
+        "post_roll": {
             "check": "TarotCloth_trigger_check",
             "effect": "TarotCloth_trigger"
         }

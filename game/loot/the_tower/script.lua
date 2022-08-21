@@ -22,4 +22,6 @@ function TheTower_use(host)
         end
         return
     end
+    discardMe(host, this(host).id)
+
 end

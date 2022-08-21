@@ -2,6 +2,9 @@
     "name": "Callus",
     "text": "Prevent all non-combat damage you would take.",
     "script": "script.lua",
+    "use": {
+        "effect": "Common_TrinketEnter"
+    },
     "enter": {
         "usesStack": false,
         "effect": "Callus_enter"

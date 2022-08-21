@@ -2,6 +2,8 @@
     "name": "Sumptorium",
     "text": "Each time you take damage, put a counter on this.\n($) Remove 2 counters from this:\nA monster gains -1d till end of turn.",
     "script": "script.lua",
+    "eternal": true,
+
     "enter": {
         "usesStack": false,
         "effect": "Sumptorium_enter"

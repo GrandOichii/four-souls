@@ -4,8 +4,9 @@ function Hopper_rewards(host)
 	addCoins(host, killer.id, 3)
 end
 
+function Hopper_enter(host)
+    local me = this(host)
 
-function Hopper_enter(host, me)
     local id = CombatDamageLayers:top().id + 1
     CombatDamageLayers:push(
         {
@@ -23,7 +24,9 @@ function Hopper_enter(host, me)
 	}
 end
 
-function Hopper_leave(host, me)
+function Hopper_leave(host)
+    local me = this(host)
+
     CombatDamageLayers:remove(CardData[me.id].ipID)
 end
 

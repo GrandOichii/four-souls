@@ -17,4 +17,6 @@ function YellowPills_use(host)
         subCoins(host, owner.id, amount)
         return
     end
+    discardMe(host, this(host).id)
+
 end

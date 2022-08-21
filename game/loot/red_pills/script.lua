@@ -15,4 +15,6 @@ function RedPills_use(host)
         dealDamage(host, PLAYER, owner.id, PLAYER, owner.id, 1)
         return
     end
+    discardMe(host, this(host).id)
+
 end

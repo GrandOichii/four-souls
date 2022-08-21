@@ -1,7 +1,20 @@
 {
     "back": "images/treasure_card_back.bmp",
-    "cards": [
+    "car3ds": [
         "treasure/d100",
+        "treasure/d100",
+        "treasure/d100",
+        "treasure/d100",
+        "treasure/d100",
+        "treasure/d100",
+        "treasure/d100",
+        "treasure/d100",
+        "treasure/d100",
+        "treasure/d100",
+        "treasure/d100",
+        "treasure/d100"
+    ],
+    "cards_record1660982387": [
         "treasure/d100",
         "treasure/d100",
         "treasure/d100",
@@ -39,7 +52,7 @@
         "treasure/synthoil",
         "treasure/synthoil"
     ],
-    "car1ds": [
+    "cards": [
         "treasure/lunch",
         "treasure/decoy",
         "treasure/baby_haunt",

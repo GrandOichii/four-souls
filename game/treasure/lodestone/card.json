@@ -11,7 +11,7 @@
         "effect": "Lodestone_leave"
     },
     "on": {
-        "roll": {
+        "post_roll": {
             "check": "Lodestone_trigger1_check",
             "cost": "Lodestone_trigger1_cost",
             "effect": "Lodestone_trigger1"

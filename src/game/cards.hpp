@@ -49,11 +49,10 @@ private:
     Effect _enterEffect;
     Effect _leaveEffect;
 
-    bool _isTrinket;
     Effect _useEffect;
     bool _goesToBottom = false;
 public:
-    ScriptCard(string dir, json j, CardTypes type, bool isTrinket, bool isEternal=false);
+    ScriptCard(string dir, json j, CardTypes type);
     ~ScriptCard();
     string script();
     bool hasTrigger(string triggerName);
@@ -62,9 +61,7 @@ public:
     Effect& enterEffect();
     Effect& leaveEffect();
     std::vector<Effect>& abilities();
-    bool isTrinket();
     bool isEternal();
-    bool goesToBottom();
 };
 
 class CharacterCard : public ScriptCard {

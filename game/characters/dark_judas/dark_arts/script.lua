@@ -1,5 +1,5 @@
 function DarkArts_roll_trigger_check(host, me)
-    return Common_LastRoll(host).value == 6
+    return Common_LastRoll(host, me).value == 6
 end
 
 function DarkArts_roll_trigger(host)

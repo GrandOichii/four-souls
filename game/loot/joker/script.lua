@@ -12,4 +12,6 @@ function Joker_use(host)
     local cid = requestCardsInHand(host, owner.id, player.id, 'Choose a card to steal', 1)[1]
     removeFromEverywhere(host, cid)
     moveToHand(host, owner.id, cid)
+    discardMe(host, this(host).id)
+
 end

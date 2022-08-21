@@ -9,7 +9,7 @@
         "effect": "HolyDip_rewards"
     },
     "on": {
-        "roll": {
+        "post_roll": {
             "check": "HolyDip_trigger_check",
             "effect": "HolyDip_trigger"
         }

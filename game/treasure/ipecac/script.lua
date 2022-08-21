@@ -14,7 +14,7 @@ end
 
 
 function Ipecac_trigger_check(host, cardInfo)
-    local roll = Common_LastRoll(host)
+    local roll = Common_LastRoll(host, me)
     return roll.value == 6 and roll.ownerID == cardInfo.ownerID and roll.isCombatRoll
 end
 

@@ -1,5 +1,5 @@
 function MissingPage_trigger_check(host, me)
-    return Common_LastRoll(host)["value"] == 5
+    return Common_LastRoll(host, me)["value"] == 5
 end
 
 function MissingPage_trigger(host)

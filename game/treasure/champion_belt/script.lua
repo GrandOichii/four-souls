@@ -27,7 +27,7 @@ function ChampionBelt_leave(host, me, owner)
 end
 
 function ChampionBelt_trigger1_check(host, me)
-    local roll = Common_LastRoll(host)
+    local roll = Common_LastRoll(host, me)
     return roll.isCombatRoll
 end
 

@@ -24,7 +24,7 @@ function DiogenesPot_leave(host, me, owner)
 end
 
 function DiogenesPot_trigger_check(host, me)
-    local roll = Common_LastRoll(host)
+    local roll = Common_LastRoll(host, me)
     return roll.ownerID == me.ownerID and roll.isCombatRoll and roll.value == 1
 end
 

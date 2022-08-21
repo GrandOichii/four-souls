@@ -10,7 +10,7 @@
         "effect": "CursedKeeperHead_rewards"
     },
     "on": {
-        "roll": {
+        "post_roll": {
             "check": "CursedKeeperHead_trigger_check",
             "effect": "CursedKeeperHead_trigger"
         }

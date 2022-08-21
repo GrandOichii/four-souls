@@ -10,4 +10,6 @@ function Strength_use(host)
 
     Common_TempIncAttack(host, me.id, target.id, 1)
     incAttackCount(host, target.id)
+    discardMe(host, this(host).id)
+
 end

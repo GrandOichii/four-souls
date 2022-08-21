@@ -3,7 +3,7 @@
     "text": "{T}: Gain 1c.\nWhen any player rolls a 1, you may recharge this.",
     "script": "script.lua",
     "on": {
-        "roll": {
+        "post_roll": {
             "check": "SackOfPennies_trigger_check",
             "effect": "SackOfPennies_trigger"
         }

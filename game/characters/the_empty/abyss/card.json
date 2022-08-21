@@ -2,6 +2,8 @@
     "name": "Abyss",
     "text": "{T}: Destroy an item you control. If you do, put a counter on this.\nYou have +1a for each 2 counters on this.",
     "script": "script.lua",
+    "eternal": true,
+
     "enter": {
         "usesStack": false,
         "effect": "Abyss_enter"

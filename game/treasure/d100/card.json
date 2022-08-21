@@ -4,7 +4,6 @@
     "script": "script.lua",
     "abilities": [
         {
-            "cost": "D100_cost",
             "effect": "D100_tap",
             "requires": ["roll", "tap"]
         }

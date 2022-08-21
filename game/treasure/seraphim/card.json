@@ -7,7 +7,7 @@
         "effect": "Seraphim_enter"
     },
     "on": {
-        "would_roll": {
+        "roll": {
             "check": "Seraphim_trigger1_check",
             "effect": "Seraphim_trigger1"
         },

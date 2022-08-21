@@ -2,6 +2,8 @@
     "name": "Infestation",
     "text": "{T}: Loot 2, then discard 1 loot card.",
     "script": "script.lua",
+    "eternal": true,
+
     "abilities": [
         {
             "requires": ["tap"],

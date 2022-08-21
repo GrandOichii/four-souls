@@ -19,5 +19,6 @@ function BlankRune_use(host)
     for _, player in ipairs(players) do
         action(host, player["id"], roll)
     end
+    discardMe(host, this(host).id)
 
 end

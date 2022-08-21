@@ -1,9 +1,9 @@
 function TarotCloth_trigger_check(host, me)
-    return Common_LastRoll(host).value == 4
+    return Common_LastRoll(host, me).value == 4
 end
 
 function TarotCloth_trigger(host)
-    local lr = Common_LastRoll(host)
+    local lr = CardData[this(host).id].lastRoll
     local owner = getTopOwner(host)
     local player = Common_PlayerWithID(host, lr.ownerID)
     if #player.hand == 0 then

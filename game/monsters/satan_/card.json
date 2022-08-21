@@ -10,7 +10,7 @@
         "effect": "Satan_rewards"
     },
     "on": {
-        "roll": {
+        "post_roll": {
             "check": "Satan_trigger_check",
             "cost": "Satan_trigger_cost",
             "effect": "Satan_trigger"

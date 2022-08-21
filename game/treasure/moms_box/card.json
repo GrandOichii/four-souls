@@ -3,7 +3,7 @@
     "text": "When anyone rolls a 4, you may loot 1 and then discard a loot card.",
     "script": "script.lua",
     "on": {
-        "roll": {
+        "post_roll": {
             "check": "MomsBox_trigger_check",
             "effect": "MomsBox_trigger"
         }

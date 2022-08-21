@@ -1,7 +1,7 @@
 --  TODO untested
 
 function MomsBox_trigger_check(host)
-    return Common_LastRoll(host) == 4
+    return Common_LastRoll(host, me) == 4
 end
 
 function MomsBox_trigger(host)

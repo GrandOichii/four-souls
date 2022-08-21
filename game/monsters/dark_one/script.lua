@@ -4,7 +4,8 @@ function DarkOne_rewards(host)
     gainTreasure(host, killer.id, 1)
 end
 
-function DarkOne_enter(host, me)
+function DarkOne_enter(host)
+    local me = this(host)
     local id = MonsterPowerLayers:top().id + 1
     MonsterPowerLayers:push(
         {
@@ -24,7 +25,9 @@ function DarkOne_enter(host, me)
     }
 end
 
-function DarkOne_leave(host, me)
+function DarkOne_leave(host)
+    local me = this(host)
+
     MonsterPowerLayers:remove(CardData[me.id].ipID)
 end
 

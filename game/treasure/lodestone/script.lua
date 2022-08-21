@@ -26,7 +26,7 @@ function Lodestone_leave(host, me, owner)
 end
 
 function Lodestone_trigger1_check(host, me)
-    return Common_LastRoll(host).value == 3
+    return Common_LastRoll(host, me).value == 3
 end
 
 function Lodestone_trigger1_cost(host, cardInfo)

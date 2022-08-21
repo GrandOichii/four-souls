@@ -9,7 +9,7 @@
         "effect": "HolySquirt_rewards"
     },
     "on": {
-        "roll": {
+        "post_roll": {
             "check": "HolySquirt_trigger_check",
             "effect": "HolySquirt_trigger"
         }

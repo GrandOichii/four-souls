@@ -29,4 +29,6 @@ function WheelOfFortune_use(host)
         gainTreasure(host, owner.id, 1)
         return
     end
+    discardMe(host, this(host).id)
+
 end
