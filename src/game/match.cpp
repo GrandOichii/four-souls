@@ -352,8 +352,6 @@ void MatchState::pushTable(lua_State* L) const {
     }
     lua_settable(L, -3);
 
-
-
     //  TODO push loot discard
     //  TODO push monster discard
     //  TODO push treasure discard

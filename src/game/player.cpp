@@ -481,7 +481,9 @@ string BotPlayer::promptAction(MatchState& state) {
         throw std::runtime_error("bot action prompt script failed");
     }
     if (!lua_isstring(L, -1)) throw std::runtime_error("bot action prompt didn't return a string");
-    return (string)lua_tostring(L, -1);
+    auto result = (string)lua_tostring(L, -1);
+    lua_pop(L, 1);
+    return result;
 }
 
 void BotPlayer::update(MatchState& state) {
@@ -524,7 +526,8 @@ string BotPlayer::promptResponse(MatchState& state, string text, string choiceTy
     }
     if (!lua_isstring(L, -1)) throw std::runtime_error("bot action prompt didn't return a string");
     auto result = (string)lua_tostring(L, -1);
-    return (string)lua_tostring(L, -1);
+    lua_pop(L, 1);
+    return result;
 }
 
 string BotPlayer::promptSimpleResponse(MatchState& state, string text, vector<string> choices) {
