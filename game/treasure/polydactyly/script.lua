@@ -58,7 +58,10 @@ end
 
 function Polydactyly_trigger2(host)
     local owner = getTopOwner(host)
-    addPlayableCount(host, owner.id)
+    if Common_OwnersTurn(this(host).id) then
+        addPlayableCount(host, owner.id)
+    end
+
 end
 
 function Polydactyly_trigger3_check(host, me)

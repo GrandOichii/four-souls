@@ -63,6 +63,8 @@ function BagLunch_enter(host)
 end
 
 function BagLunch_leave(host)
+    local me = this(host)
+    local owner = getTopOwner(host)
     DestroyFuncStack:remove('destroy'..me.id)
     Common_DecMaxLife(host, CardData[me.id].ihID, owner.id)
 end

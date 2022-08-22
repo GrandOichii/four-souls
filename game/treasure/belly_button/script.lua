@@ -10,7 +10,9 @@ end
 
 function BellyButton_trigger1(host)
     local owner = getTopOwner(host)
-    addPlayableCount(host, owner.id)
+    if Common_OwnersTurn(this(host).id) then
+        addPlayableCount(host, owner.id)
+    end
 end
 
 function BellyButton_trigger2_check(host, me)

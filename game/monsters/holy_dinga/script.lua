@@ -10,6 +10,7 @@ function HolyDinga_trigger_check(host, me)
 end
 
 function HolyDinga_trigger(host)
-	local roll = CardData[me.id].lastROll
+	local me = this(host)
+	local roll = CardData[me.id].lastRoll
 	healPlayer(host, roll.ownerID, 1)
 end
