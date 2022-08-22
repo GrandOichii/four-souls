@@ -12,9 +12,10 @@ function TheLovers_cost(host, cardInfo)
 end
 
 function TheLovers_use(host)
+    discardMe(host, this(host).id)
+
     local me = this(host)
     local target = popTarget(host)
     Common_TempIncMaxLife(host, me.id, target.id, 2)
-    discardMe(host, this(host).id)
 
 end

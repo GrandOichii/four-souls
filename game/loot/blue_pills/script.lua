@@ -1,4 +1,6 @@
 function BluePills_use(host, me)
+    discardMe(host, this(host).id)
+
     local roll = popRollStack(host).value
     local owner = getTopOwner(host)
     if roll == 1 or roll == 2 then
@@ -10,6 +12,5 @@ function BluePills_use(host, me)
         return
     end
     Common_Discard(host, owner.id, 1)
-    discardMe(host, this(host).id)
 
 end

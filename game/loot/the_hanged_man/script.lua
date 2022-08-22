@@ -1,6 +1,7 @@
 --  TODO untested
 
 function TheHangedMan_use(host)
+    discardMe(host, this(host).id)
     local owner = getTopOwner(host)
     local decks = {LOOT_DECK, TREASURE_DECK, MONSTER_DECK}
     for _, deck in ipairs(decks) do
@@ -14,6 +15,6 @@ function TheHangedMan_use(host)
         end
     end
     lootCards(host, owner.id, 2)
-    discardMe(host, this(host).id)
+    
 
 end

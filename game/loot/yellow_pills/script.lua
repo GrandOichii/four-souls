@@ -1,4 +1,6 @@
 function YellowPills_use(host)
+    discardMe(host, this(host).id)
+
     local owner = getTopOwner(host)
     local roll = popRollStack(host).value
     if roll == 1 or roll == 2 then
@@ -17,6 +19,5 @@ function YellowPills_use(host)
         subCoins(host, owner.id, amount)
         return
     end
-    discardMe(host, this(host).id)
 
 end

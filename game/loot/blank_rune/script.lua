@@ -1,4 +1,5 @@
 function BlankRune_use(host)
+    discardMe(host, this(host).id)
     local owner = getTopOwner(host)
     local dealDamageF = function(host, targetID, amount)
         dealDamage(host, PLAYER, owner["id"], PLAYER, targetID, amount)
@@ -19,6 +20,6 @@ function BlankRune_use(host)
     for _, player in ipairs(players) do
         action(host, player["id"], roll)
     end
-    discardMe(host, this(host).id)
+    
 
 end

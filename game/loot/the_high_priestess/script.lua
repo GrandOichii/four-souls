@@ -11,10 +11,11 @@ function TheHighPriestess_cost(host, cardInfo)
 end
 
 function TheHighPriestess_use(host)
+    discardMe(host, this(host).id)
+
     local target = popTarget(host)
     local owner = getTopOwner(host)
     local roll = popRollStack(host).value
     dealDamage(host, PLAYER, owner.id, target.type, target.id, roll)
-    discardMe(host, this(host).id)
 
 end

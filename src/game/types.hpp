@@ -37,6 +37,7 @@ const string ATTACK_MONSTER_TYPE = "attack";
 const string ACTIVATE_ITEM_TYPE = "activate";
 const string ACTIVATE_CHARACTER_TYPE = "activate_character";
 const string COMBAT_END_TYPE = "combat_end";
+const string MONSTER_DEATH_TRIGGER_TYPE = "monster_death_trigger";
 const string MONSTER_ENTER_TYPE = "monster_enter";
 const string MONSTER_LEAVE_TYPE = "monster_leave";
 const string ITEM_ENTER_TYPE = "item_enter";

@@ -39,7 +39,7 @@ void Game::loadLootCards(string dir) {
     for (const auto& jj : jcards.items()) {
         string tdir = fs::join(dir, jj.key());
         auto jjj = fs::readJS(fs::join(tdir, CARD_INFO_FILE));
-        auto card = new ScriptCard(tdir, jjj, CardTypes::Treasure);
+        auto card = new ScriptCard(tdir, jjj, CardTypes::Loot);
         this->_lootCards.push_back(card);
         this->_lootDeckTemplate.push_back(std::make_pair(card, jj.value()));
     }

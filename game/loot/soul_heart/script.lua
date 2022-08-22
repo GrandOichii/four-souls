@@ -12,8 +12,9 @@ function SoulHeart_cost(host, cardInfo)
 end
 
 function SoulHeart_use(host)
+    discardMe(host, this(host).id)
     local targetID = popTarget(host)["id"]
     addBlueHealth(host, targetID, 1)
-    discardMe(host, this(host).id)
+    
 
 end

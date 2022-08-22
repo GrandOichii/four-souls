@@ -3,6 +3,8 @@ function Joker_cost(host, cardInfo)
 end
 
 function Joker_use(host)
+    discardMe(host, this(host).id)
+
     local owner = getTopOwner(host)
     local target = popTarget(host)
     local player = Common_PlayerWithID(host, target.id)
@@ -12,6 +14,4 @@ function Joker_use(host)
     local cid = requestCardsInHand(host, owner.id, player.id, 'Choose a card to steal', 1)[1]
     removeFromEverywhere(host, cid)
     moveToHand(host, owner.id, cid)
-    discardMe(host, this(host).id)
-
 end

@@ -1,4 +1,6 @@
 function RedPills_use(host)
+    discardMe(host, this(host).id)
+
     local me = this(host)
     local owner = getTopOwner(host)
     local roll = popRollStack(host).value
@@ -7,7 +9,6 @@ function RedPills_use(host)
         return
     end
     if roll == 3 or roll == 4 then
-        --  TODO untested
         Common_TempIncMaxLife(host, me.id, owner.id, 1)
         return
     end
@@ -15,6 +16,5 @@ function RedPills_use(host)
         dealDamage(host, PLAYER, owner.id, PLAYER, owner.id, 1)
         return
     end
-    discardMe(host, this(host).id)
 
 end

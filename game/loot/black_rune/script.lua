@@ -1,4 +1,6 @@
 function BlackRune_use(host)
+    discardMe(host, this(host).id)
+
     local owner = getTopOwner(host)
     local roll = popRollStack(host).value
     if roll == 1 or roll == 2 then
@@ -20,6 +22,5 @@ function BlackRune_use(host)
         discardLoot(host, owner.id, card.id)
     end
     lootCards(host, owner.id, 3)
-    discardMe(host, this(host).id)
 
 end

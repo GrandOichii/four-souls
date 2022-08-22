@@ -1,4 +1,5 @@
 function BlackPills_use(host)
+    discardMe(host, this(host).id)
     local owner = getTopOwner(host)
     local roll = popRollStack(host).value
     if roll == 1 or roll == 2 then
@@ -12,6 +13,5 @@ function BlackPills_use(host)
         return
     end
     dealDamage(host, PLAYER, owner.id, PLAYER, owner.id, 1)
-    discardMe(host, this(host).id)
 
 end

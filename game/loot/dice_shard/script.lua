@@ -3,9 +3,10 @@ function DiceShard_cost(host, cardInfo)
 end
 
 function DiceShard_use(host)
+    discardMe(host, this(host).id)
     local target = popTarget(host)
     local value = math.random(1, 6)
     setRollValue(host, target.id, value)
-    discardMe(host, this(host).id)
+    
 
 end

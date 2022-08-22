@@ -1,6 +1,7 @@
 --  TODO untested
 
 function Jester_use(host)
+    discardMe(host, this(host).id)
     local owner = getTopOwner(host)
     local cardIDs = {}
     -- for _, player in ipairs(getPlayers(host)) do
@@ -31,6 +32,6 @@ function Jester_use(host)
     for _, id in ipairs(results) do
         Common_RerollItem(host, id)
     end
-    discardMe(host, this(host).id)
+    
 
 end

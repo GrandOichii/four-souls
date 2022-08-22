@@ -352,6 +352,8 @@ void MatchState::pushTable(lua_State* L) const {
     }
     lua_settable(L, -3);
 
+
+
     //  TODO push loot discard
     //  TODO push monster discard
     //  TODO push treasure discard
@@ -445,7 +447,7 @@ void Match::killMonster(CardWrapper* w) {
 
     // death
     effect = card->deathEffect();
-    effect.pushMe(this, w, _activePlayer, DEATH_TYPE);
+    effect.pushMe(this, w, _activePlayer, MONSTER_DEATH_TRIGGER_TYPE);
 
     refillDeadMonsters();
 }
@@ -1490,6 +1492,7 @@ int Match::wrap_popDeathStack(lua_State* L) {
     stackSizeIs(L, 1);
     auto match = getTopMatch(L, 1);
     auto event = match->_deathStack.back();
+    // std::cout << "SETTING LAST DEATH TO " << event.type << "\t" << event.id << std::endl;
     match->_lastDeath = event;
     match->_deathStack.pop_back();
     if (event.type == PLAYER_TYPE) {
@@ -2687,11 +2690,10 @@ MatchState Match::getState() {
                 de = &_deathStack[dsp];
                 ++dsp;
             }
-            std::cout << "DEATH " << de->type << " " << de->id << std::endl;
             if (de->type == MONSTER_TYPE) {                
                 message += cardWithID(de->id)->card()->name();
             } else {
-                // message += playerWithID(de->id)->name();
+                message += playerWithID(de->id)->name();
             }
             s.message = message;
         }

@@ -15,7 +15,8 @@ end
 
 function MegaBomb_use(host)
     local target = popTarget(host)
+    local me = this(host)
     dealDamage(host, PLAYER, getTopOwner(host).id, target.type, target.id, 2)
-    discardMe(host, this(host).id)
+    discardMe(host, me.id)
 
 end

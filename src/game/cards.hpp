@@ -41,7 +41,7 @@ class Player;
 class ScriptCard : public Card {
 private:
     string _script;
-    bool _isEternal;
+    bool _isEternal = false;
 
     std::map<string, Trigger> _triggerMap;
     std::vector<Effect> _abilities;

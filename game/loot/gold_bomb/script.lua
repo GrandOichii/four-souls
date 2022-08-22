@@ -14,8 +14,9 @@ function GoldBomb_cost(host, cardInfo)
 end
 
 function GoldBomb_use(host)
+    discardMe(host, this(host).id)
+
     local target = popTarget(host)
     dealDamage(host, PLAYER, getTopOwner(host).id, target.type, target.id, 3)
-    discardMe(host, this(host).id)
 
 end

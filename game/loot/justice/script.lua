@@ -14,6 +14,7 @@ function Justice_cost(host, cardInfo)
 end
 
 function Justice_use(host)
+    discardMe(host, this(host).id)
 
     local target = popTarget(host)
     local targetID = target.id
@@ -29,6 +30,5 @@ function Justice_use(host)
     if diff > 0 then
         lootCards(host, owner["id"], diff)
     end
-    discardMe(host, this(host).id)
 
 end

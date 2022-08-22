@@ -5,10 +5,11 @@ function TwoOfSpades_cost(host, cardInfo)
 end
 
 function TwoOfSpades_use(host)
+    discardMe(host, this(host).id)
+
     local target = popTarget(host)
     local player = Common_PlayerWithID(host, target.id)
     local owner = getTopOwner(host)
     lootCards(host, owner.id, #player.hand)
-    discardMe(host, this(host).id)
 
 end

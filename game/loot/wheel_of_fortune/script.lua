@@ -1,4 +1,6 @@
 function WheelOfFortune_use(host)
+    discardMe(host, this(host).id)
+
     local owner = getTopOwner(host)
     local roll = popRollStack(host).value
     if roll == 1 then
@@ -29,6 +31,5 @@ function WheelOfFortune_use(host)
         gainTreasure(host, owner.id, 1)
         return
     end
-    discardMe(host, this(host).id)
 
 end

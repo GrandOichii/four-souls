@@ -1,4 +1,6 @@
 function Bomb_cost(host, cardInfo)
+    discardMe(host, this(host).id)
+
     local owner = Common_PlayerWithID(host, cardInfo.ownerID)
     local choice1 = 'Player'
     local choice2 = 'Monster'
@@ -16,6 +18,5 @@ end
 function Bomb_use(host)
     local target = popTarget(host)
     dealDamage(host, PLAYER, getTopOwner(host).id, target.type, target.id, 1)
-    discardMe(host, this(host).id)
 
 end
