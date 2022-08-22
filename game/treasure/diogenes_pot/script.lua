@@ -18,7 +18,10 @@ function DiogenesPot_enter(host)
 	}
 end
 
-function DiogenesPot_leave(host, me, owner)
+function DiogenesPot_leave(host)
+    local me = this(host)
+    local owner = getTopOwner(host)
+
     CombatDamageLayers:remove(CardData[me.id].ipID)
 
 end

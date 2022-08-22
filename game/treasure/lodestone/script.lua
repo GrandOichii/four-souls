@@ -21,7 +21,10 @@ function Lodestone_enter(host)
     }
 end
 
-function Lodestone_leave(host, me, owner)
+function Lodestone_leave(host)
+    local me = this(host)
+    local owner = getTopOwner(host)
+
     Common_DecMonsterRolls(host, CardData[me.id].irID, owner.id)
 end
 

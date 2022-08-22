@@ -6,7 +6,10 @@ function TheWiz_enter(host)
     }
 end
 
-function TheWiz_leave(host, me, owner)
+function TheWiz_leave(host)
+    local me = this(host)
+    local owner = getTopOwner(host)
+
     Common_DecMonsterRolls(host, CardData[me.id].irID, owner.id)
 end
 

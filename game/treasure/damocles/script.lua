@@ -14,7 +14,10 @@ function Damocles_enter(host)
 
 end
 
-function Damocles_leave(host, me, owner)
+function Damocles_leave(host)
+    local me = this(host)
+    local owner = getTopOwner(host)
+
     GainTreasureFuncStack:remove('gain'..me.id)
 end
 

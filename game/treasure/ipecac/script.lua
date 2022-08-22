@@ -8,14 +8,17 @@ function Ipecac_enter(host)
     }
 end
 
-function Ipecac_leave(host, me, owner)
+function Ipecac_leave(host)
+    local me = this(host)
+    local owner = getTopOwner(host)
+
     Common_DecAttack(host, CardData[me.id].iaID, owner.id)
 end
 
 
-function Ipecac_trigger_check(host, cardInfo)
+function Ipecac_trigger_check(host, me)
     local roll = Common_LastRoll(host, me)
-    return roll.value == 6 and roll.ownerID == cardInfo.ownerID and roll.isCombatRoll
+    return roll.value == 6 and roll.ownerID == me.ownerID and roll.isCombatRoll
 end
 
 function Ipecac_trigger(host)

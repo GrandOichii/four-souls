@@ -352,7 +352,7 @@ function Common_TargetPlayer(host, ownerID)
     for _, player in ipairs(players) do
         ids[#ids+1] = player.id
     end
-    local choiceId, payed = requestChoice(host, ownerID, "Choose a player", PLAYER, ids)
+    local choiceId, payed = requestChoice(host, ownerID, 'Choose a player', PLAYER, ids)
     if not payed then return false end
     pushTarget(host, choiceId, PLAYER)
     return true

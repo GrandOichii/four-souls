@@ -30,7 +30,10 @@ function ChocolateMilk_enter(host)
     }
 end
 
-function ChocolateMilk_leave(host, me, owner)
+function ChocolateMilk_leave(host)
+    local me = this(host)
+    local owner = getTopOwner(host)
+
     Common_DecAttack(host, CardData[me.id].iaID, owner.id)
 end
 

@@ -18,6 +18,9 @@ function BallOfBandages_enter(host)
 	}
 end
 
-function BallOfBandages_leave(host, me, owner)
+function BallOfBandages_leave(host)
+    local me = this(host)
+    local owner = getTopOwner(host)
+
     CombatDamageLayers:remove(CardData[me.id].ipID)
 end

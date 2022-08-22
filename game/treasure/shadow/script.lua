@@ -61,6 +61,9 @@ function Shadow_enter(host)
     })
 end
 
-function Shadow_leave(host, me, owner)
+function Shadow_leave(host)
+    local me = this(host)
+    local owner = getTopOwner(host)
+
     DeathStack:remove('death'..me.id)
 end

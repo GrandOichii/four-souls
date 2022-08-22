@@ -10,6 +10,7 @@ end
 
 function Wizoob_death(host)
 	local target = popTarget(host).id
+	print('TARGET ID: '..target.id)
 	local player = Common_PlayerWithID(host, target)
 	if #player.souls == 0 then
 		return

@@ -20,7 +20,10 @@ function TwoOfClubs_enter(host)
     })
 end
 
-function TwoOfClubs_leave(host, me, owner)
+function TwoOfClubs_leave(host)
+    local me = this(host)
+    local owner = getTopOwner(host)
+
     LootCardsFuncStack:remove('loot'..me.id)
 end
 

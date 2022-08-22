@@ -69,7 +69,9 @@ function BloodLust_enter(host)
     CardData[me.id].iaID = id
 end
 
-function BloodLust_leave(host, me, owner)
+function BloodLust_leave(host)
+    local me = this(host)
+    local owner = getTopOwner(host)
     MonsterPowerLayers:remove(CardData[me.id].ipID)
     Common_DecAttack(host, CardData[me.id].iaID, owner.id)
 end

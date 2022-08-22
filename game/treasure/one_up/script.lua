@@ -20,6 +20,9 @@ function OneUP_enter(host)
     })
 end
 
-function OneUP_leave(host, me, owner)
+function OneUP_leave(host)
+    local me = this(host)
+    local owner = getTopOwner(host)
+
     DeathStack:remove('death'..me.id)
 end

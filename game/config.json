@@ -2,8 +2,8 @@
     "logWait": 0,
     "logW1ait": 90,
     "soulsToWin": 4,
-    "startingCoinCount": 103,
+    "startingCoinCount": 3,
     "startingLootCount": 3,
     "maxHandSize": 10,
-    "startingPurchaseCount": 10
+    "startingPurchaseCount": 1
 }

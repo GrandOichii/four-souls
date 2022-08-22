@@ -19,7 +19,10 @@ function CarBattery_enter(host)
     })
 end
 
-function CarBattery_leave(host, me, owner)
+function CarBattery_leave(host)
+    local me = this(host)
+    local owner = getTopOwner(host)
+
     RechargeFuncStack:remove('recharge'..me.id)
 end
 

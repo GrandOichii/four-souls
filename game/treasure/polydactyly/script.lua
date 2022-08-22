@@ -24,7 +24,10 @@ function Polydactyly_enter(host)
     addPlayableCount(host, owner.id)
 end
 
-function Polydactyly_leave(host, me, owner)
+function Polydactyly_leave(host)
+    local me = this(host)
+    local owner = getTopOwner(host)
+
     Common_DecAttack(host, CardData[me.id].iaID, owner.id)
 end
 

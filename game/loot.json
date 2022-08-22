@@ -1,5 +1,5 @@
 {
-    "cards": {
+    "card2s": {
         "loot/jester": 1,
         "loot/joker": 1,
         "loot/mega_bomb": 1,
@@ -56,7 +56,7 @@
         "loot/callus": 1,
         "loot/aaa_battery": 1
     },
-    "card1s": {
+    "cards": {
         "loot/jester": 1,
         "loot/joker": 1,
         "loot/mega_bomb": 1,

@@ -18,6 +18,9 @@ function Infamy_enter(host)
 	}
 end
 
-function Infamy_leave(host, me, owner)
+function Infamy_leave(host)
+    local me = this(host)
+    local owner = getTopOwner(host)
+
     CombatDamageLayers:remove(CardData[me.id].ipID)
 end

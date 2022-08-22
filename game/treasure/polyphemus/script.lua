@@ -7,7 +7,10 @@ function Polyphemus_enter(host)
     }
 end
 
-function Polyphemus_leave(host, me, owner)
+function Polyphemus_leave(host)
+    local me = this(host)
+    local owner = getTopOwner(host)
+
     Common_DecAttack(host, CardData[me.id].iaID, owner.id)
     Common_DecMonsterRolls(host, CardData[me.id].irID, owner.id)
 end

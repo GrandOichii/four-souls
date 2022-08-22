@@ -6,7 +6,9 @@ function MomsCoinPurse_enter(host)
 
 end
 
-function MomsCoinPurse_leave(host, me, owner)
+function MomsCoinPurse_leave(host)
+    local me = this(host)
+    local owner = getTopOwner(host)
 
     decBeginningLoot(host, owner["id"])
 

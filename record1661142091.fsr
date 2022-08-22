@@ -1,0 +1,44 @@
+{
+    "actions": {
+        "player 1": [
+            "$PASS",
+            "play_loot 13.0",
+            "$PASS",
+            "activate_character",
+            "$PASS",
+            "play_loot 7.0",
+            "$PASS",
+            "$PASS",
+            "attack 0",
+            "$PASS",
+            "attack 0",
+            "$PASS",
+            "$PASS",
+            "$PASS",
+            "$PASS",
+            "$PASS",
+            "$PASS",
+            "$PASS",
+            "$PASS",
+            "$PASS",
+            "$PASS"
+        ],
+        "player 2": [
+            "$PASS",
+            "$PASS",
+            "$PASS",
+            "$PASS",
+            "$PASS",
+            "$PASS",
+            "$PASS",
+            "$PASS",
+            "$PASS",
+            "$PASS",
+            "$PASS",
+            "$PASS",
+            "$PASS"
+        ]
+    },
+    "first": 0,
+    "seed": 1661142091
+}

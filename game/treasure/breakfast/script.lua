@@ -6,6 +6,9 @@ function Breakfast_enter(host)
     }
 end
 
-function Breakfast_leave(host, me, owner)
+function Breakfast_leave(host)
+    local me = this(host)
+    local owner = getTopOwner(host)
+
     Common_DecMaxLife(host, CardData[me.id].imlID, owner.id)
 end

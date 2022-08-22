@@ -22,7 +22,10 @@ function ChampionBelt_enter(host)
     incAttackCount(host, owner.id)
 end
 
-function ChampionBelt_leave(host, me, owner)
+function ChampionBelt_leave(host)
+    local me = this(host)
+    local owner = getTopOwner(host)
+
     Common_DecAttack(host, CardData[me.id].iaID, owner.id)
 end
 

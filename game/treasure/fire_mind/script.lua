@@ -22,6 +22,9 @@ function FireMind_enter(host)
 	}
 end
 
-function FireMind_leave(host, me, owner)
+function FireMind_leave(host)
+    local me = this(host)
+    local owner = getTopOwner(host)
+
     CombatDamageLayers:remove(CardData[me.id].ipID)
 end

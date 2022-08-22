@@ -6,7 +6,10 @@ function BabyHaunt_enter(host)
     }
 end
 
-function BabyHaunt_leave(host, me, owner)
+function BabyHaunt_leave(host)
+    local me = this(host)
+    local owner = getTopOwner(host)
+
     Common_DecMonsterRolls(host, CardData[me.id].irID, owner.id)
 end
 

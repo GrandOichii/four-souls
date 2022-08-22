@@ -30,7 +30,10 @@ function DryBaby_enter(host)
 	}
 end
 
-function DryBaby_leave(host, me, owner)
+function DryBaby_leave(host)
+    local me = this(host)
+    local owner = getTopOwner(host)
+
     DamageFuncStack:remove('damage'..me.id)
     CombatDamageLayers:remove(CardData[me.id].ipID)
 end

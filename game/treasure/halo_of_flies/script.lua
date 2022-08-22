@@ -18,6 +18,8 @@ function HaloOfFlies_enter(host)
 	}
 end
 
-function HaloOfFlies_leave(host, me, owner)
+function HaloOfFlies_leave(host)
+    local me = this(host)
+    local owner = getTopOwner(host)
     CombatDamageLayers:remove(CardData[me.id].ipID)
 end

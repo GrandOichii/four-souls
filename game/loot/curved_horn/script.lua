@@ -21,7 +21,10 @@ function CurvedHorn_enter(host)
     }
 end
 
-function CurvedHorn_leave(host, me, owner)
+function CurvedHorn_leave(host)
+    local me = this(host)
+    local owner = getTopOwner(host)
+
     Common_DecAttack(host, CardData[me.id].iaID, owner.id)
 end
 

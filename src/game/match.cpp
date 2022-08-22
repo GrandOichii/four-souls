@@ -2687,10 +2687,11 @@ MatchState Match::getState() {
                 de = &_deathStack[dsp];
                 ++dsp;
             }
+            std::cout << "DEATH " << de->type << " " << de->id << std::endl;
             if (de->type == MONSTER_TYPE) {                
                 message += cardWithID(de->id)->card()->name();
             } else {
-                message += playerWithID(de->id)->name();
+                // message += playerWithID(de->id)->name();
             }
             s.message = message;
         }

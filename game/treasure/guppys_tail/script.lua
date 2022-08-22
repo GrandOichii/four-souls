@@ -7,7 +7,10 @@ function GuppysTail_enter(host)
 
 end
 
-function GuppysTail_leave(host, me, owner)
+function GuppysTail_leave(host)
+    local me = this(host)
+    local owner = getTopOwner(host)
+
 
     decBeginningLoot(host, owner["id"])
 

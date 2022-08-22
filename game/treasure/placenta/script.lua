@@ -19,7 +19,10 @@ function Placenta_enter(host)
 	}
 end
 
-function Placenta_leave(host, me, owner)
+function Placenta_leave(host)
+    local me = this(host)
+    local owner = getTopOwner(host)
+
     CombatDamageLayers:remove(CardData[me.id].ipID)
     Common_DecMaxLife(host, CardData[me.id].imlID, owner.id)
 end

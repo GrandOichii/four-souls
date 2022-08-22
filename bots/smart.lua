@@ -18,11 +18,11 @@ package.path = package.path..';lua/?.lua'
 local json = require "json"
 
 local function isSameState(state1, state2)
-    return json:encode(state1) == json:encode(state2)
+    return json.encode(state1) == json.encode(state2)
 end
 
 local function isSameMe(me1, me2)
-    return json:encode(me1) == json:encode(me2)
+    return json.encode(me1) == json.encode(me2)
 end
 
 local lootBlacklist = {
