@@ -220,8 +220,12 @@ public:
     string popFirst() {
         if (!_actions.size()) {
             throw std::runtime_error("scripted player ran out of actions");
+            return "";
         }
         auto result = _actions.front();
+        // name();
+        // std::cout << result << std::endl;
+        // std::cout << "PLAYER " << name() << " RETURNS " << result << std::endl;
         _actions.pop();
         return result;
     }

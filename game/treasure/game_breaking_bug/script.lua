@@ -1,6 +1,4 @@
---  TODO untested
-
-function GBG_trigger_check(host, cardInfo)
+function GBG_trigger_check(host, me)
     return Common_LastRoll(host, me).value == 1
 end
 

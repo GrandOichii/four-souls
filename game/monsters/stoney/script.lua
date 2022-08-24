@@ -29,7 +29,7 @@ function Stoney_rewards(host)
 	lootCards(host, killer.id, 1)
 end
 
-function Stoney_trigger_check(host)
+function Stoney_trigger_check(host, me)
     return Common_LastDeath(host).type == MONSTER
 end
 

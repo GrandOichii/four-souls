@@ -245,33 +245,9 @@ private:
             auto card = cardW->card();
             Effect& effect = card->useEffect();
             effect.pushMe(this, cardW, player, PLAY_LOOT_CARD_TYPE);
-            // auto e = new StackEffect(
-            //     "_playTopLootCard",
-            //     player,
-            //     cardW,
-            //     PLAY_LOOT_CARD_TYPE
-            // );
-            // this->pushToStack(e);
-            // auto cost = card->costFuncName();
-            // if (cost.size()) {
-            //     // int old = _targetStack.size();
-            //     bool payed = this->requestPayCost(cost, player);
-            //     if (!payed) {
-            //         this->_stack.pop_back();
-            //         delete e;
-            //         return;
-            //     };
-            //     // int c = _targetStack.size() - old;
-            //     // for (int i = 0; i < c; i++){
-            //     //     auto it = _targetStack.end() - 1 - i;
-            //     //     e->targets.push_back(it->second);
-            //     // }
-
-            // }
             player->takeCard(cardID);
             this->log(player->name() + " plays card " + card->name());
             player->decPlayableAmount();
-            // std::cout << "PLAYABLE AMOUNT LEFT: " << player->getPlayableAmount() << std::endl;
             this->applyTriggers(PLAY_LOOT_CARD_TYPE);
         }},
         {ACTION_BUY_TREASURE, [this](Player* player, std::vector<string> args){
@@ -284,44 +260,16 @@ private:
                 nullptr,
                 BUY_TREASURE_TYPE
             ));
-            this->triggerLastEffectType();
+            this->applyTriggers(BUY_TREASURE_TYPE);
         }},
         {ACTION_ACTIVATE_CARD, [this](Player* player, std::vector<string> args){
             auto cardID = std::stoi(args[1].c_str());
             auto abilityI = std::stoi(args[2].c_str());
             auto w = this->cardWithID(cardID);
             auto card = w->card();
-            std::cout << "ACTIVATING CARD " << card->name() << std::endl;
             auto ability = card->abilities()[abilityI];
             ability.pushMe(this, w, player, ACTIVATE_ITEM_TYPE);
-            // auto p = new StackEffect(
-            //     ability.funcName,
-            //     player,
-            //     w,
-            //     ACTIVATE_ITEM_TYPE
-            // );
-            // this->pushToStack(p);
-            // int old = _targetStack.size();
-            // bool payed = this->requestPayCost(ability.costFuncName, player);
-            // if (!payed) {
-            //     this->_stack.pop_back();
-            //     delete p;
-            //     return;
-            // }
-            // int c = _targetStack.size() - old;
-            // for (int i = 0; i < c; i++){
-            //     auto it = _targetStack.end() - 1 - i;
-            //     p->targets.push_back(it->second);
-            // }
-            // this->log(player->name() + " activated " + card->name());
-            // if (ability.usesStack) {
-            //     applyTriggers(ACTIVATE_ITEM_TYPE);
-            //     return;
-            // }
-            //  TODO figure out how to remove from stack
-            // this->execFunc(ability.funcName);
-            // this->_stack.pop_back();
-            // delete p;
+            this->applyTriggers(ACTIVATE_ITEM_TYPE);
         }},
         {ACTION_ACTIVATE_CHARACTER_CARD, [this](Player* player, std::vector<string> args) {
             player->tapCharacter();
@@ -329,14 +277,6 @@ private:
             auto card = cardW->card();
             Effect& effect = card->useEffect();
             effect.pushMe(this, cardW, player, ACTIVATE_CHARACTER_TYPE);
-            
-            // auto p = new StackEffect(
-            //     cardW->card()->useFuncName(),
-            //     player,
-            //     cardW,
-            //     ACTIVATE_CHARACTER_TYPE
-            // );
-            // this->pushToStack(p);
             this->log(player->name() + " activates his characted card");
             this->triggerLastEffectType();
         }},

@@ -505,7 +505,7 @@ function Common_ModLastRoll(host, value)
     if roll.value == 6 then
         return
     end
-    setRollValue(host, #rs-1, roll.value + 1)
+    setRollValue(host, #rs-1, roll.value + value)
 end
 
 function Common_LastRoll(host, me)
@@ -529,9 +529,9 @@ function Common_OwnerDied(host, ownerID)
     return death.type == PLAYER and death.id == ownerID
 end
 
-function Common_OwnerRolled(host, ownerID, value)
+function Common_OwnerRolled(host, me, value)
     local roll = Common_LastRoll(host, me)
-    if roll.ownerID ~= ownerID then
+    if roll.ownerID ~= me.ownerID then
         return false
     end
     return roll.value == value

@@ -9,7 +9,7 @@ function CursedSoul_trigger1(host)
     me = this(host)
     dealDamage(host, PLAYER, owner.id, PLAYER, owner.id, 1)
     if me.counters >= 6 then
-        removeFromEverywhere(host, me)
+        removeFromEverywhere(host, me.id)
         addSoulCard(host, owner.id, me.id)
     end
 end

@@ -11,7 +11,7 @@
         "effect": "EmptyVessel_leave"
     },
     "on": {
-        "post_roll": {
+        "roll": {
             "check": "EmptyVessel_trigger_check",
             "effect": "EmptyVessel_trigger"
         }

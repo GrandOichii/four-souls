@@ -16,31 +16,27 @@
     -- when buying cards with curved horn effect and attacking again
     -- targeting bug in client: d100 rolls a 3 + lodestone trigger, both cards will point to the same monster
     -- does callus save from evil twins effect
+    -- shiny rock don't work
 
 - implement:
-    -- add wouldRoll trigger (???)
-    -- change how rolling dice works (first the roll is added, then, when it resolves, the corresponding effect is added + all the triggers from that roll)
+    -- fix the record error
     -- move from name-based indexing to key indexing
     -- addListener(host, <owner id>, <card id>, <on what>, <check func name>, <cost func name>, <effect func name>), returns listener id
     -- removeListener(host, <listener id>)
     -- change how guppy's hairball works
     -- fix bag o trash
-    -- add "requiresTap" field
     -- add custom counters (egg counters mostly)
     -- remove killing players multiple times per turn
     -- add refilling shops/monsters to the stack
-    -- add state effects (are checked every time game updates)
     -- enable activation choice in client (if card has 2+ activated abilities)
     -- add game logs (perhaps in a different window)
     -- better card zoom ( perhaps in a different window )
     -- add attacking top of monster deck
     -- add bonus effects to the monster deck
-    -- add bad treasure
     -- if a player gains +1 treasure due to rewards, and the card has a monster death trigger, the card is triggered immediately - decide whether to keep or not
     -- add rooms
     -- add better console argument parsing
     -- think how to implement more complex cards (flipable cards, cards that turn into monsters)
-    -- search for the reason of the [declare_attack-roll] in stack (if it's still even present)
     -- change choice cards to store player's choice in CardData, dont forget to log the player's choice for other players
     -- figure out how to implement canceling effects
     -- add multiple cube of meat cards

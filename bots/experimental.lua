@@ -215,11 +215,11 @@ function Bot_PromptAction(me, state)
 end
 
 function Bot_PromptResponse(me, state, text, choiceType, choices)
-    return '$FIRST'
+    return choices[1]
 end
 
 function Bot_PromptSimpleResponse(me, state, text, choices)
-    return '$FIRST'
+    return choices[1]
 end
 
 function Bot_UpdateWinner(winnerID)

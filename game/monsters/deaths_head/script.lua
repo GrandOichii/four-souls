@@ -27,7 +27,7 @@ function DeathsHead_leave(host)
     MonsterPowerLayers:remove(CardData[me.id].ipID)
 end
 
-function DeathsHead_trigger_check(host)
+function DeathsHead_trigger_check(host, me)
     return Common_LastDeath(host).type == MONSTER
 end
 

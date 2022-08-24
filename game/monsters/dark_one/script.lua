@@ -19,6 +19,7 @@ function DarkOne_enter(host)
             end
         }
     )
+    print('DARK ONE ENTERED')
     CardData[me.id] = {
         pInc = 0,
         ipID = id
@@ -37,6 +38,7 @@ end
 
 function DarkOne_trigger1(host)
     local me = this(host)
+    print(CardData[me.id])
     CardData[me.id].pInc = CardData[me.id].pInc + 1
 end
 

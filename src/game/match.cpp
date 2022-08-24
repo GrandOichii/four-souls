@@ -899,21 +899,9 @@ int Match::wrap_popTarget(lua_State* L) {
 int Match::wrap_requestChoice(lua_State* L) {
     stackSizeIs(L, 5);
     auto match = getTopMatch(L, 1);
-    if (!lua_isnumber(L, 2)) {
-        lua_err(L);
-        exit(1);
-    }
-    auto pid = (int)lua_tonumber(L, 2);
-    if (!lua_isstring(L, 3)) {
-        lua_err(L);
-        exit(1);
-    }
-    auto text = (string)lua_tostring(L, 3);
-    if (!lua_isstring(L, 4)) {
-        lua_err(L);
-        exit(1);
-    }
-    auto choiceType = (string)lua_tostring(L, 4);
+    auto pid = getTopNumber(L, 2);
+    auto text = getTopString(L, 3);
+    auto choiceType = getTopString(L, 4);
     if(!lua_istable(L, 5)) {
         lua_err(L);
         exit(1);
@@ -923,17 +911,13 @@ int Match::wrap_requestChoice(lua_State* L) {
     for (int i = 0; i < size; i++) {
         lua_pushnumber(L, i + 1);
         lua_gettable(L, 5);
-        if (!lua_isnumber(L, -1)) {
-            lua_err(L);
-            exit(1);
-        }
-        choices.push_back((int)lua_tonumber(L, -1));
+        choices.push_back(getTopNumber(L, -1));
         lua_pop(L, 1);
     }
     Player* player = match->playerWithID(pid);
     auto state = match->getState();
     auto response = player->promptResponse(state, text, choiceType, choices);
-    
+    // std::cout << "PROMPTING RESPONSE FOR TEXT " << text << std::endl;
     std::cout << "\t" << player->name() << ": " << response << " (response)" << std::endl;
     match->saveResponse(player->name(), response);
     if (response == RESPONSE_CANCEL) {
@@ -990,22 +974,11 @@ int Match::wrap_getAttack(lua_State* L) {
 }
 
 int Match::wrap_discardLoot(lua_State* L) {
-    if (lua_gettop(L) != 3) {
-        lua_err(L);
-        exit(1);
-    }
+    stackSizeIs(L, 3);
     auto match = getTopMatch(L, 1);
-    if (!lua_isnumber(L, 2)) {
-        lua_err(L);
-        exit(1);
-    }
-    auto pid = (int)lua_tonumber(L, 2);
+    auto pid = getTopNumber(L, 2);
     Player* player = match->playerWithID(pid);
-    if (!lua_isnumber(L, 3)) {
-        lua_err(L);
-        exit(1);
-    }
-    auto cid = (int)lua_tonumber(L, 3);
+    auto cid = getTopNumber(L, 3);
     auto card = player->takeCard(cid);
     match->_lootDiscard.push_back(card);
     return 0;
@@ -1348,28 +1321,6 @@ int Match::wrap_this(lua_State *L) {
     return 1;
 }
 
-// int Match::wrap_pushRollEvent(lua_State* L) {
-//     // pushRollEvent(host, cardInfo["id"], false)
-//     stackSizeIs(L, 2);
-//     auto match = getTopMatch(L, 1);
-//     auto pid = getTopNumber(L, 2);
-//     Player* player = match->playerWithID(pid);
-//     RollEvent p(
-//         player,
-//         false
-//     );
-//     match->log(player->name() + " rolls a " + std::to_string(p.value));
-//     match->_rollStack.push_back(p);
-//     match->pushToStack(new StackEffect(
-//         "_popRollStack",
-//         player, 
-//         nullptr,
-//         ROLL_TYPE
-//     ));
-//     match->applyTriggers(ROLL_TYPE);
-//     return 0;
-// }
-
 int Match::wrap_popRollStack(lua_State* L) {
     stackSizeIs(L, 1);
     auto match = getTopMatch(L, 1);
@@ -1652,14 +1603,6 @@ int Match::wrap_topCardsOf(lua_State* L) {
     pushCards(result, L);
     return 1;
 }
-
-// int Match::wrap_activateRoll(lua_State* L) {
-//     stackSizeIs(L, 1);
-//     auto match = getTopMatch(L, 1);
-//     match->_stack.pop_back();
-//     match->_stack.push_back(match->_rollStack.back().effect);
-//     return 0;
-// }
 
 int Match::wrap_gainTreasure(lua_State* L) {
     stackSizeIs(L, 3);
@@ -2334,7 +2277,6 @@ void Match::start() {
         auto cards = this->getTopLootCards(_startingLootAmount);
         p->addLootCards(cards);
         this->log(p->name() + "\t" + std::to_string(p->id()));
-
     }
     // setup shop
     auto tcards = getTopTreasureCards(_startingShopSize);
@@ -2349,6 +2291,7 @@ void Match::start() {
         auto mcard = ((MonsterCard*)c->card());
         mcard->createData(L, this, c->id());
         _monsterDataArr.push_back(mcard->data());
+        mcard->enterEffect().pushMe(this, c, _activePlayer, MONSTER_ENTER_TYPE);
         // execMEnterLeave(c, mcard->enterFuncName());
     }
 
@@ -2500,8 +2443,7 @@ void Match::resetEOT() {
 void Match::executePlayerAction(Player* player, string action) {
     this->saveResponse(player->name(), action);
     auto split = str::split(action, " ");
-    // std::cout << "ACIONS"
-    if (!this->_actionMap.count(split[0])) throw std::runtime_error("don't have a handler for |" + split[0] + "| action in match");
+    if (!this->_actionMap.count(split[0])) throw std::runtime_error("don't have a handler for |" + action + "| action in match (player: " + player->name() + ")");
     this->_actionMap[split[0]](player, split);
 }
 
@@ -2788,7 +2730,7 @@ void Match::refillDeadMonsters() {
         auto mc = ((MonsterCard*)w->card());
         mc->deleteData();
         // std::cout << "EXECUTING MONSTER LEAVE " << w->card()->name() << " -- " << w->card()->leaveFuncName() << std::endl;
-        mc->enterEffect().pushMe(this, w, _activePlayer, MONSTER_LEAVE_TYPE);
+        mc->leaveEffect().pushMe(this, w, _activePlayer, MONSTER_LEAVE_TYPE);
         _monsters[i].pop_back();
         _monsterDataArr[i] = nullptr;
         if (w->card()->soulCount()) {

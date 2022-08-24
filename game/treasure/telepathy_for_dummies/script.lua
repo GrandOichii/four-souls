@@ -33,7 +33,6 @@ function TelepathyForDummies_trigger2(host)
     if roll.value == 6 then
         return
     end
-    local me = this(host)
     setRollValue(host, #rs-1, CardData[me.id].lr)
 end
 

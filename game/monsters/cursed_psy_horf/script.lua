@@ -4,7 +4,7 @@ function CursedPsyHorf_rewards(host)
 	lootCards(host, killer.id, 2)
 end
 
-function CursedPsyHorf_trigger_check(host)
+function CursedPsyHorf_trigger_check(host, me)
 	return true
 end
 
