@@ -1,0 +1,11 @@
+{
+    "name": "Contract From Below",
+    "text": "($) Destroy 2 items you control: Steal a non-eternal item from a player.",
+    "script": "script.lua",
+    "abilities": [
+        {
+            "cost": "ContractFromBelow_cost",
+            "effect": "ContractFromBelow_effect"
+        }
+    ]
+}

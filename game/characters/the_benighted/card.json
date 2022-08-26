@@ -1,0 +1,11 @@
+{
+    "name": "The Benighted",
+    "health": 2,
+    "attack": 1,
+    "item": "hemoptysis",
+    "text": "{T}: Play an additional loot card this turn.\nStarting item: Hemoptysis",
+    "script": "script.lua",
+    "use": {
+        "effect": "TheBenighted_tap"
+    }
+}

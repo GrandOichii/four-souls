@@ -101,6 +101,7 @@ CardWrapper* Player::takeCard(int cardID) {
 
 std::vector<CardWrapper*> Player::board() { return _board; }
 std::vector<CardWrapper*> Player::hand() { return _hand; }
+std::vector<CardWrapper*> Player::souls() { return _souls; }
 bool Player::characterActive() { return _characterActive; }
 string Player::name() { return _name; }
 int Player::id() { return _id; }

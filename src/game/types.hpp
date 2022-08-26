@@ -39,6 +39,7 @@ const string ACTIVATE_CHARACTER_TYPE = "activate_character";
 const string COMBAT_END_TYPE = "combat_end";
 const string MONSTER_DEATH_TRIGGER_TYPE = "monster_death_trigger";
 const string MONSTER_ENTER_TYPE = "monster_enter";
+const string CHARACTER_ENTER_TYPE = "character_enter";
 const string MONSTER_LEAVE_TYPE = "monster_leave";
 const string ITEM_ENTER_TYPE = "item_enter";
 const string ITEM_LEAVE_TYPE = "item_leave";
@@ -92,9 +93,14 @@ struct StackEffect;
 class CardWrapper;
 class Player;
 
+struct EffectState {
+    string text = "";
+};
+
 struct Effect {
     string costFuncName = "";
     string funcName = "";
+    string text = "";
     bool usesStack = true;
     vector<string> requirements;
 
@@ -102,6 +108,7 @@ struct Effect {
     Effect(json j);
 
     bool hasRequirement(string req);
+    EffectState getState() const;
     virtual StackEffect* pushMe(Match* match, CardWrapper* cardW, Player* owner, string type);
 };
 

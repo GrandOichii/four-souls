@@ -19,7 +19,6 @@ function DarkOne_enter(host)
             end
         }
     )
-    print('DARK ONE ENTERED')
     CardData[me.id] = {
         pInc = 0,
         ipID = id

@@ -1,0 +1,29 @@
+{
+    "name": "The Bone",
+    "text": "{T}: Put a counter on this.\n($) Remove 1 counter from this: Add 1 to a roll.\n($) Remove 2 counters from this: Deal 1 damage to a monster or a player.\n($) Remove 5 counters from this: This becomes a soul and loses all abilities.",
+    "script": "script.lua",
+    "soulCount": 1,
+    "eternal": true,
+    "abilities": [
+        {
+            "requires": ["tap"],
+            "effect": "TheBone_tap",
+            "text": "Put a counter on this."
+        },
+        {
+            "cost": "TheBone_cost1",
+            "effect": "TheBone_effect1",
+            "text": "Add 1 to a roll."
+        },
+        {
+            "cost": "TheBone_cost2",
+            "effect": "TheBone_effect2",
+            "text": "Deal 1 damage to a monster or a player."
+        },
+        {
+            "cost": "TheBone_cost3",
+            "effect": "TheBone_effect3",
+            "text": "This becomes a soul and loses all abilities."
+        }
+    ]
+}

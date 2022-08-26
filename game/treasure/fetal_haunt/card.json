@@ -1,0 +1,17 @@
+{
+    "name": "Fetal Haunt",
+    "text": "At the end of your turn, give another player a loot card.",
+    "script": "script.lua",
+    "on": {
+        "turn_end": {
+            "check": "FetalHaunt_trigger1_check",
+            "cost": "FetalHaunt_trigger1_cost",
+            "effect": "FetalHaunt_trigger1"
+        },
+        "death": {
+            "check": "FetalHaunt_trigger2_check",
+            "cost": "FetalHaunt_trigger2_cost",
+            "effect": "FetalHaunt_trigger2"
+        }
+    }
+}

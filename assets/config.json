@@ -4,6 +4,66 @@
             "large": "images/polyphemus_large.bmp",
             "small": "images/polyphemus.bmp"
         },
+        "The Baleful": {
+            "large": "images/the_baleful_large.bmp",
+            "small": "images/the_baleful.bmp"
+        },
+        "Soulbond": {
+            "large": "images/soulbond_large.bmp",
+            "small": "images/soulbond.bmp"
+        },
+        "Mom's Ring": {
+            "large": "images/mom_s_ring_large.bmp",
+            "small": "images/mom_s_ring.bmp"
+        },
+        "Keeper's Sack": {
+            "large": "images/keeper_s_sack_large.bmp",
+            "small": "images/keeper_s_sack.bmp"
+        },
+        "The Benighted": {
+            "large": "images/the_benighted_large.bmp",
+            "small": "images/the_benighted.bmp"
+        },
+        "Hemoptysis": {
+            "large": "images/hemoptysis_large.bmp",
+            "small": "images/hemoptysis.bmp"
+        },
+        "Donation Machine": {
+            "large": "images/donation_machine_large.bmp",
+            "small": "images/donation_machine.bmp"
+        },
+        "The Bone": {
+            "large": "images/the_bone_large.bmp",
+            "small": "images/the_bone.bmp"
+        },
+        "The Forgotten": {
+            "large": "images/the_forgotten_large.bmp",
+            "small": "images/the_forgotten.bmp"
+        },
+        "Fetal Haunt": {
+            "large": "images/fetal_haunt_large.bmp",
+            "small": "images/fetal_haunt.bmp"
+        },
+        "Donation Machice": {
+            "large": "images/donation_machine_large.bmp",
+            "small": "images/donation_machine.bmp"
+        },
+        "Mom's Shovel": {
+            "large": "images/mom_s_shovel_large.bmp",
+            "small": "images/mom_s_shovel.bmp"
+        },
+        "Magic Skin": {
+            "large": "images/magic_skin_large.bmp",
+            "small": "images/magic_skin.bmp"
+        },
+        "Keeper's Penny": {
+            "large": "images/keeper_s_penny_large.bmp",
+            "small": "images/keeper_s_penny.bmp"
+        },
+        "Contract From Below": {
+            "large": "images/contract_from_below_large.bmp",
+            "small": "images/contract_from_below.bmp"
+        },
         "Decoy": {
             "large": "images/decoy_large.bmp",
             "small": "images/decoy.bmp"

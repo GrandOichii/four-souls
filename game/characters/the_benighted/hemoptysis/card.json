@@ -1,0 +1,39 @@
+{
+    "name": "Hemoptysis",
+    "text": "{T}: Put a counter on this.\n($) Remove a counter from this: Choose a monster. It's p becomes 1.\n($) Remove 2 counters from this: Deal 1 damage to up to 2 monsters or players.",
+    "script": "script.lua",
+    "soulCount": 1,
+    "eternal": true,
+    "enter": {
+        "usesStack": false,
+        "effect": "Hemoptysis_enter"
+    },
+    "leave": {
+        "usesStack": false,
+        "effect": "Hemoptysis_leave"
+    },
+    "on": {
+        "turn_start": {
+            "usesStack": false,
+            "check": "Hemoptysis_trigger_check",
+            "effect": "Hemoptysis_trigger"
+        }
+    },
+    "abilities": [
+        {
+            "requires": ["tap"],
+            "effect": "Hemoptysis_tap",
+            "text": "Put a counter on this."
+        },
+        {
+            "cost": "Hemoptysis_cost1",
+            "effect": "Hemoptysis_effect1",
+            "text": "Choose a monster. It's p becomes 1."
+        },
+        {
+            "cost": "Hemoptysis_cost2",
+            "effect": "Hemoptysis_effect2",
+            "text": "Deal 1 damage to up to 2 monsters or players."
+        }
+    ]
+}

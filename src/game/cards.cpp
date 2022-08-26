@@ -265,7 +265,8 @@ CardState CardWrapper::getState() {
     result.zone = Zones::Unknown;
     result.ownerID = -1;
     if (_owner) result.ownerID = _owner->id();
-    result.activatedAbilityCount = _card->abilities().size();
+    for (const auto& ability : _card->abilities())
+        result.activatedAbilities.push_back(ability.getState());        
     return result;
 }
 

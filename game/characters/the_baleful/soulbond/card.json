@@ -1,0 +1,21 @@
+{
+    "name": "Soulbond",
+    "text": "",
+    "script": "script.lua",
+    "eternal": true,
+    "enter": {
+        "usesStack": false,
+        "effect": "Soulbond_enter"
+    },
+    "leave": {
+        "usesStack": false,
+        "effect": "Soulbond_leave"
+    },
+    "on": {
+        "death": {
+            "check": "Soulbond_trigger_check",
+            "cost": "Soulbond_trigger_cost",
+            "effect": "Soulbond_trigger_effect"
+        }
+    }
+}

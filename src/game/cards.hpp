@@ -148,7 +148,7 @@ struct CardState {
     Zones zone;
 
     int ownerID;
-    int activatedAbilityCount;
+    vector<EffectState> activatedAbilities;
 
     void pushTable(lua_State* L) const;
 };

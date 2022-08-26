@@ -396,6 +396,21 @@ function Common_CardCount(player)
     return count
 end
 
+function Common_TargetMonsterOrPlayer(host, ownerID)
+    local owner = Common_PlayerWithID(host, ownerID)
+    local choice1 = 'Player'
+    local choice2 = 'Monster'
+    local choice = requestSimpleChoice(host, owner.id, 'Deal damage to who?', {choice1, choice2})
+    if choice == choice1 then
+        local target = Common_ChoosePlayer(host, owner.id)
+        pushTarget(host, target, PLAYER)
+        return true
+    end
+    local monster = Common_ChooseMonster(host, owner.id)
+    pushTarget(host, monster.id, MONSTER)
+    return true
+end
+
 function Common_TargetOpponent(host, ownerID)
     local players = getPlayers(host)
     local ids = {}
@@ -417,6 +432,18 @@ function Common_IsCombat(host)
     for _, monster in ipairs(monsters) do
         if monster.isBeingAttacked then
             return true
+        end
+    end
+    return false
+end
+
+function Common_CardOnBoard(host, cid)
+    local players = getPlayers(host)
+    for _, player in ipairs(players) do
+        for _, card in ipairs(player.board) do
+            if card.id == cid then
+                return true
+            end
         end
     end
     return false
@@ -506,6 +533,22 @@ function Common_ModLastRoll(host, value)
         return
     end
     setRollValue(host, #rs-1, roll.value + value)
+end
+
+function Common_SacrificeItem(host, ownerID)
+    local player = Common_PlayerWithID(host, ownerID)
+    local ids = {}
+    for _, card in ipairs(player.board) do
+        if not card.isEternal then
+            ids[#ids+1] = card.id
+        end
+    end
+    if #ids == 0 then
+        return false
+    end
+    local choice, _ = requestChoice(host, ownerID, 'Choose an item to sacrifice', CARD, ids)
+    destroyCard(host, choice)
+    return true
 end
 
 function Common_LastRoll(host, me)

@@ -1,0 +1,14 @@
+{
+    "name": "Keeper's Penny",
+    "text": "When you gain or purchase this, gain 9$.\n{T}: Put a counter on this. Gain $ equal to the amount of counters on this. Then give this card to another player.",
+    "script": "script.lua",
+    "enter": {
+        "effect": "KeepersPenny_enter" 
+    },
+    "abilities": [
+        {
+            "requires": ["tap"],
+            "effect": "KeepersPenny_effect"
+        }
+    ]
+}

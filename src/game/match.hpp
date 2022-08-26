@@ -248,7 +248,6 @@ private:
             player->takeCard(cardID);
             this->log(player->name() + " plays card " + card->name());
             player->decPlayableAmount();
-            this->applyTriggers(PLAY_LOOT_CARD_TYPE);
         }},
         {ACTION_BUY_TREASURE, [this](Player* player, std::vector<string> args){
             this->_lastTreasureIndex = std::stoi(args[1].c_str());
@@ -269,7 +268,6 @@ private:
             auto card = w->card();
             auto ability = card->abilities()[abilityI];
             ability.pushMe(this, w, player, ACTIVATE_ITEM_TYPE);
-            this->applyTriggers(ACTIVATE_ITEM_TYPE);
         }},
         {ACTION_ACTIVATE_CHARACTER_CARD, [this](Player* player, std::vector<string> args) {
             player->tapCharacter();
@@ -278,7 +276,6 @@ private:
             Effect& effect = card->useEffect();
             effect.pushMe(this, cardW, player, ACTIVATE_CHARACTER_TYPE);
             this->log(player->name() + " activates his characted card");
-            this->triggerLastEffectType();
         }},
         {ACTION_ATTACK_MONSTER, [this](Player* player, std::vector<string> args) {
             //  TODO add -1
@@ -351,6 +348,7 @@ public:
     void pushEffect(string funcName, Effect& effect, CardWrapper* cardW, Player* owner, string type);
     //  TODO add wrap_popBonusCards, inside of it call refillDeadMonsters
     static int wrap_tapCharacterCard(lua_State* L);
+    static int wrap_getSoulsOf(lua_State* L);
     static int wrap_destroySoul(lua_State* L);
     static int wrap_moveToHand(lua_State* L);
     static int wrap_moveToBoard(lua_State* L);

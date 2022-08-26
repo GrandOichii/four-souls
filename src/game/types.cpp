@@ -10,6 +10,8 @@ Effect::Effect() {
 
 Effect::Effect(json j) {
     funcName = j["effect"];
+    if (j.contains("text"))
+        text = j["text"];
     if (j.contains("cost"))
         costFuncName = j["cost"];
     if (j.contains("usesStack"))
@@ -25,6 +27,13 @@ bool Effect::hasRequirement(string req) {
         if (req == r) return true;
     return false;
 }
+
+EffectState Effect::getState() const {
+    EffectState result;
+    result.text = text;
+    return result;
+}
+
 
 Trigger::Trigger() :
     Effect() {}
@@ -70,6 +79,7 @@ StackEffect* Effect::pushMe(Match* match, CardWrapper* cardW, Player* owner, str
         match->log(owner->name() + " rolls a " + std::to_string(re.value));
         match->_rollStack.push_back(re);
         match->applyTriggers(ROLL_TYPE);
+        return p;
     }
     if (!usesStack) {
         match->execFunc(funcName);
@@ -77,6 +87,7 @@ StackEffect* Effect::pushMe(Match* match, CardWrapper* cardW, Player* owner, str
         delete p;
         return nullptr;
     }
+    match->applyTriggers(type);
     return p;
 }
 

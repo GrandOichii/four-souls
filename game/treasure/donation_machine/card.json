@@ -1,0 +1,11 @@
+{
+    "name": "Donation Machine",
+    "text": "($) Give another non-eternal item you control to another player: Gain 8$.",
+    "script": "script.lua",
+    "abilities": [
+        {
+            "cost": "DonationMachine_cost",
+            "effect": "DonationMachine_effect"
+        }
+    ]
+}

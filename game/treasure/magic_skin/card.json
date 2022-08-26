@@ -1,0 +1,18 @@
+{
+    "name": "Magic Skin",
+    "text": "{T}: Gain +1 treasure, put a counter on this, then give this to another player.\nAt the start of yout turn, roll- If the result is less than the number of counters on this, destroy it and all other items tou control.",
+    "script": "script.lua",
+    "abilities": [
+        {
+            "requires": ["tap"],
+            "effect": "MagicSkin_effect"
+        }
+    ],
+    "on": {
+        "turn_end": {
+            "check": "MagicSkin_trigger_check",
+            "requires": ["roll"],
+            "effect": "MagicSkin_trigger"
+        }
+    }
+}

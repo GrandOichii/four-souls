@@ -1,5 +1,3 @@
-
-
 function ShinyRock_trigger_check(host, me)
     local activations = getActivations(host)
 	local activation = activations[#activations]

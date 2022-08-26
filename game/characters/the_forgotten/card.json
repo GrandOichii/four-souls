@@ -1,0 +1,11 @@
+{
+    "name": "The Forgotten",
+    "health": 2,
+    "attack": 1,
+    "item": "the_bone",
+    "text": "{T}: Play an additional loot card this turn.\nStarting item: The Bone",
+    "script": "script.lua",
+    "use": {
+        "effect": "TheForgotten_tap"
+    }
+}

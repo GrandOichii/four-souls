@@ -45,6 +45,7 @@ private:
     MatchState _state;
     bool _hasState = false;
     bool _mouseLock = false;
+    bool _mouseCheck = true;
 
     SDL_Event* _event = new SDL_Event();
     bool _running = false;
@@ -73,11 +74,10 @@ public:
         // check character card
         if (me.playerCard.active) _allowedCards.push_back(me.playerCard.id);
         // check board
-        for (const auto& value : me.board) {
+        for (const auto& card : me.board) {
             //  TODO if tapped, go through all abilities, if at least one of them is not marked "requiresTap", add to allowed cards
-            if (value.activatedAbilityCount) 
-                _allowedCards.push_back(value.id);
-
+            if (card.activatedAbilities.size()) 
+                _allowedCards.push_back(card.id);
         }
         // check loot cards
         if (me.playableCount) {
@@ -309,7 +309,6 @@ public:
     void setup() {
         _c = new Client();
         _c->Connect(_host, 9090);
-
     }
 
     void handleKey(int key) {
@@ -420,6 +419,77 @@ public:
         throw std::runtime_error("can't decide index of monster " + card.cardName + " (id: " + std::to_string(card.id) + ")");
     }
 
+    string activateCardReply(CardState& card) {
+        auto result = "activate " + std::to_string(card.id) + " ";
+        int resultI = 0;
+        if (card.activatedAbilities.size() == 1)
+            return result + std::to_string(resultI);
+        std::vector<SDL_Texture*> buttons;
+        for (const auto& effect : card.activatedAbilities)
+            buttons.push_back(_assets->getMessage(effect.text, SDL_Color{0, 0, 0, 0}, 24));
+        int x, y;
+        auto s = SDL_GetMouseState(&x, &y);
+        bool flag = true;
+        bool mousePressed = false;
+        int boxW = 0;
+        for (const auto& tex : buttons) {
+            auto w = getSize(tex).first;
+            if (w > boxW) boxW = w;
+        }
+        int boxH = buttons.size() * 24;
+        auto drawF = [&]() {
+            this->drawRect(x, y, boxW, boxH, SDL_Color{255, 255, 255, 0}, true);
+            for (int i = 0; i < buttons.size(); i++) {
+                int tx = x;
+                int ty = y + i * 24;
+                this->drawTexture(buttons[i], x, ty);
+                if (_mouseLock) continue;
+                int mx, my;
+                int ms = SDL_GetMouseState(&mx, &my);
+                if (!(mx > tx && my > ty && mx < tx + boxW && my < ty + 24)) continue;
+                this->drawRect(tx, ty, boxW, 24, SDL_Color{0, 0, 255, 0}, false);
+                if (!mousePressed) continue;
+                this->_mouseLock = true;
+                resultI = i;
+                flag = false;
+                return;
+            }
+        };
+        auto clearF = [&]() {
+            this->drawRect(x, y, boxW, boxH, SDL_Color{255, 255, 255, 0}, true);
+        };
+        _mouseLock = true;
+        while (flag) {
+            while (SDL_PollEvent(this->_event)) {
+                switch (_event->type) {
+                case SDL_QUIT:
+                    flag = false;
+                    this->_running = false;
+                    break;
+                case SDL_KEYDOWN:
+                    this->handleKey(_event->key.keysym.sym);
+                    break;
+                case SDL_MOUSEBUTTONUP:
+                    _mouseLock = false;
+                    break;
+                case SDL_MOUSEBUTTONDOWN:
+                    mousePressed = true;
+                }
+            }
+            _mouseCheck = false;
+            this->clear();
+            this->draw();
+            drawF();
+            this->flush();
+            mousePressed = false;
+        }
+        for (const auto& tex : buttons) {
+            SDL_DestroyTexture(tex);
+        }
+        std::cout << "RESULT I: " << resultI << std::endl;
+        return result + std::to_string(resultI);
+    }
+
     void sendAction(CardState& card) {
         message<PollType> reply;
         switch (card.zone) {
@@ -430,9 +500,7 @@ public:
             reply << "play_loot " + std::to_string(card.id);
             break;
         case Zones::Board:
-            //  TODO check if the card can be activated
-            //  TODO prompt player to choose the activated ability of the card
-            reply << "activate " + std::to_string(card.id) + " 0";
+            reply << activateCardReply(card);
             break;
         case Zones::CCard:
             reply << ACTION_ACTIVATE_CHARACTER_CARD;
@@ -512,6 +580,7 @@ public:
             }
         }
         Window::drawCard(card, angle, x, y, bBox);
+        if (!_mouseCheck) return;
         if (!activatable && card.zone == Zones::Stack) return;
         if (_mouseLock) return;
         bool allowed = false;
@@ -543,37 +612,41 @@ public:
 
     void draw() {
         Window::draw(_state);
-        // draw top text
-        auto spaceTex = _assets->getMessage(" ", SDL_Color{0, 0, 0, 0}, 24);
-        auto spaceWidth = getSize(spaceTex).first;
-        SDL_DestroyTexture(spaceTex);
-        int x = _sideBoardX;
-        int y = 0;
-        for (const auto& member : _lastText) {
-            unsigned char r = (member.isCard ? 0 : 255);
-            unsigned char g = (member.isCard ? 255 : 0);
-            auto tex = _assets->getMessage(member.message, SDL_Color{r, g, 0, 0}, 24);
-            auto size = getSize(tex);
-            int w = size.first;
-            int h = size.second;
-            this->drawTexture(tex, x, y);
-            SDL_DestroyTexture(tex);
-            int xx = x;
-            x += size.first + spaceWidth;
-            if (!member.isCard) continue;
-            int mx, my;
-            auto s = SDL_GetMouseState(&mx, &my);
-            if (!(mx >= xx && my >= y && mx <= xx + w && my <= h + y)) continue;
-            tex = this->_assets->getCard(member.message, CardSize::LARGE);
-            size = getSize(tex);
-            this->drawTexture(tex, _stackX - size.first, 0);
+        if (_mouseCheck){
+            // draw top text
+            auto spaceTex = _assets->getMessage(" ", SDL_Color{0, 0, 0, 0}, 24);
+            auto spaceWidth = getSize(spaceTex).first;
+            SDL_DestroyTexture(spaceTex);
+            int x = _sideBoardX;
+            int y = 0;
+            for (const auto& member : _lastText) {
+                unsigned char r = (member.isCard ? 0 : 255);
+                unsigned char g = (member.isCard ? 255 : 0);
+                auto tex = _assets->getMessage(member.message, SDL_Color{r, g, 0, 0}, 24);
+                auto size = getSize(tex);
+                int w = size.first;
+                int h = size.second;
+                this->drawTexture(tex, x, y);
+                SDL_DestroyTexture(tex);
+                int xx = x;
+                x += size.first + spaceWidth;
+                if (!member.isCard) continue;
+                int mx, my;
+                auto s = SDL_GetMouseState(&mx, &my);
+                if (!(mx >= xx && my >= y && mx <= xx + w && my <= h + y)) continue;
+                tex = this->_assets->getCard(member.message, CardSize::LARGE);
+                size = getSize(tex);
+                this->drawTexture(tex, _stackX - size.first, 0);
+            }
+            // draw simple choice choices
+            this->drawSimplePromptBox();
         }
-        // draw simple choice choices
-        this->drawSimplePromptBox();
+        _mouseCheck = true;
     }
 
     std::pair<int, int> drawPlayerName(PlayerBoardState& pboard, int x, int y) override {
         auto pair = Window::drawPlayerName(pboard, x, y);
+        if (!_mouseCheck) return pair;
         int w = pair.first;
         int h = pair.second;
         bool flag = false;
@@ -597,6 +670,7 @@ public:
 
     void drawSpecialStackMember(MatchState& state, int stackI, int x, int y) override {
         Window::drawSpecialStackMember(state, stackI, x, y);
+        if (!_mouseCheck) return;
         bool flag = false;
         for (const auto& i : _allowedStackMembers) {
             if (i == stackI)
@@ -621,6 +695,7 @@ public:
 
     void drawTreasureDeck(MatchState& state) override {
         Window::drawTreasureDeck(state);
+        if (!_mouseCheck) return;
         PlayerBoardState me;
         for (const auto& board : _state.boards)
             if (board.id == _myID)

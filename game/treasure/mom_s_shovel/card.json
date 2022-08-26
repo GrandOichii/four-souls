@@ -1,0 +1,15 @@
+{
+    "name": "Mom's Shovel",
+    "text": "This enters play deactivated.\n{T}: Destroy this. If you do, steal a soul card from another player.",
+    "script": "script.lua",
+    "enter": {
+        "usesStack": false,
+        "effect": "MomsShovel_enter"
+    },
+    "abilities": [
+        {
+            "requires": ["tap"],
+            "effect": "MomsShovel_effect"
+        }
+    ]
+}

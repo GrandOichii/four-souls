@@ -12,10 +12,12 @@
     },
     "abilities": [
         {
+            "text": "Recharge up to 3 other items in play.",
             "requires": ["tap"],
             "effect": "CarBattery_tap"
         },
         {
+            "text": "Recharge this.",
             "cost": "CarBattery_cost2",
             "effect": "CarBattery_recharge"
         }

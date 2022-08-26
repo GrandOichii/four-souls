@@ -6,6 +6,12 @@ MatchState::MatchState() {}
 
 using namespace nlohmann;
 
+static EffectState effectFromJson(json j) {
+    EffectState result;
+    result.text = j["text"];
+    return result;
+}
+
 static CardState cardFromJson(json j) {
     CardState result;
     result.cardName = j["cardName"];
@@ -15,7 +21,8 @@ static CardState cardFromJson(json j) {
     result.zone = j["zone"];
     result.ownerID = j["ownerID"];
     result.soulCount = j["soulCount"];
-    result.activatedAbilityCount = j["activatedAbilityCount"];
+    for (const auto& jj : j["activatedAbilities"])
+        result.activatedAbilities.push_back(effectFromJson(jj));
     return result;
 }
 
@@ -105,6 +112,12 @@ MatchState::MatchState(nlohmann::json j){
     isCombat = j["isCombat"];
 }
 
+static json effectToJson(const EffectState& effect) {
+    json result;
+    result["text"] = effect.text;
+    return result;
+}
+
 static json cardToJson(const CardState& card) {
     json result;
     result["cardName"] = card.cardName;
@@ -114,7 +127,8 @@ static json cardToJson(const CardState& card) {
     result["zone"] = card.zone;
     result["ownerID"] = card.ownerID;
     result["soulCount"] = card.soulCount;
-    result["activatedAbilityCount"] = card.activatedAbilityCount;
+    for (const auto& effect : card.activatedAbilities)
+        result["activatedAbilities"].push_back(effectToJson(effect));
     return result;
 }
 
@@ -799,9 +813,10 @@ int Match::wrap_getActivations(lua_State* L) {
     stackSizeIs(L, 1);
     auto match = getTopMatch(L, 1);
     vector<StackEffect*> activations;
-    for (const auto& effect : match->_stack)
+    for (const auto& effect : match->_stack) {
         if (effect->type == ACTIVATE_ITEM_TYPE)
             activations.push_back(effect);
+    }
     auto size = activations.size();
     lua_createtable(L, size, 0);
     for (int i = 0; i < size; i++) {
@@ -1382,7 +1397,6 @@ int Match::wrap_dealCombatDamage(lua_State* L) {
     return 0;
 }
 
-// int Match::wrap_popRollStack(lua_State* L) {
 int Match::wrap_activateRoll(lua_State* L) {
     stackSizeIs(L, 1);
     auto match = getTopMatch(L, 1);
@@ -1394,6 +1408,8 @@ int Match::wrap_activateRoll(lua_State* L) {
         match->pushToStack(roll.effect);
         roll.visible = false;
         match->applyTriggers(POST_ROLL_TYPE);
+        if (roll.effect->type == ACTIVATE_ITEM_TYPE)
+            match->applyTriggers(ACTIVATE_ITEM_TYPE);
         return 0;
     }
     match->_lastCRollValue = roll.value;
@@ -1710,6 +1726,15 @@ int Match::wrap_getMaxHealth(lua_State* L) {
     return 1;
 }
 
+int Match::wrap_getSoulsOf(lua_State* L) {
+    stackSizeIs(L, 2);
+    auto match = getTopMatch(L, 1);
+    auto pid = getTopNumber(L, 2);
+    auto player = match->playerWithID(pid);
+    pushCards(player->souls(), L);
+    return 1;
+}
+
 int Match::wrap_incTreasureCost(lua_State* L) {
     if (lua_gettop(L) != 3) {
         lua_err(L);
@@ -1931,6 +1956,7 @@ void Match::setupLua(string setupScript) {
     luaL_openlibs(L);
     // connect functions
     lua_register(L, "healPlayer", wrap_healPlayer);
+    lua_register(L, "getSoulsOf", wrap_getSoulsOf);
     lua_register(L, "discardMe", wrap_discardMe);
     lua_register(L, "moveToHand", wrap_moveToHand);
     lua_register(L, "moveToBoard", wrap_moveToBoard);
@@ -2184,7 +2210,9 @@ void Match::addPlayer(Player* player) {
     player->setStartingValues( _startingTreasurePrice,  _startingAttackCount,  _startingPlayableCount,  _startingPurchaseCount);
 
     _allWrappers.push_back(player->characterCard());
-    auto w = addWrapper(player->origCharacterCard()->startingItem());
+    auto cCard = player->origCharacterCard();
+    cCard->enterEffect().pushMe(this, player->characterCard(), player, CHARACTER_ENTER_TYPE);
+    auto w = addWrapper(cCard->startingItem());
     addCardToBoard(w, player);
     w->setOwner(player);
     w->tap();
@@ -2226,7 +2254,6 @@ void Match::shuffleMonsterDeck() {
 
 CardWrapper* Match::addWrapper(ScriptCard* card) {
     auto id = newCardID();
-    // std::cout << card->name() + " -> " + std::to_string(id) << std::endl;
     this->log(card->name() + " -> " + std::to_string(id), false);
     auto w = new CardWrapper(card, id);
     _allWrappers.push_back(w);
@@ -2292,7 +2319,6 @@ void Match::start() {
         mcard->createData(L, this, c->id());
         _monsterDataArr.push_back(mcard->data());
         mcard->enterEffect().pushMe(this, c, _activePlayer, MONSTER_ENTER_TYPE);
-        // execMEnterLeave(c, mcard->enterFuncName());
     }
 
     this->_priorityI = this->_currentI;

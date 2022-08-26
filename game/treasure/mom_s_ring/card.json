@@ -1,0 +1,12 @@
+{
+    "name": "Mom's Ring",
+    "text": "+1 p\nWhen you gain or purchase this, loot 1.",
+    "script": "script.lua",
+    "enter": {
+        "effect": "MomsRing_enter"
+    },
+    "leave": {
+        "usesStack": false,
+        "effect": "MomsRing_leave"
+    }
+}

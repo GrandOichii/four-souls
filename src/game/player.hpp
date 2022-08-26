@@ -92,6 +92,7 @@ public:
     CardWrapper* takeCard(int cardID);
     std::vector<CardWrapper*> board();
     std::vector<CardWrapper*> hand();
+    std::vector<CardWrapper*> souls();
     bool removeCard(CardWrapper* card);
     void tapCharacter();
     bool characterActive();

@@ -1,23 +1,6 @@
-[
-    "characters/azazel",
-    "characters/bethany",
-    "characters/blue_baby",
-    "characters/bumbo",
-    "characters/dark_judas",
-    "characters/guppy",
-    "characters/isaac",
-    "characters/judas",
-    "characters/keeper",
-    "characters/lazarus",
-    "characters/samson",
-    
+[    
+    "characters/the_benighted",
     "characters/the_curdled",
-    "characters/the_dauntless",
-    "characters/the_deceiver",
-    "characters/the_empty",
-    "characters/the_hoarder",
     "characters/the_miser",
-    "characters/the_savage",
-    "characters/the_zealot",
-    "characters/whore_of_babylon"
+    "characters/the_baleful"
 ]

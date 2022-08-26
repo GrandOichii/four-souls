@@ -1,0 +1,19 @@
+{
+    "name": "The Baleful",
+    "health": 1,
+    "attack": 1,
+    "item": "soulbond",
+    "text": "{T}: Play an additional loot card this turn.\nStarting item: Soulbond",
+    "script": "script.lua",
+    "use": {
+        "effect": "TheBaleful_tap"
+    },
+    "enter": {
+        "usesStack": false,
+        "effect": "TheBaleful_enter"
+    },
+    "leave": {
+        "usesStack": false,
+        "effect": "TheBaleful_leave"
+    }
+}
