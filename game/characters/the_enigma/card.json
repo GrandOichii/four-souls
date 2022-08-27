@@ -1,0 +1,24 @@
+{
+    "name": "The Enigma",
+    "health": 2,
+    "attack": 1,
+    "item": "flip",
+    "text": "{T}: Play an additional loot card this turn.\nStarting item: Flip",
+    "script": "script.lua",
+    "use": {
+        "effect": "TheEnigma_tap"
+    },
+    "alt": {
+        "type": "character",
+        "card": {
+            "name": "amginE ehT",
+            "health": 1,
+            "attack": 2,
+            "text": "{T}: Play an additional loot card this turn.",
+            "script": "script.lua",
+            "use": {
+                "effect": "TheEnigma_tap"
+            }
+        }
+    }
+}

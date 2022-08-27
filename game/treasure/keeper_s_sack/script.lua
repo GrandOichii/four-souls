@@ -24,5 +24,5 @@ function KeepersSack_tap(host)
     local me = this(host)
     local target = popTarget(host)
     removeFromEverywhere(host, me.id)
-    moveToBoard(host, me.id)
+    moveToBoard(host, target.id, me.id)
 end

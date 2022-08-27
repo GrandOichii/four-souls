@@ -4,6 +4,38 @@
             "large": "images/polyphemus_large.bmp",
             "small": "images/polyphemus.bmp"
         },
+        "Flip": {
+            "large": "images/flip_large.bmp",
+            "small": "images/flip.bmp"
+        },
+        "The Enigma": {
+            "large": "images/the_enigma_large.bmp",
+            "small": "images/the_enigma.bmp"
+        },
+        "amginE ehT": {
+            "large": "images/amgine_eht_large.bmp",
+            "small": "images/amgine_eht.bmp"
+        },
+        "R Key": {
+            "large": "images/r_key_large.bmp",
+            "small": "images/r_key.bmp"
+        },
+        "Sticky Nickel": {
+            "large": "images/sticky_nickel_large.bmp",
+            "small": "images/sticky_nickel.bmp"
+        },
+        "Eternal D6": {
+            "large": "images/eternal_d6_large.bmp",
+            "small": "images/eternal_d6.bmp"
+        },
+        "Loot Card": {
+            "large": "images/loot_card_large.bmp",
+            "small": "images/loot_card.bmp"
+        },
+        "Pay to Play": {
+            "large": "images/pay_to_play_large.bmp",
+            "small": "images/pay_to_play.bmp"
+        },
         "The Baleful": {
             "large": "images/the_baleful_large.bmp",
             "small": "images/the_baleful.bmp"

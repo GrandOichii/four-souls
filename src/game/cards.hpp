@@ -51,6 +51,8 @@ private:
 
     Effect _useEffect;
     bool _goesToBottom = false;
+
+    ScriptCard* _alt = nullptr;
 public:
     ScriptCard(string dir, json j, CardTypes type);
     ~ScriptCard();
@@ -62,15 +64,18 @@ public:
     Effect& leaveEffect();
     std::vector<Effect>& abilities();
     bool isEternal();
+    bool hasAlt();
+    ScriptCard* alt();
 };
 
 class CharacterCard : public ScriptCard {
 private:
     int _attack;
     int _health;
-    ScriptCard* _startingItem;
+    ScriptCard* _startingItem = nullptr;
 public:
     CharacterCard(string dir, json j);
+    ~CharacterCard();
     int attack();
     int health();
     ScriptCard* startingItem();
@@ -162,6 +167,7 @@ private:
     bool _tapped = false;
     Player* _owner = nullptr;
     int _counters = 0;
+    bool _showAlt = false;
 public:
     CardWrapper(ScriptCard* card, int id);
     ScriptCard* card();
@@ -176,4 +182,6 @@ public:
     void addCounters(int amount);
     void removeCounters(int amount);
     void resetCounters();
+    void flip();
+    bool hasAlt();
 };

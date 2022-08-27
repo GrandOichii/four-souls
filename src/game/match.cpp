@@ -1139,6 +1139,24 @@ int Match::wrap_tapCharacterCard(lua_State* L) {
     return 0;
 }
 
+int Match::wrap_canFlip(lua_State* L) {
+    stackSizeIs(L, 2);
+    auto match = getTopMatch(L, 1);
+    auto cid = getTopNumber(L, 2);
+    auto card = match->cardWithID(cid);
+    lua_pushboolean(L, card->hasAlt());
+    return 1;
+}
+
+int Match::wrap_flip(lua_State* L) {
+    stackSizeIs(L, 2);
+    auto match = getTopMatch(L, 1);
+    auto cid = getTopNumber(L, 2);
+    auto card = match->cardWithID(cid);
+    card->flip();
+    return 0;
+}
+
 int Match::wrap_rechargeCharacterCard(lua_State* L) {
     stackSizeIs(L, 2);
     auto match = getTopMatch(L, 1);
@@ -1146,6 +1164,15 @@ int Match::wrap_rechargeCharacterCard(lua_State* L) {
     auto player = match->playerWithID(pid);
     player->rechargeCharacter();
     return 0;
+}
+
+int Match::wrap_getCharacterCard(lua_State* L) {
+    stackSizeIs(L, 2);
+    auto match = getTopMatch(L, 1);
+    auto pid = getTopNumber(L, 2);
+    auto player = match->playerWithID(pid);
+    player->characterCard()->pushTable(L);
+    return 1;
 }
 
 int Match::wrap_getDamageEvent(lua_State* L) {
@@ -1956,6 +1983,9 @@ void Match::setupLua(string setupScript) {
     luaL_openlibs(L);
     // connect functions
     lua_register(L, "healPlayer", wrap_healPlayer);
+    lua_register(L, "canFlip", wrap_canFlip);
+    lua_register(L, "flip", wrap_flip);
+    lua_register(L, "getCharacterCard", wrap_getCharacterCard);
     lua_register(L, "getSoulsOf", wrap_getSoulsOf);
     lua_register(L, "discardMe", wrap_discardMe);
     lua_register(L, "moveToHand", wrap_moveToHand);

@@ -1,0 +1,17 @@
+{
+    "name": "Loot Card",
+    "text": "When this enters play, loot 1.\nAt the end of your turn, loot 1.\nAt the end of your turn, you may return this to your hand.",
+    "script": "script.lua",
+    "use": {
+        "effect": "Common_TrinketEnter"
+    },
+    "enter": {
+        "effect": "LootCard_enter"
+    },
+    "on": {
+        "turn_end": {
+            "check": "LootCard_trigger_check",
+            "effect": "LootCard_trigger_effect"
+        }
+    }
+}

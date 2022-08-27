@@ -1,5 +1,5 @@
 function LazarusRags_trigger_check(host, me)
-    return Common_PostDeathOwnerDied(host, me["id"])
+    return Common_PostDeathOwnerDied(host, me.id)
 end
 
 function LazarusRags_trigger(host)

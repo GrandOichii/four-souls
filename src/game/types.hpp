@@ -88,6 +88,13 @@ enum CardTypes : int {
     StartingItem
 };
 
+const std::map<std::string, CardTypes> CARD_TYPE_MAP = {
+    {"loot", CardTypes::Loot},
+    {"treasure", CardTypes::Treasure},
+    {"monster", CardTypes::Monster},
+    {"character", CardTypes::Character}
+};
+
 class Match;
 struct StackEffect;
 class CardWrapper;

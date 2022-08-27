@@ -46,9 +46,32 @@ ScriptCard::ScriptCard(string dir, json j, CardTypes type) :
         this->_isEternal = j["eternal"];
     if (j.contains("use"))
         this->_useEffect = Effect(j["use"]);
+    if (j.contains("alt")) {
+        auto altj = j["alt"];
+        string type = altj["type"];
+        if (CARD_TYPE_MAP.count(type) == 0) throw std::runtime_error("unknown card type: " + type);
+        auto ctype = CARD_TYPE_MAP.at(type);
+        switch(ctype) {
+        case CardTypes::Treasure:
+            this->_alt = new ScriptCard(dir, altj["card"], CardTypes::Treasure);
+            break;
+        case CardTypes::Character:
+            this->_alt = new CharacterCard(dir, altj["card"]);
+            break;
+        case CardTypes::Monster:
+            this->_alt = new MonsterCard(dir, altj["card"]);
+            break;
+        default:
+            throw std::runtime_error("can't create alt card for type " + type);
+        }
+    }
 }
 
-ScriptCard::~ScriptCard() {}
+ScriptCard::~ScriptCard() {
+    delete _alt;
+}
+bool ScriptCard::hasAlt() { return _alt; }
+ScriptCard* ScriptCard::alt() { return _alt; }
 
 string ScriptCard::script() { return _script; }
 
@@ -67,9 +90,15 @@ CharacterCard::CharacterCard(string dir, json j) :
     _attack(j["attack"]),
     _health(j["health"])
 {
-    auto itemDir = fs::join(dir, j["item"]);
-    auto jj = fs::readJS(fs::join(itemDir, CARD_INFO_FILE));
-    this->_startingItem = new ScriptCard(itemDir, jj, CardTypes::StartingItem);
+    if (j.contains("item")) {
+        auto itemDir = fs::join(dir, j["item"]);
+        auto jj = fs::readJS(fs::join(itemDir, CARD_INFO_FILE));
+        this->_startingItem = new ScriptCard(itemDir, jj, CardTypes::StartingItem);
+    }
+}
+
+CharacterCard::~CharacterCard() {
+    delete _startingItem;
 }
 
 int CharacterCard::attack() { return _attack; }
@@ -231,7 +260,7 @@ CardWrapper::CardWrapper(ScriptCard* card, int id) :
     _id(id) {
     }
 
-ScriptCard* CardWrapper::card() { return _card; }
+ScriptCard* CardWrapper::card() { return _showAlt ? _card->alt() : _card; }
 int CardWrapper::id() { return _id; }
 void CardWrapper::recharge() { _tapped = false; }
 void CardWrapper::tap() { _tapped = true; }
@@ -257,15 +286,16 @@ void CardWrapper::pushTable(lua_State* L) {
 
 CardState CardWrapper::getState() {
     CardState result;
-    result.cardName = _card->name();
+    auto fCard = card();
+    result.cardName = fCard->name();
     result.active = !_tapped;
     result.id = _id;
-    result.soulCount = _card->soulCount();
+    result.soulCount = fCard->soulCount();
     result.counters = _counters;
     result.zone = Zones::Unknown;
     result.ownerID = -1;
     if (_owner) result.ownerID = _owner->id();
-    for (const auto& ability : _card->abilities())
+    for (const auto& ability : fCard->abilities())
         result.activatedAbilities.push_back(ability.getState());        
     return result;
 }
@@ -292,4 +322,13 @@ void MonsterDataState::pushTable(lua_State* L) const {
     l_pushtablenumber(L, "power", power);
     l_pushtablenumber(L, "blueHealth", blueHealth);
     l_pushtablenumber(L, "canBeAttacked", canBeAttacked);
+}
+
+void CardWrapper::flip() {
+    if (!hasAlt()) throw std::runtime_error("tried to flip non-flippable card " + _card->name());
+    _showAlt = !_showAlt;
+}
+
+bool CardWrapper::hasAlt() {
+    return _showAlt || _card->hasAlt();
 }

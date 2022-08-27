@@ -486,7 +486,6 @@ public:
         for (const auto& tex : buttons) {
             SDL_DestroyTexture(tex);
         }
-        std::cout << "RESULT I: " << resultI << std::endl;
         return result + std::to_string(resultI);
     }
 

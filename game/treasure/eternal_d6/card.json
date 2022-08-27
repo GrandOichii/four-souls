@@ -1,0 +1,32 @@
+{
+    "name": "Eternal D6",
+    "text": "{T}: Put a counter on this.\n($) Remove 2 counters from this: Till end of turn, if a player would roll a 2 or 3, it becomes a 1 instead.",
+    "script": "script.lua",
+    "abilities": [
+        {
+            "requires": ["tap"],
+            "text": "Put a counter on this.",
+            "effect": "EternalD6_effect1"
+        },
+        {
+            "cost": "EternalD6_cost2",
+            "effect": "EternalD6_effect2",
+            "text": "Till end of turn, if a player would roll a 2 or 3, it becomes a 1 instead."
+        }
+    ],
+    "on": {
+        "turn_end":  {
+            "usesStack": false,
+            "check": "EternalD6_trigger1_check",
+            "effect": "EternalD6_trigger1"
+        },
+        "roll": {
+            "check": "EternalD6_trigger2_check",
+            "effect": "EternalD6_trigger2"
+        }
+    },
+    "enter": {
+        "usesStack": false,
+        "effect": "EternalD6_enter"
+    }
+}

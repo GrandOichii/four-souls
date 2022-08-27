@@ -347,7 +347,10 @@ public:
     void queueTrigger(CardWrapper* wrapper, string triggerType, Player* owner, std::queue<QueuedTrigger>& out);
     void pushEffect(string funcName, Effect& effect, CardWrapper* cardW, Player* owner, string type);
     //  TODO add wrap_popBonusCards, inside of it call refillDeadMonsters
+    static int wrap_canFlip(lua_State* L);
+    static int wrap_flip(lua_State* L);
     static int wrap_tapCharacterCard(lua_State* L);
+    static int wrap_getCharacterCard(lua_State* L);
     static int wrap_getSoulsOf(lua_State* L);
     static int wrap_destroySoul(lua_State* L);
     static int wrap_moveToHand(lua_State* L);

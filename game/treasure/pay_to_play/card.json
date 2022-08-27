@@ -1,0 +1,11 @@
+{
+    "name": "Pay to Play",
+    "text": "($) Pay 10$:\nSteal a non-eternal item a player controls.",
+    "script": "script.lua",
+    "abilities": [
+        {
+            "cost": "PayToPlay_cost",
+            "effect": "PayToPlay_effect"
+        }
+    ]
+}

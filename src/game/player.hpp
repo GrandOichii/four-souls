@@ -53,11 +53,8 @@ private:
     string _name;
     bool _isDead = false;
 
-    int _maxHealth;
     int _health;
     int _blueHealth;
-
-    int _attack;
 
     int _maxAttackCount;
     int _attackCount;
@@ -164,9 +161,6 @@ public:
     PlayerBoardState getState();
     void addToBoard(CardWrapper* w);
     void removeFromBoard(CardWrapper* w);
-
-    void incAttack(int amount);
-    void decAttack(int amount);
 
     void addSoulCard(CardWrapper* card);
     CardWrapper* removeSoulCard(int cid);

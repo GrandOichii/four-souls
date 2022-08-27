@@ -12,9 +12,8 @@
             "effect": "KeepersSack_trigger"
         }
     },
-    "abitilies": [
+    "abilities": [
         {
-            "requires": ["tap"],
             "cost": "KeepersSack_cost",
             "effect": "KeepersSack_tap"
         }

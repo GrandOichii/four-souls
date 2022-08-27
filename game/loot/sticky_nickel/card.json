@@ -1,0 +1,9 @@
+{
+    "name": "Sticky Nickel",
+    "text": "Roll- \n1-3: Give this to the player to your left.\n4-6: Gain 6$.",
+    "script": "script.lua",
+    "use": {
+        "requires": ["roll"],
+        "effect": "StickyNickel_use"
+    }
+}

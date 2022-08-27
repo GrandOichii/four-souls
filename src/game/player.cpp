@@ -6,12 +6,8 @@ Player::Player(std::string name, CharacterCard* card, int id) :
     _id(id),
     _characterCardOrig(card)
 {
-    this->_maxHealth = card->health();
-    this->_health = this->_maxHealth;
-
-    this->_attack = card->attack();
-
     this->_characterCard = new CardWrapper(card, _id);
+    this->_health = baseMaxHealth();
 
     this->_characterActive = false;
     this->_startTurnLootAmount = 1;
@@ -51,13 +47,13 @@ int Player::dealDamage(int amount) {
     return amount;
 }
 
-void Player::incAttack(int amount) {
-    _attack += amount;
-}
+// void Player::incAttack(int amount) {
+//     _attack += amount;
+// }
 
-void Player::decAttack(int amount) {
-    _attack -= amount;
-}
+// void Player::decAttack(int amount) {
+//     _attack -= amount;
+// }
 
 void Player::incMaxAttackCount() {
     _maxAttackCount++;
@@ -262,7 +258,9 @@ void Player::removeFromBoard(CardWrapper *w) {
 
 int Player::health() { return _health; }
 
-int Player::baseMaxHealth() { return _maxHealth; }
+int Player::baseMaxHealth() { 
+    return ((CharacterCard*)_characterCard->card())->health(); 
+}
 
 void Player::setParent(Match* parent) { _parent = parent; }
 
@@ -284,7 +282,6 @@ int Player::maxHealth() {
 
     int result = (int)lua_tonumber(L, -1);
     return result;
-    // return _maxHealth;
 }
 
 int Player::attack() { 
@@ -308,7 +305,7 @@ int Player::attack() {
 }
 
 int Player::baseAttack() {
-    return _attack;
+    return ((CharacterCard*)_characterCard->card())->attack();
 }
 
 PlayerBoardState Player::getState() {

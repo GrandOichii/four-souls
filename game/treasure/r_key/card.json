@@ -1,0 +1,15 @@
+{
+    "name": "R Key",
+    "text": "This enters play deactivated.\n{T}: Destroy this. If you do, destroy all souls. Each player discards their hand and loots 3.",
+    "script": "script.lua",
+    "enter": {
+        "usesStack": false,
+        "effect": "RKey_enter"
+    },
+    "abilities": [
+        {
+            "requires": ["tap"],
+            "effect": "RKey_effect"
+        }
+    ]
+}
