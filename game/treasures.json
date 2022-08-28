@@ -1,20 +1,20 @@
 {
     "back": "images/treasure_card_back.bmp",
-    "car1ds": [
-        "treasure/tech_x",
-        "treasure/tech_x",
-        "treasure/tech_x",
-        "treasure/tech_x",
-        "treasure/tech_x",
-        "treasure/tech_x",
-        "treasure/car_battery",
-        "treasure/car_battery",
-        "treasure/car_battery",
-        "treasure/car_battery",
-        "treasure/car_battery",
-        "treasure/car_battery"
-    ],
     "cards": [
+        "treasure/baby_haunt",
+        "treasure/baby_haunt",
+        "treasure/baby_haunt",
+        "treasure/baby_haunt",
+        "treasure/baby_haunt",
+        "treasure/baby_haunt",
+        "treasure/fetal_haunt",
+        "treasure/fetal_haunt",
+        "treasure/fetal_haunt",
+        "treasure/fetal_haunt",
+        "treasure/fetal_haunt",
+        "treasure/fetal_haunt"
+    ],
+    "ca1rds": [
         "treasure/contract_from_below",
         "treasure/mom_s_ring",
         "treasure/r_key",

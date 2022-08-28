@@ -47,14 +47,6 @@ int Player::dealDamage(int amount) {
     return amount;
 }
 
-// void Player::incAttack(int amount) {
-//     _attack += amount;
-// }
-
-// void Player::decAttack(int amount) {
-//     _attack -= amount;
-// }
-
 void Player::incMaxAttackCount() {
     _maxAttackCount++;
     _attackCount++;
@@ -256,10 +248,14 @@ void Player::removeFromBoard(CardWrapper *w) {
     throw std::runtime_error("player " + _name + " doesn't have a card with id " + std::to_string(w->id()) + " on his board");
 }
 
-int Player::health() { return _health; }
+int Player::health() {
+    return _health; 
+}
 
-int Player::baseMaxHealth() { 
-    return ((CharacterCard*)_characterCard->card())->health(); 
+int Player::baseMaxHealth() {
+    auto result = ((CharacterCard*)_characterCard->card())->health();
+    if (_health > result) _health = result;
+    return result; 
 }
 
 void Player::setParent(Match* parent) { _parent = parent; }

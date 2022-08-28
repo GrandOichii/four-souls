@@ -335,6 +335,7 @@ public:
         case SKIP_STACK_KEY:
             if (_state.stack.size()) {
                 _skipStack = true;
+                if (_lastRequestType != PollType::GetAction) return;
                 if (_waitingResponse) respondPass();
             }
             break;
