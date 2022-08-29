@@ -1,13 +1,18 @@
 {
     "name": "Bag of Crafting",
-    "text": "($) Discard 4 loot card:\nGain +1 treasure.",
+    "text": "($) Discard a loot card:\nPut a counter on this.\n($) Remove 4 counters from this:\nGain +1 treasure.",
     "script": "script.lua",
     "eternal": true,
-
     "abilities": [
         {
-            "cost": "BagOfCrafting_cost",
-            "effect": "BagOfCrafting_craft"
+            "text": "Put a counter on this.",
+            "cost": "BagOfCrafting_cost1",
+            "effect": "BagOfCrafting_effect1"
+        },
+        {
+            "text": "Gain +1 treasure.",
+            "cost": "BagOfCrafting_cost2",
+            "effect": "BagOfCrafting_effect2"
         }
     ]
 }

@@ -16,7 +16,7 @@ function StickyNickel_use(host)
         end
     end
     if nextI == #players + 1 then
-        nextI = 0
+        nextI = 1
     end
     moveToHand(host, players[nextI].id, me.id)
 end

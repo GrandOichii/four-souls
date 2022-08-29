@@ -1,29 +1,27 @@
---  TODO move choice to choice stack
-
-function Bagotrash_cost(host, cardInfo)
-    return Common_Pay(host, cardInfo["ownerID"], 4)
+function Bagotrash_cost1(host, info)
+    return Common_Pay(host, info.ownerID, 3)
 end
 
-function Bagotrash_pay(host)
+function Bagotrash_effect1(host)
     local owner = getTopOwner(host)
-    local choice1 = "Loot 1"
-    local choice2 = "Deal 1 damage to a monster"
-    local choice3 = "Deal 1 damage to a player"
-    local choice4 = "Play an additional loot card this turn"
-    local choice = requestSimpleChoice(host, owner["id"], "Choose 1:", {choice1, choice2, choice3, choice4})
-    if choice == choice1 then
-        lootCards(host, owner["id"], 1)
-        return
-    end
-    if choice == choice2 then
-        local monster = Common_ChooseMonster(host, owner["id"])
-        dealDamage(host, PLAYER, owner["id"], MONSTER, monster["id"], 1)
-        return
-    end
-    if choice == choice3 then
-        local target = Common_ChoosePlayer(host, owner["id"])
-        dealDamage(host, PLAYER, owner["id"], PLAYER, target, 1)
-        return
-    end
-    addPlayableCount(host, owner["id"])
+    lootCards(host, owner.id, 1)
+end
+
+function Bagotrash_cost2(host, info)
+    return Common_Pay(host, info.ownerID, 4)
+end
+
+function Bagotrash_effect2(host)
+    local owner = getTopOwner(host)
+    addPlayableCount(host, owner.id)
+end
+
+function Bagotrash_cost3(host, info)
+    return Common_Pay(host, info.ownerID, 6) and Common_TargetMonsterOrPlayer(host, info.ownerID)
+end
+
+function Bagotrash_effect3(host)
+    local owner = getTopOwner(host)
+    local target = popTarget(host)
+    dealDamage(host, PLAYER, owner.id, target.type, target.id, 1)
 end

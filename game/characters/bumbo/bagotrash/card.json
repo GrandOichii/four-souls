@@ -1,13 +1,24 @@
 {
     "name": "Bag-o-trash",
-    "text": "($) Pay 4c and choose 1:\nLoot 1.\nDeal 1 damage to a monster or a player.\nPlay an additional loot card this turn.",
+    "text": "($) Pay 3$: Play an additional loot card this turn.\n($) Pay 4$: Loot 1.\n($) Pay 6$: Deal 1 damage to a monster of a player.",
     "script": "script.lua",
     "eternal": true,
 
     "abilities": [
         {
-            "cost": "Bagotrash_cost",
-            "effect": "Bagotrash_pay"
+            "text": "Play an additional loot card this turn.",
+            "cost": "Bagotrash_cost1",
+            "effect": "Bagotrash_effect1"
+        },
+        {
+            "text": "Loot 1.",
+            "cost": "Bagotrash_cost2",
+            "effect": "Bagotrash_effect2"
+        },
+        {
+            "text": "Deal 1 damage to a monster of a player.",
+            "cost": "Bagotrash_cost3",
+            "effect": "Bagotrash_effect3"
         }
     ]
 }
