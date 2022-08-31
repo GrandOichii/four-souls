@@ -81,7 +81,7 @@ DeathStack:push({
 })
 
 _deathPenalty = function (host, player)
-    DeathStack:top().func(host, player)
+    return DeathStack:top().func(host, player)
 end
 
 -- damage func stack

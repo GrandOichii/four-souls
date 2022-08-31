@@ -5,8 +5,7 @@ function Shadow_enter(host)
         name = 'death'..me.id,
         func = function (host_, player)
             if player.id == owner.id then
-                DeathStack._et[DeathStack:posOf('death'..me.id)-1].func(host_, player)
-                return
+                return DeathStack._et[DeathStack:posOf('death'..me.id)-1].func(host_, player)
             end
             local ownerID = player.id
             local function discard()
@@ -57,6 +56,7 @@ function Shadow_enter(host)
             payCoins()
             destroyItems()
             tapCards()
+            return true
         end
     })
 end

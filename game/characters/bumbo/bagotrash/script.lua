@@ -4,7 +4,7 @@ end
 
 function Bagotrash_effect1(host)
     local owner = getTopOwner(host)
-    lootCards(host, owner.id, 1)
+    addPlayableCount(host, owner.id)
 end
 
 function Bagotrash_cost2(host, info)
@@ -13,7 +13,7 @@ end
 
 function Bagotrash_effect2(host)
     local owner = getTopOwner(host)
-    addPlayableCount(host, owner.id)
+    lootCards(host, owner.id, 1)
 end
 
 function Bagotrash_cost3(host, info)

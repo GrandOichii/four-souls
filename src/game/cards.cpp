@@ -36,6 +36,8 @@ ScriptCard::ScriptCard(string dir, json j, CardTypes type) :
         this->_enterEffect = Effect(j["enter"]);
     if (j.contains("leave"))
         this->_leaveEffect = Effect(j["leave"]);
+    if (j.contains("destroyed"))
+        this->_destroyedEffect = Effect(j["destroyed"]);
     if (j.contains("abilities")) {
         for (const auto& jj : j["abilities"].items()) {
             auto a = jj.value();
@@ -82,6 +84,7 @@ Trigger& ScriptCard::getTriggerWhen(string triggerName) { return _triggerMap[tri
 Effect& ScriptCard::useEffect() { return _useEffect; }
 Effect& ScriptCard::enterEffect() { return _enterEffect; }
 Effect& ScriptCard::leaveEffect() { return _leaveEffect; }
+Effect& ScriptCard::destroyedEffect() { return _destroyedEffect; }
 
 bool ScriptCard::isEternal() { return _isEternal; }
 
@@ -252,6 +255,7 @@ void MonsterCard::deleteData() {
 }
 
 void MonsterCard::createData(lua_State* L, Match* parent, int id) {
+    std::cout << "CREATING NEW DATA FOR " << name() << std::endl;
     _data = new MonsterData(L, parent, id, _baseHealth, _baseRoll, _basePower, _canBeAttacked);
 }
 

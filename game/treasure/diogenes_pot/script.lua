@@ -6,7 +6,7 @@ function DiogenesPot_enter(host)
         {
             id = id,
 			func = function (host_, srcType, srcID, tgtType, tgtID, amount, roll)
-                if tgtType == PLAYER and tgtID == owner.id and roll == 2 and roll == 3 then
+                if tgtType == PLAYER and tgtID == owner.id and (roll == 2 or roll == 3) then
 					return 0
 				end
 				return CombatDamageLayers._et[CombatDamageLayers:posOf(id)-1].func(host_, srcType, srcID, tgtType, tgtID, amount, roll)

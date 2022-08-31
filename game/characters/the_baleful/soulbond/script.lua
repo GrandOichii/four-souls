@@ -5,8 +5,7 @@ function Soulbond_enter(host)
         name = 'death'..me.id,
         func = function (host_, player)
             if player.id ~= owner.id then
-                DeathStack._et[DeathStack:posOf('death'..me.id)-1].func(host_, player)
-                return
+                return DeathStack._et[DeathStack:posOf('death'..me.id)-1].func(host_, player)
             end
             local ownerID = player.id
             local function destroyItems()
@@ -36,6 +35,7 @@ function Soulbond_enter(host)
             end
             destroyItems()
             tapCards()
+            return true
         end
     })
 end

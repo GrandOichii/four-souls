@@ -48,6 +48,7 @@ private:
 
     Effect _enterEffect;
     Effect _leaveEffect;
+    Effect _destroyedEffect;
 
     Effect _useEffect;
     bool _goesToBottom = false;
@@ -62,6 +63,7 @@ public:
     Effect& useEffect();
     Effect& enterEffect();
     Effect& leaveEffect();
+    Effect& destroyedEffect();
     std::vector<Effect>& abilities();
     bool isEternal();
     bool hasAlt();

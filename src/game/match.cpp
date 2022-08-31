@@ -1365,6 +1365,7 @@ int Match::wrap_refillMonsters(lua_State* L) {
         // } else {
         //     match->_monsterDiscard.push_back(w);
         // }
+        if (match->_monsters[i].size()) continue;
         CardWrapper* newM = nullptr;
         if (!match->_monsters[i].size()) {
             //  TODO? fix
@@ -1498,9 +1499,11 @@ int Match::wrap_activateRoll(lua_State* L) {
     match->applyTriggers(POST_ROLL_TYPE);
     match->_rollStack.pop_back();
     if (match->_turnEnd) return 0;
+    std::cout << "LAST MONSTER INDEX " << match->_lastMonsterIndex << std::endl;
     if (match->_lastMonsterIndex == -2) return 0;
     auto monsterW = match->_monsters[match->_lastMonsterIndex].back();
     auto monsterData = match->_monsterDataArr[match->_lastMonsterIndex];
+    std::cout << "IS BEING ATTACKED: " << monsterData->isBeingAttacked() << std::endl;
     if (!monsterData->isBeingAttacked()) return 0;
     match->log( "Attack roll " + std::to_string(roll.value) + " vs " + std::to_string(monsterData->roll()));
     auto srcType = PLAYER_TYPE;
@@ -1571,6 +1574,7 @@ int Match::wrap_destroyCard(lua_State* L) {
             player->removeFromBoard(card);
             match->sortToDiscard(card);
             card->setOwner(nullptr);
+            card->card()->destroyedEffect().pushMe(match, card, player, ITEM_DESTROYED_TYPE);
             card->card()->leaveEffect().pushMe(match, card, player, ITEM_LEAVE_TYPE);
             return 0;
         }
@@ -2174,6 +2178,7 @@ void Match::setupLua(string setupScript) {
     "\n    payCoins()"
     "\n    destroyItems()"
     "\n    tapCards()"
+    "\n    return true"
     "\nend"
     "\nfunction _discardToHandSize(host, amount)"
     "\n    local player = getCurrentPlayer(host)"
@@ -2800,7 +2805,6 @@ void Match::healMonsters() {
 }
 
 void Match::refillDeadMonsters() {
-    std::cout << "REFILLING DEAD MONSTERS" << std::endl;
     for (int i = 0; i < _monsters.size(); i++) {
         if (!_monsters[i].size()) continue;
         if (_monsterDataArr[i]->health()) continue;
@@ -2813,7 +2817,6 @@ void Match::refillDeadMonsters() {
         if (w->card()->soulCount()) {
             _activePlayer->addSoulCard(w);
             if (_activePlayer->soulCount() >= _soulsToWin) {
-                std::cout << "SETTING " << _activePlayer->name() << " TO WINNER" << std::endl;
                 _winner = _activePlayer;
                 updateAllPlayersEndMatch();
             }
@@ -2821,15 +2824,18 @@ void Match::refillDeadMonsters() {
             _monsterDiscard.push_back(w);
         }
         pushDeathEvent(MONSTER_TYPE, w->id());
+        if (!_monsters[i].size()) continue;
+        auto newM = _monsters[i].back();
+        auto mcard = ((MonsterCard*)newM->card());
+        mcard->createData(L, this, newM->id());
+        _monsterDataArr[i] = mcard->data();
     }
-    std::cout << "DEAD MONSTERS REMOVED " << std::endl;
     pushToStack(new StackEffect(
         "_refillMonsters",
         nullptr,
         nullptr,
         REFILL_MONSTERS_TYPE
     ));
-    std::cout << "AMONGUS" << std::endl;
 }
 
 void Match::pushDeathEvent(string type, int id) {
@@ -2855,12 +2861,13 @@ void Match::killPlayer(int id) {
     }
     lua_pushlightuserdata(L, this);
     player->pushTable(L);
-    int r = lua_pcall(L, 2, 0, 0);
+    int r = lua_pcall(L, 2, 1, 0);
     if (r != LUA_OK) {
         lua_err(L);
         throw std::runtime_error("failed to call death penalty function");
     }
-    this->applyTriggers(AFTER_DEATH_TYPE);
+    auto died = getTopBool(L, -1);
+    if (died) this->applyTriggers(AFTER_DEATH_TYPE);
 }
 
 void Match::saveResponse(string playerName, string response) {

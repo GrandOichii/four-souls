@@ -8,14 +8,14 @@ function OneUP_enter(host)
         name = 'death'..me.id,
         func = function (host_, player)
             if player.id ~= owner.id then
-                DeathStack._et[DeathStack:posOf('death'..me.id)-1].func(host_, player)
-                return
+                return DeathStack._et[DeathStack:posOf('death'..me.id)-1].func(host_, player)
             end
             cancelCurrentAttack(host_)
             setTurnEnd(host_, false)
             incAttackCount(host, player.id)
             healPlayer(host, player.id, _getMaxHealth(host, player.id))
             destroyCard(host, me.id)
+            return false
         end
     })
 end

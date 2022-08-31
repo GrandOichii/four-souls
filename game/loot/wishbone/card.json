@@ -5,7 +5,7 @@
     "use": {
         "effect": "Common_TrinketEnter"
     },
-    "leave": {
+    "destroyed": {
         "effect": "Wishbone_leave"
     }
 }
