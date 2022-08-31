@@ -660,7 +660,7 @@ public:
             auto color = (s&1) ? SDL_Color{255, 0, 0, 0} : SDL_Color{0, 255, 0, 200};
             this->drawRect(x, y, w, h, color, false);
             this->drawRect(x+1, y+1, w-2, h-2, color, false);
-            if (s&1) {
+            if (!_mouseLock && s&1) {
                 onClick(pboard);
                 _mouseLock = true;                
             }

@@ -19,24 +19,23 @@
     -- shiny rock don't work
 
 - implement:
+    -- add shop targets (d20, glass canon and other items can target them)
     -- fix the record error
     -- move from name-based indexing to key indexing
     -- addListener(host, <owner id>, <card id>, <on what>, <check func name>, <cost func name>, <effect func name>), returns listener id
     -- removeListener(host, <listener id>)
+    -- add effect ordering
+    -- add card ordering
     -- change how guppy's hairball works
-    -- fix bag o trash
     -- add custom counters (egg counters mostly)
     -- remove killing players multiple times per turn
     -- add refilling shops/monsters to the stack
-    -- enable activation choice in client (if card has 2+ activated abilities)
     -- add game logs (perhaps in a different window)
     -- better card zoom ( perhaps in a different window )
     -- add attacking top of monster deck
     -- add bonus effects to the monster deck
     -- if a player gains +1 treasure due to rewards, and the card has a monster death trigger, the card is triggered immediately - decide whether to keep or not
     -- add rooms
-    -- add better console argument parsing
-    -- think how to implement more complex cards (flipable cards, cards that turn into monsters)
     -- change choice cards to store player's choice in CardData, dont forget to log the player's choice for other players
     -- figure out how to implement canceling effects
     -- add multiple cube of meat cards

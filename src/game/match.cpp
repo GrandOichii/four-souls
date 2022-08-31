@@ -2041,7 +2041,6 @@ void Match::setupLua(string setupScript) {
     lua_register(L, "addCounters", wrap_addCounters);
     lua_register(L, "removeCounters", wrap_removeCounters);
     lua_register(L, "requestChoice", wrap_requestChoice);
-    lua_register(L, "requestChoice", wrap_requestChoice);
     lua_register(L, "requestSimpleChoice", wrap_requestSimpleChoice);
     lua_register(L, "requestCardsInHand", wrap_requestCardsInHand);
     lua_register(L, "discardLoot", wrap_discardLoot);
