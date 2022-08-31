@@ -420,7 +420,7 @@ bool Player::removeCard(CardWrapper* card) {
     // remove from souls
     removed = removeFromCollection(card, _souls);
     if (removed) {
-        card->card()->leaveEffect().pushMe(_parent, card, this, ITEM_LEAVE_TYPE);
+        // card->card()->leaveEffect().pushMe(_parent, card, this, ITEM_LEAVE_TYPE);
         return true;
     }
     return false;

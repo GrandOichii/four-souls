@@ -1,6 +1,6 @@
 {
     "back": "images/treasure_card_back.bmp",
-    "cards": [
+    "ca1rds": [
         "treasure/dinner",
         "treasure/dinner",
         "treasure/dinner",
@@ -8,7 +8,7 @@
         "treasure/dinner",
         "treasure/dinner"
     ],
-    "ca1rds": [
+    "cards": [
         "treasure/contract_from_below",
         "treasure/mom_s_ring",
         "treasure/r_key",

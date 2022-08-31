@@ -9,7 +9,7 @@
         }
     ],
     "on": {
-        "turn_end": {
+        "turn_start": {
             "check": "MagicSkin_trigger_check",
             "requires": ["roll"],
             "effect": "MagicSkin_trigger"

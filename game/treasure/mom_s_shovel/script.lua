@@ -5,7 +5,9 @@ end
 
 function MomsShovel_effect(host)
     local owner = getTopOwner(host)
-    local choice = Common_ChooseAnySoul(host, owner.id)
-    removeFromEverywhere(host, choice)
-    addSoulCard(host, owner.id, choice)
+    local choice, _, chosen = Common_ChooseAnySoul(host, owner.id)
+    if chosen then
+        removeFromEverywhere(host, choice)
+        addSoulCard(host, owner.id, choice)
+    end
 end

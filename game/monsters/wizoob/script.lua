@@ -14,6 +14,8 @@ function Wizoob_death(host)
 	if #player.souls == 0 then
 		return
 	end
-	local choice = Common_ChooseSoul(host, target, target)
-	destroySoul(host, target, choice)
+	local choice, chosen = Common_ChooseSoul(host, target, target)
+	if chosen then
+		destroySoul(host, target, choice)
+	end
 end

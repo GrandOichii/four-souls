@@ -43,6 +43,7 @@ const string CHARACTER_ENTER_TYPE = "character_enter";
 const string MONSTER_LEAVE_TYPE = "monster_leave";
 const string ITEM_ENTER_TYPE = "item_enter";
 const string ITEM_LEAVE_TYPE = "item_leave";
+const string REFILL_MONSTERS_TYPE = "refill_monsters";
 
 const string LOOT_DECK = "loot";
 const string TREASURE_DECK = "treasure";

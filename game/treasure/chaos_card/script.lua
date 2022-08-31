@@ -31,8 +31,10 @@ function ChaosCard_tap(host)
         return
     end
     if choice == choice4 then
-        local choice, ownerID = Common_ChooseAnySoul(host, owner.id)
-        destroySoul(host, ownerID, choice)
+        local choice, ownerID, chosen = Common_ChooseAnySoul(host, owner.id)
+        if chosen then
+            destroySoul(host, ownerID, choice)
+        end
         return
     end
 end

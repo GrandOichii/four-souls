@@ -233,7 +233,7 @@ MonsterCard::MonsterCard(string dir, json j) :
     if (j.contains("canBeAttacked"))
         _canBeAttacked = j["canBeAttacked"];
     if (j.contains("death"))
-        _deathEffect = Effect(j["death"]);
+        _deathEffect = Trigger(j["death"]);
 }
 
 MonsterCard::~MonsterCard() {
@@ -241,7 +241,7 @@ MonsterCard::~MonsterCard() {
 }
 
 Effect& MonsterCard::rewardsEffect() { return _rewardsEffect; }
-Effect& MonsterCard::deathEffect() { return _deathEffect; }
+Trigger& MonsterCard::deathEffect() { return _deathEffect; }
 
 MonsterData* MonsterCard::data() { return _data; }
 bool MonsterData::isBeingAttacked() { return _isBeingAttacked; }

@@ -13,7 +13,7 @@ function Satan_trigger_check(host, me)
     CardData[me.id] = {
         pid = lr.ownerID
     }
-    return true
+    return Common_MonsterWithID(host, me.id).isBeingAttacked
 end
 
 function Satan_trigger_cost(host, cardInfo)

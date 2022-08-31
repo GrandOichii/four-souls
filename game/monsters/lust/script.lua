@@ -1,3 +1,5 @@
+--  TODO unfinished
+
 function Lust_rewards(host)
 	local killerID = getLastKillerID(host)
 	local killer = Common_PlayerWithID(host, killerID)

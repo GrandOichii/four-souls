@@ -480,27 +480,29 @@ public:
         int monstersX = _monsterDiscardX + 10;
         for (int i = 0; i < state.monsters.size(); i++) {
             auto card = state.monsters[i];
-            this->drawCard(card, -90, monstersX, y);
-            auto x = monstersX + _assets->cardSize().second + 10;
-            auto data = state.monsterDataArr[i];
-            // draw health
-            auto health = data.health;
-            auto tex = _assets->getMessage(std::to_string(health), SDL_Color{255, 0, 0, 0}, 24);
-            this->drawTexture(tex, x, y);
-            if (data.blueHealth) {
-                auto btex = _assets->getMessage("+" + std::to_string(data.blueHealth), SDL_Color{255, 0, 0, 0}, 48);
-                this->drawTexture(btex, x + getSize(tex).first, y + 30);
-                SDL_DestroyTexture(btex);
+            if (card.cardName != "--no-card--") {
+                this->drawCard(card, -90, monstersX, y);
+                auto x = monstersX + _assets->cardSize().second + 10;
+                auto data = state.monsterDataArr[i];
+                // draw health
+                auto health = data.health;
+                auto tex = _assets->getMessage(std::to_string(health), SDL_Color{255, 0, 0, 0}, 24);
+                this->drawTexture(tex, x, y);
+                if (data.blueHealth) {
+                    auto btex = _assets->getMessage("+" + std::to_string(data.blueHealth), SDL_Color{255, 0, 0, 0}, 48);
+                    this->drawTexture(btex, x + getSize(tex).first, y + 30);
+                    SDL_DestroyTexture(btex);
+                }
+                SDL_DestroyTexture(tex);
+                // draw roll
+                tex = _assets->getMessage(std::to_string(data.roll), SDL_Color{255, 255, 255, 0}, 24);
+                this->drawTexture(tex, x, y + 24);
+                SDL_DestroyTexture(tex);
+                // draw power
+                tex = _assets->getMessage(std::to_string(data.power), SDL_Color{169, 169, 169, 0}, 24);
+                this->drawTexture(tex, x, y + 48);
+                SDL_DestroyTexture(tex);
             }
-            SDL_DestroyTexture(tex);
-            // draw roll
-            tex = _assets->getMessage(std::to_string(data.roll), SDL_Color{255, 255, 255, 0}, 24);
-            this->drawTexture(tex, x, y + 24);
-            SDL_DestroyTexture(tex);
-            // draw power
-            tex = _assets->getMessage(std::to_string(data.power), SDL_Color{169, 169, 169, 0}, 24);
-            this->drawTexture(tex, x, y + 48);
-            SDL_DestroyTexture(tex);
             y += _cardSize.first + 3;
         }
     }

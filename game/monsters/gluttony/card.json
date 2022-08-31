@@ -8,5 +8,11 @@
     "soulCount": 1,
     "rewards": {
         "effect": "Gluttony_rewards"
+    },
+    "on": {
+        "damaeg": {
+            "check": "Gluttony_trigger_check",
+            "effect": "Gluttony_trigger"
+        }
     }
 }

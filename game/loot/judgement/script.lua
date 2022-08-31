@@ -27,8 +27,8 @@ end
 function Judgement_use(host)
     discardMe(host, this(host).id)
     local target = popTarget(host)
-    local choice = Common_ChooseSoul(host, target.id, target.id)
-    destroySoul(host, target.id, choice)
-    
-
+    local choice, chosen = Common_ChooseSoul(host, target.id, target.id)
+    if chosen then
+        destroySoul(host, target.id, choice)
+    end
 end

@@ -130,7 +130,7 @@ private:
     int _baseRoll;
     bool _canBeAttacked = true;
 
-    Effect _deathEffect;
+    Trigger _deathEffect;
     Effect _rewardsEffect;
 
     MonsterData* _data = nullptr;
@@ -138,7 +138,7 @@ public:
     MonsterCard(string dir, json j);
     ~MonsterCard();
     Effect& rewardsEffect();
-    Effect& deathEffect();
+    Trigger& deathEffect();
     MonsterData* data();
     void deleteData();
     void createData(lua_State* L, Match* parent, int id);

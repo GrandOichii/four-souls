@@ -41,7 +41,8 @@ Trigger::Trigger() :
 Trigger::Trigger(json j) :
     Effect(j)
 {
-    checkFuncName = j["check"];
+    if (j.contains("check"))
+        checkFuncName = j["check"];
 }
 
 StackEffect* Effect::pushMe(Match* match, CardWrapper* cardW, Player* owner, string type) {

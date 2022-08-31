@@ -5,6 +5,18 @@
     "health": 3,
     "roll": 3,
     "power": 1,
+    "enter": {
+        "usesStack": false,
+        "effect": "Dinga_enter"
+    },
+    "leave": {
+        "usesStack": false,
+        "effect": "Dinga_leave"
+    },
+    "death": {
+        "check": "Dinga_death_check",
+        "effect": "Dinga_death"
+    },
     "rewards": {
         "requires": ["roll"],
         "effect": "Dinga_rewards"

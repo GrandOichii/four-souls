@@ -6,7 +6,6 @@ end
 
 function War_enter(host)
     local me = this(host)
-
     local id = MonsterPowerLayers:top().id + 1
     MonsterPowerLayers:push(
         {
@@ -28,7 +27,8 @@ end
 
 function War_leave(host)
     local me = this(host)
-
+    print(CardData[me.id].ipID)
+    print(#MonsterPowerLayers._et)
     MonsterPowerLayers:remove(CardData[me.id].ipID)
 end
 

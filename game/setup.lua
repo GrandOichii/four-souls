@@ -468,6 +468,9 @@ function Common_ChooseAnySoul(host, ownerID)
             ids[#ids+1] = card.id
         end
     end
+    if #ids == 0 then
+        return 0, 0, false
+    end
     local choiceId, _ = requestChoice(host, ownerID, 'Choose a soul card', SOUL, ids)
     local pid = 0
     for _, player in ipairs(players) do
@@ -478,7 +481,7 @@ function Common_ChooseAnySoul(host, ownerID)
             end
         end
     end
-    return choiceId, pid
+    return choiceId, pid, true
 end
 
 function Common_ChooseSoul(host, playerID, ownerID)
@@ -487,8 +490,11 @@ function Common_ChooseSoul(host, playerID, ownerID)
     for _, card in ipairs(owner.souls) do
         ids[#ids+1] = card.id
     end
+    if #ids == 0 then
+        return 0, false
+    end
     local choiceId, _ = requestChoice(host, playerID, 'Choose a soul card', SOUL, ids)
-    return choiceId
+    return choiceId, true
 end
 
 function Common_SoulCount(player)

@@ -1,24 +1,24 @@
 {
     "back": "images/monster_card_back.bmp",
     "cards": {
-        "monsters1": [
-            "monsters/wrath",
-            "monsters/wrath",
-            "monsters/wrath",
-            "monsters/wrath",
-            "monsters/wrath",
-            "monsters/wrath",
-            "monsters/wrath",
-            "monsters/wrath",
-            "monsters/wrath",
-            "monsters/wrath",
-            "monsters/wrath",
-            "monsters/wrath",
-            "monsters/wrath",
-            "monsters/wrath",
-            "monsters/wrath",
-            "monsters/wrath",
-            "monsters/wrath"
+        "monste1rs": [
+            "monsters/dinga",
+            "monsters/dinga",
+            "monsters/dinga",
+            "monsters/dinga",
+            "monsters/dinga",
+            "monsters/dinga",
+            "monsters/dinga",
+            "monsters/dinga",
+            "monsters/dinga",
+            "monsters/dinga",
+            "monsters/dinga",
+            "monsters/dinga",
+            "monsters/dinga",
+            "monsters/dinga",
+            "monsters/dinga",
+            "monsters/dinga",
+            "monsters/dinga"
         ],
         "monsters": [
             "monsters/big_spider",

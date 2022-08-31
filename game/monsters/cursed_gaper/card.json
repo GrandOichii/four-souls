@@ -5,7 +5,25 @@
     "health": 2,
     "roll": 4,
     "power": 1,
+    "enter": {
+        "usesStack": false,
+        "effect": "CursedGaper_enter"
+    },
+    "leave": {
+        "usesStack": false,
+        "effect": "CursedGaper_leave"
+    },
     "rewards": {
         "effect": "CursedGaper_rewards"
+    },
+    "on": {
+        "roll": {
+            "check": "CursedGaper_trigger1_check",
+            "effect": "CursedGaper_trigger1"
+        },
+        "turn_end": {
+            "usesStack": false,
+            "effect": "CursedGaper_trigger2"
+        }
     }
 }

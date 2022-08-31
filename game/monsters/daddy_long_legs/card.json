@@ -8,5 +8,23 @@
     "soulCount": 1,
     "rewards": {
         "effect": "DaddyLongLegs_rewards"
+    },
+    "enter": {
+        "usesStack": false,
+        "effect": "DaddyLongLegs_enter"
+    },
+    "leave": {
+        "usesStack": false,
+        "effect": "DaddyLongLegs_leave"
+    },
+    "on": {
+        "roll": {
+            "check": "DaddyLongLegs_trigger1_check",
+            "effect": "DaddyLongLegs_trigger1"
+        },
+        "turn_end": {
+            "usesStack": false,
+            "effect": "DaddyLongLegs_trigger2"
+        }
     }
 }
