@@ -1,18 +1,12 @@
 {
     "back": "images/treasure_card_back.bmp",
     "cards": [
-        "treasure/baby_haunt",
-        "treasure/baby_haunt",
-        "treasure/baby_haunt",
-        "treasure/baby_haunt",
-        "treasure/baby_haunt",
-        "treasure/baby_haunt",
-        "treasure/fetal_haunt",
-        "treasure/fetal_haunt",
-        "treasure/fetal_haunt",
-        "treasure/fetal_haunt",
-        "treasure/fetal_haunt",
-        "treasure/fetal_haunt"
+        "treasure/dinner",
+        "treasure/dinner",
+        "treasure/dinner",
+        "treasure/dinner",
+        "treasure/dinner",
+        "treasure/dinner"
     ],
     "ca1rds": [
         "treasure/contract_from_below",

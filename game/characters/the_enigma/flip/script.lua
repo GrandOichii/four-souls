@@ -8,6 +8,7 @@ function Flip_trigger(host)
     if canFlip(host, cCard.id) then
         flip(host, cCard.id)
         rechargeCharacterCard(host, cCard.id)
+        healPlayer(host, owner.id, 0)
     end
     for _, card in ipairs(owner.hand) do
         discardLoot(host, owner.id, card.id)

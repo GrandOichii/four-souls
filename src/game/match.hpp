@@ -322,7 +322,7 @@ public:
     void saveResponse(string playerName, int response);
     void killPlayer(int id);
     void killMonster(CardWrapper* w);
-    void updateAllPlayers();
+    void updateAllPlayers(MatchState& state);
     void updateAllPlayersEndMatch();
     CardWrapper* addWrapper(ScriptCard* card);
     void sortToDiscard(CardWrapper* card);

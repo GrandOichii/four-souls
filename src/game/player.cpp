@@ -254,7 +254,6 @@ int Player::health() {
 
 int Player::baseMaxHealth() {
     auto result = ((CharacterCard*)_characterCard->card())->health();
-    if (_health > result) _health = result;
     return result; 
 }
 

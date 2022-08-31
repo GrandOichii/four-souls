@@ -931,6 +931,7 @@ int Match::wrap_requestChoice(lua_State* L) {
     }
     Player* player = match->playerWithID(pid);
     auto state = match->getState();
+    match->updateAllPlayers(state);
     auto response = player->promptResponse(state, text, choiceType, choices);
     // std::cout << "PROMPTING RESPONSE FOR TEXT " << text << std::endl;
     std::cout << "\t" << player->name() << ": " << response << " (response)" << std::endl;
@@ -959,6 +960,7 @@ int Match::wrap_requestCardsInHand(lua_State* L){
     auto text = getTopString(L, 4);
     auto amount = getTopNumber(L, 5);
     auto state = match->getState();
+    match->updateAllPlayers(state);
     auto result = player->promptChooseCardsInHand(state, text, tid, amount);
     match->saveResponse(player->name(), result);
     if (result == RESPONSE_FIRST) {
@@ -1067,6 +1069,7 @@ int Match::wrap_requestSimpleChoice(lua_State* L) {
         lua_pop(L, 1);
     }
     auto state = match->getState();
+    match->updateAllPlayers(state);
     auto response = player->promptSimpleResponse(state, text, choices);
     match->saveResponse(player->name(), response);
     if (response == RESPONSE_FIRST) response = choices[0];
@@ -2557,14 +2560,14 @@ void Match::pushToStack(StackEffect* effect) {
 void Match::resolveStack() {
     // while the stack isn't empty
     while (!this->_stack.empty()) {
-        updateAllPlayers();
+        auto state = this->getState();
+        updateAllPlayers(state);
         this->resolveTop();
         if (_winner) break;
     }
 }
 
-void Match::updateAllPlayers() {
-    auto state = this->getState();
+void Match::updateAllPlayers(MatchState& state) {
     for (auto& player : _players) {
         player->update(state);
     }
@@ -2602,13 +2605,15 @@ void Match::resolveTop() {
     // std::cout << "AFTER ERASE" << std::endl;
     // printStack(_stack);
     delete effect;
-    updateAllPlayers();
+    auto state = this->getState();
+    updateAllPlayers(state);
 }
 
 string Match::promptPlayerWithPriority() {
     auto player = this->_players[this->_priorityI];
     // this->log("Player " + player->name() + " takes priority");
     auto state = this->getState();
+    this->updateAllPlayers(state);
     return player->promptAction(state);
 }
 
@@ -2818,24 +2823,6 @@ void Match::refillDeadMonsters() {
         //  TODO push function of bonus card
     }
 }
-
-// void Match::execMEnterLeave(CardWrapper* cardW, string funcName) {
-//     if (!funcName.size()) return;
-
-//     this->log("Executing monster function " + funcName);
-//     lua_getglobal(L, funcName.c_str());
-//     if (!lua_isfunction(L, -1)) {
-//         lua_err(L);
-//         throw std::runtime_error("failed to execute monster function " + funcName);
-//     }
-//     lua_pushlightuserdata(L, this);
-//     cardW->pushTable(L);
-//     int r = lua_pcall(L, 2, 0, 0);
-//     if (r != LUA_OK) {
-//         lua_err(this->L);
-//         throw std::runtime_error("failed to execute monster func of card " + cardW->card()->name());
-//     }
-// }
 
 void Match::pushDeathEvent(string type, int id) {
     _deathStack.push_back(DeathEvent{type, id});
