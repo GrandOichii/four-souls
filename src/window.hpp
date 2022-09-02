@@ -525,7 +525,8 @@ public:
         // draw shop
         auto y = _treasureDeckY - _cardSize.second;
         for (auto& card : state.shop) {
-            this->drawCard(card, -90, _treasureDiscardX + 20, y);
+            if (card.cardName != "--no-card--")
+                this->drawCard(card, -90, _treasureDiscardX + 20, y);
 
             y -= _cardSize.first + 3;
         }

@@ -1261,20 +1261,21 @@ int Match::wrap_buyItem(lua_State* L) {
     CardWrapper* w = nullptr;
     auto top = match->getTopTreasureCard();
     if (top) {
-        match->_treasureDeck.pop_back(); //  TODO fix if card is missing
+        match->_treasureDeck.pop_back();
     }
     int lti = match->_lastTreasureIndex;
-
     if (lti == -1) {
         w = top;
     } else {
         if (match->_shop.size() <= lti) throw std::runtime_error("shop index " + std::to_string(lti) + " is greater than shop size");
-
         w = match->_shop[lti];
-        if (top) {match->_shop[lti] = top;}
-        else {
-            match->removeFromShop(w);
-        }
+        match->removeFromShop(w);
+        match->pushToStack(new StackEffect(
+            "_refillShop",
+            match->_activePlayer,
+            nullptr,
+            REFILL_SHOP_TYPE
+        ));
     }
 
     auto player = match->_stack.back()->player;
@@ -1386,6 +1387,19 @@ int Match::wrap_refillMonsters(lua_State* L) {
         //  TODO push function of bonus card
     }
     return false;
+}
+
+int Match::wrap_refillShop(lua_State* L) {
+    stackSizeIs(L, 1);
+    auto match = getTopMatch(L, 1);
+    for (auto& item : match->_shop) {
+        if (item) continue;
+        auto c = match->getTopTreasureCard();
+        if (!c) break;
+        item = c;
+        match->_treasureDeck.pop_back();
+    }
+    return 0;
 }
 
 int Match::wrap_healPlayer(lua_State* L) {
@@ -1947,10 +1961,9 @@ void Match::addCardToBoard(CardWrapper* w, Player* owner) {
 }
 
 void Match::removeFromShop(CardWrapper* cardW) {
-    for (auto it = _shop.begin(); it != _shop.end(); it++) {
-        if (*it == cardW) {
-            _shop.erase(it);
-            log(cardW->card()->name() + " removed from shop");
+    for (auto& sitem : _shop) {
+        if (sitem == cardW) {
+            sitem = nullptr;
             return;
         }
     }
@@ -2003,6 +2016,7 @@ void Match::setupLua(string setupScript) {
     // connect functions
     lua_register(L, "healPlayer", wrap_healPlayer);
     lua_register(L, "_refillMonsters", wrap_refillMonsters);
+    lua_register(L, "_refillShop", wrap_refillShop);
     lua_register(L, "canFlip", wrap_canFlip);
     lua_register(L, "flip", wrap_flip);
     lua_register(L, "getCharacterCard", wrap_getCharacterCard);
@@ -2721,6 +2735,9 @@ MatchState Match::getState() {
         if (si->type == REFILL_MONSTERS_TYPE) {
             s.message = "Refilling\n monsters";
         }
+        if (si->type == REFILL_SHOP_TYPE) {
+            s.message = "Refilling\n shop";
+        }
         result.stack.push_back(s);
     }
 
@@ -2746,7 +2763,9 @@ MatchState Match::getState() {
         result.treasureDiscard.push_back(s);
     }
     for (const auto& w : _shop) {
-        auto s = w->getState();
+        auto s = emptyCardState();
+        if (w)
+            s = w->getState();
         s.zone = Zones::Shop;
         result.shop.push_back(s);
     }

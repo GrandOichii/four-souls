@@ -45,6 +45,7 @@ const string ITEM_ENTER_TYPE = "item_enter";
 const string ITEM_LEAVE_TYPE = "item_leave";
 const string ITEM_DESTROYED_TYPE = "item_destroyed";
 const string REFILL_MONSTERS_TYPE = "refill_monsters";
+const string REFILL_SHOP_TYPE = "refill_shop";
 
 const string LOOT_DECK = "loot";
 const string TREASURE_DECK = "treasure";
