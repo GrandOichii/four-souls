@@ -1414,6 +1414,22 @@ int Match::wrap_refillShop(lua_State* L) {
     return 0;
 }
 
+int Match::wrap_pushToStack(lua_State* L) {
+    stackSizeIs(L, 5);
+    auto match = getTopMatch(L, 1);
+    auto funcName = getTopString(L, 2);
+    auto pid = getTopNumber(L, 3);
+    auto cid = getTopNumber(L, 4);
+    auto type = getTopString(L, 5);
+    match->pushToStack(new StackEffect(
+        funcName,
+        match->playerWithID(pid),
+        match->cardWithID(cid),
+        type
+    ));
+    return 0;
+}
+
 int Match::wrap_healPlayer(lua_State* L) {
     stackSizeIs(L, 3);
     auto match = getTopMatch(L, 1);
@@ -2085,6 +2101,7 @@ void Match::setupLua(string setupScript) {
     luaL_openlibs(L);
     // connect functions
     lua_register(L, "healPlayer", wrap_healPlayer);
+    lua_register(L, "pushToStack", wrap_pushToStack);
     lua_register(L, "getMonsterPiles", wrap_getMonsterPiles);
     lua_register(L, "pushRefillMonsters", wrap_pushRefillMonsters);
     lua_register(L, "pushRefillShop", wrap_pushRefillShop);

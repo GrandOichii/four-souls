@@ -1,14 +1,20 @@
 {
     "back": "images/treasure_card_back.bmp",
-    "ca1rds": [
-        "treasure/dinner",
-        "treasure/dinner",
-        "treasure/dinner",
-        "treasure/dinner",
-        "treasure/dinner",
-        "treasure/dinner"
-    ],
     "cards": [
+        "treasure/mom_s_ring",
+        "treasure/mom_s_ring",
+        "treasure/mom_s_ring",
+        "treasure/mom_s_ring",
+        "treasure/mom_s_ring",
+        "treasure/mom_s_ring",
+        "treasure/mom_s_ring",
+        "treasure/mom_s_ring",
+        "treasure/mom_s_ring",
+        "treasure/mom_s_ring",
+        "treasure/mom_s_ring",
+        "treasure/mom_s_ring"
+    ],
+    "card1s": [
         "treasure/contract_from_below",
         "treasure/mom_s_ring",
         "treasure/r_key",

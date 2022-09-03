@@ -3,6 +3,7 @@
     "text": "+1 p\nWhen you gain or purchase this, loot 1.",
     "script": "script.lua",
     "enter": {
+        "usesStack": false,
         "effect": "MomsRing_enter"
     },
     "leave": {
