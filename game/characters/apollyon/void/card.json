@@ -1,0 +1,26 @@
+{
+    "name": "Void",
+    "text": "{T}: Choose one- Discard your hand, then loot equal to the number of cards discarded.\nPut a monster not being attacked or a shop item into discard.",
+    "script": "script.lua",
+    "eternal": true,
+    "abilities": [
+        {
+            "requires": ["tap"],
+            "text": "Discard your hand, then loot equal to the number of cards discarded.",
+            "effect": "Void_effect0"
+        },
+        
+        {
+            "requires": ["tap"],
+            "cost": "Void_cost1",
+            "text": "Put a monster not being attacked into discard.",
+            "effect": "Void_effect1"
+        },
+        {
+            "requires": ["tap"],
+            "cost": "Void_cost2",
+            "text": "Put a shop item into discard.",
+            "effect": "Void_effect2"
+        }
+    ]
+}

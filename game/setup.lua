@@ -904,6 +904,20 @@ function Common_TargetMonster(host, ownerID)
     return true
 end
 
+function Common_TargetNonAttackedMonster(host, ownerID)
+    local monsters = getActiveMonsters(host)
+    local ids = {}
+    for _, card in ipairs(monsters) do
+        if not card.isBeingAttacked then
+            ids[#ids+1] = card.id
+        end
+    end
+    local choiceId, payed = requestChoice(host, ownerID, "Choose a monster", MONSTER, ids)
+    if not payed then return false end
+    pushTarget(host, choiceId, MONSTER)
+    return true
+end
+
 function Common_MonsterWithID(host, mid)
     local monsters = getActiveMonsters(host)
     for _, monster in ipairs(monsters) do
@@ -980,7 +994,12 @@ function Common_ChooseShopItem(host, ownerID)
         ids[#ids+1] = card.id
     end
     local choice, _ = requestChoice(host, ownerID, 'Choose a shop item', SHOP_CARD, ids)
-    return choice, true
+    return choice
+end
+
+function Common_TargetShopItem(host, ownerID)
+    pushTarget(host, Common_ChooseShopItem(host, ownerID), SHOP_CARD)
+    return true
 end
 
 function Common_RerollItem(host, cardID)

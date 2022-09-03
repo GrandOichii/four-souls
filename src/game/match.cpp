@@ -724,6 +724,10 @@ int Match::wrap_removeFromEverywhere(lua_State* L) {
     }
     // removed = removeFromCollection(card, match->_shop);
     // if (removed) return 0;
+    for (auto& pile : match->_monsters) {
+        removed = removeFromCollection(card, pile);
+        if (removed) return 0;
+    }
     // TODO remove from monster piles
     return 0;
 }
@@ -1433,7 +1437,6 @@ int Match::wrap_discardMe(lua_State* L) {
     throw std::runtime_error("can't discard card with unknown id " + std::to_string(cid));
 }
 
-
 int Match::wrap_this(lua_State *L) {
     stackSizeIs(L, 1);
     auto match = getTopMatch(L, 1);
@@ -1716,6 +1719,18 @@ int Match::wrap_pushRefillShop(lua_State* L) {
     return 0;
 }
 
+int Match::wrap_pushRefillMonsters(lua_State* L) {
+    stackSizeIs(L, 1);
+    auto match = getTopMatch(L, 1);
+    match->pushToStack(new StackEffect(
+        "_refillMonsters",
+        match->_activePlayer,
+        nullptr,
+        REFILL_MONSTERS_TYPE
+    ));
+    return 0;
+}
+
 int Match::wrap_killEntity(lua_State* L) {
     stackSizeIs(L, 3);
     auto match = getTopMatch(L, 1);
@@ -1964,6 +1979,26 @@ int Match::wrap_attackMonster(lua_State* L) {
     return 0;
 }
 
+int Match::wrap_getMonsterPiles(lua_State* L) {
+    stackSizeIs(L, 1);
+    auto match = getTopMatch(L, 1);
+    auto size = match->_monsters.size();
+    lua_createtable(L, size, 0);
+    for (int i = 0; i < size; i++) {
+        auto ssize = match->_monsters[i].size();
+        lua_pushnumber(L, i+1);
+        lua_createtable(L, ssize, 0);
+        dumpstack(L);
+        for (int ii = 0; ii < ssize; ii++) {
+            lua_pushnumber(L, ii+1);
+            match->_monsters[i][ii]->pushTable(L);
+            lua_settable(L, -3);
+        }
+        lua_settable(L, -3);
+    }
+    return 1;
+}
+
 int Match::wrap_getActiveMonsters(lua_State* L) {
     stackSizeIs(L, 1);
     auto match = getTopMatch(L, 1);
@@ -2050,6 +2085,8 @@ void Match::setupLua(string setupScript) {
     luaL_openlibs(L);
     // connect functions
     lua_register(L, "healPlayer", wrap_healPlayer);
+    lua_register(L, "getMonsterPiles", wrap_getMonsterPiles);
+    lua_register(L, "pushRefillMonsters", wrap_pushRefillMonsters);
     lua_register(L, "pushRefillShop", wrap_pushRefillShop);
     lua_register(L, "getShop", wrap_getShop);
     lua_register(L, "_refillMonsters", wrap_refillMonsters);

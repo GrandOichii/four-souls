@@ -1,0 +1,11 @@
+{
+    "name": "Apollyon",
+    "health": 2,
+    "attack": 1,
+    "item": "void",
+    "text": "{T}: Play an additional loot card this turn.\nStarting item: Void",
+    "script": "script.lua",
+    "use": {
+        "effect": "Apollyon_tap"
+    }
+}
