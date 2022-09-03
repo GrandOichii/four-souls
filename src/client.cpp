@@ -140,6 +140,10 @@ public:
             _allowedCards = choices;
             return;
         }
+        if (lastChoiceType == SHOP_CARD_TARGET) {
+            _allowedCards = choices;
+            return;
+        }
         if (lastChoiceType == STACK_MEMBER_TARGET) {
             _allowedStackMembers = choices;
             return;

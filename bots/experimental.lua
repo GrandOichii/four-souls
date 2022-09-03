@@ -58,6 +58,7 @@ end
 local lootBlacklist = {
     'Dice Shard',
     'XX. Judgement',
+    'XV. The Devil',
     'Lil Battery',
     'I. The Magician',
     'Perthro'

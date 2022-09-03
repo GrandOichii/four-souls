@@ -1,0 +1,11 @@
+{
+    "name": "The Broken",
+    "health": 2,
+    "attack": 1,
+    "item": "spindown_dice",
+    "text": "{T}: Play an additional loot card this turn.\nStarting item: Spindown Dice",
+    "script": "script.lua",
+    "use": {
+        "effect": "TheBroken_tap"
+    }
+}

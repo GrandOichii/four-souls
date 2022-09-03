@@ -1,0 +1,9 @@
+{
+    "name": "XV. The Devil",
+    "text": "Destroy an item you control. If you do, steal a non-eternal item from a player or from the shop.",
+    "script": "script.lua",
+    "use": {
+        "cost": "TheDevil_cost",
+        "effect": "TheDevil_effect"
+    }
+}

@@ -1,5 +1,5 @@
 function PayToPlay_cost(host, info)
-    return Common_Pay(host, info.ownerID, 10) and Common_TargetNonEternalCard(host, info.ownerID)
+    return Common_Pay(host, info.ownerID, 10) and Common_TargetOwnedNonEternalCard(host, info.ownerID)
 end
 
 function PayToPlay_effect(host)

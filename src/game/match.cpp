@@ -265,8 +265,10 @@ static void stackSizeIs(lua_State* L, int size) {
 static void pushCards(vector<CardWrapper*> cards, lua_State* L) {
     auto size = cards.size();
     lua_createtable(L, size, 0);
+    int ci = 0;
     for (int i = 0; i < size; i++) {
-        lua_pushnumber(L, i+1);
+        if (!cards[i]) continue;
+        lua_pushnumber(L, ++ci);
         cards[i]->pushTable(L);
         lua_settable(L, -3);
     }
@@ -714,8 +716,14 @@ int Match::wrap_removeFromEverywhere(lua_State* L) {
         if (removed) return 0;
     }
     // remove from shop
-    removed = removeFromCollection(card, match->_shop);
-    if (removed) return 0;
+    for (auto& item : match->_shop) {
+        if (item == card) {
+            item = nullptr;
+            return 0;
+        }
+    }
+    // removed = removeFromCollection(card, match->_shop);
+    // if (removed) return 0;
     // TODO remove from monster piles
     return 0;
 }
@@ -1580,6 +1588,7 @@ int Match::wrap_destroyCard(lua_State* L) {
     auto match = getTopMatch(L, 1);
     auto cardID = getTopNumber(L, 2);
     auto card = match->cardWithID(cardID);
+    // check player boards
     for (const auto& player : match->_players) {
         for (const auto& bcard : player->board()) {
             if (bcard != card) continue;
@@ -1590,6 +1599,13 @@ int Match::wrap_destroyCard(lua_State* L) {
             card->setOwner(nullptr);
             card->card()->destroyedEffect().pushMe(match, card, player, ITEM_DESTROYED_TYPE);
             card->card()->leaveEffect().pushMe(match, card, player, ITEM_LEAVE_TYPE);
+            return 0;
+        }
+    }
+    // check shop
+    for (auto& sitem : match->_shop) {
+        if (sitem == card) {
+            sitem = nullptr;
             return 0;
         }
     }
@@ -1679,6 +1695,25 @@ int Match::wrap_getStack(lua_State* L) {
         lua_settable(L, -3);
     }
     return 1;
+}
+
+int Match::wrap_getShop(lua_State* L) {
+    stackSizeIs(L, 1);
+    auto match = getTopMatch(L, 1);
+    pushCards(match->_shop, L);
+    return 1;
+}
+
+int Match::wrap_pushRefillShop(lua_State* L) {
+    stackSizeIs(L, 1);
+    auto match = getTopMatch(L, 1);
+    match->pushToStack(new StackEffect(
+        "_refillShop",
+        match->_activePlayer,
+        nullptr,
+        REFILL_SHOP_TYPE
+    ));
+    return 0;
 }
 
 int Match::wrap_killEntity(lua_State* L) {
@@ -2015,6 +2050,8 @@ void Match::setupLua(string setupScript) {
     luaL_openlibs(L);
     // connect functions
     lua_register(L, "healPlayer", wrap_healPlayer);
+    lua_register(L, "pushRefillShop", wrap_pushRefillShop);
+    lua_register(L, "getShop", wrap_getShop);
     lua_register(L, "_refillMonsters", wrap_refillMonsters);
     lua_register(L, "_refillShop", wrap_refillShop);
     lua_register(L, "canFlip", wrap_canFlip);
@@ -2126,6 +2163,7 @@ void Match::setupLua(string setupScript) {
     "\nTREASURE_DECK = \'" + TREASURE_DECK + "\'"
     "\nMONSTER_DECK = \'" + MONSTER_DECK + "\'"
     "\nCARD = \'" + CARD_TARGET + "\'"
+    "\nSHOP_CARD = \'" + SHOP_CARD_TARGET + "\'"
     "\nSTACK = \'" + STACK_MEMBER_TARGET + "\'"
     "\nPLAYER = \'" + PLAYER_TARGET + "\'"
     "\nMONSTER = \'" + MONSTER_TARGET + "\'"

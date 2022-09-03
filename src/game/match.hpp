@@ -348,7 +348,9 @@ public:
     void pushEffect(string funcName, Effect& effect, CardWrapper* cardW, Player* owner, string type);
     //  TODO add wrap_popBonusCards, inside of it call refillDeadMonsters
     static int wrap_canFlip(lua_State* L);
+    static int wrap_pushRefillShop(lua_State* L);
     static int wrap_refillMonsters(lua_State* L);
+    static int wrap_getShop(lua_State* L);
     static int wrap_refillShop(lua_State* L);
     static int wrap_flip(lua_State* L);
     static int wrap_tapCharacterCard(lua_State* L);

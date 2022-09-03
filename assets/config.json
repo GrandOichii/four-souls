@@ -4,6 +4,18 @@
             "large": "images/polyphemus_large.bmp",
             "small": "images/polyphemus.bmp"
         },
+        "The Broken": {
+            "large": "images/the_broken_large.bmp",
+            "small": "images/the_broken.bmp"
+        },
+        "Spindown Dice": {
+            "large": "images/spindown_dice_large.bmp",
+            "small": "images/spindown_dice.bmp"
+        },
+        "XV. The Devil": {
+            "large": "images/xv__the_devil_large.bmp",
+            "small": "images/xv__the_devil.bmp"
+        },
         "Flip": {
             "large": "images/flip_large.bmp",
             "small": "images/flip.bmp"

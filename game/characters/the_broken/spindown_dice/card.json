@@ -1,0 +1,20 @@
+{
+    "name": "Spindown Dice",
+    "text": "{T}: Destroy an item. If it was controlled by a player, they may steal an item from the shop.\nAt the end of your turn, roll- 4-6: Recharge this.",
+    "script": "script.lua",
+    "eternal": true,
+    "abilities": [
+        {
+            "requires": ["tap"],
+            "cost": "SpindownDice_cost",
+            "effect": "SpindownDice_effect"
+        }
+    ],
+    "on": {
+        "turn_end": {
+            "requires": ["roll"],
+            "check": "SpindownDice_trigger_check",
+            "effect": "SpindownDice_trigger"
+        }
+    }
+}

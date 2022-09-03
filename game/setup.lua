@@ -919,6 +919,23 @@ function Common_popMonsterTarget(host)
     return Common_MonsterWithID(host, target["id"])
 end
 
+function Common_TargetOwnedNonEternalCard(host, ownerID)
+    local cardIDs = {}
+    for _, player in ipairs(getPlayers(host)) do
+        for _, card in ipairs(player.board) do
+            if not card.isEternal then
+                cardIDs[#cardIDs+1] = card.id
+            end
+        end
+    end
+    if #cardIDs == 0 then
+        return false
+    end
+    local choice, _ = requestChoice(host, ownerID, 'Choose a non-eternal card', CARD, cardIDs)
+    pushTarget(host, choice, CARD)
+    return true
+end
+
 function Common_TargetNonEternalCard(host, ownerID)
     local cardIDs = {}
     for _, player in ipairs(getPlayers(host)) do
@@ -926,6 +943,11 @@ function Common_TargetNonEternalCard(host, ownerID)
             if not card.isEternal then
                 cardIDs[#cardIDs+1] = card.id
             end
+        end
+    end
+    for _, card in ipairs(getShop(host)) do
+        if not card.isEternal then
+            cardIDs[#cardIDs+1] = card.id
         end
     end
     if #cardIDs == 0 then
@@ -948,14 +970,29 @@ function Common_ChooseNonEternalCard(host, ownerID)
     if #cardIDs == 0 then
         return {}, false
     end
-    local choice, _ = requestChoice(host, ownerID, 'Choose card', CARD, cardIDs)
+    local choice, _ = requestChoice(host, ownerID, 'Choose item', CARD, cardIDs)
+    return choice, true
+end
+
+function Common_ChooseShopItem(host, ownerID)
+    local ids = {}
+    for _, card in ipairs(getShop(host)) do
+        ids[#ids+1] = card.id
+    end
+    local choice, _ = requestChoice(host, ownerID, 'Choose a shop item', SHOP_CARD, ids)
     return choice, true
 end
 
 function Common_RerollItem(host, cardID)
     local owner = getOwner(host, cardID)
     if owner == nil then
-        -- fizzle
+        for _, card in ipairs(getShop(host)) do
+            if card.id == cardID then
+                destroyCard(host, cardID)
+                pushRefillShop(host)
+                return
+            end
+        end
         return
     end
     destroyCard(host, cardID)

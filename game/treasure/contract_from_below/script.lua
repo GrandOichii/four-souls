@@ -11,7 +11,7 @@ function ContractFromBelow_cost(host, info)
     end
     Common_SacrificeItem(host, info.ownerID)
     Common_SacrificeItem(host, info.ownerID)
-    return Common_TargetNonEternalCard(host, info.ownerID)
+    return Common_TargetOwnedNonEternalCard(host, info.ownerID)
 end
 
 function ContractFromBelow_effect(host)

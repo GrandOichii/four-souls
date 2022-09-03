@@ -56,6 +56,7 @@ const string TAP_REQUIREMENT = "tap";
 
 const string PLAYER_TARGET = "player";
 const string CARD_TARGET = "card";
+const string SHOP_CARD_TARGET = "shop_card";
 const string STACK_MEMBER_TARGET = "stack_member";
 const string MONSTER_TARGET = "monster";
 const string SOUL_TARGET = "soul";
