@@ -1,6 +1,6 @@
 {
     "back": "images/treasure_card_back.bmp",
-    "cards": [
+    "card1s": [
         "treasure/mom_s_ring",
         "treasure/mom_s_ring",
         "treasure/mom_s_ring",
@@ -14,7 +14,7 @@
         "treasure/mom_s_ring",
         "treasure/mom_s_ring"
     ],
-    "card1s": [
+    "cards": [
         "treasure/contract_from_below",
         "treasure/mom_s_ring",
         "treasure/r_key",

@@ -4,6 +4,14 @@
             "large": "images/polyphemus_large.bmp",
             "small": "images/polyphemus.bmp"
         },
+        "Maggy": {
+            "large": "images/maggy_large.bmp",
+            "small": "images/maggy.bmp"
+        },
+        "Yum Heart": {
+            "large": "images/yum_heart_large.bmp",
+            "small": "images/yum_heart.bmp"
+        },
         "Apollyon": {
             "large": "images/apollyon_large.bmp",
             "small": "images/apollyon.bmp"

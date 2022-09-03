@@ -1,0 +1,11 @@
+{
+    "name": "Maggy",
+    "health": 2,
+    "attack": 1,
+    "item": "yum_heart",
+    "text": "{T}: Play an additional loot card this turn.\nStarting item: Yum Heart",
+    "script": "script.lua",
+    "use": {
+        "effect": "Maggy_tap"
+    }
+}

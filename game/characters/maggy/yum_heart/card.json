@@ -1,0 +1,28 @@
+{
+    "name": "Yum Heart",
+    "text": "{T}: Choose a player or a monster. Prevent the next instance of damage they would take this turn.\n At the end of your turn, recharge this.",
+    "script": "script.lua",
+    "eternal": true,
+    "enter": {
+        "usesStack": false,
+        "effect": "YumHeart_enter"
+    },
+    "leave": {
+        "usesStack": false,
+        "effect": "YumHeart_leave"
+    },
+    "abilities": [
+        {
+            "requires": ["tap"],
+            "cost": "YumHeart_cost",
+            "effect": "YumHeart_effect"
+        }
+    ],
+    "on": {
+        "turn_end": {
+            "usesStack": false,
+            "check": "YumHeart_trigger_check",
+            "effect": "YumHeart_trigger"
+        }
+    }
+}
