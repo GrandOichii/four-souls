@@ -1,0 +1,24 @@
+{
+    "name": "Dad's Ring",
+    "text": "Each time you declare an attack on a monster, roll-\n5-6: That monster gains -1d till end of turn.",
+    "script": "script.lua",
+    "enter": {
+        "usesStack": false,
+        "effect": "DadsRing_enter"
+    },
+    "leave": {
+        "usesStack": false,
+        "effect": "DadsRing_leave"
+    },
+    "on": {
+        "attack": {
+            "requires": ["roll"],
+            "check": "DadsRing_trigger1_check",
+            "effect": "DadsRing_trigger1"
+        },
+        "turn_end": {
+            "usesStack": false,
+            "effect": "DadsRing_trigger2"
+        }
+    }
+}

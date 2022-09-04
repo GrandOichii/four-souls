@@ -278,9 +278,29 @@ private:
             this->log(player->name() + " activates his characted card");
         }},
         {ACTION_ATTACK_MONSTER, [this](Player* player, std::vector<string> args) {
-            //  TODO add -1
             this->_lastMonsterIndex = std::stoi(args[1].c_str());
             player->decMonsterAttackAmount();
+            if (this->_lastMonsterIndex == -1) {
+                auto state = this->getState();
+                vector<int> choices;
+                for (const auto& pile : this->_monsters)
+                    choices.push_back(pile.back()->id());
+                auto response = std::stoi(player->promptResponse(state, "Choose monster pile to cover", MONSTER_TYPE, choices));
+                this->saveResponse(player->name(), response);                
+                auto card = this->getTopMonsterCard();
+                this->_monsterDeck.pop_back();
+                for (int i = 0; i < this->_monsters.size(); i++) {
+                    if (this->_monsters[i].back()->id() == response) {
+                        this->_monsters[i].push_back(card);
+                        this->_lastMonsterIndex = i;
+                        auto mcard = (MonsterCard*)card->card();
+                        mcard->createData(this->L, this, card->id());
+                        mcard->enterEffect().pushMe(this, card, this->_activePlayer, MONSTER_ENTER_TYPE);
+                        this->_monsterDataArr[i] = mcard->data();
+                        break;
+                    }
+                }
+            }
             this->_monsterDataArr[this->_lastMonsterIndex]->setIsBeingAttacked(true);
             this->pushToStack(new StackEffect(
                 "_attackMonster",
@@ -446,10 +466,7 @@ public:
     void setupLua(string setupScript);
     static void lua_err(lua_State *L);
     void execScript(string script);
-    // void execEnter(CardWrapper* w, Player* owner);
-    // void execLeave(CardWrapper* w, Player* owner);
     void execFunc(string funcName);
-    // void execMEnterLeave(CardWrapper* cardW, string funcName);
     bool execCheck(string funcName, CardWrapper* card);
     void addToCharacterPool(CharacterCard* card);
     void addPlayer(Player* player);

@@ -2941,12 +2941,17 @@ void Match::refillDeadMonsters() {
         mcard->createData(L, this, newM->id());
         _monsterDataArr[i] = mcard->data();
     }
-    pushToStack(new StackEffect(
-        "_refillMonsters",
-        nullptr,
-        nullptr,
-        REFILL_MONSTERS_TYPE
-    ));
+    for (const auto& pile : _monsters) {
+        if (!pile.size()) {
+            pushToStack(new StackEffect(
+                "_refillMonsters",
+                nullptr,
+                nullptr,
+                REFILL_MONSTERS_TYPE
+            ));
+            return;
+        }
+    }
 }
 
 void Match::pushDeathEvent(string type, int id) {

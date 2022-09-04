@@ -14,22 +14,19 @@
 
 - issues:
     -- when buying cards with curved horn effect and attacking again
-    -- targeting bug in client: d100 rolls a 3 + lodestone trigger, both cards will point to the same monster
     -- does callus save from evil twins effect
     -- shiny rock don't work
 
 - implement:
-    -- add shop targets (d20, glass canon and other items can target them)
     -- fix the record error
     -- move from name-based indexing to key indexing
-    -- addListener(host, <owner id>, <card id>, <on what>, <check func name>, <cost func name>, <effect func name>), returns listener id
+    -- addListener(host, <owner id>, <card id>, <on what>, <check func name>, <cost func name>, <effect func name>, <uses stack>), returns listener id
     -- removeListener(host, <listener id>)
     -- add effect ordering
     -- add card ordering
     -- change how guppy's hairball works
     -- add custom counters (egg counters mostly)
     -- remove killing players multiple times per turn
-    -- add refilling shops/monsters to the stack
     -- add game logs (perhaps in a different window)
     -- better card zoom ( perhaps in a different window )
     -- add attacking top of monster deck

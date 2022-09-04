@@ -215,7 +215,19 @@ function Bot_PromptAction(me, state)
     return '$PASS'
 end
 
+function ChoosePlayer(me, choices)
+    for _, c in ipairs(choices) do
+        if c == me.id then
+            return c
+        end
+    end
+    return choices[1]
+end
+
 function Bot_PromptResponse(me, state, text, choiceType, choices)
+    if choiceType == 'player' then
+        return ChoosePlayer(me, choices)
+    end
     return choices[1]
 end
 

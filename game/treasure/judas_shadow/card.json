@@ -1,0 +1,14 @@
+{
+    "name": "Judas' Shadow",
+    "text": "Each time you die, before paying penalties, put 2 counters on this.",
+    "script": "script.lua",
+    "on": {
+        "death": {
+            "check": "JudasShadow_trigger_check",
+            "effect": "JudasShadow_trigger"
+        }
+    },
+    "leave": {
+        "effect": "JudasShadow_leave"
+    }
+}

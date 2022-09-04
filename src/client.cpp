@@ -700,13 +700,13 @@ public:
     void drawTreasureDeck(MatchState& state) override {
         Window::drawTreasureDeck(state);
         if (!_mouseCheck) return;
-        PlayerBoardState me;
-        for (const auto& board : _state.boards)
+        PlayerBoardState* me;
+        for (auto& board : _state.boards)
             if (board.id == _myID)
-                me = board;
+                me = &board;
         if (!_waitingResponse) return;
         if (_lastRequestType != PollType::GetAction) return;
-        if (!(me.purchaseCount && !_state.isCombat && me.coinCount >= me.treasurePrice && _state.stack.size() == 0)) return;
+        if (!(me->purchaseCount && !_state.isCombat && me->coinCount >= me->treasurePrice && _state.stack.size() == 0)) return;
         if (_mouseLock) return;
         int mx, my;
         auto s = SDL_GetMouseState(&mx, &my);
@@ -725,6 +725,37 @@ public:
         _c->Send(reply);
         _mouseLock = true;
         _waitingResponse = false;
+    }
+
+    void drawMonsterDeck(MatchState& state) override {
+        Window::drawMonsterDeck(state);
+        if (!_mouseCheck) return;
+        PlayerBoardState* me;
+        for (auto& board : _state.boards)
+            if (board.id == _myID)
+                me = &board;
+        if (!_waitingResponse) return;
+        if (_lastRequestType != PollType::GetAction) return;
+        if (!(me->attackCount && !_state.isCombat && _state.stack.size() == 0)) return;
+        if (_mouseLock) return;
+        int mx, my;
+        auto s = SDL_GetMouseState(&mx, &my);
+        int w = _cardSize.first;
+        int h = _cardSize.second;
+        auto x = _monsterDeckX;
+        auto y = _monsterDeckY;
+        if (!(mx >= x && my >= y && mx <= x + w && my <= h+ y)) return;
+        auto color = (s&1) ? SDL_Color{255, 0, 0, 0} : SDL_Color{0, 255, 0, 0};
+        this->drawRect(x, y, w, h, color, false);
+        this->drawRect(x+1, y+1, w-2, h-2, color, false);
+        if (!(s&1)) return;
+
+        message<PollType> reply;
+        reply << string("attack -1");
+        _c->Send(reply);
+        _mouseLock = true;
+        _waitingResponse = false;
+
     }
     
 };

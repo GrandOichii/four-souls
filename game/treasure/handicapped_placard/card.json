@@ -1,0 +1,13 @@
+{
+    "name": "Handicapped Placard",
+    "text": "Monsters have -Xd on your turn, where X is the number of souls the player with the most souls controls minus the number of souls you control.",
+    "script": "script.lua",
+    "enter": {
+        "usesStack": false,
+        "effect": "HandicappedPlacard_enter"
+    },
+    "leave": {
+        "usesStack": false,
+        "effect": "HandicappedPlacard_leave"
+    }
+}

@@ -454,17 +454,9 @@ public:
 
     void drawMonsters(MatchState& state) {
         // draw monster deck
-        auto count = state.monsterDeckCount;
-        if (count) this->drawCardBack(CARD_TYPE_MONSTER, true, _monsterDeckX, _monsterDeckY);
-        // _lastLootDeckCount
-        if (count != _lastMonsterDeckCount) {
-            _lastMonsterDeckCount = count;
-            SDL_DestroyTexture(_lastMonsterDeckCountTex);
-            _lastMonsterDeckCountTex = this->_assets->getMessage(std::to_string(_lastMonsterDeckCount), SDL_Color{ 255, 255, 255, 0 }, 24);
-        }
-        this->drawTexture(_lastMonsterDeckCountTex, _monsterDeckX + 10, _monsterDeckY + 10);
+        this->drawMonsterDeck(state);
         // draw monster discard
-        count = state.monsterDiscard.size();
+        auto count = state.monsterDiscard.size();
         if (count) {
             auto card = *(state.monsterDiscard.end() - 1);
             this->drawCard(card, 0, _monsterDiscardX, _monsterDeckY);
@@ -505,6 +497,18 @@ public:
             }
             y += _cardSize.first + 3;
         }
+    }
+
+    virtual void drawMonsterDeck(MatchState& state) {
+        auto count = state.monsterDeckCount;
+        if (count) this->drawCardBack(CARD_TYPE_MONSTER, true, _monsterDeckX, _monsterDeckY);
+        if (count != _lastMonsterDeckCount) {
+            _lastMonsterDeckCount = count;
+            SDL_DestroyTexture(_lastMonsterDeckCountTex);
+            _lastMonsterDeckCountTex = this->_assets->getMessage(std::to_string(_lastMonsterDeckCount), SDL_Color{ 255, 255, 255, 0 }, 24);
+        }
+        this->drawTexture(_lastMonsterDeckCountTex, _monsterDeckX + 10, _monsterDeckY + 10);
+
     }
 
     void drawTreasure(MatchState& state) {

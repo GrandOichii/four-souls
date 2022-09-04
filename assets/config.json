@@ -4,6 +4,18 @@
             "large": "images/polyphemus_large.bmp",
             "small": "images/polyphemus.bmp"
         },
+        "Dad's Ring": {
+            "large": "images/dad_s_ring_large.bmp",
+            "small": "images/dad_s_ring.bmp"
+        },
+        "Judas' Shadow": {
+            "large": "images/judas__shadow_large.bmp",
+            "small": "images/judas__shadow.bmp"
+        },
+        "Handicapped Placard": {
+            "large": "images/handicapped_placard_large.bmp",
+            "small": "images/handicapped_placard.bmp"
+        },
         "Maggy": {
             "large": "images/maggy_large.bmp",
             "small": "images/maggy.bmp"

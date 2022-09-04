@@ -13,7 +13,7 @@ function Decoy_cost(host, me)
     if #ids == 0 then
         return false
     end
-    local choiceId, _ = requestChoice(host, me.ownerID, "Choose a tapped card", CARD, ids)
+    local choiceId, _ = requestChoice(host, me.ownerID, "Choose a card", CARD, ids)
     pushTarget(host, choiceId, CARD)
     return true
 end

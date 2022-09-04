@@ -1,4 +1,5 @@
-function DonationMachine_cost(host, me)
+function DonationMachine_cost(host, info)
+    local me = this(host)
     local owner = getTopOwner(host)
     local ids = {}
     for _, card in ipairs(owner.board) do
