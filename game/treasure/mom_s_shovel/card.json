@@ -9,6 +9,7 @@
     "abilities": [
         {
             "requires": ["tap"],
+            "cost": "MomsShovel_cost",
             "effect": "MomsShovel_effect"
         }
     ]

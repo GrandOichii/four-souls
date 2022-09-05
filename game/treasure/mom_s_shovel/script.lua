@@ -3,11 +3,13 @@ function MomsShovel_enter(host)
     tapCard(host, me.id)
 end
 
+function MomsShovel_cost(host, info)
+    return Common_TargetAnySoul(host, info.ownerID)
+end
+
 function MomsShovel_effect(host)
+    local target = popTarget(host)
     local owner = getTopOwner(host)
-    local choice, _, chosen = Common_ChooseAnySoul(host, owner.id)
-    if chosen then
-        removeFromEverywhere(host, choice)
-        addSoulCard(host, owner.id, choice)
-    end
+    removeFromEverywhere(host, target.id)
+    addSoulCard(host, owner.id, target.id)
 end

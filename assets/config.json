@@ -4,6 +4,10 @@
             "large": "images/polyphemus_large.bmp",
             "small": "images/polyphemus.bmp"
         },
+        "Finger!": {
+            "large": "images/finger__large.bmp",
+            "small": "images/finger_.bmp"
+        },
         "Dad's Ring": {
             "large": "images/dad_s_ring_large.bmp",
             "small": "images/dad_s_ring.bmp"

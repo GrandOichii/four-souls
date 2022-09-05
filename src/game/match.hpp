@@ -291,9 +291,11 @@ private:
                 this->_monsterDeck.pop_back();
                 for (int i = 0; i < this->_monsters.size(); i++) {
                     if (this->_monsters[i].back()->id() == response) {
+                        auto mcard = (MonsterCard*)this->_monsters[i].back()->card();
+                        mcard->leaveEffect().pushMe(this, w, _activePlayer, MONSTER_LEAVE_TYPE);
                         this->_monsters[i].push_back(card);
                         this->_lastMonsterIndex = i;
-                        auto mcard = (MonsterCard*)card->card();
+                        mcard = (MonsterCard*)card->card();
                         mcard->createData(this->L, this, card->id());
                         mcard->enterEffect().pushMe(this, card, this->_activePlayer, MONSTER_ENTER_TYPE);
                         this->_monsterDataArr[i] = mcard->data();

@@ -6,7 +6,7 @@ function DadsRing_enter(host)
             id = id,
             func = function (host_, mid)
                 local add = 0
-                for index, value in ipairs(CardData[me.id].mids) do
+                for index, value in pairs(CardData[me.id].mids) do
                     if index == mid then
                         add = value
                         break
@@ -32,7 +32,11 @@ function DadsRing_trigger1_check(host, me)
 end
 
 function DadsRing_trigger1(host)
+    local roll = popRollStack(host)
     local me = this(host)
+    if roll.value < 4 then
+        return
+    end
     for _, card in ipairs(getActiveMonsters(host)) do
         if card.isBeingAttacked then
             if CardData[me.id].mids[card.id] == nil then
@@ -45,10 +49,6 @@ function DadsRing_trigger1(host)
 end
 
 function DadsRing_trigger2(host)
-    local roll = popRollStack(host)
     local me = this(host)
-    if roll < 4 then
-        return
-    end
     CardData[me.id].mids = {}
 end

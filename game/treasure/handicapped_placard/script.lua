@@ -6,6 +6,9 @@ function HandicappedPlacard_enter(host)
         {
             id = id,
             func = function (host_, mid)
+                if getCurrentPlayer(host).id ~= owner.id then
+                    return MonsterRollLayers._et[MonsterRollLayers:posOf(id)-1].func(host_, mid)
+                end
                 local diff = 0
                 local o = Common_PlayerWithID(host, owner.id)
                 local ms = Common_SoulCount(o)

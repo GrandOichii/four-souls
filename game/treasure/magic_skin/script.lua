@@ -1,11 +1,15 @@
+function MagicSkin_cost(host, info)
+    return Common_TargetOpponent(host, info.ownerID)
+end
+
 function MagicSkin_effect(host)
     local owner = getTopOwner(host)
     local me = this(host)
+    local target = popTarget(host)
     gainTreasure(host, owner.id, 1)
     addCounters(host, me.id, 1)
-    local choice = Common_ChooseOpponent(host, owner.id)
     removeFromEverywhere(host, me.id)
-    moveToBoard(host, choice, me.id)
+    moveToBoard(host, target.id, me.id)
 end
 
 function MagicSkin_trigger_check(host, me)

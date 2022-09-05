@@ -952,8 +952,7 @@ int Match::wrap_requestChoice(lua_State* L) {
     auto state = match->getState();
     match->updateAllPlayers(state);
     auto response = player->promptResponse(state, text, choiceType, choices);
-    // std::cout << "PROMPTING RESPONSE FOR TEXT " << text << std::endl;
-    std::cout << "\t" << player->name() << ": " << response << " (response)" << std::endl;
+    match->log("\t" + player->name() + ": " + response + " (response)");
     match->saveResponse(player->name(), response);
     if (response == RESPONSE_CANCEL) {
         lua_pushnumber(L, -1);
@@ -1540,11 +1539,9 @@ int Match::wrap_activateRoll(lua_State* L) {
     match->applyTriggers(POST_ROLL_TYPE);
     match->_rollStack.pop_back();
     if (match->_turnEnd) return 0;
-    std::cout << "LAST MONSTER INDEX " << match->_lastMonsterIndex << std::endl;
     if (match->_lastMonsterIndex == -2) return 0;
     auto monsterW = match->_monsters[match->_lastMonsterIndex].back();
     auto monsterData = match->_monsterDataArr[match->_lastMonsterIndex];
-    std::cout << "IS BEING ATTACKED: " << monsterData->isBeingAttacked() << std::endl;
     if (!monsterData->isBeingAttacked()) return 0;
     match->log( "Attack roll " + std::to_string(roll.value) + " vs " + std::to_string(monsterData->roll()));
     auto srcType = PLAYER_TYPE;
@@ -2492,6 +2489,7 @@ void Match::updateAllPlayersEndMatch() {
         auto state = this->getState();
         player->updateEndMatch(state, _winner->id());
     }
+    log("Match winner: " + _winner->name());
 }
 
 void Match::passTurn() {
@@ -2870,18 +2868,15 @@ MatchState Match::getState() {
     auto size = _monsters.size();
     for (int i = 0; i < size; i++) {
         auto& pile = _monsters[i];
-        auto& data = _monsterDataArr[i];
-        if (!pile.size()) {
-            auto s = emptyCardState();
-            s.zone = Zones::ActiveMonsters;
-            result.monsters.push_back(s);
-            result.monsterDataArr.push_back(emptyMonsterDataState());
-            continue;
+        auto s = emptyCardState();
+        auto d = emptyMonsterDataState();
+        if (pile.size()) {
+            s = pile.back()->getState();
+            d = _monsterDataArr[i]->getState();
         }
-        auto s = pile.back()->getState();
         s.zone = Zones::ActiveMonsters;
         result.monsters.push_back(s);
-        result.monsterDataArr.push_back(data->getState());
+        result.monsterDataArr.push_back(d);
     }
 
 
@@ -2925,6 +2920,15 @@ void Match::refillDeadMonsters() {
         mc->leaveEffect().pushMe(this, w, _activePlayer, MONSTER_LEAVE_TYPE);
         _monsters[i].pop_back();
         _monsterDataArr[i] = nullptr;
+        pushDeathEvent(MONSTER_TYPE, w->id());
+        if (_monsters[i].size()) {
+            auto newM = _monsters[i].back();
+            auto mcard = ((MonsterCard*)newM->card());
+            mcard->createData(L, this, newM->id());
+            _monsterDataArr[i] = mcard->data();
+            mcard->enterEffect().pushMe(this, w, _activePlayer, MONSTER_LEAVE_TYPE);
+        }
+        //  TODO move this to the cards
         if (w->card()->soulCount()) {
             _activePlayer->addSoulCard(w);
             if (_activePlayer->soulCount() >= _soulsToWin) {
@@ -2934,12 +2938,7 @@ void Match::refillDeadMonsters() {
         } else {
             _monsterDiscard.push_back(w);
         }
-        pushDeathEvent(MONSTER_TYPE, w->id());
-        if (!_monsters[i].size()) continue;
-        auto newM = _monsters[i].back();
-        auto mcard = ((MonsterCard*)newM->card());
-        mcard->createData(L, this, newM->id());
-        _monsterDataArr[i] = mcard->data();
+        
     }
     for (const auto& pile : _monsters) {
         if (!pile.size()) {
@@ -2987,6 +2986,7 @@ void Match::killPlayer(int id) {
 }
 
 void Match::saveResponse(string playerName, string response) {
+    // std::cout << "SAVING " << response << " FOR " << playerName << std::endl;
     _record["actions"][playerName].push_back(response);
     std::ofstream out(_recordPath);
     out << _record.dump(4);
@@ -2994,8 +2994,9 @@ void Match::saveResponse(string playerName, string response) {
 }
 
 void Match::saveResponse(string playerName, int response) {
-    _record["actions"][playerName].push_back(std::to_string(response));
-    std::ofstream out(_recordPath);
-    out << _record.dump(4);
-    out.close();
+    saveResponse(playerName, std::to_string(response));
+    // _record["actions"][playerName].push_back(std::to_string(response));
+    // std::ofstream out(_recordPath);
+    // out << _record.dump(4);
+    // out.close();
 }

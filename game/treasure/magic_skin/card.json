@@ -5,6 +5,7 @@
     "abilities": [
         {
             "requires": ["tap"],
+            "cost": "MagicSkin_cost",
             "effect": "MagicSkin_effect"
         }
     ],

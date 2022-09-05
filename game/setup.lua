@@ -460,6 +460,15 @@ function Common_SacrificeMe(host, pid, cid)
     return false
 end
 
+function Common_TargetAnySoul(host, ownerID)
+    local cid, pid, chosen = Common_ChooseAnySoul(host, ownerID)
+    if not chosen then
+        return false
+    end
+    pushTarget(host, cid, SOUL)
+    return true
+end
+
 function Common_ChooseAnySoul(host, ownerID)
     local ids = {}
     local players = getPlayers(host)

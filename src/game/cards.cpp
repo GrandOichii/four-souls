@@ -255,7 +255,7 @@ void MonsterCard::deleteData() {
 }
 
 void MonsterCard::createData(lua_State* L, Match* parent, int id) {
-    std::cout << "CREATING NEW DATA FOR " << name() << std::endl;
+    // std::cout << "CREATING NEW DATA FOR " << name() << std::endl;
     _data = new MonsterData(L, parent, id, _baseHealth, _baseRoll, _basePower, _canBeAttacked);
 }
 
