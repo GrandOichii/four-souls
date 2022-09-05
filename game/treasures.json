@@ -1,18 +1,15 @@
 {
     "back": "images/treasure_card_back.bmp",
-    "card1s": [
+    "car1ds": [
+        "treasure/contract_from_below",
+        "treasure/finger",
+        "treasure/judas_shadow",
+        "treasure/handicapped_placard",
+        "treasure/dad_s_ring",
         "treasure/mom_s_ring",
-        "treasure/mom_s_ring",
-        "treasure/mom_s_ring",
-        "treasure/mom_s_ring",
-        "treasure/mom_s_ring",
-        "treasure/mom_s_ring",
-        "treasure/mom_s_ring",
-        "treasure/mom_s_ring",
-        "treasure/mom_s_ring",
-        "treasure/mom_s_ring",
-        "treasure/mom_s_ring",
-        "treasure/mom_s_ring"
+        "treasure/r_key",
+        "treasure/eternal_d6",
+        "treasure/keeper_s_sack"
     ],
     "cards": [
         "treasure/contract_from_below",

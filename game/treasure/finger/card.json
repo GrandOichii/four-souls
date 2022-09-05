@@ -3,10 +3,10 @@
     "text": "Each time a player rolls a 2, you may swap a non-eternal item you control with a non-eternal item they control.",
     "script": "script.lua",
     "on": {
-        "roll": {
-            "check": "Funger_trigger_check",
-            "cost": "Funger_trigger_cost",
-            "effect": "Funger_trigger"
+        "post_roll": {
+            "check": "Finger_trigger_check",
+            "cost": "Finger_trigger_cost",
+            "effect": "Finger_trigger"
         }
     }
 }

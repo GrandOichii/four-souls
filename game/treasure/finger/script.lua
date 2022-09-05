@@ -1,8 +1,8 @@
-function Funger_trigger_check(host, me)
+function Finger_trigger_check(host, me)
     return Common_LastRoll(host, me).value == 2
 end
 
-function Funger_trigger_cost(host, info)
+function Finger_trigger_cost(host, info)
     local me = this(host)
     local owner = Common_PlayerWithID(host, info.ownerID)
     local rOwnerID = CardData[me.id].lastRoll.ownerID
@@ -32,7 +32,7 @@ function Funger_trigger_cost(host, info)
     return true
 end
 
-function Funger_trigger(host)
+function Finger_trigger(host)
     local target = popTarget(host)
     local rTarget = popTarget(host)
     local owner = getOwner(host, target.id)
@@ -41,6 +41,9 @@ function Funger_trigger(host)
     end
     local rOwner = getOwner(host, rTarget.id)
     if rOwner == nil then
+        return
+    end
+    if target.id == rTarget.id then
         return
     end
     removeFromEverywhere(host, target.id)
