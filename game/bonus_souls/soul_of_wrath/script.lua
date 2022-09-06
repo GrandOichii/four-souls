@@ -6,7 +6,7 @@ function SoulOfWrath_trigger(host)
     local me = this(host)
     addCounters(host, me.id, 1)
     me = this(host)
-    if me.counters >= 2 then
+    if me.counters >= 6 then
         pushToStack(host, 'SoulOfWrath_gain', getCurrentPlayer(host).id, me.id, 'trigger')
     end
 end

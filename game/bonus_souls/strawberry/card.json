@@ -1,0 +1,16 @@
+{
+    "name": "Strawberry",
+    "text": "The first time a player rolls a 1 three times on the same turn gains this soul.",
+    "script": "script.lua",
+    "soulCount": 1,
+    "on": {
+        "roll": {
+            "check": "Strawberry_trigger1_check",
+            "effect": "Strawberry_trigger1"
+        },
+        "turn_end": {
+            "usesStack": false,
+            "effect": "Strawberry_trigger2"
+        }
+    }
+}

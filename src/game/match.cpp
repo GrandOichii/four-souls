@@ -650,6 +650,7 @@ int Match::wrap_moveToHand(lua_State* L) {
     auto player = match->playerWithID(pid);
     auto card = match->cardWithID(cid);
     player->addLootCards({card});
+    match->applyTriggers(LOOT_GAIN_TYPE);
     return 0;
 }
 
@@ -1209,25 +1210,14 @@ int Match::wrap_getDamageEvent(lua_State* L) {
 }
 
 int Match::wrap_addCoins(lua_State* L) {
-    if (lua_gettop(L) != 3) {
-        lua_err(L);
-        exit(1);
-    }
+    stackSizeIs(L, 3);
     auto match = getTopMatch(L, 1);
-    if (!lua_isnumber(L, 2)) {
-        lua_err(L);
-        exit(1);
-    }
-    auto pid = (int)lua_tonumber(L, 2);
-    
-    if (!lua_isnumber(L, 3)) {
-        lua_err(L);
-        exit(1);
-    }
-    auto amount = (int)lua_tonumber(L, 3);
+    auto pid = getTopNumber(L, 2);
+    auto amount = getTopNumber(L, 3);
     Player* player = match->playerWithID(pid);
     match->log(player->name() + " gains " + std::to_string(amount) + " coins");
     player->addCoins(amount);
+    match->applyTriggers(COIN_GAIN_TYPE);
     return 0;
 }
 
@@ -1307,6 +1297,7 @@ int Match::wrap_lootCards(lua_State *L) {
     match->log(player->name() + " loots " + std::to_string(amount) + " cards");
     auto cards = match->getTopLootCards(amount);
     player->addLootCards(cards);
+    match->applyTriggers(LOOT_GAIN_TYPE);
     return 0;
 }
 
@@ -2210,6 +2201,7 @@ void Match::setupLua(string setupScript) {
     for (const auto& w : _bonusSouls) {
         // std::cout << "Loading script for " << w->card()->name() << std::endl;
         this->execScript(w->card()->script());
+
     }
     for (const auto& w : _monsterDeck) {
         // std::cout << "Loading script for " << w->card()->name() << std::endl;
@@ -2254,9 +2246,6 @@ void Match::setupLua(string setupScript) {
     "\n            if amount > 1 then"
     "\n                message = 'Choose '..amount..' cards to discard'"
     "\n            end"
-    // "\n            for _, card in ipairs(player.hand) do"
-    // "\n                print('CARD', card.id, card.name)"
-    // "\n            end"
     "\n            local cardIDs = requestCardsInHand(host, ownerID, ownerID, message, amount)"
     "\n            for _, cid in ipairs(cardIDs) do"
     "\n                discardLoot(host, ownerID, cid)"
@@ -2780,7 +2769,7 @@ MatchState Match::getState() {
     int rsi = 0;
     int dsp = 0;
 
-    for (auto& si : _stack){
+    for (auto& si : _stack) {
         auto s = si->getState();
         if (si->type == ROLL_TYPE) {
             if (rsi >= _rollStack.size()) continue;
