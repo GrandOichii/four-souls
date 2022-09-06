@@ -4,6 +4,10 @@
             "large": "images/polyphemus_large.bmp",
             "small": "images/polyphemus.bmp"
         },
+        "Eden": {
+            "large": "images/eden_large.bmp",
+            "small": "images/eden.bmp"
+        },
         "Strawberry": {
             "large": "images/strawberry_large.bmp",
             "small": "images/strawberry.bmp"

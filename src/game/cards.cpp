@@ -98,11 +98,16 @@ CharacterCard::CharacterCard(string dir, json j) :
         auto jj = fs::readJS(fs::join(itemDir, CARD_INFO_FILE));
         this->_startingItem = new ScriptCard(itemDir, jj, CardTypes::StartingItem);
     }
+    if (j.contains("game_start")) {
+        _gameStartEffect = Effect(j["game_start"]);
+    }
 }
 
 CharacterCard::~CharacterCard() {
     delete _startingItem;
 }
+
+Effect& CharacterCard::gameStartEffect() { return _gameStartEffect; }
 
 int CharacterCard::attack() { return _attack; }
 int CharacterCard::health() { return _health; }
@@ -262,7 +267,12 @@ void MonsterCard::createData(lua_State* L, Match* parent, int id) {
 CardWrapper::CardWrapper(ScriptCard* card, int id) :
     _card(card),
     _id(id) {
+        _isEternal = card->isEternal();
     }
+
+bool CardWrapper::isEternal() { return _isEternal; }
+void CardWrapper::setIsEternal(bool value) { _isEternal = value; }
+
 
 ScriptCard* CardWrapper::card() { return _showAlt ? _card->alt() : _card; }
 int CardWrapper::id() { return _id; }
@@ -285,7 +295,7 @@ void CardWrapper::pushTable(lua_State* L) {
     l_pushtablenumber(L, "counters", (float)_counters);
     l_pushtableboolean(L, "tapped", _tapped);
     l_pushtableboolean(L, "passive", !_card->abilities().size());
-    l_pushtableboolean(L, "isEternal", _card->isEternal());
+    l_pushtableboolean(L, "isEternal", _isEternal);
 }
 
 CardState CardWrapper::getState() {

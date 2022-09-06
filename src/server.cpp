@@ -98,6 +98,7 @@ public:
         nlohmann::json j;
         j["id"] = id;
         j["cards"] = cardsToJson(_allCards);
+
         string s = j.dump();
         msg << s;
         _server->MessageClient(_conn, msg);

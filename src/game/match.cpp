@@ -1302,24 +1302,6 @@ int Match::wrap_lootCards(lua_State *L) {
     return 0;
 }
 
-int Match::wrap_playTopLootCard(lua_State* L) {
-    stackSizeIs(L, 1);
-    auto match = getTopMatch(L, 1);
-    auto last = match->_stack.back();
-    auto cardW = last->cardW;
-    auto card = cardW->card();
-    // if (!card->isTrinket()) {
-    //     match->execFunc(card->useFuncName());
-    //     if (card->goesToBottom())
-    //         match->_lootDeck.push_front(cardW);
-    //     else
-    //         match->addToLootDiscard(cardW);
-    // } else {
-    //     match->addCardToBoard(cardW, last->player);
-    // }
-    return 0;
-}
-
 int Match::wrap_deferEOT(lua_State *L) {
     stackSizeIs(L, 4);
     auto match = getTopMatch(L, 1);
@@ -1791,6 +1773,15 @@ int Match::wrap_gainTreasure(lua_State* L) {
     return 0;
 }
 
+int Match::wrap_setIsEternal(lua_State* L) {
+    stackSizeIs(L, 3);
+    auto match = getTopMatch(L, 1);
+    auto cid = getTopNumber(L, 2);
+    auto eternal = getTopBool(L, 3);
+    match->cardWithID(cid)->setIsEternal(eternal);
+    return 0;
+}
+
 int Match::wrap_addPlayableCount(lua_State* L) {
     if (lua_gettop(L) != 2) {
         lua_err(L);
@@ -2103,6 +2094,7 @@ void Match::setupLua(string setupScript) {
     luaL_openlibs(L);
     // connect functions
     lua_register(L, "healPlayer", wrap_healPlayer);
+    lua_register(L, "setIsEternal", wrap_setIsEternal);
     lua_register(L, "resetCounters", wrap_resetCounters);
     lua_register(L, "pushToStack", wrap_pushToStack);
     lua_register(L, "getMonsterPiles", wrap_getMonsterPiles);
@@ -2146,7 +2138,6 @@ void Match::setupLua(string setupScript) {
     lua_register(L, "subCoins", wrap_subCoins);
     lua_register(L, "_buyItem", wrap_buyItem);
     lua_register(L, "deferEOT", wrap_deferEOT);
-    lua_register(L, "_playTopLootCard", wrap_playTopLootCard);
     lua_register(L, "incBeginningLoot", wrap_incBeginningLoot);
     lua_register(L, "decBeginningLoot", wrap_decBeginningLoot);
     lua_register(L, "gainTreasure", wrap_gainTreasure);
@@ -2192,29 +2183,22 @@ void Match::setupLua(string setupScript) {
 
     // load card scripts
     for (const auto& w : _lootDeck) {
-        // std::cout << "Loading script for " << w->card()->name() << std::endl;
         this->execScript(w->card()->script());
     }
     for (const auto& w : _treasureDeck) {
-        // std::cout << "Loading script for " << w->card()->name() << std::endl;
         this->execScript(w->card()->script());
     }
     for (const auto& w : _bonusSouls) {
-        // std::cout << "Loading script for " << w->card()->name() << std::endl;
         this->execScript(w->card()->script());
-
     }
     for (const auto& w : _monsterDeck) {
-        // std::cout << "Loading script for " << w->card()->name() << std::endl;
         this->execScript(w->card()->script());
     }
     for (const auto& pair : _characterPool) {
         auto character = pair.first;
-        // std::cout << "Loading script for " << character->name() << std::endl;
         this->execScript(character->script());
         auto card = character->startingItem();
-        // std::cout << "Loading script for " << card->name() << std::endl;
-        this->execScript(card->script());
+        if (card) this->execScript(card->script());
     }
     std::cout << "Loading base script" << std::endl;
     // setup script
@@ -2364,14 +2348,17 @@ void Match::addPlayer(Player* player) {
     player->addCoins(_startingCoinAmount);
     _players.push_back(player);
     player->setStartingValues( _startingTreasurePrice,  _startingAttackCount,  _startingPlayableCount,  _startingPurchaseCount);
-
-    _allWrappers.push_back(player->characterCard());
-    auto cCard = player->origCharacterCard();
-    cCard->enterEffect().pushMe(this, player->characterCard(), player, CHARACTER_ENTER_TYPE);
-    auto w = addWrapper(cCard->startingItem());
-    addCardToBoard(w, player);
-    w->setOwner(player);
-    w->tap();
+    auto cCard = player->characterCard();
+    _allWrappers.push_back(cCard);
+    auto ocCard = player->origCharacterCard();
+    ocCard->enterEffect().pushMe(this, cCard, player, CHARACTER_ENTER_TYPE);
+    auto sItem = ocCard->startingItem();
+    if (sItem) {
+        auto w = addWrapper(sItem);
+        addCardToBoard(w, player);
+        w->setOwner(player);
+    }
+    // 
 }
 
 std::vector<CharacterCard*> Match::getAvailableCharacters() {
@@ -2482,6 +2469,13 @@ void Match::start() {
         mcard->createData(L, this, c->id());
         _monsterDataArr.push_back(mcard->data());
         mcard->enterEffect().pushMe(this, c, _activePlayer, MONSTER_ENTER_TYPE);
+    }
+
+    // execute player game start effects
+    for(const auto& player : _players) {
+        auto cCard = player->characterCard();
+        auto ocCard = player->origCharacterCard();
+        ocCard->gameStartEffect().pushMe(this, cCard, player, GAME_START_TYPE);
     }
 
     this->_priorityI = this->_currentI;

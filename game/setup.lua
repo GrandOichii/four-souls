@@ -515,6 +515,7 @@ function Common_SoulCount(player)
 end
 
 function Common_Discard(host, ownerID, amount)
+    --  TODO? keep the fizzling of ability if player doesn't have enough cards in hand
     local player = Common_PlayerWithID(host, ownerID)
     if #player.hand < amount then
         return false

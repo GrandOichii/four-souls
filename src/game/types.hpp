@@ -22,6 +22,7 @@ const string ACTION_BUY_TREASURE = "buy_treasure";
 const string ACTION_ACTIVATE_CARD = "activate";
 const string ACTION_ACTIVATE_CHARACTER_CARD = "activate_character";
 
+const string GAME_START_TYPE = "game_start";
 const string LOOT_TYPE = "loot";
 const string PLAY_LOOT_CARD_TYPE = "loot_card";
 const string REWARDS_TYPE = "rewards";

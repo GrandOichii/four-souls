@@ -75,12 +75,16 @@ private:
     int _attack;
     int _health;
     ScriptCard* _startingItem = nullptr;
+
+    Effect _gameStartEffect;
 public:
     CharacterCard(string dir, json j);
     ~CharacterCard();
     int attack();
     int health();
     ScriptCard* startingItem();
+
+    Effect& gameStartEffect();
 };
 
 struct MonsterDataState {
@@ -170,8 +174,11 @@ private:
     Player* _owner = nullptr;
     int _counters = 0;
     bool _showAlt = false;
+    bool _isEternal = false;
 public:
     CardWrapper(ScriptCard* card, int id);
+    bool isEternal();
+    void setIsEternal(bool value);
     ScriptCard* card();
     int id();
     void recharge();

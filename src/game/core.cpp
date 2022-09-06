@@ -104,7 +104,8 @@ std::vector<Card*> Game::getAllCards() {
     vector<Card*> result;
     for (const auto& c : _characterCards) {
         result.push_back(c);
-        result.push_back(c->startingItem());
+        auto si = c->startingItem();
+        if (si) result.push_back(si);
     }
     for (const auto& c : _lootCards) result.push_back(c);
     for (const auto& c : _treasureCards) result.push_back(c);

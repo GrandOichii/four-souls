@@ -1,0 +1,14 @@
+{
+    "name": "Eden",
+    "health": 2,
+    "attack": 1,
+    "text": "{T}: Play an additional loot card this turn.\nWhen you start the game, look at the top 3 cards of the treasure deck and choose one. It becomes your starting item and gains eternal. Put the rest on the bottom of the treasure deck.",
+    "script": "script.lua",
+    "game_start": {
+        "usesStack": false,
+        "effect": "Eden_game_start"
+    },
+    "use": {
+        "effect": "Eden_use"
+    }
+}

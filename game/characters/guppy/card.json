@@ -3,7 +3,7 @@
     "health": 2,
     "attack": 1,
     "item": "infestation",
-    "text": "{T}: Play an additional loot card this turn.\nStarting item: The D6",
+    "text": "{T}: Play an additional loot card this turn.\nStarting item: Infestation",
     "script": "script.lua",
     "use": {
         "effect": "Guppy_tap"
