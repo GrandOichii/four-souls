@@ -1282,6 +1282,7 @@ int Match::wrap_buyItem(lua_State* L) {
     }
 
     auto player = match->_stack.back()->player;
+    player->payPricePerTreasure();
     match->addCardToBoard(w, player);
     match->log("Player " + player->name() + " bought " + w->card()->name());
     // std::cout << "Player " + player->name() + " bought " + w->card()->name() << std::endl;;
@@ -2941,7 +2942,7 @@ void Match::refillDeadMonsters() {
             auto mcard = ((MonsterCard*)newM->card());
             mcard->createData(L, this, newM->id());
             _monsterDataArr[i] = mcard->data();
-            mcard->enterEffect().pushMe(this, w, _activePlayer, MONSTER_LEAVE_TYPE);
+            mcard->enterEffect().pushMe(this, newM, _activePlayer, MONSTER_LEAVE_TYPE);
         }
         //  TODO move this to the cards
         if (w->card()->soulCount()) {

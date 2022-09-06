@@ -10,7 +10,6 @@ function GBG_trigger(host)
     if choice == 'No' then
         return
     end
-    print('TARGET '..target.name)
     local ids = {}
     for _, item in ipairs(target.board) do
         if not item.isEternal then
@@ -21,6 +20,5 @@ function GBG_trigger(host)
         return
     end
     local choice, _ = requestChoice(host, owner.id, 'Choose an item', CARD, ids)
-    print('REROLLING '..choice)
     Common_RerollItem(host, choice)
 end

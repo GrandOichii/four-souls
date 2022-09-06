@@ -16,6 +16,7 @@
     -- when buying cards with curved horn effect and attacking again
     -- does callus save from evil twins effect
     -- shiny rock don't work
+    -- shiny rock + more options
 
 - implement:
     -- fix the record error

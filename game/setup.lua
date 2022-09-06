@@ -583,7 +583,6 @@ end
 
 function Common_OwnerDied(host, ownerID)
     local death = Common_LastDeath(host)
-    print('LAST DEATH -- TYPE:'..death.type..'  ID: '..death.id)
     return death.type == PLAYER and death.id == ownerID
 end
 

@@ -1,7 +1,7 @@
 function SoulOfGluttony_trigger_check(host, me)
     local players = getPlayers(host)
     for _, player in ipairs(players) do
-        if #player.hand >= 4 then
+        if #player.hand >= 10 then
             CardData[me.id] = {
                 ownerID = player.id
             }

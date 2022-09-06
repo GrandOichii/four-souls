@@ -253,7 +253,6 @@ private:
         }},
         {ACTION_BUY_TREASURE, [this](Player* player, std::vector<string> args){
             this->_lastTreasureIndex = std::stoi(args[1].c_str());
-            player->payPricePerTreasure();
             player->decPurchaseAmount();
             this->pushToStack(new StackEffect(
                 "_buyItem",
