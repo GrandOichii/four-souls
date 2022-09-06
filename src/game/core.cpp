@@ -7,6 +7,7 @@ static const string LOOT_CARDS_FILE = "loot.json";
 static const string CHARACTER_CARDS_FILE = "characters.json";
 static const string MONSTER_CARDS_FILE = "monsters.json";
 static const string TREASURE_CARDS_FILE = "treasures.json";
+static const string BONUS_SOULS_FILE = "bonus_souls.json";
 static const string STARTING_ITEMS_FILE = "starting_items.json";
 static const string SETUP_SCRIPT_FILE = "setup.lua";
 
@@ -15,6 +16,7 @@ Game::Game(string dir) {
     this->loadTreasureCards(dir);
     this->loadMonsterCards(dir);
     this->loadCharacterCards(dir);
+    this->loadBonusSouls(dir);
 
     this->_setupScript = fs::readFile(fs::join(dir, SETUP_SCRIPT_FILE).c_str());
     this->_matchConfig = fs::readJS(fs::join(dir, CONFIG_FILE).c_str());
@@ -31,6 +33,16 @@ void Game::loadMonsterCards(string dir) {
     }
     // for (const auto& c : _monsterCards)
     //     c->print("");
+}
+
+void Game::loadBonusSouls(string dir) {
+    auto j = fs::readJS(fs::join(dir, BONUS_SOULS_FILE));
+    for (const auto& el : j.items()) {
+        string tdir = fs::join(dir, el.value()); 
+        auto jj = fs::readJS(fs::join(tdir, CARD_INFO_FILE));
+        auto card = new ScriptCard(tdir, jj, CardTypes::BonusSoul);
+        _bonusSouls.push_back(card);
+    }
 }
 
 void Game::loadLootCards(string dir) {
@@ -71,6 +83,7 @@ Game::~Game() {
     for (const auto& c : _characterCards) delete c;
     for (const auto& c : _lootCards) delete c;
     for (const auto& c : _treasureCards) delete c;
+    for (const auto& c : _bonusSouls) delete c;
 }
 
 Match* Game::createMatch(){ return createMatch(time(0)); }
@@ -82,6 +95,7 @@ Match* Game::createMatch(int seed) {
     result->createLootDeck(_lootDeckTemplate);
     result->createMonsterDeck(_monsterCards);
     result->createTreasureDeck(_treasureCards);
+    result->createBonusSouls(_bonusSouls);
     result->setupLua(_setupScript);
     return result;
 }

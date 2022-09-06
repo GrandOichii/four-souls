@@ -703,6 +703,8 @@ int Match::wrap_removeFromEverywhere(lua_State* L) {
     if (removed) return 0;
     removed = removeFromCollection(card, match->_lootDeck);
     if (removed) return 0;
+    removed = removeFromCollection(card, match->_bonusSouls);
+    if (removed) return 0;
     // remove from discards
     removed = removeFromCollection(card, match->_treasureDiscard);
     if (removed) return 0;
@@ -1608,8 +1610,7 @@ int Match::wrap_destroyCard(lua_State* L) {
     for (const auto& player : match->_players) {
         for (const auto& bcard : player->board()) {
             if (bcard != card) continue;
-            // destroy card
-            //  TODO sort loot cards and treasure cards
+            card->resetCounters();
             player->removeFromBoard(card);
             match->sortToDiscard(card);
             card->setOwner(nullptr);
@@ -1870,6 +1871,16 @@ int Match::wrap_rechargeCard(lua_State* L) {
     return 0;
 }
 
+int Match::wrap_resetCounters(lua_State* L) {
+    stackSizeIs(L, 2);
+    auto match = getTopMatch(L, 1);
+    auto cid = getTopNumber(L, 2);
+    auto card = match->cardWithID(cid);
+    card->resetCounters();
+    return 0;
+}
+
+
 int Match::wrap_getCurrentPlayer(lua_State* L) {
     if (lua_gettop(L) != 1) {
         lua_err(L);
@@ -2040,7 +2051,9 @@ int Match::wrap_getActiveMonsters(lua_State* L) {
 
 void Match::addCardToBoard(CardWrapper* w, Player* owner) {
     owner->addToBoard(w);
-    w->card()->enterEffect().pushMe(this, w, owner, ITEM_ENTER_TYPE);
+    auto effect = w->card()->enterEffect().pushMe(this, w, owner, ITEM_ENTER_TYPE);
+    if (effect) return;
+    applyTriggers(ITEM_ENTER_TYPE);
 }
 
 void Match::removeFromShop(CardWrapper* cardW) {
@@ -2098,6 +2111,7 @@ void Match::setupLua(string setupScript) {
     luaL_openlibs(L);
     // connect functions
     lua_register(L, "healPlayer", wrap_healPlayer);
+    lua_register(L, "resetCounters", wrap_resetCounters);
     lua_register(L, "pushToStack", wrap_pushToStack);
     lua_register(L, "getMonsterPiles", wrap_getMonsterPiles);
     lua_register(L, "pushRefillMonsters", wrap_pushRefillMonsters);
@@ -2184,14 +2198,16 @@ void Match::setupLua(string setupScript) {
     lua_register(L, "_getAttack", wrap_getAttack);
     lua_register(L, "incPurchaseAmount", wrap_incPurchaseAmount);
 
-    //  TODO add state checking after some functions
-
     // load card scripts
     for (const auto& w : _lootDeck) {
         // std::cout << "Loading script for " << w->card()->name() << std::endl;
         this->execScript(w->card()->script());
     }
     for (const auto& w : _treasureDeck) {
+        // std::cout << "Loading script for " << w->card()->name() << std::endl;
+        this->execScript(w->card()->script());
+    }
+    for (const auto& w : _bonusSouls) {
         // std::cout << "Loading script for " << w->card()->name() << std::endl;
         this->execScript(w->card()->script());
     }
@@ -2324,20 +2340,17 @@ void Match::execFunc(string funcName) {
         lua_err(this->L);
         throw std::runtime_error("failed to execute func " + funcName);
     }
-
-    //  TODO run state checks
 }
 
 bool Match::execCheck(string funcName, CardWrapper* card) {
     lua_getglobal(L, funcName.c_str());
     if (!lua_isfunction(L, -1)) {
         lua_err(L);
-        exit(1);
+        throw std::runtime_error("no check func " + funcName);
     }
-    lua_pushlightuserdata(L, this);
-    // push card table
-    card->pushTable(L);
 
+    lua_pushlightuserdata(L, this);
+    card->pushTable(L);
     int r = lua_pcall(L, 2, 1, 0);
     if (r != LUA_OK) {
         lua_err(this->L);
@@ -2346,7 +2359,7 @@ bool Match::execCheck(string funcName, CardWrapper* card) {
 
     if (!lua_isboolean(L, -1)) {
         lua_err(this->L);
-        exit(1);
+        throw std::runtime_error("check func " + funcName + " didn't return a bool");
     }
     return (bool)lua_toboolean(L, -1);
 }
@@ -2437,6 +2450,13 @@ void Match::createMonsterDeck(std::vector<MonsterCard*> cards) {
         this->_monsterDeck.push_back(w);            
     }
     this->shuffleMonsterDeck();
+}
+
+void Match::createBonusSouls(std::vector<ScriptCard*> cards) {
+    for (const auto& card : cards) {
+        auto w = addWrapper(card);
+        this->_bonusSouls.push_back(w);
+    }
 }
 
 void Match::start() {
@@ -2648,6 +2668,10 @@ void Match::queueTrigger(CardWrapper* wrapper, string triggerType, Player* owner
 void Match::applyTriggers(string triggerType) {
     int result = 0;
     std::queue<QueuedTrigger> queue;
+    // bonus souls
+    for (const auto& w : _bonusSouls) {
+        queueTrigger(w, triggerType, nullptr, queue);
+    }
     // monsters
     for(const auto& pile : _monsters) {
         if (!pile.size()) continue;
@@ -2756,9 +2780,6 @@ MatchState Match::getState() {
     int rsi = 0;
     int dsp = 0;
 
-    // printStack(_stack);
-    // for (const auto& re : _rollStack)
-    //     std::cout << re.value << " -> " << re.visible << std::endl;
     for (auto& si : _stack){
         auto s = si->getState();
         if (si->type == ROLL_TYPE) {
@@ -2781,7 +2802,12 @@ MatchState Match::getState() {
         }
         if (si->type == BUY_TREASURE_TYPE) {
             string cardName = " top card";
-            if (_lastTreasureIndex != -1) cardName = _shop[_lastTreasureIndex]->card()->name();
+            if (_lastTreasureIndex != -1) {
+                auto card = _shop[_lastTreasureIndex];
+                cardName = "???";
+                if (card)
+                    cardName = card->card()->name();
+            }
             s.message = "Buying\n" + cardName;
         }
         if (si->type == ATTACK_MONSTER_TYPE) {

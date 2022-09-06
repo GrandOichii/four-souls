@@ -89,6 +89,7 @@ enum CardTypes : int {
     Treasure,
     Monster,
     Character,
+    BonusSoul,
     StartingItem
 };
 

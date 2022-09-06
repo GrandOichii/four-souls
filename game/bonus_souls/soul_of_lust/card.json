@@ -1,0 +1,12 @@
+{
+    "name": "Soul of Lust",
+    "text": "Each time a player kills a monster, put a counter on this.\nWhen the 6th counter is put on this, the active player gains this soul.",
+    "script": "script.lua",
+    "soulCount": 1,
+    "on": {
+        "death": {
+            "check": "SoulOfLust_trigger_check",
+            "effect": "SoulOfLust_trigger"
+        }
+    }
+}

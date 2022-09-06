@@ -1,0 +1,13 @@
+{
+    "name": "Soul of Sloth",
+    "text": "The first time a player controls 4 items, the active player chooses a player who controls the fewest items or tied for the fewest. That player gains this soul.",
+    "soulCount": 1,
+    "script": "script.lua",
+    "on": {
+        "item_enter": {
+            "check": "SoulOfSloth_trigger_check",
+            "cost": "SoulOfSloth_trigger_cost",
+            "effect": "SoulOfSloth_trigger"
+        }
+    }
+}

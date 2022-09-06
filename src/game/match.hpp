@@ -128,7 +128,7 @@ struct RollEvent {
     {
         value = rand() % 6 + 1;
         // value = 1;
-        value = 2;
+        // value = 2;
         // value = 3;
         // value = 4;
         // value = 5;
@@ -212,6 +212,8 @@ private:
     bool _lastRollIsCombat = false;
     int _lastRollOwnerID = -1;
     int _lastCRollValue = -1;
+
+    std::vector<CardWrapper*> _bonusSouls;
 
     std::deque<CardWrapper*> _lootDeck;
     std::deque<CardWrapper*> _lootDiscard;
@@ -410,6 +412,7 @@ public:
     static int wrap_putFromTopToBottom(lua_State* L);
     static int wrap_millDeck(lua_State* L);
     static int wrap_addPlayableCount(lua_State* L);
+    static int wrap_resetCounters(lua_State* L);
     static int wrap_tapCard(lua_State* L);
     static int wrap_rechargeCard(lua_State* L);
     static int wrap_getStack(lua_State* L);
@@ -481,6 +484,7 @@ public:
     void createLootDeck(std::vector<std::pair<ScriptCard*, int>> pairs);
     void createTreasureDeck(std::vector<ScriptCard*> cards);
     void createMonsterDeck(std::vector<MonsterCard*> cards);
+    void createBonusSouls(std::vector<ScriptCard*> cards);
     void start();
     void passTurn();
     void calcNext();

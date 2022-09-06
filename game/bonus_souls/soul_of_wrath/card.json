@@ -1,0 +1,11 @@
+{
+    "name": "Soul of Wrath",
+    "text": "Each time a player dies, put a counter on this.\nWhen the 6th counter is put on this, the active player gains this soul.",
+    "script": "script.lua",
+    "on": {
+        "death": {
+            "check": "SoulOfWrath_trigger_check",
+            "effect": "SoulOfWrath_trigger"
+        }
+    }
+}

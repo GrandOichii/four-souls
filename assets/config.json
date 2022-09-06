@@ -4,6 +4,26 @@
             "large": "images/polyphemus_large.bmp",
             "small": "images/polyphemus.bmp"
         },
+        "Soul of Guppy": {
+            "large": "images/soul_of_guppy_large.bmp",
+            "small": "images/soul_of_guppy.bmp"
+        },
+        "Soul of Wrath": {
+            "large": "images/soul_of_wrath_large.bmp",
+            "small": "images/soul_of_wrath.bmp"
+        },
+        "Soul of Lust": {
+            "large": "images/soul_of_lust_large.bmp",
+            "small": "images/soul_of_lust.bmp"
+        },
+        "Soul of Sloth": {
+            "large": "images/soul_of_sloth_large.bmp",
+            "small": "images/soul_of_sloth.bmp"
+        },
+        "Forget Me Now": {
+            "large": "images/forget_me_now_large.bmp",
+            "small": "images/forget_me_now.bmp"
+        },
         "Finger!": {
             "large": "images/finger__large.bmp",
             "small": "images/finger_.bmp"

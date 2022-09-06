@@ -1,0 +1,11 @@
+{
+    "name": "Forget Me Now",
+    "text": "{T}: Destroy this. If you do, each player destroys a soul they control.",
+    "script": "script.lua",
+    "abilities": [
+        {
+            "requires": ["tap"],
+            "effect": "ForgetMeNow_effect"
+        }
+    ]
+}

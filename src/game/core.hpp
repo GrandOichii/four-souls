@@ -18,6 +18,8 @@ private:
     std::vector<ScriptCard*> _treasureCards;
     // monster cards
     std::vector<MonsterCard*> _monsterCards;
+    // bonus souls
+    std::vector<ScriptCard*> _bonusSouls;
 
     std::vector<std::pair<ScriptCard*, int>> _lootDeckTemplate;
 
@@ -29,6 +31,7 @@ public:
     void loadTreasureCards(string dir);
     void loadMonsterCards(string dir);
     void loadCharacterCards(string dir);
+    void loadBonusSouls(string dir);
     Match* createMatch();
     Match* createMatch(int seed);
     std::vector<Card*> getAllCards();
