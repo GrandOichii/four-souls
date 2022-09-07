@@ -5,12 +5,8 @@
     -- when playing special effects, play power up
     -- when new monster is added, if it's name is satan, play the satan sound effect
 
-- fix size:
-    -- stars
-    -- psy horf
-    -- holy keeper head
-    -- cod worm
-    -- glass canon
+- old images:
+    -- fly
 
 - issues:
     -- when buying cards with curved horn effect and attacking again
@@ -19,6 +15,7 @@
     -- shiny rock + more options
 
 - implement:
+    -- bartering: a special button, when pressed will present a choice to the player: select the player to barter with, select coin count, type in text with the favor. the receiving player can accept or decline, the returning message will contain a accepted(bool) and response(string)
     -- fix the record error
     -- move from name-based indexing to key indexing
     -- addListener(host, <owner id>, <card id>, <on what>, <check func name>, <cost func name>, <effect func name>, <uses stack>), returns listener id

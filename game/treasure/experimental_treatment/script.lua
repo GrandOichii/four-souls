@@ -1,13 +1,11 @@
-function ExperimentalTreatment_cost(host, cardInfo)
-    local me = this(host)
-    destroyCard(host, me.id)
-    return true
-end
-
 function ExperimentalTreatment_inject(host)
-    local me = this(host)
+    local me = this(host)    
     local roll = popRollStack(host).value
     local owner = getTopOwner(host)
+    local done = Common_SacrificeMe(host, me.id)
+    if not done then
+        return
+    end
     local t = {
         function ()
             killEntity(host, PLAYER, owner.id)

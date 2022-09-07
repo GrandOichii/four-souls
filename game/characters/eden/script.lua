@@ -1,11 +1,14 @@
 local BAD_EDEN_CARDS = {
     'Experimental Treatment',
+    'Forget Me Now',
     'R Key',
+    'The Chest',
     'Pageant Boy',
     'Pandora\'s Box',
     'Glass Canon',
     'The D4',
     'Mom\'s Shovel',
+    'Plan C',
 }
 
 function IsBadEdenCard(cardName)
@@ -36,7 +39,6 @@ function Eden_game_start(host)
             count = count + 1
             cards[#cards+1] = tc
             choices[#choices+1] = count..'- ${'..tc.name..'}'
-            message = message..'${'..tc.name..'}, '
         end
         putFromTopToBottom(host, TREASURE_DECK, 1)
     end

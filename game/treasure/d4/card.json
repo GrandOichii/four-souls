@@ -5,7 +5,6 @@
     "abilities": [
         {
             "requires": ["tap"],
-
             "cost": "D4_cost",
             "effect": "D4_tap"
         }

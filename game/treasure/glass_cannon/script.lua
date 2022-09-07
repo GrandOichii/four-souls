@@ -1,3 +1,5 @@
+--  TODO move to tageting
+
 function GlassCannon_cost(host, cardInfo)
     local me = this(host)
     if me.tapped then

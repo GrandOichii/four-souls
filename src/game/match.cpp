@@ -665,6 +665,15 @@ int Match::wrap_moveToBoard(lua_State* L) {
     return 0;
 }
 
+int Match::wrap_cardWithID(lua_State* L) {
+    stackSizeIs(L, 2);
+    auto match = getTopMatch(L, 1);
+    auto cid = getTopNumber(L, 2);
+    match->cardWithID(cid)->pushTable(L);
+    return 1;
+}
+
+
 int Match::wrap_setTurnEnd(lua_State* L) {
     stackSizeIs(L, 2);
     auto match = getTopMatch(L, 1);
@@ -1863,12 +1872,8 @@ int Match::wrap_resetCounters(lua_State* L) {
     return 0;
 }
 
-
 int Match::wrap_getCurrentPlayer(lua_State* L) {
-    if (lua_gettop(L) != 1) {
-        lua_err(L);
-        exit(1);
-    }
+    stackSizeIs(L, 1);
     auto match = getTopMatch(L, 1);
     match->_activePlayer->pushTable(L);
     return 1;
@@ -2094,6 +2099,7 @@ void Match::setupLua(string setupScript) {
     luaL_openlibs(L);
     // connect functions
     lua_register(L, "healPlayer", wrap_healPlayer);
+    lua_register(L, "cardWithID", wrap_cardWithID);
     lua_register(L, "setIsEternal", wrap_setIsEternal);
     lua_register(L, "resetCounters", wrap_resetCounters);
     lua_register(L, "pushToStack", wrap_pushToStack);
@@ -2471,15 +2477,16 @@ void Match::start() {
         mcard->enterEffect().pushMe(this, c, _activePlayer, MONSTER_ENTER_TYPE);
     }
 
+    this->_priorityI = this->_currentI;
+    this->_running = true;
+    _activePlayer = _players[_currentI];
+
     // execute player game start effects
     for(const auto& player : _players) {
         auto cCard = player->characterCard();
         auto ocCard = player->origCharacterCard();
         ocCard->gameStartEffect().pushMe(this, cCard, player, GAME_START_TYPE);
     }
-
-    this->_priorityI = this->_currentI;
-    this->_running = true;
 
     while (!this->_winner) {
         this->calcNext();

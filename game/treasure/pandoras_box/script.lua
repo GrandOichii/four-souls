@@ -1,16 +1,11 @@
-function PandorasBox_cost(host, cardInfo)
-    local card = this(host)
-    CardData[card.id] = {
-        prevOwnerID = cardInfo.ownerID
-    }
-    destroyCard(host, card.id)
-    return true
-end
-
 function PandorasBox_tap(host)
     local me = this(host)
     local roll = popRollStack(host).value
-    local owner = Common_PlayerWithID(host, CardData[me.id].prevOwnerID)
+    local owner = getTopOwner(host)
+    local done = Common_SacrificeMe(host, me.id)
+    if not done then
+        return
+    end
     if roll == 1 then
         addCoins(host, owner.id, 1)
         return

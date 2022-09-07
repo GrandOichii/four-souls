@@ -8,7 +8,7 @@
 #include "window.hpp"
 
 
-const std::regex CARD_NAME_REGEX("\\$\\{([\\w\\ \\'\\!\\?\\.\\(\\)\\-]+)\\}|[\\w\\?\\!\\$]+");
+const std::regex CARD_NAME_REGEX("\\$\\{([\\w\\ \\'\\!\\?\\.\\(\\)\\-\\\\]+)\\}|[\\w\\?\\!\\$]+");
 
 const char YIELD_UNTIL_TURN_KEY = 'y';
 const char SKIP_STACK_KEY = 's';
@@ -21,6 +21,7 @@ struct MessageMember {
     bool isCard;
 };
 
+
 class ClientWrapper : public Window {
 private:
     int _myID;
@@ -28,7 +29,7 @@ private:
     PollType _lastRequestType;
 
     vector<string> _simpleChoices;
-    vector<SDL_Texture*> _simpleChoiceTextures;
+    vector<std::vector<MessageMember>> _simpleChoiceTextures;
     int _maxSimpleChoiceLength = 0;
 
     std::vector<MessageMember> _lastText;
@@ -66,6 +67,30 @@ public:
         clearLastText();
     }
 
+    void drawMessage(int x, int y, const std::vector<MessageMember>& message, int fontSize, SDL_Color textColor, SDL_Color cardColor) {
+        auto spaceTex = _assets->getMessage(" ", SDL_Color{0, 0, 0, 0}, fontSize);
+        auto spaceWidth = getSize(spaceTex).first;
+        SDL_DestroyTexture(spaceTex);
+        for (const auto& member : message) {
+            auto tex = _assets->getMessage(member.message, member.isCard ? cardColor : textColor, fontSize);
+            auto size = getSize(tex);
+            int w = size.first;
+            int h = size.second;
+            this->drawTexture(tex, x, y);
+            SDL_DestroyTexture(tex);
+            int xx = x;
+            x += size.first + spaceWidth;
+            if (!member.isCard) continue;
+            int mx, my;
+            auto s = SDL_GetMouseState(&mx, &my);
+            if (!(mx >= xx && my >= y && mx <= xx + w && my <= h + y)) continue;
+            tex = this->_assets->getCard(member.message, CardSize::LARGE);
+            size = getSize(tex);
+            this->drawTexture(tex, _stackX - size.first, 0);
+        }
+    }
+
+
     void getActionCalc() {
         PlayerBoardState me;
         for (const auto& board : _state.boards)
@@ -100,12 +125,11 @@ public:
     }
 
     void clearSimpleChoiceTextures() {
-        for (const auto& tex : _simpleChoiceTextures) SDL_DestroyTexture(tex);
         _simpleChoiceTextures.clear();
     }
 
-    void setTopText(string text) {
-        clearLastText();
+    std::vector<MessageMember> parseMessage(string text) {
+        std::vector<MessageMember> result;
         auto words_begin = std::sregex_iterator(text.begin(), text.end(), CARD_NAME_REGEX);
         auto words_end = std::sregex_iterator();
         for (auto i = words_begin; i != words_end; ++i) {
@@ -118,8 +142,14 @@ public:
                 mem.message = match.str(1);
                 mem.isCard = true;
             }
-            _lastText.push_back(mem);
+            result.push_back(mem);
         }
+        return result;
+    }
+
+    void setTopText(string text) {
+        clearLastText();
+        _lastText = parseMessage(text);
     }
 
     void clearLastText() {
@@ -164,27 +194,41 @@ public:
         _maxSimpleChoiceLength = 0;
         for (const auto& [key, value] : j["prompt"]["choices"].items()) {
             _simpleChoices.push_back(value);
-            auto tex = _assets->getMessage(value, SDL_Color{0, 0, 0, 0}, 48);
-            _simpleChoiceTextures.push_back(tex);
-            auto size = getSize(tex);
-            if (size.first > _maxSimpleChoiceLength) _maxSimpleChoiceLength = size.first;
+            auto message = parseMessage(value);
+            _simpleChoiceTextures.push_back(message);
+            auto width = getMessageWidth(message, 48);
+            if (width > _maxSimpleChoiceLength) _maxSimpleChoiceLength = width;
         }
         _maxSimpleChoiceLength += 4;
     }
 
+    int getMessageWidth(const std::vector<MessageMember>& message, int fontSize) {
+        int result = 0;
+        auto spaceTex = _assets->getMessage(" ", SDL_Color{0, 0, 0, 0}, fontSize);
+        auto spaceWidth = getSize(spaceTex).first;
+        SDL_DestroyTexture(spaceTex);
+        for (const auto& member : message) {
+            auto tex = _assets->getMessage(member.message, SDL_Color{0, 0, 0, 0}, fontSize);
+            auto size = getSize(tex);
+            SDL_DestroyTexture(tex);
+            result += size.first + spaceWidth;
+        }
+        result -= spaceWidth;
+        return result;
+    }
+
     void drawSimplePromptBox() {
         if (!_simpleChoices.size()) return;
-        // std::cout << "DRAWING SIM"
         int y = _boardStart + 1;
         int x = _sideBoardX + 1;
         auto fontSize = 48;
         this->drawRect(x, y, _maxSimpleChoiceLength, fontSize * _simpleChoices.size(), SDL_Color{255, 255, 255, 0}, true);
         int ci = -1;
         y -= fontSize;
-        for (const auto& tex : _simpleChoiceTextures) {
+        for (const auto& choice : _simpleChoiceTextures) {
             y += fontSize;
             ++ci;
-            this->drawTexture(tex, x, y);
+            drawMessage(x, y, choice, fontSize, SDL_Color{0, 0, 0}, SDL_Color{0, 0, 255});
             if (_mouseLock) continue;
             int mx, my;
             auto s = SDL_GetMouseState(&mx, &my);
@@ -618,30 +662,10 @@ public:
         Window::draw(_state);
         if (_mouseCheck){
             // draw top text
-            auto spaceTex = _assets->getMessage(" ", SDL_Color{0, 0, 0, 0}, 24);
-            auto spaceWidth = getSize(spaceTex).first;
-            SDL_DestroyTexture(spaceTex);
+            
             int x = _sideBoardX;
             int y = 0;
-            for (const auto& member : _lastText) {
-                unsigned char r = (member.isCard ? 0 : 255);
-                unsigned char g = (member.isCard ? 255 : 0);
-                auto tex = _assets->getMessage(member.message, SDL_Color{r, g, 0, 0}, 24);
-                auto size = getSize(tex);
-                int w = size.first;
-                int h = size.second;
-                this->drawTexture(tex, x, y);
-                SDL_DestroyTexture(tex);
-                int xx = x;
-                x += size.first + spaceWidth;
-                if (!member.isCard) continue;
-                int mx, my;
-                auto s = SDL_GetMouseState(&mx, &my);
-                if (!(mx >= xx && my >= y && mx <= xx + w && my <= h + y)) continue;
-                tex = this->_assets->getCard(member.message, CardSize::LARGE);
-                size = getSize(tex);
-                this->drawTexture(tex, _stackX - size.first, 0);
-            }
+            drawMessage(x, y, _lastText, 48, SDL_Color{255, 0, 0}, SDL_Color{0, 255, 0});
             // draw simple choice choices
             this->drawSimplePromptBox();
         }

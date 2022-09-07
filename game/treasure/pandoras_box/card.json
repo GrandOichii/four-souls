@@ -6,7 +6,6 @@
     "abilities": [
         {
             "requires": ["tap", "roll"],
-            "cost": "PandorasBox_cost",
             "effect": "PandorasBox_tap"
         }
     ]

@@ -449,12 +449,24 @@ function Common_CardOnBoard(host, cid)
     return false
 end
 
-function Common_SacrificeMe(host, pid, cid)
-    local player = Common_PlayerWithID(host, pid)
-    for _, card in ipairs(player.board) do
-        if card.id == cid then
-            destroyCard(host, cid)
-            return true
+function Common_NotOnBoard(host, cid)
+    for _, player in ipairs(getPlayers(host)) do
+        for _, card in ipairs(player.board) do
+            if card.id == cid then
+                return false
+            end
+        end
+    end
+    return true
+end
+
+function Common_SacrificeMe(host, cid)
+    for _, player in ipairs(getPlayers(host)) do
+        for _, card in ipairs(player.board) do
+            if card.id == cid then
+                destroyCard(host, cid)
+                return Common_NotOnBoard(host, cid)
+            end
         end
     end
     return false

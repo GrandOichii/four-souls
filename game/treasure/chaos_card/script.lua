@@ -1,9 +1,9 @@
---  TODO? move destroying the card to ChaosCard_cost
+--  TODO move targeting to ChaosCard_cost
 
 function ChaosCard_tap(host)
     local owner = getTopOwner(host)
     local me = this(host)
-    local flag = Common_SacrificeMe(host, owner.id, me.id)
+    local flag = Common_SacrificeMe(host, me.id)
     if not flag then
         return
     end

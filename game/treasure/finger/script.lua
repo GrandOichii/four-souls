@@ -46,6 +46,10 @@ function Finger_trigger(host)
     if target.id == rTarget.id then
         return
     end
+    local choice = requestSimpleChoice(host, getTopOwner(host).id, 'Exchange control?', {'Yes', 'No'})
+    if choice == 'No' then
+        return
+    end
     removeFromEverywhere(host, target.id)
     removeFromEverywhere(host, rTarget.id)
     moveToBoard(host, owner.id, rTarget.id)

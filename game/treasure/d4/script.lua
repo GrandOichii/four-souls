@@ -1,15 +1,13 @@
-function D4_cost(host, cardInfo)
-    local card = this(host)
-    CardData[card.id] = {
-        ownerID = cardInfo.ownerID
-    }
-    destroyCard(host, card.id)
-    return Common_TargetPlayer(host, cardInfo.ownerID)
+function D4_cost(host, info)
+   return Common_TargetPlayer(host, info.ownerID) 
 end
 
 function D4_tap(host)
-    local card = this(host)
-    local owner = Common_PlayerWithID(host, CardData[card.id].ownerID)
+    local me = this(host)
+    local done = Common_SacrificeMe(host, me.id)
+    if not done then
+        return
+    end
     local targetID = popTarget(host).id
     local target = Common_PlayerWithID(host, targetID)
     local count = 0

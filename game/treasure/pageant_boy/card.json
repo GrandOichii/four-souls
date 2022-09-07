@@ -5,7 +5,6 @@
     "abilities": [
         {
             "requires": ["roll"],
-            "cost": "PageantBoy_cost",
             "effect": "PageantBoy_tap"
         }
     ]

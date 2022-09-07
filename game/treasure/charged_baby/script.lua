@@ -8,8 +8,12 @@ end
 
 function ChargedBaby_trigger(host)
     local target = popTarget(host)
+    local card = cardWithID(host, target.id)
     local owner = getTopOwner(host)
     --  TODO change text to display card name
-    local choice = requestSimpleChoice(host, owner.id, 'Recharge item?', {'Yes', 'No'})
+    local choice = requestSimpleChoice(host, owner.id, 'Recharge ${'..card.name..'}?', {'Yes', 'No'})
+    if choice == 'No' then
+        return
+    end
     rechargeCard(host, target.id)
 end

@@ -6,7 +6,6 @@
     "abilities": [
         {
             "requires": ["roll"],
-            "cost": "ExperimentalTreatment_cost",
             "effect": "ExperimentalTreatment_inject"
         }
     ]

@@ -358,7 +358,7 @@ public:
         auto stackWidth = 150;
         this->_stackX = this->_wWidth - stackWidth;
 
-        this->_boardStart = 24;
+        this->_boardStart = 48;
 
         this->_boardWidth = this->_stackX - 1 - this->_sideBoardX;
         this->_boardHeight = this->_wHeight - _boardStart;

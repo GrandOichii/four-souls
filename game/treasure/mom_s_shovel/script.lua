@@ -8,8 +8,13 @@ function MomsShovel_cost(host, info)
 end
 
 function MomsShovel_effect(host)
+    local me = this(host)
     local target = popTarget(host)
     local owner = getTopOwner(host)
+    local done = Common_SacrificeMe(host, me.id)
+    if not done then
+        return
+    end
     removeFromEverywhere(host, target.id)
     addSoulCard(host, owner.id, target.id)
 end
