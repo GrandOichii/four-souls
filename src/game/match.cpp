@@ -1797,6 +1797,22 @@ int Match::wrap_topCardsOf(lua_State* L) {
     return 1;
 }
 
+int Match::wrap_setCurrentPlayer(lua_State* L) {
+    stackSizeIs(L, 2);
+    auto match = getTopMatch(L, 1);
+    auto pid = getTopNumber(L, 2);
+    for (int i = 0; i < match->_players.size(); i++) {
+        auto player = match->_players[i];
+        if (player->id() == pid) {
+            match->_activePlayer = player;
+            match->_currentI = i;
+            return 0;
+        }
+    }
+    throw std::runtime_error("failed to set current player to player with unknown id " + std::to_string(pid));
+}
+
+
 int Match::wrap_gainTreasure(lua_State* L) {
     stackSizeIs(L, 3);
     auto match = getTopMatch(L, 1);
@@ -2113,6 +2129,7 @@ void Match::setupLua(string setupScript) {
     luaL_openlibs(L);
     // connect functions
     lua_register(L, "healPlayer", wrap_healPlayer);
+    lua_register(L, "setCurrentPlayer", wrap_setCurrentPlayer);
     lua_register(L, "placeOnTop", wrap_placeOnTop);
     lua_register(L, "addAttackOpportunity", wrap_addAttackOpportunity);
     lua_register(L, "cardWithID", wrap_cardWithID);
@@ -2464,7 +2481,6 @@ void Match::start() {
     // start the record
     _record = nlohmann::json::object();
     _record["seed"] = _seed;
-    _record["first"] = this->_currentI;
     _record["actions"] = nlohmann::json::object();
     for (const auto player : _players)
         _record["actions"][player->name()] = nlohmann::json::array();

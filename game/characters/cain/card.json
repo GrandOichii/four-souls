@@ -7,5 +7,9 @@
     "script": "script.lua",
     "use": {
         "effect": "Cain_tap"
+    },
+    "game_start": {
+        "usesStack": false,
+        "effect": "Cain_game_start"
     }
 }

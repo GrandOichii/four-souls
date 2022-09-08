@@ -41,7 +41,7 @@ function Shadow_enter(host)
                 if #cardIDs == 0 then
                     return
                 end
-                local choice, payed = requestChoice(host, ownerID, 'Choose a card to destroy', CARD, cardIDs)
+                local choice, payed = requestChoice(host, owner.id, 'Choose a card to destroy', CARD, cardIDs)
                 destroyCard(host, choice)
             end
             local function tapCards()
