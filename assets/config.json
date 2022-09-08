@@ -4,6 +4,22 @@
             "large": "images/polyphemus_large.bmp",
             "small": "images/polyphemus.bmp"
         },
+        "Troll Bombs": {
+            "large": "images/troll_bombs_large.bmp",
+            "small": "images/troll_bombs.bmp"
+        },
+        "Gold Chest": {
+            "large": "images/gold_chest_large.bmp",
+            "small": "images/gold_chest.bmp"
+        },
+        "Friendly Sack": {
+            "large": "images/polyphemus_large.bmp",
+            "small": "images/polyphemus.bmp"
+        },
+        "Eden's Soul": {
+            "large": "images/eden_s_soul_large.bmp",
+            "small": "images/eden_s_soul.bmp"
+        },
         "Cain": {
             "large": "images/cain_large.bmp",
             "small": "images/cain.bmp"

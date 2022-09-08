@@ -10,6 +10,7 @@ function CursedSoul_trigger1(host)
     dealDamage(host, PLAYER, owner.id, PLAYER, owner.id, 1)
     if me.counters >= 6 then
         removeFromEverywhere(host, me.id)
+        resetCounters(host, me.id)
         addSoulCard(host, owner.id, me.id)
     end
 end
@@ -26,6 +27,5 @@ function CursedSoul_trigger2(host)
     local target = popTarget(host)
     local me = this(host)
     removeFromEverywhere(host, me.id)
-    resetCounters(host, me.id)
     moveToBoard(host, target.id, me.id)
 end

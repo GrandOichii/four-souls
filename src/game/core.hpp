@@ -18,6 +18,8 @@ private:
     std::vector<ScriptCard*> _treasureCards;
     // monster cards
     std::vector<MonsterCard*> _monsterCards;
+    // bonus monster cards
+    std::vector<ScriptCard*> _bonusMonsterCards;
     // bonus souls
     std::vector<ScriptCard*> _bonusSouls;
 

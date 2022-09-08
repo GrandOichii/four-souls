@@ -1,0 +1,13 @@
+{
+    "name": "Eden's Soul",
+    "text": "This enters play deactivated.\n{T}: Destroy this. If you do, look at the top 7 cards of the treasure deck, gain 2 of them, then put the rest on the bottom of the deck in a random order.",
+    "script": "script.lua",
+    "enter": {
+        "usesStack": false,
+        "effect": "EdensSoul_enter"
+    },
+    "abilities": [{
+        "requires": ["tap"],
+        "effect": "EdensSoul_tap"
+    }]
+}

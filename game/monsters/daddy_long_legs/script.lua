@@ -5,13 +5,13 @@ end
 
 function DaddyLongLegs_enter(host)
 	local me = this(host)
-	local id = MonsterPowerLayers:top().id + 1
-    MonsterPowerLayers:push(
+	local id = MonsterRollLayers:top().id + 1
+    MonsterRollLayers:push(
         {
             id = id,
             func = function (host_, mid)
                 local add = CardData[me.id].pInc
-                return add + MonsterPowerLayers._et[MonsterPowerLayers:posOf(id)-1].func(host_, mid)
+                return add + MonsterRollLayers._et[MonsterRollLayers:posOf(id)-1].func(host_, mid)
             end
         }
     )
@@ -23,7 +23,7 @@ end
 
 function DaddyLongLegs_leave(host)
 	local me = this(host)
-    MonsterPowerLayers:remove(CardData[me.id].ipID)
+    MonsterRollLayers:remove(CardData[me.id].ipID)
 end
 
 function DaddyLongLegs_trigger1_check(host, me)

@@ -15,11 +15,10 @@ function SleightOfHand_effect(host)
     if #cards ~= 5 then
         return
     end
-    local choices = {}
-    for i, card in ipairs(cards) do
-        choices[#choices+1] = i..'- ${'..card.name..'}'
+    for _, card in ipairs(cards) do
         removeFromEverywhere(host, card.id)
     end
+    local choices = Common_FormCardChoices(cards)
     local posOf = function (choice_)
         for i, c in ipairs(choices) do
             if c == choice_ then

@@ -14,7 +14,7 @@ add_subdirectory(external/Lua)
 #     assets/config.json
 # )
 
-# Source code for server		
+# Source code for server
 set (server_src 
     src/server.cpp
 )
@@ -33,13 +33,6 @@ add_executable(four-souls-client
     ${client_src}
     # ${RESOURCE_FILES}
 )
-
-# if (APPLE)
-#     set_target_properties(four-souls-client PROPERTIES
-#         MACOSX_BUNDLE TRUE
-#         # RESOURCE "${RESOURCE_FILES}"
-#     )
-# endif()
 
 add_library(asio INTERFACE)
 target_include_directories(asio INTERFACE external/asio/asio/include)
@@ -104,12 +97,18 @@ target_link_libraries(four-souls-client
     game
 )
 
+# Uncomment to bundle
+# if (APPLE)
+#     set_target_properties(four-souls-client PROPERTIES
+#         MACOSX_BUNDLE TRUE
+#     )
+# endif()
+
+# include(InstallRequiredSystemLibraries)
+
 # install(CODE [[
 #     INCLUDE(BundleUtilities)
 #     fixup_bundle("${CMAKE_INSTALL_PREFIX}/four-souls-client.app" "" "")
 # ]] COMPONENT Runtime)
 
-# install(TARGETS four-souls-client RUNTIME DESTINATION bin)
-# include(InstallRequiredSystemLibraries)
 # include(CPack)
-# message(STATUS ${PROJECT_BINARY_DIR})

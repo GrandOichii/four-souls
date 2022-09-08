@@ -7,8 +7,8 @@
 #include "common.hpp"
 #include "window.hpp"
 
-
-const std::regex CARD_NAME_REGEX("\\$\\{([\\w\\ \\'\\!\\?\\.\\(\\)\\-\\\\]+)\\}|[\\w\\?\\!\\$]+");
+const string COMMON_CAPTURE = "\\w\\ \\'\\!\\?\\.\\(\\)\\-\\\\";
+const std::regex CARD_NAME_REGEX("\\$\\{([" + COMMON_CAPTURE + "]+)\\}|[" + COMMON_CAPTURE + "]+");
 
 const char YIELD_UNTIL_TURN_KEY = 'y';
 const char SKIP_STACK_KEY = 's';

@@ -701,6 +701,23 @@ function Common_TargetNonCombatRoll(host, ownerID)
     return true
 end
 
+function Common_BonusMonsterTail(host, meID)
+    for _, pile in ipairs(getMonsterPiles(host)) do
+        if #pile == 0 then
+            pushRefillMonsters(host)
+        end
+    end
+    discardMe(host, meID)
+end
+
+function Common_FormCardChoices(cards)
+    local result = {}
+    for i, card in ipairs(cards) do
+        result[#result+1] = i..'- ${'..card.name..'}'
+    end
+    return result
+end
+
 function Common_IncAttackCount(host, ownerID, required)
     local required = required or false
     local newPool = {-1}

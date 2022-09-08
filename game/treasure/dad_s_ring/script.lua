@@ -5,14 +5,14 @@ function DadsRing_enter(host)
         {
             id = id,
             func = function (host_, mid)
-                local add = 0
+                local sub = 0
                 for index, value in pairs(CardData[me.id].mids) do
                     if index == mid then
-                        add = value
+                        sub = value
                         break
                     end
                 end
-                return math.min(6, add + MonsterRollLayers._et[MonsterRollLayers:posOf(id)-1].func(host_, mid))
+                return math.max(0, MonsterRollLayers._et[MonsterRollLayers:posOf(id)-1].func(host_, mid) - sub)
             end
         }
     )

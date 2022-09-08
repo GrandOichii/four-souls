@@ -29,6 +29,7 @@ const string REWARDS_TYPE = "rewards";
 const string STACK_MEMBER_TYPE = "stack_member";
 const string ROLL_TYPE = "roll";
 const string POST_ROLL_TYPE = "post_roll";
+const string BONUS_MONSTER_TYPE = "bonus_monster";
 const string COMBAT_DAMAGE_TYPE = "combat_damage";
 const string DEATH_TYPE = "death";
 const string COIN_GAIN_TYPE = "coin_gain";
@@ -92,6 +93,7 @@ enum CardTypes : int {
     Loot,
     Treasure,
     Monster,
+    BonusMonster,
     Character,
     BonusSoul,
     StartingItem

@@ -1,0 +1,12 @@
+{
+    "name": "Friendly Sack",
+    "text": "{T}: Look at the top 3 cards of the loot deck. Put one in your hand and the rest in another player's hand.",
+    "script": "script.lua",
+    "abilities": [
+        {
+            "requires": ["tap"],
+            "cost": "FriendlySack_cost",
+            "effect": "FriendlySack_effect"
+        }
+    ]
+}

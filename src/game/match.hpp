@@ -281,31 +281,7 @@ private:
         {ACTION_ATTACK_MONSTER, [this](Player* player, std::vector<string> args) {
             this->_lastMonsterIndex = std::stoi(args[1].c_str());
             player->processAttackIndex(_lastMonsterIndex);
-            if (this->_lastMonsterIndex == -1) {
-                auto state = this->getState();
-                vector<int> choices;
-                for (const auto& pile : this->_monsters)
-                    choices.push_back(pile.back()->id());
-                auto response = std::stoi(player->promptResponse(state, "Choose monster pile to cover", MONSTER_TYPE, choices));
-                this->saveResponse(player->name(), response);                
-                auto card = this->getTopMonsterCard();
-                this->_monsterDeck.pop_back();
-                for (int i = 0; i < this->_monsters.size(); i++) {
-                    if (this->_monsters[i].back()->id() == response) {
-                        auto back = this->_monsters[i].back();
-                        auto mcard = (MonsterCard*)back->card();
-                        mcard->leaveEffect().pushMe(this, back, _activePlayer, MONSTER_LEAVE_TYPE);
-                        this->_monsters[i].push_back(card);
-                        this->_lastMonsterIndex = i;
-                        mcard = (MonsterCard*)card->card();
-                        mcard->createData(this->L, this, card->id());
-                        mcard->enterEffect().pushMe(this, card, this->_activePlayer, MONSTER_ENTER_TYPE);
-                        this->_monsterDataArr[i] = mcard->data();
-                        break;
-                    }
-                }
-            }
-            this->_monsterDataArr[this->_lastMonsterIndex]->setIsBeingAttacked(true);
+            if (this->_lastMonsterIndex != -1) this->_monsterDataArr[this->_lastMonsterIndex]->setIsBeingAttacked(true);
             this->pushToStack(new StackEffect(
                 "_attackMonster",
                 player,
@@ -404,7 +380,6 @@ public:
     static int wrap_getLastKillerID(lua_State* L);
     static int wrap_popDeathStack(lua_State* L);
     static int wrap_getLastDeath(lua_State* L);
-    static int wrap_popRewardsStack(lua_State* L);
     static int wrap_incAdditionalCoins(lua_State* L);
     static int wrap_decAdditionalCoins(lua_State* L);
     static int wrap_getRollStack(lua_State* L);
@@ -485,7 +460,7 @@ public:
     void shuffleMonsterDeck();
     void createLootDeck(std::vector<std::pair<ScriptCard*, int>> pairs);
     void createTreasureDeck(std::vector<ScriptCard*> cards);
-    void createMonsterDeck(std::vector<MonsterCard*> cards);
+    void createMonsterDeck(std::vector<MonsterCard*> cards, std::vector<ScriptCard*> bCards);
     void createBonusSouls(std::vector<ScriptCard*> cards);
     void start();
     void passTurn();

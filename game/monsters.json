@@ -1,26 +1,31 @@
 {
-    "back": "images/monster_card_back.bmp",
     "cards": {
-        "monster1s": [
-            "monsters/big_spider",
-            "monsters/big_spider",
-            "monsters/big_spider",
-            "monsters/big_spider",
-            "monsters/big_spider",
-            "monsters/big_spider",
-            "monsters/big_spider",
-            "monsters/big_spider",
-            "monsters/big_spider",
-            "monsters/big_spider",
-            "monsters/big_spider",
-            "monsters/big_spider",
-            "monsters/big_spider",
-            "monsters/big_spider",
-            "monsters/big_spider",
-            "monsters/big_spider",
-            "monsters/big_spider"
+        "bonus": [
+            "monsters_bonus/gold_chest",
+            "monsters_bonus/gold_chest",
+            "monsters_bonus/gold_chest",
+            "monsters_bonus/gold_chest",
+            "monsters_bonus/gold_chest",
+            "monsters_bonus/troll_bombs",
+            "monsters_bonus/troll_bombs",
+            "monsters_bonus/troll_bombs",
+            "monsters_bonus/troll_bombs",
+            "monsters_bonus/troll_bombs"
         ],
         "monsters": [
+            "monsters/clotty",
+            "monsters/clotty",
+            "monsters/clotty",
+            "monsters/clotty",
+            "monsters/clotty",
+            "monsters/clotty",
+            "monsters/clotty",
+            "monsters/clotty",
+            "monsters/clotty",
+            "monsters/clotty",
+            "monsters/clotty"
+        ],
+        "monsters1": [
             "monsters/big_spider",
             "monsters/deaths_head",
             "monsters/black_bony",

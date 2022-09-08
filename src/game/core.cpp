@@ -31,6 +31,12 @@ void Game::loadMonsterCards(string dir) {
         auto jjj = fs::readJS(fs::join(tdir, CARD_INFO_FILE));
         this->_monsterCards.push_back(new MonsterCard(tdir, jjj));
     }
+    auto bcards = jcards["bonus"];
+    for (const auto& jj : bcards.items()) {
+        string tdir = fs::join(dir, jj.value());
+        auto jjj = fs::readJS(fs::join(tdir, CARD_INFO_FILE));
+        this->_bonusMonsterCards.push_back(new ScriptCard(tdir, jjj, CardTypes::BonusMonster));
+    }
     // for (const auto& c : _monsterCards)
     //     c->print("");
 }
@@ -93,7 +99,7 @@ Match* Game::createMatch(int seed) {
     for (auto& card : _characterCards)
         result->addToCharacterPool(card);
     result->createLootDeck(_lootDeckTemplate);
-    result->createMonsterDeck(_monsterCards);
+    result->createMonsterDeck(_monsterCards, _bonusMonsterCards);
     result->createTreasureDeck(_treasureCards);
     result->createBonusSouls(_bonusSouls);
     result->setupLua(_setupScript);

@@ -452,7 +452,6 @@ int Match::dealDamage(string tgtType, int tgtID, int amount) {
 void Match::killMonster(CardWrapper* w) {
     if (_stack.back()->player)
         _lastKillerID = _stack.back()->player->id();
-    // std::cout << "KILLING MONSTER " << std::endl;
     auto card = (MonsterCard*)w->card();
     card->data()->nullHealth();
     if (card->data()->isBeingAttacked()) {
@@ -619,32 +618,6 @@ bool Match::requestPayCost(string costFuncName, Player* player) {
 
 }
 
-//  lua wrappers
-
-int Match::wrap_popRewardsStack(lua_State* L) {
-    stackSizeIs(L, 1);
-    // auto match = getTopMatch(L, 1);
-    // auto rewardsEvent = match->_rewardsStack.top();
-    // match->_rewardsStack.pop();
-    // auto cardW = rewardsEvent.monsterW;
-    // auto effect = ((MonsterCard*)cardW->card())->rewardsEffect();
-    // auto owner = match->_activePlayer;
-    // effect->pushMe(match, cardW, );
-    // lua_getglobal(L, funcName.c_str());
-    // if (!lua_isfunction(L, -1)) {
-    //     throw std::runtime_error("unknown function: " + funcName);
-    // }
-    // lua_pushlightuserdata(L, match);
-    // rewardsEvent.monsterW->pushTable(L);
-    // match->_activePlayer->pushTable(L);
-    // // rewardsEvent.killer->pushTable(L);
-    // int r = lua_pcall(L, 3, 0, 0);
-    // if (r != LUA_OK) {
-    //     throw std::runtime_error("failed to execute rewards function");
-    // }
-    return 0;
-}
-
 int Match::wrap_moveToHand(lua_State* L) {
     stackSizeIs(L, 3);
     auto match = getTopMatch(L, 1);
@@ -758,13 +731,10 @@ int Match::wrap_removeFromEverywhere(lua_State* L) {
             return 0;
         }
     }
-    // removed = removeFromCollection(card, match->_shop);
-    // if (removed) return 0;
     for (auto& pile : match->_monsters) {
         removed = removeFromCollection(card, pile);
         if (removed) return 0;
     }
-    // TODO remove from monster piles
     return 0;
 }
 
@@ -790,6 +760,10 @@ int Match::wrap_expandActiveMonsters(lua_State *L) {
     auto w = match->getTopMonsterCard();
     if (!w) throw std::runtime_error("failed to create new monster pile: no monsters left");
     match->_monsterDeck.pop_back();
+    if (w->card()->type() == CardTypes::BonusMonster) {
+        w->card()->useEffect().pushMe(match, w, match->_activePlayer, BONUS_MONSTER_TYPE);
+        return 0;
+    }
     auto monster = (MonsterCard*)w->card();
     monster->createData(match->L, match, w->id());
     vector<CardWrapper*> pile;
@@ -1371,30 +1345,10 @@ int Match::wrap_cancelCurrentAttack(lua_State* L) {
 int Match::wrap_refillMonsters(lua_State* L) {
     stackSizeIs(L, 1);
     auto match = getTopMatch(L, 1);
-    bool hasBonus = false;
     for (int i = 0; i < match->_monsters.size(); i++) {
-        // if (match->_monsterDataArr[i]->health()) continue;
-        // auto w = match->_monsters[i].back();
-        // auto mc = ((MonsterCard*)w->card());
-        // mc->deleteData();
-        // // std::cout << "EXECUTING MONSTER LEAVE " << w->card()->name() << " -- " << w->card()->leaveFuncName() << std::endl;
-        // mc->leaveEffect().pushMe(match, w, match->_activePlayer, MONSTER_LEAVE_TYPE);
-        // match->_monsters[i].pop_back();
-        // match->_monsterDataArr[i] = nullptr;
-        // if (w->card()->soulCount()) {
-        //     match->_activePlayer->addSoulCard(w);
-        //     if (match->_activePlayer->soulCount() >= match->_soulsToWin) {
-        //         std::cout << "SETTING " << match->_activePlayer->name() << " TO WINNER" << std::endl;
-        //         match->_winner = match->_activePlayer;
-        //         match->updateAllPlayersEndMatch();
-        //     }
-        // } else {
-        //     match->_monsterDiscard.push_back(w);
-        // }
         if (match->_monsters[i].size()) continue;
         CardWrapper* newM = nullptr;
         if (!match->_monsters[i].size()) {
-            //  TODO? fix
             if (!match->_monsterDeck.size()) continue;
             newM = match->_monsterDeck.back();
             match->_monsterDeck.pop_back();
@@ -1402,14 +1356,15 @@ int Match::wrap_refillMonsters(lua_State* L) {
         } else {
             newM = match->_monsters[i].back();
         }
+        if (newM->card()->type() == CardTypes::BonusMonster) {
+            newM->card()->useEffect().pushMe(match, newM, match->_activePlayer, BONUS_MONSTER_TYPE);
+            match->_monsters[i].pop_back();
+            return 0;
+        }
         auto mcard = ((MonsterCard*)newM->card());
         mcard->createData(L, match, newM->id());
         mcard->enterEffect().pushMe(match, newM, match->_activePlayer, MONSTER_ENTER_TYPE);
         match->_monsterDataArr[i] = mcard->data();
-        // pushDeathEvent(MONSTER_TYPE, w->id());
-    }
-    if (hasBonus) {
-        //  TODO push function of bonus card
     }
     return false;
 }
@@ -2010,13 +1965,40 @@ int Match::wrap_getRollStack(lua_State* L) {
 }
 
 int Match::wrap_attackMonster(lua_State* L) {
-    if (lua_gettop(L) != 1) {
-        lua_err(L);
-        exit(1);
-    }
+    stackSizeIs(L, 1);
     auto match = getTopMatch(L, 1);
+    if (match->_lastMonsterIndex == -1) {
+        auto state = match->getState();
+        vector<int> choices;
+        for (const auto& pile : match->_monsters)
+            choices.push_back(pile.back()->id());
+        auto card = match->getTopMonsterCard();
+        match->_monsterDeck.pop_back();
+        if (card->card()->type() == CardTypes::BonusMonster) {
+            card->card()->useEffect().pushMe(match, card, match->_activePlayer, BONUS_MONSTER_TYPE);
+            return 0;
+        }
+        auto response = std::stoi(match->_activePlayer->promptResponse(state, "Choose monster pile to cover with ${" + card->card()->name() + "}", MONSTER_TYPE, choices));
+        match->saveResponse(match->_activePlayer->name(), response);                
+        for (int i = 0; i < match->_monsters.size(); i++) {
+            if (match->_monsters[i].back()->id() == response) {
+                auto back = match->_monsters[i].back();
+                auto mcard = (MonsterCard*)back->card();
+                mcard->leaveEffect().pushMe(match, back, match->_activePlayer, MONSTER_LEAVE_TYPE);
+                match->_monsters[i].push_back(card);
+                match->_lastMonsterIndex = i;
+                mcard = (MonsterCard*)card->card();
+                mcard->createData(match->L, match, card->id());
+                mcard->enterEffect().pushMe(match, card, match->_activePlayer, MONSTER_ENTER_TYPE);
+                match->_monsterDataArr[i] = mcard->data();
+                if (!match->_monsterDataArr[i]->canBeAttacked()) return 0;
+                match->_monsterDataArr[i]->setIsBeingAttacked(true);
+                break;
+            }
+        }
+    }
     for (const auto& data : match->_monsterDataArr)
-        if (data->isBeingAttacked())
+        if (data && data->isBeingAttacked())
             match->_isAttackPhase = true;            
     return 0;
 }
@@ -2030,7 +2012,6 @@ int Match::wrap_getMonsterPiles(lua_State* L) {
         auto ssize = match->_monsters[i].size();
         lua_pushnumber(L, i+1);
         lua_createtable(L, ssize, 0);
-        dumpstack(L);
         for (int ii = 0; ii < ssize; ii++) {
             lua_pushnumber(L, ii+1);
             match->_monsters[i][ii]->pushTable(L);
@@ -2117,6 +2098,9 @@ void Match::sortToDiscard(CardWrapper* cardW) {
     case CardTypes::Monster:
         _monsterDiscard.push_back(cardW);
         break;
+    case CardTypes::BonusMonster:
+        _monsterDiscard.push_back(cardW);
+        break;
     default:
         std::cout << "WARN: Can't sort card " << cardW->card()->name() << " to discard pile\n";
         break;
@@ -2165,7 +2149,6 @@ void Match::setupLua(string setupScript) {
     lua_register(L, "killEntity", wrap_killEntity);
     lua_register(L, "_popDeathStack", wrap_popDeathStack);
     lua_register(L, "getLastDeath", wrap_getLastDeath);
-    lua_register(L, "_popRewardsStack", wrap_popRewardsStack);
     lua_register(L, "getOwner", wrap_getOwner);
     lua_register(L, "incAdditionalCoins", wrap_incAdditionalCoins);
     lua_register(L, "decAdditionalCoins", wrap_decAdditionalCoins);
@@ -2458,10 +2441,14 @@ void Match::createTreasureDeck(std::vector<ScriptCard*> cards) {
     this->shuffleTreasureDeck();
 }
 
-void Match::createMonsterDeck(std::vector<MonsterCard*> cards) {
+void Match::createMonsterDeck(std::vector<MonsterCard*> cards, std::vector<ScriptCard*> bCards) {
     for (const auto& card : cards) {
         auto w = addWrapper(card);
         this->_monsterDeck.push_back(w);            
+    }
+    for (const auto& card : bCards) {
+        auto w = addWrapper(card);
+        this->_monsterDeck.push_back(w);
     }
     this->shuffleMonsterDeck();
 }
@@ -2496,9 +2483,16 @@ void Match::start() {
     for (const auto& c : tcards)
         _shop.push_back(c);
     // setup monsters
-    auto mcards = getTopMonsterCards(_startingMonstersAmount);
-    for (const auto& c : mcards) {
+    // auto mcards = getTopMonsterCards(_startingMonstersAmount);
+    for (int i = 0; i < _startingMonstersAmount; ++i) {
         vector<CardWrapper*> pile;
+        while (_monsterDeck.back()->card()->type() == CardTypes::BonusMonster) {
+            auto mc = _monsterDeck.back();
+            _monsterDeck.pop_back();
+            _monsterDeck.push_front(mc);
+        }
+        auto c = _monsterDeck.back();
+        _monsterDeck.pop_back();
         pile.push_back(c);
         _monsters.push_back(pile);
         auto mcard = ((MonsterCard*)c->card());
@@ -2964,6 +2958,7 @@ void Match::refillDeadMonsters() {
         if (!_monsters[i].size()) continue;
         if (_monsterDataArr[i]->health()) continue;
         auto w = _monsters[i].back();
+        if (w->card()->type() != CardTypes::Monster) continue;
         auto mc = ((MonsterCard*)w->card());
         mc->deleteData();
         mc->leaveEffect().pushMe(this, w, _activePlayer, MONSTER_LEAVE_TYPE);

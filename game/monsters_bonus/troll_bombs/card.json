@@ -1,0 +1,8 @@
+{
+    "name": "Troll Bombs",
+    "text": "Take 2 damage!",
+    "script": "script.lua",
+    "use": {
+        "effect": "TrollBombs_effect"
+    }
+}
