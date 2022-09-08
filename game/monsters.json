@@ -1,24 +1,24 @@
 {
     "back": "images/monster_card_back.bmp",
     "cards": {
-        "monste1rs": [
-            "monsters/dinga",
-            "monsters/dinga",
-            "monsters/dinga",
-            "monsters/dinga",
-            "monsters/dinga",
-            "monsters/dinga",
-            "monsters/dinga",
-            "monsters/dinga",
-            "monsters/dinga",
-            "monsters/dinga",
-            "monsters/dinga",
-            "monsters/dinga",
-            "monsters/dinga",
-            "monsters/dinga",
-            "monsters/dinga",
-            "monsters/dinga",
-            "monsters/dinga"
+        "monster1s": [
+            "monsters/big_spider",
+            "monsters/big_spider",
+            "monsters/big_spider",
+            "monsters/big_spider",
+            "monsters/big_spider",
+            "monsters/big_spider",
+            "monsters/big_spider",
+            "monsters/big_spider",
+            "monsters/big_spider",
+            "monsters/big_spider",
+            "monsters/big_spider",
+            "monsters/big_spider",
+            "monsters/big_spider",
+            "monsters/big_spider",
+            "monsters/big_spider",
+            "monsters/big_spider",
+            "monsters/big_spider"
         ],
         "monsters": [
             "monsters/big_spider",

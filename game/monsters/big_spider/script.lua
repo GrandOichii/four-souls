@@ -1,6 +1,9 @@
 function BigSpider_rewards(host)
-	local killerID = getLastKillerID(host)
-	local killer = Common_PlayerWithID(host, killerID)
-	--  TODO
-	lootCards(host, killer["id"], 1)
+	local killer = getTopOwner(host)
+	lootCards(host, killer.id, 1)
+end
+
+function BigSpider_death(host)
+	local player = getCurrentPlayer(host)
+	addAttackOpportunity(host, player.id, false, {-1})
 end

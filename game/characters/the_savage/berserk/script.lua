@@ -4,7 +4,7 @@ end
 
 function Berserk_trigger1(host)
     local owner = getTopOwner(host)
-    incAttackCount(host, owner.id)
+    Common_IncAttackCount(host, owner.id)
 end
 
 function Berserk_trigger2_check(host, me)

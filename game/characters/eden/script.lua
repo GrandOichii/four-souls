@@ -5,10 +5,13 @@ local BAD_EDEN_CARDS = {
     'The Chest',
     'Pageant Boy',
     'Pandora\'s Box',
-    'Glass Canon',
+    'Glass Cannon',
     'The D4',
     'Mom\'s Shovel',
     'Plan C',
+    'Mama Mega',
+    'Chaos Card',
+    '1-UP',
 }
 
 function IsBadEdenCard(cardName)

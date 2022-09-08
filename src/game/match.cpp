@@ -45,7 +45,8 @@ static PlayerBoardState playerFromJson(json j) {
     result.health = j["health"];
     result.playableCount = j["playableCount"];
     result.purchaseCount = j["purchaseCount"];
-    result.attackCount = j["attackCount"];
+    for (const auto& [_, id] : j["attackIDs"].items())
+        result.allowedAttackIndices.push_back(id);
     result.isDead = j["isDead"];
     result.id = j["id"];
     result.name = j["name"];
@@ -181,7 +182,9 @@ static json playerToJson(const PlayerBoardState& player) {
     result["attack"] = player.attack;
     result["playableCount"] = player.playableCount;
     result["purchaseCount"] = player.purchaseCount;
-    result["attackCount"] = player.attackCount;
+    result["attackIDs"] = json::array();
+    for (const auto& id : player.allowedAttackIndices)
+        result["attackIDs"].push_back(id);
     result["isDead"] = player.isDead;
     result["id"] = player.id;
     result["name"] = player.name;
@@ -654,6 +657,27 @@ int Match::wrap_moveToHand(lua_State* L) {
     return 0;
 }
 
+int Match::wrap_addAttackOpportunity(lua_State* L) {
+    stackSizeIs(L, 4);
+    auto match = getTopMatch(L, 1);
+    auto pid = getTopNumber(L, 2);
+    auto required = getTopBool(L, 3);
+    luaL_checktype(L, 4, LUA_TTABLE);
+    int len = lua_rawlen(L, 4);
+    AttackOpportunity newOp;
+    newOp.required = required;
+    for (int i = 0; i < len; i++) {
+        lua_pushinteger(L, i+1);
+        lua_gettable(L, -2);
+        auto id = getTopNumber(L, -1);
+        lua_pop(L, 1);
+        newOp.indices.push_back(id);
+    }
+    auto player = match->playerWithID(pid);
+    player->addAttackOpportunity(newOp);
+    return 0;
+}
+
 int Match::wrap_moveToBoard(lua_State* L) {
     stackSizeIs(L, 3);
     auto match = getTopMatch(L, 1);
@@ -1091,11 +1115,7 @@ int Match::wrap_requestSimpleChoice(lua_State* L) {
     for (int i = 0; i < size; i++) {
         lua_pushnumber(L, i + 1);
         lua_gettable(L, 4);
-        if (!lua_isstring(L, -1)) {
-            lua_err(L);
-            exit(1);
-        }
-        choices.push_back((string)lua_tostring(L, -1));
+        choices.push_back(getTopString(L, -1));
         lua_pop(L, 1);
     }
     auto state = match->getState();
@@ -1139,7 +1159,6 @@ int Match::wrap_setNextPlayer(lua_State* L) {
     throw std::runtime_error("failed to set next player - can't find player with id " + std::to_string(pid));
 }
 
-//  TODO depricated
 int Match::wrap_addSoulCard(lua_State* L) {
     stackSizeIs(L, 3);
     auto match = getTopMatch(L, 1);
@@ -1169,6 +1188,16 @@ int Match::wrap_tapCharacterCard(lua_State* L) {
     auto pid = getTopNumber(L, 2);
     auto player = match->playerWithID(pid);
     player->tapCharacter();
+    return 0;
+}
+
+int Match::wrap_placeOnTop(lua_State* L) {
+    stackSizeIs(L, 3);
+    auto match = getTopMatch(L, 1);
+    auto deckType = getTopString(L, 2);
+    auto cid = getTopNumber(L, 3);
+    auto card = match->cardWithID(cid);
+    match->_deckMap[deckType]->push_back(card);
     return 0;
 }
 
@@ -1589,6 +1618,7 @@ int Match::wrap_destroyCard(lua_State* L) {
     auto match = getTopMatch(L, 1);
     auto cardID = getTopNumber(L, 2);
     auto card = match->cardWithID(cardID);
+    if (card->isEternal()) return 0;
     // check player boards
     for (const auto& player : match->_players) {
         for (const auto& bcard : player->board()) {
@@ -1939,22 +1969,6 @@ int Match::wrap_decTreasureCost(lua_State* L) {
     return 0;
 }
 
-int Match::wrap_incAttackCount(lua_State* L) {
-    if (lua_gettop(L) != 2) {
-        lua_err(L);
-        exit(1);
-    }
-    auto match = getTopMatch(L, 1);
-    if (!lua_isnumber(L, 2)) {
-        lua_err(L);
-        exit(1);
-    }
-    int pid = (int)lua_tonumber(L, 2);
-    auto player = match->playerWithID(pid);
-    player->incAttackCount();
-    return 0;
-}
-
 int Match::wrap_destroySoul(lua_State* L) {
     stackSizeIs(L, 3);
     auto match = getTopMatch(L, 1);
@@ -2099,6 +2113,8 @@ void Match::setupLua(string setupScript) {
     luaL_openlibs(L);
     // connect functions
     lua_register(L, "healPlayer", wrap_healPlayer);
+    lua_register(L, "placeOnTop", wrap_placeOnTop);
+    lua_register(L, "addAttackOpportunity", wrap_addAttackOpportunity);
     lua_register(L, "cardWithID", wrap_cardWithID);
     lua_register(L, "setIsEternal", wrap_setIsEternal);
     lua_register(L, "resetCounters", wrap_resetCounters);
@@ -2169,7 +2185,6 @@ void Match::setupLua(string setupScript) {
     lua_register(L, "requestSimpleChoice", wrap_requestSimpleChoice);
     lua_register(L, "requestCardsInHand", wrap_requestCardsInHand);
     lua_register(L, "discardLoot", wrap_discardLoot);
-    lua_register(L, "incAttackCount", wrap_incAttackCount);
     lua_register(L, "tapCharacterCard", wrap_tapCharacterCard);
     lua_register(L, "tapCard", wrap_tapCard);
     lua_register(L, "millDeck", wrap_millDeck);
@@ -2364,7 +2379,6 @@ void Match::addPlayer(Player* player) {
         addCardToBoard(w, player);
         w->setOwner(player);
     }
-    // 
 }
 
 std::vector<CharacterCard*> Match::getAvailableCharacters() {
@@ -2481,8 +2495,9 @@ void Match::start() {
     this->_running = true;
     _activePlayer = _players[_currentI];
 
-    // execute player game start effects
+    // create attack opportunities and execute player game start effects 
     for(const auto& player : _players) {
+        player->resetEOT(_monsters);
         auto cCard = player->characterCard();
         auto ocCard = player->origCharacterCard();
         ocCard->gameStartEffect().pushMe(this, cCard, player, GAME_START_TYPE);
@@ -2547,7 +2562,7 @@ void Match::turn() {
     this->log(_activePlayer->name() + "'s main phase");
     string response = "";
     auto state = this->getState();
-    while (!_turnEnd && (response != ACTION_PASS || _isAttackPhase)) {
+    while (_activePlayer->hasToAttack() || response != ACTION_PASS || _isAttackPhase) {
         response = this->_activePlayer->promptAction(state);
         this->log("\t" + _activePlayer->name() + ": " + response);
         this->executePlayerAction(_activePlayer, response);
@@ -2559,6 +2574,7 @@ void Match::turn() {
         this->resolveStack();
         if (_winner) return;
         state = this->getState();
+        if (_turnEnd) break;
     }
     _isMainPhase = false;
     _isAttackPhase = false;
@@ -2627,7 +2643,7 @@ void Match::dumpStacks() {
 
 void Match::resetEOT() {
     for (auto& p : _players)
-        p->resetEOT();
+        p->resetEOT(_monsters);
     healMonsters();
 }
 

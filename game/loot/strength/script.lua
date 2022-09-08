@@ -11,6 +11,6 @@ function Strength_use(host)
     local target = popTarget(host)
 
     Common_TempIncAttack(host, me.id, target.id, 1)
-    incAttackCount(host, target.id)
+    Common_IncAttackCount(host, target.id)
 
 end

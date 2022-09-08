@@ -8,5 +8,8 @@
     "soulCount": 1,
     "rewards": {
         "effect": "Conquest_rewards"
+    },
+    "death": {
+        "effect": "Conquest_death"
     }
 }

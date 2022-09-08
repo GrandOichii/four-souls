@@ -280,7 +280,7 @@ private:
         }},
         {ACTION_ATTACK_MONSTER, [this](Player* player, std::vector<string> args) {
             this->_lastMonsterIndex = std::stoi(args[1].c_str());
-            player->decMonsterAttackAmount();
+            player->processAttackIndex(_lastMonsterIndex);
             if (this->_lastMonsterIndex == -1) {
                 auto state = this->getState();
                 vector<int> choices;
@@ -372,7 +372,9 @@ public:
     void pushEffect(string funcName, Effect& effect, CardWrapper* cardW, Player* owner, string type);
     //  TODO add wrap_popBonusCards, inside of it call refillDeadMonsters
     static int wrap_canFlip(lua_State* L);
+    static int wrap_placeOnTop(lua_State* L);
     static int wrap_cardWithID(lua_State* L);
+    static int wrap_addAttackOpportunity(lua_State* L);
     static int wrap_setIsEternal(lua_State* L);
     static int wrap_pushToStack(lua_State* L);
     static int wrap_getMonsterPiles(lua_State* L);
@@ -434,7 +436,6 @@ public:
     static int wrap_getActiveMonsters(lua_State* L);
     static int wrap_getDeathStack(lua_State* L);
     static int wrap_dealCombatDamage(lua_State *L);
-    static int wrap_incAttackCount(lua_State *L);
     static int wrap_lootCards(lua_State *L);
     static int wrap_buyItem(lua_State* L);
     static int wrap_addCoins(lua_State *L);

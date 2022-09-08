@@ -1,7 +1,10 @@
 function MamaMega_tap(host)
     local me = this(host)
     local owner = getTopOwner(host)
-    destroyCard(host, me.id)
+    local done = Common_SacrificeMe(host, me.id)
+    if not done then
+        return
+    end
     local t = {
         {
             collection = getActiveMonsters(host),

@@ -115,11 +115,12 @@ public:
             for (const auto& value : _state.shop)
                 _allowedCards.push_back(value.id);
         // check monsters
-        if (!_state.isCombat && me.attackCount && _state.stack.size() == 0) {
-            for (int i = 0; i < _state.monsters.size(); i++) {
-                if (_state.monsterDataArr[i].canBeAttacked)
-                    _allowedCards.push_back(_state.monsters[i].id);
-
+        if (!_state.isCombat && _state.stack.size() == 0) {
+            for (int i = 0; i < me.allowedAttackIndices.size(); i++) {
+                auto index = me.allowedAttackIndices[i];
+                if (index == -1) continue;
+                if (_state.monsterDataArr[index].canBeAttacked)
+                    _allowedCards.push_back(_state.monsters[index].id);
             }
         }
     }
@@ -760,8 +761,16 @@ public:
                 me = &board;
         if (!_waitingResponse) return;
         if (_lastRequestType != PollType::GetAction) return;
-        if (!(me->attackCount && !_state.isCombat && _state.stack.size() == 0)) return;
+        if (!(me->allowedAttackIndices.size() && !_state.isCombat && _state.stack.size() == 0)) return;
         if (_mouseLock) return;
+        bool flag = false;
+        for (const auto& id : me->allowedAttackIndices) {
+            if (id == -1) {
+                flag = true;
+                break;
+            }
+        }
+        if (!flag) return;
         int mx, my;
         auto s = SDL_GetMouseState(&mx, &my);
         int w = _cardSize.first;

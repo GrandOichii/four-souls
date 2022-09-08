@@ -7,7 +7,6 @@ function CreateStrawberryData(host, meID)
     for _, player in ipairs(getPlayers(host)) do
         CardData[meID].pmap[player.id] = 0
     end
-    print('created strawberry data')
 end
 
 function Strawberry_trigger1_check(host, me)

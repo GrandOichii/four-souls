@@ -1,5 +1,9 @@
 function Conquest_rewards(host)
-	local killerID = getLastKillerID(host)
-	local killer = Common_PlayerWithID(host, killerID)
+	local killer = getTopOwner(host)
 	addCoins(host, killer.id, 6)
+end
+
+function Conquest_death(host)
+	local player = getCurrentPlayer(host)
+	Common_IncAttackCount(host, player.id, true)
 end

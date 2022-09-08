@@ -26,5 +26,6 @@ function CursedSoul_trigger2(host)
     local target = popTarget(host)
     local me = this(host)
     removeFromEverywhere(host, me.id)
+    resetCounters(host, me.id)
     moveToBoard(host, target.id, me.id)
 end

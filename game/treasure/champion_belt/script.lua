@@ -19,7 +19,7 @@ function ChampionBelt_enter(host)
         turnC = -1,
         rolls = 0
     }
-    incAttackCount(host, owner.id)
+    Common_IncAttackCount(host, owner.id)
 end
 
 function ChampionBelt_leave(host)
@@ -65,5 +65,5 @@ end
 
 function ChampionBelt_trigger3(host)
     local owner = getTopOwner(host)
-    incAttackCount(host, owner.id)
+    Common_IncAttackCount(host, owner.id)
 end

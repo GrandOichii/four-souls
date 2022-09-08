@@ -24,7 +24,6 @@ void Player::setStartingValues(int treasurePrice, int attackCount, int playableC
     this->_treasurePrice = treasurePrice;
 
     this->_maxAttackCount = attackCount;
-    this->_attackCount = this->_maxAttackCount;
 
     this->_maxPlayableCount = playableCount;
     this->_playableCount = 0;
@@ -45,19 +44,6 @@ int Player::dealDamage(int amount) {
     _health -= amount;
     if (_health < 0) _health = 0;
     return amount;
-}
-
-void Player::incMaxAttackCount() {
-    _maxAttackCount++;
-    _attackCount++;
-}
-
-void Player::decMaxAttackCount() {
-    _maxAttackCount--;
-}
-
-void Player::incAttackCount() {
-    _attackCount++;
 }
 
 void Player::incBeginningLoot() { _startTurnLootAmount++; }
@@ -129,10 +115,6 @@ void Player::recharge() {
     this->rechargeCards();
 }
 
-void Player::decMonsterAttackAmount() {
-    --this->_attackCount;
-}
-
 bool Player::isDead() { return _isDead; }
 
 void Player::pushTable(lua_State* L) {
@@ -144,10 +126,20 @@ void Player::pushTable(lua_State* L) {
     l_pushtablenumber(L, "coins", (float)this->_coinCount);
     l_pushtablenumber(L, "playableCount", (float)_playableCount);
     l_pushtablenumber(L, "purchaseCount", (float)_purchaseCount);
-    l_pushtablenumber(L, "attackCount", (float)_attackCount);
     l_pushtablenumber(L, "treasurePrice", _treasurePrice);
     l_pushtableboolean(L, "characterActive", _characterActive);
     l_pushtableboolean(L, "isDead", _isDead);
+
+    int ai = 0;
+    lua_pushstring(L, "attackIndices");
+    auto size = _allowedAttackIndices.size();
+    lua_createtable(L, size, 0);
+    for (const auto& i : _allowedAttackIndices) {
+        lua_pushnumber(L, ++ai);
+        lua_pushnumber(L, i);
+        lua_settable(L, -3);
+    }
+    lua_settable(L, -3);
 
     // push cards in hand
     lua_pushstring(L, "hand");
@@ -311,7 +303,9 @@ PlayerBoardState Player::getState() {
     result.coinCount = _coinCount;
     result.playableCount = _playableCount;
     result.purchaseCount = _purchaseCount;
-    result.attackCount = _attackCount;
+    for (const auto& m : _allowedAttackIndices) { 
+        result.allowedAttackIndices.push_back(m);
+    }
     result.health = _health;
     result.treasurePrice = _treasurePrice;
     result.id = _id;
@@ -349,13 +343,23 @@ void PlayerBoardState::pushTable(lua_State* L) const {
     l_pushtablenumber(L, "attack", attack);
     l_pushtablenumber(L, "playableCount", playableCount);
     l_pushtablenumber(L, "purchaseCount", purchaseCount);
-    l_pushtablenumber(L, "attackCount", attackCount);
+
+    lua_pushstring(L, "attackIndices");
+    auto size = allowedAttackIndices.size();
+    lua_createtable(L, size, 0);
+    for (int i = 0; i < size; i++) {
+        lua_pushnumber(L, i+1);
+        lua_pushnumber(L, allowedAttackIndices[i]);
+        lua_settable(L, -3);
+    }
+    lua_settable(L, -3);
+
     l_pushtablenumber(L, "treasurePrice", treasurePrice);
     l_pushtablenumber(L, "id", id);
 
     //  TODO push character card, hand and souls
     lua_pushstring(L, "board");
-    auto size = board.size();
+    size = board.size();
     lua_createtable(L, size, 0);
     for (int i = 0; i < size; i++) {
         lua_pushnumber(L, i+1);
@@ -430,12 +434,66 @@ void Player::setLuaENV(lua_State* L) {
     this->L = L; 
 }
 
-void Player::resetEOT() {
+void Player::resetEOT(std::vector<std::vector<CardWrapper*>>& mPiles) {
     _blueHealth = 0;
     _health = maxHealth();
-    _attackCount = _maxAttackCount;
+    _allowedAttackIndices.clear();
+    _attackOpportunities.clear();
+    AttackOpportunity newOp;
+    newOp.required = false;
+    for (int i = 0; i < mPiles.size(); i++) newOp.indices.push_back(i);
+    newOp.indices.push_back(-1);
+    _attackOpportunities.push_back(newOp);
+    formAllowedAttackIndices();
     _isDead = false;
 }
+
+void Player::formAllowedAttackIndices() {
+    _allowedAttackIndices.clear();
+    for (const auto& op : _attackOpportunities)
+        for (const auto id : op.indices)
+            _allowedAttackIndices.insert(id);
+}
+
+bool Player::hasToAttack() {
+    for (const auto& op : _attackOpportunities)
+        if (op.required) return true;
+    return false;
+}
+
+void Player::addAttackOpportunity(AttackOpportunity op) {
+    _attackOpportunities.push_back(op);
+    formAllowedAttackIndices();
+}
+
+void Player::processAttackIndex(int index) {
+    // first go over the required
+    auto reqIt = _attackOpportunities.end();
+    auto nonReqIt = _attackOpportunities.end();
+    for (auto it = _attackOpportunities.begin(); it != _attackOpportunities.end(); it++) {
+        if (!it->hasIndex(index)) continue;
+        if (it->required && (reqIt == _attackOpportunities.end() || it->indices.size() < reqIt->indices.size())) {
+            reqIt = it;            
+        }
+        else if (nonReqIt == _attackOpportunities.end() || it->indices.size() < nonReqIt->indices.size()) {
+            nonReqIt = it;
+        } 
+    }
+    if (reqIt != _attackOpportunities.end()) {
+        _attackOpportunities.erase(reqIt);
+        formAllowedAttackIndices();
+        return;
+    }
+    if (nonReqIt != _attackOpportunities.end()) {
+        _attackOpportunities.erase(nonReqIt);
+        formAllowedAttackIndices();
+        return;
+    }
+    for (const auto& id : _allowedAttackIndices) std::cout << id << " ";
+    std::cout << std::endl;
+    throw std::runtime_error("failed to monster pile index " + std::to_string(index) + " from allowed attack opportuinities of player " + _name);
+}
+
 
 BotPlayer::BotPlayer(std::string name, CharacterCard* card, int id, string script) :
     Player(name, card, id)

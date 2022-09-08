@@ -132,11 +132,12 @@ local function AttemptBuyTreasure(me, state)
 end
 
 local function ChooseBestToAttack(me, state)
-    return 'attack 0'
+    print(json.encode(me.attackIndices))
+    return 'attack '..me.attackIndices[#me.attackIndices]
 end
 
 local function AttemptAttack(me, state)
-    if me.attackCount ~= 0 then
+    if #me.attackIndices ~= 0 then
         return true, ChooseBestToAttack(me, state)
     end
     return false, ''
@@ -176,15 +177,6 @@ local function AttemptActivate(me, state)
 end
 
 local ME_ID = nil
-
---[[
-0.25
-0.5
-0.75
-]]--
-
--- new = cur + (cur / 2)
--- old = 
 
 function Bot_PromptAction(me, state)
     if ME_ID == nil then

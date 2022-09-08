@@ -19,14 +19,16 @@ void l_pushtableboolean(lua_State* L, string key, bool value);
 void dumpstack(lua_State *L);
 
 template<class T, class cT>
-bool removeFromCollection(T card, cT& cards) {
-    if (std::find(cards.begin(), cards.end(), card) == cards.end()) return false;
-    for (auto it = cards.begin(); it != cards.end(); it++) {
-        if (*it == card) {
-            cards.erase(it);
-            break;
-        }
-    }
+bool removeFromCollection(T el, cT& collection) {
+    auto it = std::find(collection.begin(), collection.end(), el);
+    if (it == collection.end()) return false;
+    // for (auto it = collection.begin(); it != collection.end(); it++) {
+    //     if (*it == el) {
+    //         collection.erase(it);
+    //         break;
+    //     }
+    // }
+    collection.erase(it);
     return true;
 }
 

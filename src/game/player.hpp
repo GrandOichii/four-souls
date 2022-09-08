@@ -3,6 +3,7 @@
 #include <string>
 #include <vector>
 #include <stack>
+#include <set>
 
 extern "C" {
 
@@ -25,7 +26,7 @@ struct PlayerBoardState {
     int attack;
     int playableCount;
     int purchaseCount;
-    int attackCount;
+    std::vector<int> allowedAttackIndices;
     int treasurePrice;
     bool isDead;
     int id;
@@ -44,6 +45,17 @@ struct PlayerBoardState {
 struct MatchState;
 class Match;
 
+struct AttackOpportunity {
+    std::vector<int> indices;
+    bool required = false;
+
+    bool hasIndex(int index) const {
+        for (const auto& i : indices)
+            if (i == index) return true;
+        return false;
+    }
+};
+
 class Player {
 private:
     Match* _parent;
@@ -53,11 +65,13 @@ private:
     string _name;
     bool _isDead = false;
 
+    int _maxAttackCount = 1;
+
+    std::vector<AttackOpportunity> _attackOpportunities;
+    std::set<int> _allowedAttackIndices;
+
     int _health;
     int _blueHealth;
-
-    int _maxAttackCount;
-    int _attackCount;
 
     int _id;
 
@@ -98,6 +112,11 @@ public:
     void recharge();
     void pushTable(lua_State* L);
 
+    void formAllowedAttackIndices();
+    bool hasToAttack();
+    void processAttackIndex(int index);
+    void addAttackOpportunity(AttackOpportunity op);
+
     void resetPlayableCount();
     int getPlayableAmount();
     void decPlayableAmount();
@@ -108,12 +127,6 @@ public:
     void setPurchaseCount(int amount);
     void decPurchaseAmount();
     void incPurchaseAmount();
-
-    void decMonsterAttackAmount();
-
-    void incMaxAttackCount();
-    void decMaxAttackCount();
-    void incAttackCount();
 
     bool isDead();
     void setIsDead(bool value);
@@ -165,7 +178,7 @@ public:
     void addSoulCard(CardWrapper* card);
     CardWrapper* removeSoulCard(int cid);
 
-    void resetEOT();
+    void resetEOT(std::vector<std::vector<CardWrapper*>>& mPiles);
     void setStartingValues(int treasurePrice, int attackCount, int playableCount, int purchaseCount);
 };
 

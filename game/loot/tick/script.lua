@@ -7,5 +7,5 @@ end
 function Tick_trigger(host)
     local owner = getTopOwner(host)
     healPlayer(host, owner.id, 1)
-    incAttackCount(host, owner.id)
+    Common_IncAttackCount(host, owner.id)
 end

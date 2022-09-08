@@ -701,6 +701,15 @@ function Common_TargetNonCombatRoll(host, ownerID)
     return true
 end
 
+function Common_IncAttackCount(host, ownerID, required)
+    local required = required or false
+    local newPool = {-1}
+    for i, _ in ipairs(getActiveMonsters(host)) do
+        newPool[#newPool+1] = i-1
+    end
+    addAttackOpportunity(host, ownerID, required, newPool)
+end
+
 function Common_RemoveCounter(host)
     local card = this(host)
     if card.counters == 0 then
@@ -874,10 +883,14 @@ function Common_OwnerDealtCombatDamage(host, cardID, targetType)
     if damageEvent.targetType ~= targetType then
         return false
     end
-    local monster = Common_MonsterWithID(host, damageEvent.targetID)
-    if not monster.isBeingAttacked then
-        return false
-    end
+    -- local monster, found = Common_MonsterWithID(host, damageEvent.targetID)
+    -- if not found then
+    --     return false
+    -- end
+    -- print(monster.isBeingAttacked)
+    -- if not monster.isBeingAttacked then
+    --     return false
+    -- end
     if CardData[cardID] == nil then
         CardData[cardID] = {}
     end
@@ -942,7 +955,7 @@ end
 function Common_MonsterWithID(host, mid)
     local monsters = getActiveMonsters(host)
     for _, monster in ipairs(monsters) do
-        if mid == monster["id"] then
+        if mid == monster.id then
             return monster, true
         end
     end

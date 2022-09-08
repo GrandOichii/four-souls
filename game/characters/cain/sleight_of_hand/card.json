@@ -1,0 +1,13 @@
+{
+    "name": "Sleight of Hand",
+    "text": "{T}: Look at the top 5 cards of a deck. Put them back in any order.",
+    "script": "script.lua",
+    "eternal": true,
+    "abilities": [
+        {
+            "requires": ["tap"],
+            "cost": "SleightOfHand_cost",
+            "effect": "SleightOfHand_effect"
+        }
+    ]
+}

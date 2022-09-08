@@ -7,5 +7,8 @@
     "power": 1,
     "rewards": {
         "effect": "Portal_rewards"
+    },
+    "death": {
+        "effect": "Portal_death"
     }
 }

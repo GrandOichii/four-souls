@@ -1,0 +1,11 @@
+{
+    "name": "Cain",
+    "health": 2,
+    "attack": 1,
+    "item": "sleight_of_hand",
+    "text": "{T}: Play an additional loot card this turn.\nStarting item: Sleight of Hand",
+    "script": "script.lua",
+    "use": {
+        "effect": "Cain_tap"
+    }
+}

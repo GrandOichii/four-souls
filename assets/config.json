@@ -4,6 +4,14 @@
             "large": "images/polyphemus_large.bmp",
             "small": "images/polyphemus.bmp"
         },
+        "Cain": {
+            "large": "images/cain_large.bmp",
+            "small": "images/cain.bmp"
+        },
+        "Sleight of Hand": {
+            "large": "images/sleight_of_hand_large.bmp",
+            "small": "images/sleight_of_hand.bmp"
+        },
         "Eden": {
             "large": "images/eden_large.bmp",
             "small": "images/eden.bmp"
