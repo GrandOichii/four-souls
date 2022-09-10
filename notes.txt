@@ -13,6 +13,7 @@
     -- does callus save from evil twins effect
     -- shiny rock don't work
     -- shiny rock + more options
+    -- bonus monster cards don't work exactly like the rules say - refilling
 
 - implement:
     -- bartering: a special button, when pressed will present a choice to the player: select the player to barter with, select coin count, type in text with the favor. the receiving player can accept or decline, the returning message will contain a accepted(bool) and response(string)

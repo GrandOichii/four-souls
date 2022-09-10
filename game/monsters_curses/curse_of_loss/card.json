@@ -1,0 +1,15 @@
+{
+    "name": "Curse of Loss",
+    "text": "When you die, destroy a soul card you control.",
+    "script": "script.lua",
+    "use": {
+        "cost": "Common_CurseCost",
+        "effect": "Common_CurseEnter"
+    },
+    "on": {
+        "death": {
+            "check": "Common_CurseDeathCheck",
+            "effect": "CurseOfLoss_trigger"
+        }
+    }
+}

@@ -329,6 +329,11 @@ PlayerBoardState Player::getState() {
         s.zone = Zones::Souls;
         result.souls.push_back(s);
     }
+    for (const auto& w : _curses) {
+        auto s = w->getState();
+        s.zone = Zones::Curses;
+        result.curses.push_back(s);
+    }
     return result;
 }
 
@@ -427,12 +432,26 @@ bool Player::removeCard(CardWrapper* card) {
         // card->card()->leaveEffect().pushMe(_parent, card, this, ITEM_LEAVE_TYPE);
         return true;
     }
+    removed = removeFromCollection(card, _curses);
+    if (removed) {
+        // card->card()->leaveEffect().pushMe(_parent, card, this, ITEM_LEAVE_TYPE);
+        return true;
+    }
     return false;
 }
 
 void Player::setLuaENV(lua_State* L) { 
     this->L = L; 
 }
+
+void Player::addCurse(CardWrapper* cardW) {
+    _curses.push_back(cardW);
+}
+
+std::vector<CardWrapper*>& Player::curses() {
+    return _curses;
+}
+
 
 void Player::resetEOT(std::vector<std::vector<CardWrapper*>>& mPiles) {
     _blueHealth = 0;

@@ -1,0 +1,19 @@
+{
+    "name": "Curse of Greed",
+    "text": "At the end of your turn, lose 4$.",
+    "script": "script.lua",
+    "use": {
+        "cost": "Common_CurseCost",
+        "effect": "Common_CurseEnter"
+    },
+    "on": {
+        "death": {
+            "check": "Common_CurseDeathCheck",
+            "effect": "Common_CurseDeathEffect"
+        },
+        "turn_end": {
+            "check": "CurseOfGreed_trigger_check",
+            "effect": "CurseOfGreed_trigger"
+        }
+    }
+}

@@ -242,6 +242,7 @@ public:
             if (!(s&1)) continue;
             message<PollType> reply;
             reply << _simpleChoices[ci];
+            std::cout << "SENDING " << reply << std::endl;
             _c->Send(reply);
             clearLastText();
             _waitingResponse = false;
@@ -291,7 +292,10 @@ public:
         switch (_lastRequestType) {
         case PollType::GetAction:
             this->getActionCalc();
-            if (_skipStack) respondPass();
+            if (_skipStack)  {
+                respondPass();
+                return;
+            }
             if (_yield) respondPass();
             break;
         case PollType::Prompt:
@@ -398,6 +402,7 @@ public:
     void respondPass() {
         message<PollType> reply;
         reply << ACTION_PASS;
+        std::cout << "SENDING " << ACTION_PASS << std::endl;
         _c->Send(reply);
         _waitingResponse = false;
     }
@@ -414,6 +419,7 @@ public:
     void sendAction(PlayerBoardState& state) {
         message<PollType> reply;
         reply << std::to_string(state.id);
+        std::cout << "SENDING " << reply << std::endl;
         _c->Send(reply);
         clearLastText();
     }
@@ -434,6 +440,7 @@ public:
     void sendAction(int i) {
         message<PollType> reply;
         reply << std::to_string(i);
+        std::cout << "SENDING " << reply << std::endl;
         _c->Send(reply);
         clearLastText();
     }
@@ -575,12 +582,15 @@ public:
             //  TODO
             break;
         }
+        std::cout << "SENDING " << reply << std::endl;
         _c->Send(reply);
     }
     
     void answerPrompt(CardState& card) {
         message<PollType> reply;
         reply << std::to_string(card.id);
+        std::cout << "SENDING " << reply << std::endl;
+
         _c->Send(reply);
         clearLastText();
     }
@@ -595,6 +605,8 @@ public:
         for (int i = 1; i < _chosenCardIDs.size(); i++)
             message += " " + std::to_string(_chosenCardIDs[i]);
         reply << message;
+        std::cout << "SENDING " << reply << std::endl;
+
         _c->Send(reply);
         clearLastText();
         _waitingResponse = false;
@@ -747,6 +759,8 @@ public:
 
         message<PollType> reply;
         reply << string("buy_treasure -1");
+        std::cout << "SENDING " << reply << std::endl;
+
         _c->Send(reply);
         _mouseLock = true;
         _waitingResponse = false;
@@ -785,6 +799,8 @@ public:
 
         message<PollType> reply;
         reply << string("attack -1");
+        std::cout << "SENDING " << reply << std::endl;
+
         _c->Send(reply);
         _mouseLock = true;
         _waitingResponse = false;

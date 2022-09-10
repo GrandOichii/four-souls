@@ -1,0 +1,19 @@
+{
+    "name": "Curse of Amnesia",
+    "text": "At the end of your turn, discard 2 cards.",
+    "script": "script.lua",
+    "use": {
+        "cost": "Common_CurseCost",
+        "effect": "Common_CurseEnter"
+    },
+    "on": {
+        "death": {
+            "check": "Common_CurseDeathCheck",
+            "effect": "Common_CurseDeathEffect"
+        },
+        "turn_end": {
+            "check": "CurseOfAmnesia_trigger_check",
+            "effect": "CurseOfAmnesia_trigger"
+        }
+    }
+}

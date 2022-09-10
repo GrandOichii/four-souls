@@ -1,0 +1,19 @@
+{
+    "name": "Curse of Pain",
+    "text": "At the start of your turn, take 1 damage.",
+    "script": "script.lua",
+    "use": {
+        "cost": "Common_CurseCost",
+        "effect": "Common_CurseEnter"
+    },
+    "on": {
+        "death": {
+            "check": "Common_CurseDeathCheck",
+            "effect": "Common_CurseDeathEffect"
+        },
+        "turn_start": {
+            "check": "CurseOfPain_trigger_check",
+            "effect": "CurseOfPain_trigger"
+        }
+    }
+}

@@ -518,6 +518,85 @@ function Common_ChooseSoul(host, playerID, ownerID)
     return choiceId, true
 end
 
+function Common_CurseCost(host, info)
+    return Common_TargetPlayer(host, info.ownerID)
+end
+
+function Common_CurseEnter(host)
+    local me = this(host)
+    local target = popTarget(host)
+    addCurse(host, target.id, me.id)
+    Common_CurseTail(host)
+end
+
+function Common_CurseDeathCheck(host, me)
+    return Common_OwnerDied(host, me.ownerID)
+end
+
+function Common_CurseDeathEffect(host)
+    local me = this(host)
+    removeFromEverywhere(host, me.id)
+    discardMe(host, me.id)
+end
+
+function Common_RerollAny(host, ownerID)
+    local cardIDs = {}
+    local owner = Common_PlayerWithID(host, ownerID)
+    for _, card in ipairs(owner.board) do
+        if not card.isEternal then
+            cardIDs[#cardIDs+1] = card.id
+        end
+    end
+    local removeItem = function (item)
+        for i, value in ipairs(cardIDs) do
+            if item == value then
+                table.remove(cardIDs, i)
+                return
+            end
+        end
+    end
+    local results = {}
+    while #cardIDs ~= 0 do
+        local choice = requestSimpleChoice(host, ownerID, 'Reroll an item?', {'Yes', 'No'})
+        if choice == 'No' then
+            break
+        end
+        choice, _ = requestChoice(host, ownerID, 'Choose an item to reroll', CARD, cardIDs)
+        removeItem(choice)
+        results[#results+1] = choice
+    end
+    for _, id in ipairs(results) do
+        Common_RerollItem(host, id)
+    end
+end
+
+function Common_OrderTopCards(host, ownerID, deckType)
+    local cards = topCardsOf(host, deckType, 5)
+    if #cards ~= 5 then
+        return
+    end
+    for _, card in ipairs(cards) do
+        removeFromEverywhere(host, card.id)
+    end
+    local choices = Common_FormCardChoices(cards)
+    local posOf = function (choice_)
+        for i, c in ipairs(choices) do
+            if c == choice_ then
+                return i
+            end
+        end
+        return 0
+    end
+    while #choices ~= 0 do
+        local choice = requestSimpleChoice(host, ownerID, 'Choose a card to put on top', choices)
+        local pos = posOf(choice)
+        table.remove(choices, pos)
+        local card = cards[pos]
+        table.remove(cards, pos)
+        placeOnTop(host, deckType, card.id)
+    end
+end
+
 function Common_SoulCount(player)
     local result = 0
     for _, card in ipairs(player.souls) do
@@ -708,6 +787,15 @@ function Common_BonusMonsterTail(host, meID)
         end
     end
     discardMe(host, meID)
+end
+
+function Common_CurseTail(host)
+    for _, pile in ipairs(getMonsterPiles(host)) do
+        if #pile == 0 then
+            pushRefillMonsters(host)
+            return
+        end
+    end
 end
 
 function Common_FormCardChoices(cards)

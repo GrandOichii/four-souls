@@ -1,0 +1,9 @@
+{
+    "name": "Chest",
+    "text": "Roll-\n1-2: Gain 1$.\n3-4: Gain 3$.\n5-6: Gain 6$.",
+    "script": "script.lua",
+    "use": {
+        "requires": ["roll"],
+        "effect": "Chest_effect"
+    }
+}

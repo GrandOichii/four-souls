@@ -1,0 +1,15 @@
+{
+    "name": "Curse of Empathy",
+    "text": "Each time a monster dies, discard a loot card and lose 1$.",
+    "script": "script.lua",
+    "use": {
+        "cost": "Common_CurseCost",
+        "effect": "Common_CurseEnter"
+    },
+    "on": {
+        "death": {
+            "check": "CurseOfEmpathy_trigger_check",
+            "effect": "CurseOfEmpathy_trigger"
+        }
+    }
+}

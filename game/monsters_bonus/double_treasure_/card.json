@@ -1,0 +1,9 @@
+{
+    "name": "Double Treasure!",
+    "text": "Choose another player. You and that player both gain +1 treasure.",
+    "script": "script.lua",
+    "use": {
+        "cost": "DoubleTreasure_cost",
+        "effect": "DoubleTreasure_effect"
+    }
+}

@@ -1,0 +1,8 @@
+{
+    "name": "Mega Troll Bomb!",
+    "text": "Each player takes 2 damage!",
+    "script": "script.lua",
+    "use": {
+        "effect": "MegaTrollBomb_effect"
+    }
+}

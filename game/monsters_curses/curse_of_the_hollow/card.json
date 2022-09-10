@@ -1,0 +1,19 @@
+{
+    "name": "Curse of the Hollow",
+    "text": "At the end of your turn, discard X loot cards and lose X$, where X is the number of souls you control.",
+    "script": "script.lua",
+    "use": {
+        "cost": "Common_CurseCost",
+        "effect": "Common_CurseEnter"
+    },
+    "on": {
+        "death": {
+            "check": "Common_CurseDeathCheck",
+            "effect": "Common_CurseDeathEffect"
+        },
+        "turn_end": {
+            "check": "CurseOfTheHollow_trigger_check",
+            "effect": "CurseOfTheHollow_trigger"
+        }
+    }
+}

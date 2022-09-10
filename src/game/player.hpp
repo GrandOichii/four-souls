@@ -36,6 +36,7 @@ struct PlayerBoardState {
     std::vector<CardState> board;
     std::vector<CardState> hand;
     std::vector<CardState> souls;
+    std::vector<CardState> curses;
 
     void pushTable(lua_State* L) const;
 };
@@ -86,6 +87,7 @@ private:
     std::vector<CardWrapper*> _board;
     std::vector<CardWrapper*> _hand;
     std::vector<CardWrapper*> _souls;
+    std::vector<CardWrapper*> _curses;
 
     int _playableCount;
     int _maxPlayableCount;
@@ -116,6 +118,9 @@ public:
     bool hasToAttack();
     void processAttackIndex(int index);
     void addAttackOpportunity(AttackOpportunity op);
+
+    std::vector<CardWrapper*>& curses();
+    void addCurse(CardWrapper* cardW);
 
     void resetPlayableCount();
     int getPlayableAmount();

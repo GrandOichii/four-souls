@@ -1,0 +1,9 @@
+{
+    "name": "Secret Room!",
+    "text": "Roll-\n1: Take 3 damage.\n2-3: Discard 2 loot cards.\n4-5: Gain 7$.\nGain +1 treasure.",
+    "script": "script.lua",
+    "use": {
+        "requires": ["roll"],
+        "effect": "SecretRoom_effect"
+    }
+}

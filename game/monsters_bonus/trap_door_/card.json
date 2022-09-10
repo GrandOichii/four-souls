@@ -1,0 +1,9 @@
+{
+    "name": "Trap Door!",
+    "text": "Roll-\n1-3: Loot at the top 3 cardsof the monster deck and put them back in any order. You may attack an additional time this turn.",
+    "script": "script.lua",
+    "use": {
+        "requires": ["roll"],
+        "effect": "TrapDoor_effect"
+    }
+}

@@ -1,0 +1,8 @@
+{
+    "name": "I Can See Forever!",
+    "text": "Look at the top 6 cards of the loot deck. Put them back in any order, then loot 1.",
+    "script": "script.lua",
+    "use": {
+        "effect": "ICanSeeForever_effect"
+    }
+}

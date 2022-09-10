@@ -11,6 +11,7 @@ local BAD_EDEN_CARDS = {
     'Plan C',
     'Mama Mega',
     'Chaos Card',
+    'Eden\'s Soul',
     '1-UP',
 }
 

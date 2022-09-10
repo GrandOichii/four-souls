@@ -1,0 +1,8 @@
+{
+    "name": "Dressing Table",
+    "text": "Reroll any number of items you control.",
+    "script": "script.lua",
+    "use": {
+        "effect": "DressingTable_effect"
+    }
+}

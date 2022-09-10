@@ -1,0 +1,8 @@
+{
+    "name": "Ambush!",
+    "text": "The active player has to attack the monster deck 2 times this turn.",
+    "script": "script.lua",
+    "use": {
+        "effect": "Ambush_effect"
+    }
+}

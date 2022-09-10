@@ -1,0 +1,23 @@
+{
+    "name": "Curse of the Blind",
+    "text": "Monsters have +1d on your turn.",
+    "script": "script.lua",
+    "use": {
+        "cost": "Common_CurseCost",
+        "effect": "Common_CurseEnter"
+    },
+    "enter": {
+        "usesStack": false,
+        "effect": "CurseOfTheBlind_enter"
+    },
+    "leave": {
+        "usesStack": false,
+        "effect": "CurseOfTheBlind_leave"
+    },
+    "on": {
+        "death": {
+            "check": "Common_CurseDeathCheck",
+            "effect": "Common_CurseDeathEffect"
+        }
+    }
+}

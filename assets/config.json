@@ -4,6 +4,114 @@
             "large": "images/polyphemus_large.bmp",
             "small": "images/polyphemus.bmp"
         },
+        "Curse of Pain": {
+            "large": "images/curse_of_pain_large.bmp",
+            "small": "images/curse_of_pain.bmp"
+        },
+        "Curse of Amnesia": {
+            "large": "images/curse_of_amnesia_large.bmp",
+            "small": "images/curse_of_amnesia.bmp"
+        },
+        "Curse of Empathy": {
+            "large": "images/curse_of_empathy_large.bmp",
+            "small": "images/curse_of_empathy.bmp"
+        },
+        "Curse of Greed": {
+            "large": "images/curse_of_greed_large.bmp",
+            "small": "images/curse_of_greed.bmp"
+        },
+        "Curse of Impulse": {
+            "large": "images/curse_of_impulse_large.bmp",
+            "small": "images/curse_of_impulse.bmp"
+        },
+        "Curse of Loss": {
+            "large": "images/curse_of_loss_large.bmp",
+            "small": "images/curse_of_loss.bmp"
+        },
+        "Curse of the Blind": {
+            "large": "images/curse_of_the_blind_large.bmp",
+            "small": "images/curse_of_the_blind.bmp"
+        },
+        "Curse of the Hollow": {
+            "large": "images/curse_of_the_hollow_large.bmp",
+            "small": "images/curse_of_the_hollow.bmp"
+        },
+        "Curse of the Hunter": {
+            "large": "images/curse_of_the_hunted_large.bmp",
+            "small": "images/curse_of_the_hunted.bmp"
+        },
+        "Dressing Table": {
+            "large": "images/dressing_table_large.bmp",
+            "small": "images/dressing_table.bmp"
+        },
+        "Trap Door!": {
+            "large": "images/trap_door__large.bmp",
+            "small": "images/trap_door_.bmp"
+        },
+        "TNT Barrel": {
+            "large": "images/tnt_barrel_large.bmp",
+            "small": "images/tnt_barrel.bmp"
+        },
+        "Greed!": {
+            "large": "images/greed__large.bmp",
+            "small": "images/greed_.bmp"
+        },
+        "Betrayal!": {
+            "large": "images/betrayal__large.bmp",
+            "small": "images/betrayal_.bmp"
+        },
+        "XL Floor!": {
+            "large": "images/xl_floor__large.bmp",
+            "small": "images/xl_floor_.bmp"
+        },
+        "Spiked Chest": {
+            "large": "images/spiked_chest_large.bmp",
+            "small": "images/spiked_chest.bmp"
+        },
+        "Shop Upgrade!": {
+            "large": "images/shop_upgrade__large.bmp",
+            "small": "images/shop_upgrade_.bmp"
+        },
+        "Secret Room!": {
+            "large": "images/secret_room__large.bmp",
+            "small": "images/secret_room_.bmp"
+        },
+        "Mega Troll Bomb!": {
+            "large": "images/mega_troll_bomb__large.bmp",
+            "small": "images/mega_troll_bomb_.bmp"
+        },
+        "I am Error!": {
+            "large": "images/i_am_error__large.bmp",
+            "small": "images/i_am_error_.bmp"
+        },
+        "Holy Chest": {
+            "large": "images/holy_chest_large.bmp",
+            "small": "images/holy_chest.bmp"
+        },
+        "Head Trauma": {
+            "large": "images/head_trauma_large.bmp",
+            "small": "images/head_trauma.bmp"
+        },
+        "Double Treasure!": {
+            "large": "images/double_treasure__large.bmp",
+            "small": "images/double_treasure_.bmp"
+        },
+        "Chest": {
+            "large": "images/chest_large.bmp",
+            "small": "images/chest.bmp"
+        },
+        "Dark Chest": {
+            "large": "images/dark_chest_large.bmp",
+            "small": "images/dark_chest.bmp"
+        },
+        "Angel Room": {
+            "large": "images/angel_room_large.bmp",
+            "small": "images/angel_room.bmp"
+        },
+        "Ambush!": {
+            "large": "images/ambush__large.bmp",
+            "small": "images/ambush_.bmp"
+        },
         "Troll Bombs": {
             "large": "images/troll_bombs_large.bmp",
             "small": "images/troll_bombs.bmp"
@@ -13,8 +121,8 @@
             "small": "images/gold_chest.bmp"
         },
         "Friendly Sack": {
-            "large": "images/polyphemus_large.bmp",
-            "small": "images/polyphemus.bmp"
+            "large": "images/friendly_sack_large.bmp",
+            "small": "images/friendly_sack.bmp"
         },
         "Eden's Soul": {
             "large": "images/eden_s_soul_large.bmp",

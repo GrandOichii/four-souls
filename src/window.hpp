@@ -675,6 +675,18 @@ public:
         tex = this->_assets->getMessage(std::to_string(sresult), SDL_Color{ 255, 255, 255, 0 }, 48);
         this->drawTexture(tex, pX + 10, pY + 10 + (48 + 2) * 3);
         SDL_DestroyTexture(tex);
+        
+        // draw curses
+        int cX = _playerSpaces[playerI][0];
+        int cY = _playerSpaces[playerI][1] + _boardHeight / 2 - _cardSize.second - 2;
+        int betweenCurses = 20;
+        if (pboard.curses.size()) {
+            Rect bBox{
+                cX, cY,
+                _cardSize.first, _cardSize.second
+            };
+            this->drawCard(pboard.curses[0], 0, cX, cY, &bBox);
+        }
 
         // draw name
         this->drawPlayerName(pboard, x, y);

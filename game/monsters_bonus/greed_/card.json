@@ -1,0 +1,9 @@
+{
+    "name": "Greed!",
+    "text": "Choose a player with the most $ or tied for the most. That player loses all their $.",
+    "script": "script.lua",
+    "use": {
+        "cost": "Greed_cost",
+        "effect": "Greed_effect"
+    }
+}

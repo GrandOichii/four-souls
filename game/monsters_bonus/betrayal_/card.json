@@ -1,0 +1,10 @@
+{
+    "name": "Betrayal!",
+    "text": "Choose another player, roll-\n1-2: Steal 5$ from them.\n3-4: Steal a loot card from them at random.\n5: Steal a non-eternal item they control.\n6: Steal a soul they control.",
+    "script": "script.lua",
+    "use": {
+        "requires": ["roll"],
+        "cost": "Betrayal_cost",
+        "effect": "Betrayal_effect"
+    }
+}

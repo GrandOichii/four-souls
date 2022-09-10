@@ -48,6 +48,7 @@ const string BONUS_SOUL_ENTER_TYPE = "bonus_soul_enter";
 const string MONSTER_LEAVE_TYPE = "monster_leave";
 const string ITEM_ENTER_TYPE = "item_enter";
 const string ITEM_LEAVE_TYPE = "item_leave";
+const string CURSE_ENTER_TYPE = "curse_enter";
 const string ITEM_DESTROYED_TYPE = "item_destroyed";
 const string REFILL_MONSTERS_TYPE = "refill_monsters";
 const string REFILL_SHOP_TYPE = "refill_shop";
@@ -79,6 +80,7 @@ enum Zones : int {
     Unknown,
     Hand,
     Souls,
+    Curses,
     Board,
     CCard,
     Shop,
@@ -94,6 +96,7 @@ enum CardTypes : int {
     Treasure,
     Monster,
     BonusMonster,
+    CurseMonster,
     Character,
     BonusSoul,
     StartingItem

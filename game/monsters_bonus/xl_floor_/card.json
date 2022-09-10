@@ -1,0 +1,8 @@
+{
+    "name": "XL Floor!",
+    "text": "Expand monster slots by 1.\nThe active player may attack an additional time this turn.",
+    "script": "script.lua",
+    "use": {
+        "effect": "XLFloor_effect"
+    }
+}

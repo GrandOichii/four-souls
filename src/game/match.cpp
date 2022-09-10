@@ -55,6 +55,7 @@ static PlayerBoardState playerFromJson(json j) {
     result.board = cardVectorFromJson(j["board"]);
     result.hand = cardVectorFromJson(j["hand"]);
     result.souls = cardVectorFromJson(j["souls"]);
+    result.curses = cardVectorFromJson(j["curses"]);
     return result;
 }
 
@@ -193,6 +194,7 @@ static json playerToJson(const PlayerBoardState& player) {
     result["board"] = cardVectorToJson(player.board);
     result["hand"] = cardVectorToJson(player.hand);
     result["souls"] = cardVectorToJson(player.souls);
+    result["curses"] = cardVectorToJson(player.curses);
     return result;
 }
 
@@ -670,7 +672,6 @@ int Match::wrap_cardWithID(lua_State* L) {
     return 1;
 }
 
-
 int Match::wrap_setTurnEnd(lua_State* L) {
     stackSizeIs(L, 2);
     auto match = getTopMatch(L, 1);
@@ -760,7 +761,7 @@ int Match::wrap_expandActiveMonsters(lua_State *L) {
     auto w = match->getTopMonsterCard();
     if (!w) throw std::runtime_error("failed to create new monster pile: no monsters left");
     match->_monsterDeck.pop_back();
-    if (w->card()->type() == CardTypes::BonusMonster) {
+    if (w->card()->type() != CardTypes::Monster) {
         w->card()->useEffect().pushMe(match, w, match->_activePlayer, BONUS_MONSTER_TYPE);
         return 0;
     }
@@ -940,6 +941,21 @@ int Match::wrap_popTarget(lua_State* L) {
     return 1;
 }
 
+int Match::wrap_addCurse(lua_State* L) {
+    stackSizeIs(L, 3);
+    auto match = getTopMatch(L, 1);
+    auto pid = getTopNumber(L, 2);
+    auto cid = getTopNumber(L, 3);
+    auto player = match->playerWithID(pid);
+    auto card = match->cardWithID(cid);
+    player->addCurse(card);
+    card->setOwner(player);
+    auto effect = card->card()->enterEffect().pushMe(match, card, player, CURSE_ENTER_TYPE);
+    if (effect) return 0;
+    match->applyTriggers(CURSE_ENTER_TYPE);
+    return 0;
+}
+
 int Match::wrap_requestChoice(lua_State* L) {
     stackSizeIs(L, 5);
     auto match = getTopMatch(L, 1);
@@ -962,6 +978,7 @@ int Match::wrap_requestChoice(lua_State* L) {
     auto state = match->getState();
     match->updateAllPlayers(state);
     auto response = player->promptResponse(state, text, choiceType, choices);
+    std::cout << "LAST " << match->_stack.back()->funcName << std::endl;
     match->log("\t" + player->name() + ": " + response + " (response)");
     match->saveResponse(player->name(), response);
     if (response == RESPONSE_CANCEL) {
@@ -1352,14 +1369,15 @@ int Match::wrap_refillMonsters(lua_State* L) {
             if (!match->_monsterDeck.size()) continue;
             newM = match->_monsterDeck.back();
             match->_monsterDeck.pop_back();
-            match->_monsters[i].push_back(newM);
+            if (newM->card()->type() != CardTypes::Monster) {
+                // std::cout << "BONUS MONSTER " << newM->card()->name() << std::endl;
+                newM->card()->useEffect().pushMe(match, newM, match->_activePlayer, BONUS_MONSTER_TYPE);
+                // match->_monsters[i].pop_back();
+                // match->_monsterDataArr[i] = nullptr;
+                continue;
+            } else match->_monsters[i].push_back(newM);
         } else {
             newM = match->_monsters[i].back();
-        }
-        if (newM->card()->type() == CardTypes::BonusMonster) {
-            newM->card()->useEffect().pushMe(match, newM, match->_activePlayer, BONUS_MONSTER_TYPE);
-            match->_monsters[i].pop_back();
-            return 0;
         }
         auto mcard = ((MonsterCard*)newM->card());
         mcard->createData(L, match, newM->id());
@@ -1415,6 +1433,7 @@ int Match::wrap_discardMe(lua_State* L) {
     for (const auto& cardW : match->_allWrappers) {
         if (cardW->id() == cid) {
             match->sortToDiscard(cardW);
+            cardW->setOwner(nullptr);
             return 0;
         }
     }
@@ -1974,7 +1993,7 @@ int Match::wrap_attackMonster(lua_State* L) {
             choices.push_back(pile.back()->id());
         auto card = match->getTopMonsterCard();
         match->_monsterDeck.pop_back();
-        if (card->card()->type() == CardTypes::BonusMonster) {
+        if (card->card()->type() != CardTypes::Monster) {
             card->card()->useEffect().pushMe(match, card, match->_activePlayer, BONUS_MONSTER_TYPE);
             return 0;
         }
@@ -2101,6 +2120,9 @@ void Match::sortToDiscard(CardWrapper* cardW) {
     case CardTypes::BonusMonster:
         _monsterDiscard.push_back(cardW);
         break;
+    case CardTypes::CurseMonster:
+        _monsterDiscard.push_back(cardW);
+        break;
     default:
         std::cout << "WARN: Can't sort card " << cardW->card()->name() << " to discard pile\n";
         break;
@@ -2113,6 +2135,7 @@ void Match::setupLua(string setupScript) {
     luaL_openlibs(L);
     // connect functions
     lua_register(L, "healPlayer", wrap_healPlayer);
+    lua_register(L, "addCurse", wrap_addCurse);
     lua_register(L, "setCurrentPlayer", wrap_setCurrentPlayer);
     lua_register(L, "placeOnTop", wrap_placeOnTop);
     lua_register(L, "addAttackOpportunity", wrap_addAttackOpportunity);
@@ -2486,7 +2509,7 @@ void Match::start() {
     // auto mcards = getTopMonsterCards(_startingMonstersAmount);
     for (int i = 0; i < _startingMonstersAmount; ++i) {
         vector<CardWrapper*> pile;
-        while (_monsterDeck.back()->card()->type() == CardTypes::BonusMonster) {
+        while (_monsterDeck.back()->card()->type() != CardTypes::Monster) {
             auto mc = _monsterDeck.back();
             _monsterDeck.pop_back();
             _monsterDeck.push_front(mc);
@@ -2700,6 +2723,10 @@ void Match::applyTriggers(string triggerType) {
         auto player = _players[(_currentI + i) % _players.size()];
         auto board = player->board();
         for (const auto& w : board) {
+            queueTrigger(w, triggerType, player, queue);
+        }
+        auto curses = player->curses();
+        for (const auto& w : curses) {
             queueTrigger(w, triggerType, player, queue);
         }
     }

@@ -1,0 +1,9 @@
+{
+    "name": "Angel Room",
+    "text": "Roll-\n1: Gain +1 treasure.\n2-3: Gain +2 treasure.\n4-6: Loot 2.",
+    "script": "script.lua",
+    "use": {
+        "requires": ["roll"],
+        "effect": "AngelRoom_effect"
+    }
+}

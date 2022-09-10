@@ -1,0 +1,8 @@
+{
+    "name": "Head Trauma",
+    "text": "Discard 2 loot cards.",
+    "script": "script.lua",
+    "use": {
+        "effect": "HeadTrauma_effect"
+    }
+}

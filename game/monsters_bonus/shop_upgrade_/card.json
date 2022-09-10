@@ -1,0 +1,8 @@
+{
+    "name": "Shop Upgrade!",
+    "text": "Expand shop slots by 2.\nThe active player may attack an additional time this turn.",
+    "script": "script.lua",
+    "use": {
+        "effect": "ShopUpgrade_effect"
+    }
+}

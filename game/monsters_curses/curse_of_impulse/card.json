@@ -1,0 +1,19 @@
+{
+    "name": "Curse of Impulse",
+    "text": "At the end of your turn, deactivate each item you control and your character.",
+    "script": "script.lua",
+    "use": {
+        "cost": "Common_CurseCost",
+        "effect": "Common_CurseEnter"
+    },
+    "on": {
+        "death": {
+            "check": "Common_CurseDeathCheck",
+            "effect": "Common_CurseDeathEffect"
+        },
+        "turn_end": {
+            "check": "CurseOfImpulse_trigger_check",
+            "effect": "CurseOfImpulse_trigger"
+        }
+    }
+}

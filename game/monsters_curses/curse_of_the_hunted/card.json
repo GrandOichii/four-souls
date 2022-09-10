@@ -1,0 +1,23 @@
+{
+    "name": "Curse of the Hunted",
+    "text": "Monsters have +1p on your turn.",
+    "script": "script.lua",
+    "use": {
+        "cost": "Common_CurseCost",
+        "effect": "Common_CurseEnter"
+    },
+    "enter": {
+        "usesStack": false,
+        "effect": "CurseOfTheHunted_enter"
+    },
+    "leave": {
+        "usesStack": false,
+        "effect": "CurseOfTheHunted_leave"
+    },
+    "on": {
+        "death": {
+            "check": "Common_CurseDeathCheck",
+            "effect": "Common_CurseDeathEffect"
+        }
+    }
+}
