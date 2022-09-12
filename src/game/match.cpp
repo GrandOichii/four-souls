@@ -646,6 +646,15 @@ int Match::wrap_moveToHand(lua_State* L) {
     return 0;
 }
 
+int Match::wrap_incSkipCounter(lua_State* L) {
+    stackSizeIs(L, 2);
+    auto match = getTopMatch(L, 1);
+    auto pid = getTopNumber(L, 2);
+    auto player = match->playerWithID(pid);
+    player->incSkipCounter();
+    return 0;
+}
+
 int Match::wrap_addAttackOpportunity(lua_State* L) {
     stackSizeIs(L, 5);
     auto match = getTopMatch(L, 1);
@@ -1143,27 +1152,27 @@ int Match::wrap_getPlayers(lua_State* L) {
     return 1;
 }
 
-int Match::wrap_setNextPlayer(lua_State* L) {
-    if (lua_gettop(L) != 2) {
-        lua_err(L);
-        exit(1);
-    }
-    auto match = getTopMatch(L, 1);
-    if (!lua_isnumber(L, 2)) {
-        lua_err(L);
-        exit(1);
-    }
-    auto pid = (int)lua_tonumber(L, 2);
-    // check if there is a player with id
-    Player* player = match->playerWithID(pid);
-    for (int i = 0; i < match->_players.size(); i++) {
-        if (match->_players[i] == player) {
-            match->_nextI = i;
-            return 0;
-        }
-    }
-    throw std::runtime_error("failed to set next player - can't find player with id " + std::to_string(pid));
-}
+// int Match::wrap_setNextPlayer(lua_State* L) {
+//     if (lua_gettop(L) != 2) {
+//         lua_err(L);
+//         exit(1);
+//     }
+//     auto match = getTopMatch(L, 1);
+//     if (!lua_isnumber(L, 2)) {
+//         lua_err(L);
+//         exit(1);
+//     }
+//     auto pid = (int)lua_tonumber(L, 2);
+//     // check if there is a player with id
+//     Player* player = match->playerWithID(pid);
+//     for (int i = 0; i < match->_players.size(); i++) {
+//         if (match->_players[i] == player) {
+//             match->_nextI = i;
+//             return 0;
+//         }
+//     }
+//     throw std::runtime_error("failed to set next player - can't find player with id " + std::to_string(pid));
+// }
 
 int Match::wrap_addSoulCard(lua_State* L) {
     stackSizeIs(L, 3);
@@ -2159,6 +2168,7 @@ void Match::setupLua(string setupScript) {
     luaL_openlibs(L);
     // connect functions
     lua_register(L, "healPlayer", wrap_healPlayer);
+    lua_register(L, "incSkipCounter", wrap_incSkipCounter);
     lua_register(L, "getDiscard", wrap_getDiscard);
     lua_register(L, "addCurse", wrap_addCurse);
     lua_register(L, "setCurrentPlayer", wrap_setCurrentPlayer);
@@ -2218,7 +2228,6 @@ void Match::setupLua(string setupScript) {
     lua_register(L, "getTopDamageEvent", wrap_getTopDamageEvent);
     lua_register(L, "this", wrap_this);
     lua_register(L, "dealDamage", wrap_dealDamage);
-    lua_register(L, "setNextPlayer", wrap_setNextPlayer);
     lua_register(L, "incTreasureCost", wrap_incTreasureCost);
     lua_register(L, "decTreasureCost", wrap_decTreasureCost);
     lua_register(L, "getPlayers", wrap_getPlayers);
@@ -2562,7 +2571,6 @@ void Match::start() {
     }
 
     while (!this->_winner) {
-        this->calcNext();
         this->turn();
         this->passTurn();
     }
@@ -2577,11 +2585,7 @@ void Match::updateAllPlayersEndMatch() {
 }
 
 void Match::passTurn() {
-    this->_currentI = this->_nextI;
-}
-
-void Match::calcNext() {
-    this->_nextI = (this->_currentI + 1) % _players.size();
+    this->_currentI = (this->_currentI + 1) % _players.size();
 }
 
 void Match::currentPlayerLoot() {
@@ -2596,6 +2600,10 @@ void Match::currentPlayerLoot() {
 void Match::turn() {
     this->log("TURN " + std::to_string(++this->_turnCounter) + " - ");
     this->_activePlayer = this->_players[this->_currentI];
+    if (this->_activePlayer->skipCounter()) {
+        this->_activePlayer->decSkipCounter();
+        return;
+    }
     this->log(this->_activePlayer->name() + " starts their turn");
 
     this->_activePlayer->resetPlayableCount();

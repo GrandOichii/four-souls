@@ -1,0 +1,17 @@
+{
+    "name": "Cursed Mulligan",
+    "text": "Each time a monster dies, expand monster slots by 1.",
+    "script": "script.lua",
+    "health": 2,
+    "roll": 4,
+    "power": 1,
+    "rewards": {
+        "effect": "CursedMulligan_rewards"
+    },
+    "on": {
+        "death": {
+            "check": "CursedMulligan_trigger_check",
+            "effect": "CursedMulligan_trigger"
+        }
+    }
+}

@@ -1,0 +1,11 @@
+{
+    "name": "Charmed Greedling",
+    "text": "When this dies, after gaining it's rewards, choose another player. They gain 10$.",
+    "script": "script.lua",
+    "health": 1,
+    "roll": 6,
+    "power": 0,
+    "rewards": {
+        "effect": "CharmedGreedling_rewards"
+    }
+}

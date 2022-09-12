@@ -1,0 +1,14 @@
+{
+    "name": "Corny",
+    "text": "When this dies, it deals 2 damage to a non-active player chosen at random.",
+    "script": "script.lua",
+    "health": 1,
+    "roll": 4,
+    "power": 1,
+    "rewards": {
+        "effect": "Corny_rewards"
+    },
+    "death": {
+        "effect": "Corny_death"
+    }
+}

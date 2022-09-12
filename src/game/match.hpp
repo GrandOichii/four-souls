@@ -202,7 +202,6 @@ private:
     Player* _winner = nullptr;
     std::vector<Player*> _players;
     int _currentI;
-    int _nextI;
     int _priorityI;
     bool _isMainPhase;
     Player* _activePlayer = nullptr;
@@ -360,6 +359,7 @@ public:
     static int wrap_refillMonsters(lua_State* L);
     static int wrap_getShop(lua_State* L);
     static int wrap_refillShop(lua_State* L);
+    static int wrap_incSkipCounter(lua_State* L);
     static int wrap_flip(lua_State* L);
     static int wrap_tapCharacterCard(lua_State* L);
     static int wrap_getCharacterCard(lua_State* L);
@@ -430,7 +430,6 @@ public:
     static int wrap_getCurrentPlayer(lua_State* L);
     static int wrap_addSoulCard(lua_State* L);
     static int wrap_getActivations(lua_State* L);
-    static int wrap_setNextPlayer(lua_State* L);
     static int wrap_getMonsterHealth(lua_State* L);
     static int wrap_incTreasureCost(lua_State* L);
     static int wrap_decTreasureCost(lua_State* L);
@@ -466,7 +465,6 @@ public:
     void createBonusSouls(std::vector<ScriptCard*> cards);
     void start();
     void passTurn();
-    void calcNext();
     void currentPlayerLoot();
     void turn();
     void executePlayerAction(Player* player, string action);

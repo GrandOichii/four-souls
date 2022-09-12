@@ -4,6 +4,34 @@
             "large": "images/polyphemus_large.bmp",
             "small": "images/polyphemus.bmp"
         },
+        "Clog": {
+            "large": "images/clog_large.bmp",
+            "small": "images/clog.bmp"
+        },
+        "Cursed Dople": {
+            "large": "images/cursed_dople_large.bmp",
+            "small": "images/cursed_dople.bmp"
+        },
+        "Cursed Mulliboom": {
+            "large": "images/cursed_mulliboom_large.bmp",
+            "small": "images/cursed_mulliboom.bmp"
+        },
+        "Cursed Mulligan": {
+            "large": "images/cursed_mulligan_large.bmp",
+            "small": "images/cursed_mulligan.bmp"
+        },
+        "Cursed Tumor": {
+            "large": "images/cursed_tumor_large.bmp",
+            "small": "images/cursed_tumor.bmp"
+        },
+        "Corny": {
+            "large": "images/corny_large.bmp",
+            "small": "images/corny.bmp"
+        },
+        "Charmed Greedling": {
+            "large": "images/charmed_greedling_large.bmp",
+            "small": "images/charmed_greedling.bmp"
+        },
         "XVIII. The Moon": {
             "large": "images/xviii__the_moon_large.bmp",
             "small": "images/xviii__the_moon.bmp"
@@ -47,6 +75,10 @@
         "Ansuz": {
             "large": "images/ansuz_large.bmp",
             "small": "images/ansuz.bmp"
+        },
+        "Algiz": {
+            "large": "images/algiz_large.bmp",
+            "small": "images/algiz.bmp"
         },
         "Divorce Papers": {
             "large": "images/divorce_papers_large.bmp",
@@ -715,10 +747,6 @@
         "Jar of Flies": {
             "large": "images/jar_of_flies_large.bmp",
             "small": "images/jar_of_flies.bmp"
-        },
-        "Spewer": {
-            "large": "images/spewer_large.bmp",
-            "small": "images/spewer.bmp"
         },
         "Monstro's Tooth": {
             "large": "images/monstro_s_tooth_large.bmp",

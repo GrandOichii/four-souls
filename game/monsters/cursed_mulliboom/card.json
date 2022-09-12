@@ -1,0 +1,17 @@
+{
+    "name": "Cursed Mulliboom",
+    "text": "Each time a monster dies, this deals 3 damage to a player chosen at random.",
+    "script": "script.lua",
+    "health": 1,
+    "roll": 4,
+    "power": 3,
+    "rewards": {
+        "effect": "CursedMulliboom_rewards"
+    },
+    "on": {
+        "death": {
+            "check": "CursedMulliboom_trigger_check",
+            "effect": "CursedMulliboom_trigger"
+        }
+    }
+}

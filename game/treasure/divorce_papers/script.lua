@@ -27,7 +27,12 @@ function DivorcePapers_effect(host)
     -- item
     local ids = {}
     for _, card in ipairs(player.board) do
-        ids[#ids+1] = card.id
+        if not card.isEternal then
+            ids[#ids+1] = card.id
+        end
+    end
+    if #ids == 0 then
+        return
     end
     local choice, _ = requestChoice(host, player.id, 'Choose an item to give to '..owner.name, CARD, ids)
     removeFromEverywhere(host, choice)

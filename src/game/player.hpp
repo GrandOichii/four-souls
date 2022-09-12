@@ -68,6 +68,8 @@ private:
     string _name;
     bool _isDead = false;
 
+    int _skipCounter = 0;
+
     int _maxAttackCount = 1;
 
     bool _canAttackAnything = true;
@@ -103,6 +105,11 @@ public:
     virtual ~Player();
     void setParent(Match* parent);
     void setLuaENV(lua_State* L);
+
+    int skipCounter();
+    void incSkipCounter();
+    void decSkipCounter();
+
     void print();
     CharacterCard* origCharacterCard();;
     CardWrapper* takeCard(int cardID);

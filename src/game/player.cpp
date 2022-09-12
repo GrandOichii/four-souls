@@ -295,6 +295,19 @@ int Player::baseAttack() {
     return ((CharacterCard*)_characterCard->card())->attack();
 }
 
+int Player::skipCounter() {
+    return _skipCounter;
+}
+
+void Player::incSkipCounter() {
+    ++_skipCounter;
+}
+
+void Player::decSkipCounter() {
+    --_skipCounter;
+}
+
+
 PlayerBoardState Player::getState() {
     PlayerBoardState result;
     result.playerCard = _characterCard->getState();
