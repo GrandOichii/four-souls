@@ -32,7 +32,15 @@
             "monsters_bonus/head_trauma",
             "monsters_bonus/troll_bombs"
         ],
-        "monsters1": [
+        "bonu1s": [
+            "monsters_bonus/xl_floor_",
+            "monsters_bonus/xl_floor_",
+            "monsters_bonus/xl_floor_",
+            "monsters_bonus/xl_floor_"
+        ],
+        "monster1s": [
+            "monsters/clotty",
+            "monsters/clotty",
             "monsters/clotty",
             "monsters/clotty"
         ],
@@ -56,10 +64,15 @@
             "monsters/greedling",
             "monsters/hanger",
             "monsters/hopper",
+            "monsters/widow",
             "monsters/horf",
             "monsters/keeper_head",
             "monsters/leaper",
             "monsters/leech",
+            "monsters/charger",
+            "monsters/the_cage",
+            "monsters/mama_gurdy",
+            "monsters/nerve_ending",
             "monsters/mom_s_dead_hand",
             "monsters/mom_s_eye",
             "monsters/mom_s_hand",

@@ -12,7 +12,7 @@ function OneUP_enter(host)
             end
             cancelCurrentAttack(host_)
             setTurnEnd(host_, false)
-            Common_IncAttackCount(host, player.id)
+            Common_IncAttackCount(host, player.id, false)
             healPlayer(host, player.id, _getMaxHealth(host, player.id))
             destroyCard(host, me.id)
             return false

@@ -5,5 +5,5 @@ end
 function LordOfThePit_tap(host)
     cancelCurrentAttack(host)
     local player = getCurrentPlayer(host)
-    Common_IncAttackCount(host, player.id)
+    Common_IncAttackCount(host, player.id, false)
 end

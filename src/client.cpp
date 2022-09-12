@@ -116,11 +116,16 @@ public:
                 _allowedCards.push_back(value.id);
         // check monsters
         if (!_state.isCombat && _state.stack.size() == 0) {
-            for (int i = 0; i < me.allowedAttackIndices.size(); i++) {
-                auto index = me.allowedAttackIndices[i];
-                if (index == -1) continue;
-                if (_state.monsterDataArr[index].canBeAttacked)
-                    _allowedCards.push_back(_state.monsters[index].id);
+            if (me.canAttackAnything) {
+                for (const auto& monster : _state.monsters)
+                    _allowedCards.push_back(monster.id);
+            } else {
+                for (int i = 0; i < me.allowedAttackIndices.size(); i++) {
+                    auto index = me.allowedAttackIndices[i];
+                    if (index == -1) continue;
+                    if (_state.monsterDataArr[index].canBeAttacked)
+                        _allowedCards.push_back(_state.monsters[index].id);
+                }
             }
         }
     }

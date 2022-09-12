@@ -26,6 +26,7 @@ struct PlayerBoardState {
     int attack;
     int playableCount;
     int purchaseCount;
+    bool canAttackAnything;
     std::vector<int> allowedAttackIndices;
     int treasurePrice;
     bool isDead;
@@ -49,6 +50,7 @@ class Match;
 struct AttackOpportunity {
     std::vector<int> indices;
     bool required = false;
+    bool limited = false;
 
     bool hasIndex(int index) const {
         for (const auto& i : indices)
@@ -68,6 +70,7 @@ private:
 
     int _maxAttackCount = 1;
 
+    bool _canAttackAnything = true;
     std::vector<AttackOpportunity> _attackOpportunities;
     std::set<int> _allowedAttackIndices;
 

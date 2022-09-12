@@ -47,6 +47,7 @@ static PlayerBoardState playerFromJson(json j) {
     result.purchaseCount = j["purchaseCount"];
     for (const auto& [_, id] : j["attackIDs"].items())
         result.allowedAttackIndices.push_back(id);
+    result.canAttackAnything = j["canAttackAnything"];
     result.isDead = j["isDead"];
     result.id = j["id"];
     result.name = j["name"];
@@ -186,6 +187,7 @@ static json playerToJson(const PlayerBoardState& player) {
     result["attackIDs"] = json::array();
     for (const auto& id : player.allowedAttackIndices)
         result["attackIDs"].push_back(id);
+    result["canAttackAnything"] = player.canAttackAnything;
     result["isDead"] = player.isDead;
     result["id"] = player.id;
     result["name"] = player.name;
@@ -637,8 +639,9 @@ int Match::wrap_addAttackOpportunity(lua_State* L) {
     auto match = getTopMatch(L, 1);
     auto pid = getTopNumber(L, 2);
     auto required = getTopBool(L, 3);
-    luaL_checktype(L, 4, LUA_TTABLE);
-    int len = lua_rawlen(L, 4);
+    auto limited = getTopBool(L, 4);
+    luaL_checktype(L, 5, LUA_TTABLE);
+    int len = lua_rawlen(L, 5);
     AttackOpportunity newOp;
     newOp.required = required;
     for (int i = 0; i < len; i++) {

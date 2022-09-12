@@ -1,0 +1,12 @@
+{
+    "name": "Widow",
+    "text": "",
+    "script": "script.lua",
+    "soulCount": 1,
+    "health": 3,
+    "roll": 4,
+    "power": 1,
+    "rewards": {
+        "effect": "Widow_rewards"
+    }
+}

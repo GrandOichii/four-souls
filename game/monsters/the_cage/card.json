@@ -1,0 +1,12 @@
+{
+    "name": "The Cage",
+    "text": "",
+    "script": "script.lua",
+    "health": 6,
+    "roll": 4,
+    "power": 1,
+    "soulCount": 1,
+    "rewards": {
+        "effect": "TheCage_rewards"
+    }
+}

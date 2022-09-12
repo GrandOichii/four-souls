@@ -303,6 +303,7 @@ PlayerBoardState Player::getState() {
     result.coinCount = _coinCount;
     result.playableCount = _playableCount;
     result.purchaseCount = _purchaseCount;
+    result.canAttackAnything = _canAttackAnything;
     for (const auto& m : _allowedAttackIndices) { 
         result.allowedAttackIndices.push_back(m);
     }
@@ -460,6 +461,7 @@ void Player::resetEOT(std::vector<std::vector<CardWrapper*>>& mPiles) {
     _attackOpportunities.clear();
     AttackOpportunity newOp;
     newOp.required = false;
+    newOp.limited = false;
     for (int i = 0; i < mPiles.size(); i++) newOp.indices.push_back(i);
     newOp.indices.push_back(-1);
     _attackOpportunities.push_back(newOp);
@@ -468,10 +470,13 @@ void Player::resetEOT(std::vector<std::vector<CardWrapper*>>& mPiles) {
 }
 
 void Player::formAllowedAttackIndices() {
+    _canAttackAnything = false;
     _allowedAttackIndices.clear();
-    for (const auto& op : _attackOpportunities)
+    for (const auto& op : _attackOpportunities){
         for (const auto id : op.indices)
             _allowedAttackIndices.insert(id);
+        if (!op.limited) _canAttackAnything = true;
+    }
 }
 
 bool Player::hasToAttack() {
@@ -490,7 +495,7 @@ void Player::processAttackIndex(int index) {
     auto reqIt = _attackOpportunities.end();
     auto nonReqIt = _attackOpportunities.end();
     for (auto it = _attackOpportunities.begin(); it != _attackOpportunities.end(); it++) {
-        if (!it->hasIndex(index)) continue;
+        if (!it->hasIndex(index) && it->limited) continue;
         if (it->required && (reqIt == _attackOpportunities.end() || it->indices.size() < reqIt->indices.size())) {
             reqIt = it;            
         }
@@ -509,7 +514,6 @@ void Player::processAttackIndex(int index) {
         return;
     }
     for (const auto& id : _allowedAttackIndices) std::cout << id << " ";
-    std::cout << std::endl;
     throw std::runtime_error("failed to monster pile index " + std::to_string(index) + " from allowed attack opportuinities of player " + _name);
 }
 

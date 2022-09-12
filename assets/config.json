@@ -4,6 +4,30 @@
             "large": "images/polyphemus_large.bmp",
             "small": "images/polyphemus.bmp"
         },
+        "Widow": {
+            "large": "images/widow_large.bmp",
+            "small": "images/widow.bmp"
+        },
+        "The Cage": {
+            "large": "images/the_cage_large.bmp",
+            "small": "images/the_cage.bmp"
+        },
+        "Nerve Ending": {
+            "large": "images/nerve_ending_large.bmp",
+            "small": "images/nerve_ending.bmp"
+        },
+        "Mama Gurdy": {
+            "large": "images/mama_gurdy_large.bmp",
+            "small": "images/mama_gurdy.bmp"
+        },
+        "Hush": {
+            "large": "images/hush_large.bmp",
+            "small": "images/hush.bmp"
+        },
+        "Charger": {
+            "large": "images/charger_large.bmp",
+            "small": "images/charger.bmp"
+        },
         "Curse of Pain": {
             "large": "images/curse_of_pain_large.bmp",
             "small": "images/curse_of_pain.bmp"

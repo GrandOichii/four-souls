@@ -1,0 +1,13 @@
+{
+    "name": "Mama Gurdy",
+    "text": "",
+    "script": "script.lua",
+    "health": 7,
+    "roll": 3,
+    "power": 2,
+    "soulCount": 1,
+    "rewards": {
+        "requires": ["roll"],
+        "effect": "MamaGurdy_rewards"
+    }
+}

@@ -1,0 +1,12 @@
+{
+    "name": "Hush",
+    "text": "",
+    "script": "script.lua",
+    "soulCount": 2,
+    "health": 8,
+    "roll": 3,
+    "power": 2,
+    "rewards": {
+        "effect": "Hush_rewards"
+    }
+}

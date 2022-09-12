@@ -807,12 +807,11 @@ function Common_FormCardChoices(cards)
 end
 
 function Common_IncAttackCount(host, ownerID, required)
-    local required = required or false
     local newPool = {-1}
     for i, _ in ipairs(getActiveMonsters(host)) do
         newPool[#newPool+1] = i-1
     end
-    addAttackOpportunity(host, ownerID, required, newPool)
+    addAttackOpportunity(host, ownerID, required, false, newPool)
 end
 
 function Common_RemoveCounter(host)

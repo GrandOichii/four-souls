@@ -5,5 +5,5 @@ end
 
 function BigSpider_death(host)
 	local player = getCurrentPlayer(host)
-	addAttackOpportunity(host, player.id, false, {-1})
+	addAttackOpportunity(host, player.id, false, true, {-1})
 end

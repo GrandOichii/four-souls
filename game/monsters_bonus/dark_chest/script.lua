@@ -1,5 +1,5 @@
 function DarkChest_effect(host)
-    local me = this()
+    local me = this(host)
     local owner = getTopOwner(host)
     local roll = popRollStack(host)
     if roll.value == 1 or roll.value == 2 then
