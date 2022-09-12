@@ -1,0 +1,9 @@
+{
+    "name": "Berkano",
+    "text": "Destroy an item. If it was controlled by a player, they steal an item from the shop.",
+    "script": "script.lua",
+    "use": {
+        "cost": "Berkano_cost",
+        "effect": "Berkano_effect"
+    }
+}

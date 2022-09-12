@@ -1,0 +1,12 @@
+{
+    "name": "Lil Chest",
+    "text": "Each time you kill a monster, roll-\n1-2: Gain 2$.\n3-4: Loot 2, then put a loot card from you hand on top of the loot deck.\n5-6: Recharge each item you control.",
+    "script": "script.lua",
+    "on": {
+        "death": {
+            "check": "LilChest_trigger_check",
+            "requires": ["roll"],
+            "effect": "LilChest_trigger"
+        }
+    }
+}

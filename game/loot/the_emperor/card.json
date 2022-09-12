@@ -1,0 +1,8 @@
+{
+    "name": "IV. The Emperor",
+    "text": "Look at the top 5 cards of the monster deck. Put 1 on top an the rest on the bottom.",
+    "script": "script.lua",
+    "use": {
+        "effect": "TheEmperor_effect"
+    }
+}

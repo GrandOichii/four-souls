@@ -1,0 +1,19 @@
+{
+    "name": "Incubus",
+    "text": "{T}: Choose one-\nLook at a player's hand. You may swap a card from your hand with one of theirs.\nLoot 1, then put a card a card from your hand on top of the loot deck.",
+    "script": "script.lua",
+    "eternal": true,
+    "abilities": [
+        {
+            "text": "Look at a player's hand. You may swap a card from your hand with one of theirs.",
+            "requires": ["tap"],
+            "cost": "Incubus_cost1",
+            "effect": "Incubus_effect1"
+        },
+        {
+            "requires": ["tap"],
+            "text": "Loot 1, then put a card a card from your hand on top of the loot deck.",
+            "effect": "Incubus_effect2"
+        }
+    ]
+}

@@ -1,5 +1,5 @@
 function TheWorld_use(host)
-    discardMe(host, this(host).id)
+    local me = this(host)
     local owner = getTopOwner(host)
     local players = getPlayers(host)
     for _, player in ipairs(players) do
@@ -10,6 +10,5 @@ function TheWorld_use(host)
         end
     end
     lootCards(host, owner.id, 2)
-    
-
+    discardMe(host, me.id)
 end

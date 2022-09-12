@@ -1,0 +1,9 @@
+{
+    "name": "Algiz",
+    "text": "Choose a player. Each item they control gains eternal till end of turn.",
+    "script": "script.lua",
+    "use": {
+        "cost": "Algiz_cost",
+        "effect": "Algiz_effect"
+    }
+}

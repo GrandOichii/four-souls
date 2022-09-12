@@ -23,6 +23,7 @@ end
 function Greed_effect(host)
     local me = this(host)
     local target = popTarget(host)
-    subCoins(host, target.id, target.coins)
+    local player = Common_PlayerWithID(host, target.id)
+    subCoins(host, player.id, player.coins)
     Common_BonusMonsterTail(host, me.id)
 end

@@ -1,0 +1,12 @@
+{
+    "name": "Divorce Papers",
+    "text": "{T}: Destroy this. If you do, choose another player. They give you half of their $ and loot cards rounded down, then give you an item.",
+    "script": "script.lua",
+    "abilities": [
+        {
+            "requires": ["tap"],
+            "cost": "DivorcePapers_cost",
+            "effect": "DivorcePapers_effect"
+        }
+    ]
+}

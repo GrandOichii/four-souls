@@ -1,0 +1,11 @@
+{
+    "name": "The Blue Map",
+    "text": "At the end of your turn, look at the top 4 cards of the treasure deck. Put them back in any order.",
+    "script": "script.lua",
+    "on": {
+        "turn_end": {
+            "check": "TheBlueMap_trigger_check",
+            "effect": "TheBlueMap_trigger"
+        }
+    }
+}

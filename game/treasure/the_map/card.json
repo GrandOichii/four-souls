@@ -1,0 +1,11 @@
+{
+    "name": "The Map",
+    "text": "At the end of your turn, look at the top 4 cards of the monster deck. Put them back in any order.",
+    "script": "script.lua",
+    "on": {
+        "turn_end": {
+            "check": "TheMap_trigger_check",
+            "effect": "TheMap_trigger"
+        }
+    }
+}

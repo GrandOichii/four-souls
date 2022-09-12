@@ -8,7 +8,7 @@
             "effect": "JudasShadow_trigger"
         }
     },
-    "leave": {
+    "destroyed": {
         "effect": "JudasShadow_leave"
     }
 }

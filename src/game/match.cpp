@@ -281,6 +281,18 @@ static void pushCards(vector<CardWrapper*> cards, lua_State* L) {
     }
 }
 
+static void pushCards(std::deque<CardWrapper*> cards, lua_State* L) {
+    auto size = cards.size();
+    lua_createtable(L, size, 0);
+    int ci = 0;
+    for (int i = 0; i < size; i++) {
+        if (!cards[i]) continue;
+        lua_pushnumber(L, ++ci);
+        cards[i]->pushTable(L);
+        lua_settable(L, -3);
+    }
+}
+
 StackEffect::StackEffect(string funcName, Player* player, CardWrapper* cardW, string type) :
     funcName(funcName),
     player(player),
@@ -635,7 +647,7 @@ int Match::wrap_moveToHand(lua_State* L) {
 }
 
 int Match::wrap_addAttackOpportunity(lua_State* L) {
-    stackSizeIs(L, 4);
+    stackSizeIs(L, 5);
     auto match = getTopMatch(L, 1);
     auto pid = getTopNumber(L, 2);
     auto required = getTopBool(L, 3);
@@ -1183,6 +1195,15 @@ int Match::wrap_tapCharacterCard(lua_State* L) {
     auto player = match->playerWithID(pid);
     player->tapCharacter();
     return 0;
+}
+
+int Match::wrap_getDiscard(lua_State* L) {
+    stackSizeIs(L, 2);
+    auto match = getTopMatch(L, 1);
+    auto deckType = getTopString(L, 2);
+    auto deck = *match->_discardMap[deckType];
+    pushCards(deck, L);   
+    return 1;
 }
 
 int Match::wrap_placeOnTop(lua_State* L) {
@@ -2138,6 +2159,7 @@ void Match::setupLua(string setupScript) {
     luaL_openlibs(L);
     // connect functions
     lua_register(L, "healPlayer", wrap_healPlayer);
+    lua_register(L, "getDiscard", wrap_getDiscard);
     lua_register(L, "addCurse", wrap_addCurse);
     lua_register(L, "setCurrentPlayer", wrap_setCurrentPlayer);
     lua_register(L, "placeOnTop", wrap_placeOnTop);

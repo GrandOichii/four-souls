@@ -18,7 +18,6 @@ function SpindownDice_effect(host)
     pushRefillShop(host)
 end
 
-
 function SpindownDice_trigger_check(host, me)
     return Common_OwnersTurn(host, me.id)
 end

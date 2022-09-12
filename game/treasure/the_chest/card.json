@@ -3,7 +3,7 @@
     "text": "If this item is destroyed, it becomes a soul for the player who owned it.",
     "soulCount": 1,
     "script": "script.lua",
-    "leave": {
+    "destroyed": {
         "usesStack": false,
         "effect": "TheChest_leave"
     }

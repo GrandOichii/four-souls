@@ -1,0 +1,11 @@
+{
+    "name": "Eve",
+    "health": 2,
+    "attack": 1,
+    "item": "the_curse",
+    "text": "{T}: Play an additional loot card this turn.\nStarting item: The Curse",
+    "script": "script.lua",
+    "use": {
+        "effect": "Eve_tap"
+    }
+}

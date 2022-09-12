@@ -1,0 +1,10 @@
+{
+    "name": "Spelunker Hat",
+    "text": "At the start of your turn, you may look at the top 3 cards of a deck and put them back in any order.",
+    "script": "script.lua",
+    "turn_start": {
+        "check": "SpelunkerHat_trigger_check",
+        "cost": "SpelunkerHat_trigger_cost",
+        "effect": "SpelunkerHat_trigger"
+    }
+}

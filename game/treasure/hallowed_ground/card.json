@@ -1,0 +1,17 @@
+{
+    "name": "Hallowed Ground",
+    "text": "Each time a player rolls a 2, put a counter on this.\n($) Remove 3 counters from this: Put the top card of the loot discard into your hand.",
+    "script": "script.lua",
+    "on": {
+        "roll": {
+            "check": "HallowedGround_trigger_check",
+            "effect": "HallowedGround_trigger"
+        }
+    },
+    "abilities": [
+        {
+            "cost": "HallowedGround_cost",
+            "effect": "HallowedGround_effect"
+        }
+    ]
+}

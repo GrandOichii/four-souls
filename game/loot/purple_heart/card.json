@@ -1,0 +1,14 @@
+{
+    "name": "Purple Heart",
+    "text": "At the start of your turn, look at the top card of the monster deck. You may put it on the bottom.",
+    "script": "script.lua",
+    "use": {
+        "effect": "Common_TrinketEnter"
+    },
+    "on": {
+        "turn_start": {
+            "check": "PurpleHeart_trigger_check",
+            "effect": "PurpleHeart_trigger"
+        }
+    }
+}

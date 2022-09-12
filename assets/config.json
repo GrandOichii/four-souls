@@ -4,9 +4,89 @@
             "large": "images/polyphemus_large.bmp",
             "small": "images/polyphemus.bmp"
         },
+        "XVIII. The Moon": {
+            "large": "images/xviii__the_moon_large.bmp",
+            "small": "images/xviii__the_moon.bmp"
+        },
+        "IX. The Hermit": {
+            "large": "images/ix__the_hermit_large.bmp",
+            "small": "images/ix__the_hermit.bmp"
+        },
+        "IV. The Emperor": {
+            "large": "images/iv__the_emperor_large.bmp",
+            "small": "images/iv__the_emperor.bmp"
+        },
+        "The Blue Map": {
+            "large": "images/the_blue_map_large.bmp",
+            "small": "images/the_blue_map.bmp"
+        },
+        "The Map": {
+            "large": "images/the_map_large.bmp",
+            "small": "images/the_map.bmp"
+        },
+        "The Compass": {
+            "large": "images/the_compass_large.bmp",
+            "small": "images/the_compass.bmp"
+        },
+        "Spelunker Hat": {
+            "large": "images/spelunker_hat_large.bmp",
+            "small": "images/spelunker_hat.bmp"
+        },
+        "Short Fuse": {
+            "large": "images/short_fuse_large.bmp",
+            "small": "images/short_fuse.bmp"
+        },
+        "Purple Heart": {
+            "large": "images/purple_heart_large.bmp",
+            "small": "images/purple_heart.bmp"
+        },
+        "Golden Horseshoe": {
+            "large": "images/golden_horseshoe_large.bmp",
+            "small": "images/golden_horseshoe.bmp"
+        },
+        "Ansuz": {
+            "large": "images/ansuz_large.bmp",
+            "small": "images/ansuz.bmp"
+        },
+        "Divorce Papers": {
+            "large": "images/divorce_papers_large.bmp",
+            "small": "images/divorce_papers.bmp"
+        },
+        "Berkano": {
+            "large": "images/berkano_large.bmp",
+            "small": "images/berkano.bmp"
+        },
+        "Lilith": {
+            "large": "images/lilith_large.bmp",
+            "small": "images/lilith.bmp"
+        },
+        "Lil Chest": {
+            "large": "images/lil_chest_large.bmp",
+            "small": "images/lil_chest.bmp"
+        },
+        "Incubus": {
+            "large": "images/incubus_large.bmp",
+            "small": "images/incubus.bmp"
+        },
+        "Hallowed Ground": {
+            "large": "images/hallowed_ground_large.bmp",
+            "small": "images/hallowed_ground.bmp"
+        },
+        "Eve": {
+            "large": "images/eve_large.bmp",
+            "small": "images/eve.bmp"
+        },
+        "The Curse": {
+            "large": "images/the_curse_large.bmp",
+            "small": "images/the_curse.bmp"
+        },
         "Widow": {
             "large": "images/widow_large.bmp",
             "small": "images/widow.bmp"
+        },
+        "Bum Friend": {
+            "large": "images/bum_friend_large.bmp",
+            "small": "images/bum_friend.bmp"
         },
         "The Cage": {
             "large": "images/the_cage_large.bmp",

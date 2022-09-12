@@ -1,0 +1,11 @@
+{
+    "name": "The Compass",
+    "text": "At the end of your turn, look at the top 4 cards of the loot deck. Put them back in any order.",
+    "script": "script.lua",
+    "on": {
+        "turn_end": {
+            "check": "TheCompass_trigger_check",
+            "effect": "TheCompass_trigger"
+        }
+    }
+}

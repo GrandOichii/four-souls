@@ -1,0 +1,11 @@
+{
+    "name": "Bum Friend",
+    "text": "{T}: Loot 1, then put a loot card from your hand on top of the loot deck.",
+    "script": "script.lua",
+    "abilities": [
+        {
+            "requires": ["tap"],
+            "effect": "BumFriend_effect"
+        }
+    ]
+}

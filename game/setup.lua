@@ -570,9 +570,9 @@ function Common_RerollAny(host, ownerID)
     end
 end
 
-function Common_OrderTopCards(host, ownerID, deckType)
-    local cards = topCardsOf(host, deckType, 5)
-    if #cards ~= 5 then
+function Common_OrderTopCards(host, ownerID, deckType, amount)
+    local cards = topCardsOf(host, deckType, amount)
+    if #cards ~= amount then
         return
     end
     for _, card in ipairs(cards) do

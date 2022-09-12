@@ -1,0 +1,9 @@
+{
+    "name": "Short Fuse",
+    "text": "When this is destroyed, deal 2 damage to a player or a monster.",
+    "script": "script.lua",
+    "destroyed": {
+        "cost": "ShortFuse_cost",
+        "effect": "ShortFuse_effect"
+    }
+}

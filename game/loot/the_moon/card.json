@@ -1,0 +1,8 @@
+{
+    "name": "XVIII. The Moon",
+    "text": "Look at the top 5 cards of the loot deck. Put 1 on top an the rest on the bottom.",
+    "script": "script.lua",
+    "use": {
+        "effect": "TheMoon_effect"
+    }
+}

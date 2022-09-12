@@ -1,0 +1,9 @@
+{
+    "name": "Ansuz",
+    "text": "Look at the top 4 cards of a deck and put them back in any order.",
+    "script": "script.lua",
+    "use": {
+        "cost": "Ansuz_cost",
+        "effect": "Ansuz_effect"
+    }
+}
