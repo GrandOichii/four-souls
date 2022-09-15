@@ -1,0 +1,30 @@
+{
+    "name": "Fistula",
+    "text": "Each time this takes damage, it gains +1d till end of turn.",
+    "script": "script.lua",
+    "health": 4,
+    "roll": 2,
+    "power": 1,
+    "soulCount": 1,
+    "rewards": {
+        "effect": "Fistula_rewards"
+    },
+    "enter": {
+        "usesStack": false,
+        "effect": "Fistula_enter"
+    },
+    "leave": {
+        "usesStack": false,
+        "effect": "Fistula_leave"
+    },
+    "on": {
+        "turn_end": {
+            "usesStack": false,
+            "effect": "Fistula_trigger1"
+        },
+        "damage": {
+            "check": "Fistula_trigger2_check",
+            "effect": "Fistula_trigger2"
+        }
+    }
+}

@@ -1,0 +1,20 @@
+{
+    "name": "Gurdlings",
+    "text": "While this is at 2h or less, it has -1d.",
+    "script": "script.lua",
+    "soulCount": 1,
+    "health": 4,
+    "roll": 4,
+    "power": 1,
+    "rewards": {
+        "effect": "Gurdlings_rewards"
+    },
+    "enter": {
+        "usesStack": false, 
+        "effect": "Gurdlings_enter"
+    },
+    "leave": {
+        "usesStack": false, 
+        "effect": "Gurdlings_leave"
+    }
+}

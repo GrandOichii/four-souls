@@ -18,7 +18,7 @@
         "effect": "DaddyLongLegs_leave"
     },
     "on": {
-        "roll": {
+        "post_roll": {
             "check": "DaddyLongLegs_trigger1_check",
             "effect": "DaddyLongLegs_trigger1"
         },

@@ -665,6 +665,7 @@ int Match::wrap_addAttackOpportunity(lua_State* L) {
     int len = lua_rawlen(L, 5);
     AttackOpportunity newOp;
     newOp.required = required;
+    newOp.limited = limited;
     for (int i = 0; i < len; i++) {
         lua_pushinteger(L, i+1);
         lua_gettable(L, -2);
@@ -2008,8 +2009,10 @@ int Match::wrap_getRollStack(lua_State* L) {
     auto match = getTopMatch(L, 1);
     auto size = match->_rollStack.size();
     lua_createtable(L, size, 0);
+    int mi = 0;
     for (int i = 0; i < size; i++) {
-        lua_pushnumber(L, i+1);
+        // if (!match->_rollStack[i].visible) continue;
+        lua_pushnumber(L, ++mi);
         match->_rollStack[i].pushTable(L);
         lua_settable(L, -3);
     }
@@ -2602,6 +2605,7 @@ void Match::turn() {
     this->_activePlayer = this->_players[this->_currentI];
     if (this->_activePlayer->skipCounter()) {
         this->_activePlayer->decSkipCounter();
+        this->log(this->_activePlayer->name() + " skips their turn");
         return;
     }
     this->log(this->_activePlayer->name() + " starts their turn");
@@ -2616,7 +2620,6 @@ void Match::turn() {
     this->applyTriggers(TURN_START_TRIGGER);
     this->resolveStack();
     if (_winner) return;
-
 
     // add loot 1 to stack, then resolve stack
     this->currentPlayerLoot();

@@ -1,0 +1,15 @@
+{
+    "name": "The Fallen",
+    "text": "When this dies, look at the top 5 cards of the monster deck and put them back in any order.",
+    "script": "script.lua",
+    "soulCount": 1,
+    "health": 4,
+    "roll": 5,
+    "power": 1,
+    "rewards": {
+        "effect": "TheFallen_rewards"
+    },
+    "death": {
+        "effect": "TheFallen_death"
+    }
+}

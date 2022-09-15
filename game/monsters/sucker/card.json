@@ -1,0 +1,14 @@
+{
+    "name": "Sucker",
+    "text": "When this dies, it deals 1 damage to each player.",
+    "script": "script.lua",
+    "health": 1,
+    "roll": 3,
+    "power": 1,
+    "rewards": {
+        "effect": "Sucker_rewards"
+    },
+    "death": {
+        "effect": "Sucker_death"
+    }
+}

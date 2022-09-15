@@ -1,0 +1,17 @@
+{
+    "name": "Roundy",
+    "text": "Each time this deals combat damage, it deals 1 damage to each other monster.",
+    "script": "script.lua",
+    "health": 3,
+    "roll": 4,
+    "power": 2,
+    "rewards": {
+        "effect": "Roundy_rewards"
+    },
+    "on": {
+        "damage": {
+            "check": "Roundy_trigger_check",
+            "effect": "Roundy_trigger"
+        }
+    }
+}

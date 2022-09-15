@@ -1,0 +1,19 @@
+{
+    "name": "Flaming Hopper",
+    "text": "This takes no combat damage on attack rolls of 6.",
+    "script": "script.lua",
+    "health": 1,
+    "roll": 4,
+    "power": 2,
+    "rewards": {
+        "effect": "FlamingHopper_rewards"
+    },
+    "enter": {
+        "usesStack": false,
+        "effect": "FlamingHopper_enter"
+    },
+    "leave": {
+        "usesStack": false,
+        "effect": "FlamingHopper_leave"
+    }
+}

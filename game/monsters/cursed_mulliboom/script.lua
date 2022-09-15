@@ -4,7 +4,7 @@ function CursedMulliboom_rewards(host)
 end
 
 function CursedMulliboom_trigger_check(host, me)
-    return getTopDamageEvent(host).type == MONSTER
+    return Common_LastDeath(host).type == MONSTER
 end
 
 function CursedMulliboom_trigger(host)

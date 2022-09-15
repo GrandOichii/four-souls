@@ -1,0 +1,18 @@
+{
+    "name": "Red Ghost",
+    "text": "Each time this takes damage, the active player chooses another player. That player takes 1 damage.",
+    "script": "script.lua",
+    "health": 3,
+    "roll": 4,
+    "power": 1,
+    "rewards": {
+        "effect": "RedGhost_rewards"
+    },
+    "on": {
+        "damage": {
+            "check": "RedGhost_trigger_check",
+            "cost": "RedGhost_trigger_cost",
+            "effect": "RedGhost_trigger"
+        }
+    }
+}

@@ -14,7 +14,9 @@ function Algiz_effect(host)
             setIsEternal(host, card.id, true)
         end
     end
-    CardData[me.id].ids = ids
+    CardData[me.id] = {
+        ids = ids
+    }
     deferEOT(host, me.id, 'Algiz_eot', true)
     discardMe(host, me.id)
 end

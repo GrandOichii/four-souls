@@ -1,6 +1,6 @@
 function CurseOfEmpathy_trigger_check(host, me)
     if Common_CurseDeathCheck(host, me) then
-        pushToStack(host, 'Common_CurseDeathCheck', me.ownerID, me.id, 'trigger')
+        pushToStack(host, 'Common_CurseDeathEffect', me.ownerID, me.id, 'trigger')
         return false
     end
     return Common_LastDeath(host).type == MONSTER

@@ -1,0 +1,17 @@
+{
+    "name": "Tumor",
+    "text": "Each time this takes damage, it deals 1 damage to each non-active player.",
+    "script": "script.lua",
+    "health": 2,
+    "roll": 5,
+    "power": 2,
+    "rewards": {
+        "effect": "Tumor_rewards"
+    },
+    "on": {
+        "damage": {
+            "check": "Tumor_trigger_check",
+            "effect": "Tumor_trigger"
+        }
+    }
+}

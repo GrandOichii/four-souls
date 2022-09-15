@@ -13,5 +13,8 @@
             "check": "CursedMulligan_trigger_check",
             "effect": "CursedMulligan_trigger"
         }
+    },
+    "death": {
+        "effect": "CursedMulligan_trigger"
     }
 }

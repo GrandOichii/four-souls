@@ -12,6 +12,11 @@ function HolyChest_effect(host)
     if roll.value == 6 then
         removeFromEverywhere(host, me.id)
         addSoulCard(host, owner.id, me.id)
+        for _, pile in ipairs(getMonsterPiles(host)) do
+            if #pile == 0 then
+                pushRefillMonsters(host)
+            end
+        end
         return
     end
     Common_BonusMonsterTail(host, me.id)

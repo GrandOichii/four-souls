@@ -13,5 +13,8 @@
             "check": "CursedMulliboom_trigger_check",
             "effect": "CursedMulliboom_trigger"
         }
+    },
+    "death": {
+        "effect": "CursedMulliboom_trigger"
     }
 }

@@ -1,0 +1,14 @@
+{
+    "name": "Peeping Fatty",
+    "text": "When this dies, look at the top 5 cards of the loot deck and put them back in any order.",
+    "script": "script.lua",
+    "health": 3,
+    "roll": 4,
+    "power": 1,
+    "rewards": {
+        "effect": "PeepingFatty_rewards"
+    },
+    "death": {
+        "effect": "PeepingFatty_rewards"
+    }
+}

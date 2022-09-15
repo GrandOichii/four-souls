@@ -1,0 +1,18 @@
+{
+    "name": "Holy Bony",
+    "text": "Each time a player rolls a 6, they may look at the top 3 cards of a deck and put them back in any order.",
+    "script": "script.lua",
+    "health": 1,
+    "roll": 3,
+    "power": 1,
+    "rewards": {
+        "effect": "HolyBony_rewards"
+    },
+    "on": {
+        "roll": {
+            "check": "HolyBony_trigger_check",
+            "cost": "HolyBony_trigger_cost",
+            "effect": "HolyBony_trigger"
+        }
+    }
+}

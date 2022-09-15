@@ -1,0 +1,30 @@
+{
+    "name": "Brownie",
+    "text": "Each time this takes damage, it gains -1d till end of turn.",
+    "script": "script.lua",
+    "health": 6,
+    "roll": 5,
+    "power": 1,
+    "soulCount": 1,
+    "rewards": {
+        "effect": "Brownie_rewards"
+    },
+    "enter": {
+        "usesStack": false,
+        "effect": "Brownie_enter"
+    },
+    "leave": {
+        "usesStack": false,
+        "effect": "Brownie_leave"
+    },
+    "on": {
+        "turn_end": {
+            "usesStack": false,
+            "effect": "Brownie_trigger1"
+        },
+        "damage": {
+            "check": "Brownie_trigger2_check",
+            "effect": "Brownie_trigger2"
+        }
+    }
+}

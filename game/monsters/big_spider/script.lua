@@ -5,5 +5,6 @@ end
 
 function BigSpider_death(host)
 	local player = getCurrentPlayer(host)
+	--  TODO replace with prompt to attack
 	addAttackOpportunity(host, player.id, false, true, {-1})
 end

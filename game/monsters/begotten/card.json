@@ -1,0 +1,19 @@
+{
+    "name": "Begotten",
+    "text": "While this is at 1h, it has +1p.",
+    "script" : "script.lua",
+    "health": 3,
+    "roll": 4,
+    "power": 1,
+    "rewards": {
+        "effect": "Begotten_rewards"
+    },
+    "enter": {
+        "usesStack": false,
+        "effect": "Begotten_enter"
+    },
+    "leave": {
+        "usesStack": false,
+        "effect": "Begotten_leave"
+    }
+}

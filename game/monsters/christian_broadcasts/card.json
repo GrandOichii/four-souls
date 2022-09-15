@@ -1,0 +1,15 @@
+{
+    "name": "\"Christian Broadcasts\"",
+    "text": "When this dies, choose another player and monster. They die.\nWhen this dies, expand monster slots by 2.",
+    "script": "script.lua",
+    "health": 6,
+    "roll": 3,
+    "power": 1,
+    "death": {
+        "cost": "ChristianBroadcasts_death_cost",
+        "effect": "ChristianBroadcasts_death_effect"
+    },
+    "rewards": {
+        "effect": "ChristianBroadcasts_rewards"
+    }
+}

@@ -1,12 +1,80 @@
 {
     "cards": {
+        "I Can See Forever!": {
+            "large": "images/i_can_see_forever__large.bmp",
+            "small": "images/i_can_see_forever_.bmp"
+        },
         "Polyphemus": {
             "large": "images/polyphemus_large.bmp",
             "small": "images/polyphemus.bmp"
         },
+        "Holy Bony": {
+            "large": "images/holy_bony_large.bmp",
+            "small": "images/holy_bony.bmp"
+        },
+        "Blastoclyst": {
+            "large": "images/blastoclyst_large.bmp",
+            "small": "images/blastoclyst.bmp"
+        },
+        "Gurdlings": {
+            "large": "images/gurdlings_large.bmp",
+            "small": "images/gurdlings.bmp"
+        },
+        "Flaming Hopper": {
+            "large": "images/flaming_hopper_large.bmp",
+            "small": "images/flaming_hopper.bmp"
+        },
+        "Fistula": {
+            "large": "images/fistula_large.bmp",
+            "small": "images/fistula.bmp"
+        },
+        "Brownie": {
+            "large": "images/brownie_large.bmp",
+            "small": "images/brownie.bmp"
+        },
+        "Baby Plum": {
+            "large": "images/baby_plum_large.bmp",
+            "small": "images/baby_plum.bmp"
+        },
+        "Begotten": {
+            "large": "images/begotten_large.bmp",
+            "small": "images/begotten.bmp"
+        },
+        "Sucker": {
+            "large": "images/sucker_large.bmp",
+            "small": "images/sucker.bmp"
+        },
+        "Swarmer": {
+            "large": "images/swarmer_large.bmp",
+            "small": "images/swarmer.bmp"
+        },
+        "Tumor": {
+            "large": "images/tumor_large.bmp",
+            "small": "images/tumor.bmp"
+        },
+        "The Fallen": {
+            "large": "images/the_fallen_large.bmp",
+            "small": "images/the_fallen.bmp"
+        },
+        "Roundy": {
+            "large": "images/roundy_large.bmp",
+            "small": "images/roundy.bmp"
+        },
+        "Red Ghost": {
+            "large": "images/red_ghost_large.bmp",
+            "small": "images/red_ghost.bmp"
+        },
+        "Peeping Fatty": {
+            "large": "images/peeping_fatty_large.bmp",
+            "small": "images/peeping_fatty.bmp"
+        },
         "Clog": {
             "large": "images/clog_large.bmp",
             "small": "images/clog.bmp"
+        },
+        "\"Christian Broadcasts\"": {
+            "large": "images/_christian_broadcasts__large.bmp",
+            "small": "images/_christian_broadcasts_.bmp"
         },
         "Cursed Dople": {
             "large": "images/cursed_dople_large.bmp",
@@ -172,7 +240,7 @@
             "large": "images/curse_of_the_hollow_large.bmp",
             "small": "images/curse_of_the_hollow.bmp"
         },
-        "Curse of the Hunter": {
+        "Curse of the Hunted": {
             "large": "images/curse_of_the_hunted_large.bmp",
             "small": "images/curse_of_the_hunted.bmp"
         },

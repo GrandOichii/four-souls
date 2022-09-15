@@ -1,0 +1,14 @@
+{
+    "name": "Swarmer",
+    "text": "When this dies, expand the monster slots by 2.",
+    "script": "script.lua",
+    "health": 4,
+    "roll": 3,
+    "power": 2,
+    "rewards": {
+        "effect": "Swarmer_rewards"
+    },
+    "death": {
+        "effect": "Swarmer_death"
+    }
+}

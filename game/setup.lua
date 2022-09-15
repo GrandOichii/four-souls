@@ -891,7 +891,7 @@ end
 function Common_PostDeathOwnerDied(host, cardID)
     local owner = getOwner(host, cardID)
     local death = getLastDeath(host)
-    return  death.type == PLAYER and death.id == owner.id
+    return death.type == PLAYER and death.id == owner.id
 end
 
 function Common_OncePerTurn(host, cardID)

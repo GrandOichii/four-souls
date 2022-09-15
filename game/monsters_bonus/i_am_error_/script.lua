@@ -3,6 +3,8 @@ function IAmError_effect(host)
     local owner = getTopOwner(host)
     local roll = popRollStack(host)
     if roll.value == 1 or roll.value == 2 then
+    	--  TODO replace with prompt to attack
+
         addAttackOpportunity(host, owner.id, true, true, {-1})
     end
     if roll.value == 3 or roll.value == 4 then

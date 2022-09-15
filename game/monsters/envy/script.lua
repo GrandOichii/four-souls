@@ -5,6 +5,8 @@ function Envy_rewards(host)
 end
 
 function Envy_death(host)
+	--  TODO replace with prompt to attack
+
 	local player = getCurrentPlayer(host)
 	Common_IncAttackCount(host, player.id, true)
 end
