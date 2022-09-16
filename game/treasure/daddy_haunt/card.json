@@ -1,0 +1,20 @@
+{
+    "name": "Daddy Haunt",
+    "text": "If you would take any amount of damage, take that much damage +1 instead.\nWhen you die, before paying penalties, give this to another player.",
+    "script": "script.lua",
+    "enter": {
+        "usesStack": false,
+        "effect": "DaddyHaunt_enter"
+    },
+    "leave": {
+        "usesStack": false,
+        "effect": "DaddyHaunt_leave"
+    },
+    "on": {
+        "death": {
+            "check": "Common_Haunt_trigger_check",
+            "cost": "Common_Haunt_trigger_cost",
+            "effect": "Common_Haunt_trigger"
+        }
+    }
+}

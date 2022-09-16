@@ -12,9 +12,9 @@
     },
     "on": {
         "death": {
-            "check": "BabyHaunt_trigger_check",
-            "cost": "BabyHaunt_trigger_cost",
-            "effect": "BabyHaunt_trigger"
+            "check": "Common_Haunt_trigger_check",
+            "cost": "Common_Haunt_trigger_cost",
+            "effect": "Common_Haunt_trigger"
         }
     }
 }

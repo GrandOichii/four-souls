@@ -1,0 +1,13 @@
+{
+    "name": "Gello",
+    "text": "{T}: Choose a monster being attacked. Heal that monster to full h, the deal damage equal to the number of h healed in this way to another monster. If it's not your turn, cancel the attack and the active player may attack an additional time this turn.",
+    "script": "script.lua",
+    "eternal": true,
+    "abilities": [
+        {
+            "requires": ["tap"],
+            "cost": "Gello_cost",
+            "effect": "Gello_effect"
+        }
+    ]
+}

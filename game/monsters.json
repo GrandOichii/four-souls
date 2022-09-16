@@ -32,18 +32,28 @@
             "monsters_bonus/head_trauma",
             "monsters_bonus/troll_bombs"
         ],
-        "bon1us": [
-            "monsters_bonus/ambush_",
-            "monsters_bonus/ambush_",
-            "monsters_bonus/ambush_",
-            "monsters_bonus/ambush_"
+        "bo§nus": [
         ],
-        "monst1ers": [
-            "monsters/famine",            
-            "monsters/famine"
+        "mon1sters": [
+            "monsters/bony",            
+            "monsters/bony",            
+            "monsters/bony",            
+            "monsters/bony",            
+            "monsters/bony",            
+            "monsters/bony",            
+            "monsters/bony",            
+            "monsters/bony",            
+            "monsters/bony",            
+            "monsters/bony",            
+            "monsters/bony",            
+            "monsters/bony",            
+            "monsters/bony"
         ],
         "monsters": [
             "monsters/big_spider",
+            "monsters/null",
+            "monsters/bony",
+            "monsters/rag_mega",
             "monsters/deaths_head",
             "monsters/black_bony",
             "monsters/boom_fly",
@@ -65,9 +75,16 @@
             "monsters/dinga",
             "monsters/begotten",
             "monsters/fistula",
+            "monsters/isaac_",
+            "monsters/mother_",
             "monsters/flaming_hopper",
             "monsters/gurdlings",
             "monsters/holy_bony",
+            "monsters/holy_portal",
+            "monsters/holy_mulligan",
+            "monsters/holy_greedling",
+            "monsters/holy_psy_horf",
+            "monsters/holy_brain",
             "monsters/dip",
             "monsters/peeping_fatty",
             "monsters/red_ghost",

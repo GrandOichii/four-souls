@@ -1,0 +1,29 @@
+{
+    "name": "Bony",
+    "text": "Each time the attacking player rolls an attack roll of 1, this gains +2a till end of turn.",
+    "script": "script.lua",
+    "health": 2,
+    "roll": 3,
+    "power": 1,
+    "rewards": {
+        "effect": "Bony_rewards"
+    },
+    "enter": {
+        "usesStack": false,
+        "effect": "Bony_enter"
+    },
+    "leave": {
+        "usesStack": false,
+        "effect": "Bony_leave"
+    },
+    "on": {
+        "roll": {
+            "check": "Bony_trigger1_check",
+            "effect": "Bony_trigger1"
+        },
+        "turn_end": {
+            "usesStack": false,
+            "effect": "Bony_trigger2"
+        }
+    }
+}

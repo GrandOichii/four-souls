@@ -1,0 +1,30 @@
+{
+    "name": "Mother!",
+    "text": "Each time this takes damage, it gains +1d till end of turn.\nWhen this dies, expand monster slots by 2",
+    "script": "script.lua",
+    "health": 8,
+    "roll": 1,
+    "power": 8,
+    "soulCount": 2,
+    "rewards": {
+        "effect": "Mother_rewards"
+    },
+    "enter": {
+        "usesStack": false,
+        "effect": "Mother_enter"
+    },
+    "leave": {
+        "usesStack": false,
+        "effect": "Mother_leave"
+    },
+    "on": {
+        "damage": {
+            "check": "Mother_trigger1_check",
+            "effect": "Mother_trigger1"
+        },
+        "turn_end": {
+            "usesStack": false,
+            "effect": "Mother_trigger2"
+        }
+    }
+}

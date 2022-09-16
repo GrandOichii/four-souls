@@ -30,7 +30,7 @@ function Betrayal_effect(host)
         moveToBoard(host, owner.id, choice)
 
     end
-    if roll.value == 6 then
+    if roll.value == 6 and #player.souls ~= 0 then
         local choice = Common_ChooseSoul(host, owner.id, player.id)
         removeFromEverywhere(host, choice)
         addSoulCard(host, owner.id, choice)

@@ -1,0 +1,25 @@
+{
+    "name": "Compost",
+    "text": "{T}: The next time a player would loot, they loot from the top of the loot discard instead.",
+    "script": "script.lua",
+    "enter": {
+        "usesStack": false,
+        "effect": "Compost_enter"
+    },
+    "leave": {
+        "usesStack": false,
+        "effect": "Compost_leave"
+    },
+    "on": {
+        "turn_end": {
+            "usesStack": false,
+            "effect": "Compost_trigger"
+        }
+    },
+    "abilities": [
+        {
+            "requires": ["tap"],
+            "effect": "Compost_tap"
+        }
+    ]
+}

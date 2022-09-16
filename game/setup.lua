@@ -381,6 +381,35 @@ function Common_PlayerWithID(host, id)
     end
 end
 
+function Common_Haunt_trigger_check(host, me)
+    return Common_OwnerDied(host, me.ownerID)
+end
+
+function Common_Haunt_trigger_cost(host, cardInfo)
+    return Common_TargetOpponent(host, cardInfo.ownerID)
+end
+
+function Common_Haunt_trigger(host)
+    local me = this(host)
+    local target = popTarget(host)
+    removeFromEverywhere(host, me.id)
+    moveToBoard(host, target.id, me.id)
+end
+
+
+function Common_AttackingPlayerRolled(host, me, amount)
+    local lr = Common_LastRoll(host, me)
+    local flag = lr.value == amount and lr.isCombatRoll
+    if not flag then
+        return false
+    end
+    if not CardData[me.id] then
+        CardData[me.id] = {}
+    end
+    CardData[me.id].pid = lr.ownerID
+    return Common_MonsterWithID(host, me.id).isBeingAttacked
+end
+
 function Common_Pay(host, ownerID, amount)
     local player = Common_PlayerWithID(host, ownerID)
     if player.coins < amount then

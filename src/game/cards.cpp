@@ -214,6 +214,12 @@ void MonsterData::fullHeal() {
     _health = maxHealth();
 }
 
+void MonsterData::heal(int amount) {
+    _health += amount;
+    int mHealth = maxHealth();
+    if (_health > mHealth) _health = mHealth;
+}
+
 int MonsterData::dealDamage(int amount) {
     _blueHealth -= amount;
     if (_blueHealth >= 0) return 0;

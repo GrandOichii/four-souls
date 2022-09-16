@@ -1,0 +1,15 @@
+{
+    "name": "More Options",
+    "text": "At the start of your turn, you may look at the top 2 cards of the treasure deck.",
+    "script": "script.lua",
+    "enter": {
+        "usesStack": false,
+        "effect": "MoreOptions_enter"
+    },
+    "on": {
+        "turn_start": {
+            "check": "MoreOptions_trigger_check",
+            "effect": "MoreOptions_trigger"
+        }
+    }
+}

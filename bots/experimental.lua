@@ -127,17 +127,15 @@ local function AttemptBuyTreasure(me, state)
         end
     end
     ITEMS[#ITEMS+1] = cName
-    print('\tBOUGHT '..cName)
     return true, 'buy_treasure '..cI
 end
 
 local function ChooseBestToAttack(me, state)
-    print(json.encode(me.attackIndices))
     return 'attack '..me.attackIndices[#me.attackIndices]
 end
 
 local function AttemptAttack(me, state)
-    if #me.attackIndices ~= 0 then
+    if not state.inCombat and #me.attackIndices ~= 0 then
         return true, ChooseBestToAttack(me, state)
     end
     return false, ''
@@ -182,7 +180,6 @@ function Bot_PromptAction(me, state)
     if ME_ID == nil then
         ME_ID = me.id
     end
-    -- print(json.encode(me))
     if me.id == state.currentID and state.isMain then
         -- main phase actions
         local played, message = AttemptPlayLoot(me, state)

@@ -17,13 +17,17 @@ function Algiz_effect(host)
     CardData[me.id] = {
         ids = ids
     }
-    deferEOT(host, me.id, 'Algiz_eot', true)
+    deferEOT(host, me.id, 'Algiz_eot', false)
     discardMe(host, me.id)
 end
 
 function Algiz_eot(host)
+    print('BEGIn')
     local me = this(host)
+    print('ME')
     for _, id in ipairs(CardData[me.id].ids) do
+        print('EPOCH '..id)
         setIsEternal(host, id, false)
     end
+    print('END')
 end

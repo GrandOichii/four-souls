@@ -8,6 +8,66 @@
             "large": "images/polyphemus_large.bmp",
             "small": "images/polyphemus.bmp"
         },
+        "Rag Mega": {
+            "large": "images/rag_mega_large.bmp",
+            "small": "images/rag_mega.bmp"
+        },
+        "Null": {
+            "large": "images/null_large.bmp",
+            "small": "images/null.bmp"
+        },
+        "More Options": {
+            "large": "images/more_options_large.bmp",
+            "small": "images/more_options.bmp"
+        },
+        "Daddy Haunt": {
+            "large": "images/daddy_haunt_large.bmp",
+            "small": "images/daddy_haunt.bmp"
+        },
+        "Compost": {
+            "large": "images/compost_large.bmp",
+            "small": "images/compost.bmp"
+        },
+        "Gello": {
+            "large": "images/gello_large.bmp",
+            "small": "images/gello.bmp"
+        },
+        "Bony": {
+            "large": "images/bony_large.bmp",
+            "small": "images/bony.bmp"
+        },
+        "The Harlot": {
+            "large": "images/the_harlot_large.bmp",
+            "small": "images/the_harlot.bmp"
+        },
+        "Mother!": {
+            "large": "images/mother__large.bmp",
+            "small": "images/mother_.bmp"
+        },
+        "Isaac!": {
+            "large": "images/isaac__large.bmp",
+            "small": "images/isaac_.bmp"
+        },
+        "Holy Portal": {
+            "large": "images/holy_portal_large.bmp",
+            "small": "images/holy_portal.bmp"
+        },
+        "Holy Greedling": {
+            "large": "images/holy_greedling_large.bmp",
+            "small": "images/holy_greedling.bmp"
+        },
+        "Holy Psy Horf": {
+            "large": "images/holy_psy_horf_large.bmp",
+            "small": "images/holy_psy_horf.bmp"
+        },
+        "Holy Brain": {
+            "large": "images/holy_brain_large.bmp",
+            "small": "images/holy_brain.bmp"
+        },
+        "Holy Mulligan": {
+            "large": "images/holy_mulligan_large.bmp",
+            "small": "images/holy_mulligan.bmp"
+        },
         "Holy Bony": {
             "large": "images/holy_bony_large.bmp",
             "small": "images/holy_bony.bmp"

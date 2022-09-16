@@ -1,0 +1,11 @@
+{
+    "name": "The Harlot",
+    "health": 2,
+    "attack": 1,
+    "item": "gello",
+    "text": "{T}: Play an additional loot card this turn.\nStarting item: Gello",
+    "script": "script.lua",
+    "use": {
+        "effect": "TheHarlot_tap"
+    }
+}

@@ -1,0 +1,25 @@
+{
+    "name": "Null",
+    "text": "This takes no combat damage on every other attack roll made on it.",
+    "script": "script.lua",
+    "health": 3,
+    "roll": 4,
+    "power": 1,
+    "rewards": {
+        "effect": "Null_rewards"
+    },
+    "enter": {
+        "usesStack": false,
+        "effect": "Null_enter"
+    },
+    "leave": {
+        "usesStack": false,
+        "effect": "Null_leave"
+    },
+    "on": {
+        "turn_end": {
+            "usesStack": false,
+            "effect": "Null_trigger"
+        }
+    }
+}

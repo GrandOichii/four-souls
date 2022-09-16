@@ -1,0 +1,28 @@
+{
+    "name": "Holy Brain",
+    "text": "Each time a player rolls a 3, each monster gains -1d till end of turn.",
+    "script": "script.lua",
+    "health": 2,
+    "roll": 3,
+    "power": 1,
+    "rewards": {
+        "effect": "HolyBrain_rewards"
+    },
+    "enter": {
+        "usesStack": false,
+        "effect": "HolyBrain_enter"
+    },
+    "leave": {
+        "usesStack": false,
+        "effect": "HolyBrain_leave"
+    },
+    "on": {
+        "roll": {
+            "check": "HolyBrain_trigger1_check",
+            "effect": "HolyBrain_trigger1"
+        },
+        "turn_end": {
+            "effect": "HolyBrain_trigger2"
+        }
+    }
+}

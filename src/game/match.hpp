@@ -233,7 +233,7 @@ private:
 
     // StackEffect _lastStack;
     std::vector<StackEffect*> _stack;
-    std::stack<string> _eotDefers;
+    std::stack<StackEffect*> _eotDefers;
     std::stack<StackEffect*> _eotDeferredTriggers;
 
     std::map<string, std::function<void(Player*, std::vector<string>)>> _actionMap = {
@@ -337,6 +337,7 @@ public:
     vector<CardWrapper*> getTopLootCards(int amount);
     vector<CardWrapper*> getTopTreasureCards(int amount);
     vector<CardWrapper*> getTopMonsterCards(int amount);
+    Player* getCurrentPlayer();
     bool requestPayCost(string costFuncName, Player* player);
     int dealDamage(string tgtType, int tgtID, int amount);
     void triggerLastEffectType();
@@ -420,6 +421,7 @@ public:
     static int wrap_deferEOT(lua_State *L);
     static int wrap_this(lua_State *L);
     static int wrap_healPlayer(lua_State *L);
+    static int wrap_healMonster(lua_State *L);
     static int wrap_incBeginningLoot(lua_State* L);
     static int wrap_decBeginningLoot(lua_State* L);
     static int wrap_discardLoot(lua_State* L);

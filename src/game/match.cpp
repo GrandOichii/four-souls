@@ -646,6 +646,22 @@ int Match::wrap_moveToHand(lua_State* L) {
     return 0;
 }
 
+int Match::wrap_healMonster(lua_State *L) {
+    stackSizeIs(L, 3);
+    auto match = getTopMatch(L, 1);
+    auto mid = getTopNumber(L, 2);
+    auto amount = getTopNumber(L, 3);
+    for (int i = 0; i < match->_monsters.size(); i++) {
+        if (!match->_monsters[i].size()) continue;
+        auto w = match->_monsters[i].back();
+        if (w->id() != mid) continue;
+        match->_monsterDataArr[i]->heal(amount);
+        return 0;
+    }
+    match->log("WARN: failed to heal monster with id " + std::to_string(mid));
+    return 0;
+}
+
 int Match::wrap_incSkipCounter(lua_State* L) {
     stackSizeIs(L, 2);
     auto match = getTopMatch(L, 1);
@@ -1373,14 +1389,15 @@ int Match::wrap_deferEOT(lua_State *L) {
     auto isTrigger = getTopBool(L, 4);
     auto w = match->cardWithID(cardID);
     auto owner = w->owner();
-    if (isTrigger) {
-        auto effect = new StackEffect();;
-        effect->funcName = funcName;
-        effect->cardW = w;
-        effect->player = owner;
-        effect->type = TRIGGER_TYPE;
-        match->_eotDeferredTriggers.push(effect);
-    } else match->_eotDefers.push(funcName);
+    std::stack<StackEffect*>& collection = match->_eotDeferredTriggers;
+    if (!isTrigger)
+        collection = match->_eotDefers;
+    auto effect = new StackEffect();;
+    effect->funcName = funcName;
+    effect->cardW = w;
+    effect->player = owner;
+    effect->type = TRIGGER_TYPE;
+    collection.push(effect);
     return 0;
 }
 
@@ -1559,9 +1576,12 @@ int Match::wrap_activateRoll(lua_State* L) {
     }
     match->_lastCRollValue = roll.value;
     match->applyTriggers(POST_ROLL_TYPE);
+
     match->_rollStack.pop_back();
     if (match->_turnEnd) return 0;
     if (match->_lastMonsterIndex == -2) return 0;
+    if (!match->_monsters[match->_lastMonsterIndex].size()) return 0;
+    std::cout << match->_lastMonsterIndex << "\t" << match->_monsters[match->_lastMonsterIndex].size() << "\t" << (match->_monsterDataArr[match->_lastMonsterIndex] ? "UES" : "NO") << std::endl;
     auto monsterW = match->_monsters[match->_lastMonsterIndex].back();
     auto monsterData = match->_monsterDataArr[match->_lastMonsterIndex];
     if (!monsterData->isBeingAttacked()) return 0;
@@ -2135,9 +2155,16 @@ void Match::pushEOTDeferredTriggers() {
     }
 }
 
+Player* Match::getCurrentPlayer() { return _activePlayer; }
+
+
 void Match::execEOTDefers() {
     while (!_eotDefers.empty()) {
-        this->execFunc(_eotDefers.top());
+        auto& e = _eotDefers.top();
+        this->pushToStack(e);
+        auto it = _stack.end() - 1;
+        this->execFunc(e->funcName);
+        _stack.erase(it);
         _eotDefers.pop();
     }
 }
@@ -2171,6 +2198,7 @@ void Match::setupLua(string setupScript) {
     luaL_openlibs(L);
     // connect functions
     lua_register(L, "healPlayer", wrap_healPlayer);
+    lua_register(L, "healMonster", wrap_healMonster);
     lua_register(L, "incSkipCounter", wrap_incSkipCounter);
     lua_register(L, "getDiscard", wrap_getDiscard);
     lua_register(L, "addCurse", wrap_addCurse);

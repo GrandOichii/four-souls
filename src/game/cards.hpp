@@ -120,6 +120,7 @@ public:
     int basePower();
     int dealDamage(int amount);
     void fullHeal();
+    void heal(int amount);
     int maxHealth();
     bool isBeingAttacked();
     void setIsBeingAttacked(bool value);

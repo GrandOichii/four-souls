@@ -1,0 +1,16 @@
+{
+    "name": "Holy Psy Horf",
+    "text": "At the end of each turn, the active player loots 1.",
+    "script": "script.lua",
+    "health": 3,
+    "roll": 3,
+    "power": 1,
+    "rewards": {
+        "effect": "HolyPsyHorf_rewards"
+    },
+    "on": {
+        "turn_end": {
+            "effect": "HolyPsyHorf_trigger"
+        }
+    }
+}

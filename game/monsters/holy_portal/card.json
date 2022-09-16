@@ -1,0 +1,20 @@
+{
+    "name": "Holy Portal",
+    "text": "Each time a monster dies, the active player may attack an additional time this turn.",
+    "script": "script.lua",
+    "health": 2,
+    "roll": 4,
+    "power": 1,
+    "rewards": {
+        "effect": "HolyPortal_rewards"
+    },
+    "on": {
+        "death": {
+            "check": "HolyPortal_trigger_check",
+            "effect": "HolyPortal_trigger"
+        }
+    },
+    "death": {
+        "effect": "HolyPortal_trigger"
+    }
+}

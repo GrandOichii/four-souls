@@ -1,0 +1,21 @@
+{
+    "name": "Holy Greedling",
+    "text": "Each time a monster dies, the active player may gain 3$.",
+    "script": "script.lua",
+    "health": 2,
+    "roll": 3,
+    "power": 1,
+    "rewards": {
+        "requires": ["roll"],
+        "effect": "HolyGreedling_rewards"
+    },
+    "on": {
+        "death": {
+            "check": "HolyGreedling_trigger_check",
+            "effect": "HolyGreedling_trigger"
+        }
+    },
+    "death": {
+        "effect": "HolyGreedling_trigger"
+    }
+}

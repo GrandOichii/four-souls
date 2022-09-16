@@ -1,0 +1,22 @@
+{
+    "name": "Rag Mega",
+    "text": "When an attack is declared on this, each non-active player discards a loot card.\nWhen this dies, the active player kills up to 3 other players.",
+    "script": "script.lua",
+    "health": 5,
+    "roll": 5,
+    "power": 1,
+    "soulCount": 1,
+    "rewards": {
+        "effect": "RagMega_rewards"
+    },
+    "death": {
+        "cost": "RagMega_death_cost",
+        "effect": "RagMega_death"
+    },
+    "on": {
+        "attack": {
+            "check": "RagMega_trigger_check",
+            "effect": "RagMega_trigger"
+        }
+    }
+}

@@ -10,7 +10,7 @@ function TheHangedMan_use(host)
             local card = cards[1]
             local choice = requestSimpleChoice(host, owner.id, 'Put ${'..card.name..'} on the bottom of the '..deck..' deck?', {'Yes', 'No'})
             if choice == 'Yes' then
-                millDeck(host, deck, 1)
+                putFromTopToBottom(host, deck, 1)
             end
         end
     end

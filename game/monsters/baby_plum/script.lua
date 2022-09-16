@@ -4,7 +4,7 @@ function BabyPlum_rewards(host)
     addCoins(host, owner.id, roll.value)
 end
 
-function BabyPlum_trigger(host, me)
+function BabyPlum_trigger_check(host, me)
     return Common_MonsterDamaged(host, me.id)
 end
 
@@ -33,5 +33,5 @@ function BabyPlum_trigger(host)
             pI = #players
         end
     end
-    dealDamage(host, MONSTER, me.id, PLAYER, players[pI], 1)
+    dealDamage(host, MONSTER, me.id, PLAYER, players[pI].id, 1)
 end

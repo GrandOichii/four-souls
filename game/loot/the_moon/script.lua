@@ -1,6 +1,7 @@
 function TheMoon_effect(host)
     --  TODO? don't fizzle if not eniugh cards
     --  TODO? add ordering bottom cards
+    local me = this(host)
     local deckType = LOOT_DECK
     local owner = getTopOwner(host)
     local cards = topCardsOf(host, deckType, 5)
@@ -22,4 +23,5 @@ function TheMoon_effect(host)
     putFromTopToBottom(host, deckType, 5)
     removeFromEverywhere(host, card.id)
     placeOnTop(host, deckType, card.id)
+    discardMe(host, me.id)
 end

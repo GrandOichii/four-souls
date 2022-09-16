@@ -1,0 +1,19 @@
+{
+    "name": "Isaac!",
+    "text": "Each time this takes damage, the active player chooses a living player. This deals 1 damage to that player.",
+    "script": "script.lua",
+    "health": 7,
+    "roll": 3,
+    "power": 1,
+    "soulCount": 2,
+    "rewards": {
+        "effect": "Isaac_rewards"
+    },
+    "on": {
+        "damage": {
+            "check": "Isaac_trigger_check",
+            "cost": "Isaac_trigger_cost",
+            "effect": "Isaac_trigger"
+        }
+    }
+}

@@ -25,18 +25,3 @@ function FetalHaunt_trigger1(host)
     removeFromEverywhere(host, choice)
     moveToHand(host, player.id, choice)
 end
-
-function FetalHaunt_trigger2_check(host, me)
-    return Common_OwnerDied(host, me.ownerID)
-end
-
-function FetalHaunt_trigger2_cost(host, info)
-    return Common_TargetOpponent(host, info.ownerID)
-end
-
-function FetalHaunt_trigger2(host)
-    local me = this(host)
-    local target = popTarget(host)
-    removeFromEverywhere(host, me.id)
-    moveToBoard(host, target.id, me.id)
-end

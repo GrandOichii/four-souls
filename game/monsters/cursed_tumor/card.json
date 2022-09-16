@@ -6,11 +6,11 @@
     "roll": 4,
     "power": 1,
     "rewards": {
+        "requires": ["roll"],
         "effect": "CursedTumor_rewards"
     },
     "on": {
         "roll": {
-            "requires": ["roll"],
             "check": "CursedTumor_trigger_check",
             "effect": "CursedTumor_trigger"
         }

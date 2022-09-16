@@ -5,15 +5,7 @@ function Satan_rewards(host)
 end
 
 function Satan_trigger_check(host, me)
-    local lr = Common_LastRoll(host, me)
-    local flag = lr.value == 6 and lr.isCombatRoll
-    if not flag then
-        return false
-    end
-    CardData[me.id] = {
-        pid = lr.ownerID
-    }
-    return Common_MonsterWithID(host, me.id).isBeingAttacked
+    return Common_AttackingPlayerRolled(host, me, 6)
 end
 
 function Satan_trigger_cost(host, cardInfo)

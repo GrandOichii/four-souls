@@ -1,0 +1,14 @@
+{
+    "name": "Holy Mulligan",
+    "text": "When this dies, expand monster slots by 2, the active player may attack an additional time this turn.",
+    "script": "script.lua",
+    "health": 1,
+    "roll": 3,
+    "power": 1,
+    "rewards": {
+        "effect": "HolyMulligan_rewards"
+    },
+    "death": {
+        "effect": "HolyMulligan_death"
+    }
+}

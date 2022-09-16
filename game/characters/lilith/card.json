@@ -2,7 +2,7 @@
     "name": "Lilith",
     "health": 2,
     "attack": 1,
-    "item": "void",
+    "item": "incubus",
     "text": "{T}: Play an additional loot card this turn.\nStarting item: Incubus",
     "script": "script.lua",
     "use": {

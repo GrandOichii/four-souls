@@ -65,19 +65,20 @@ StackEffect* Effect::pushMe(Match* match, CardWrapper* cardW, Player* owner, str
     }
     if (hasRequirement(TAP_REQUIREMENT)) cardW->tap();
     if (hasRequirement(ROLL_REQUIREMENT)) {
+        auto roller = owner ? owner : match->getCurrentPlayer();
         match->pushToStack(new StackEffect(
             "_activateRoll",
-            owner, 
+            roller, 
             nullptr,
             ROLL_TYPE
         ));
         match->_stack.erase(std::find(match->_stack.begin(), match->_stack.end(), p));
         RollEvent re(
-            owner,
+            roller,
             false,
             p
         );
-        match->log(owner->name() + " rolls a " + std::to_string(re.value));
+        match->log(roller->name() + " rolls a " + std::to_string(re.value));
         match->_rollStack.push_back(re);
         match->applyTriggers(ROLL_TYPE);
         return p;
