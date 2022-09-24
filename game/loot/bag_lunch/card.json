@@ -12,5 +12,6 @@
     "leave": {
         "usesStack": false,
         "effect": "BagLunch_leave"
-    }
+    },
+    "key": "bag_lunch"
 }

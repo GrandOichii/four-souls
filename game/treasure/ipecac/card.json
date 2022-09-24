@@ -15,5 +15,6 @@
             "check": "Ipecac_trigger_check",
             "effect": "Ipecac_trigger"
         }
-    }
+    },
+    "key": "ipecac"
 }

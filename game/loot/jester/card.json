@@ -4,5 +4,6 @@
     "script": "script.lua",
     "use": {
         "effect": "Jester_use"
-    }
+    },
+    "key": "jester"
 }

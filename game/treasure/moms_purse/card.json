@@ -9,5 +9,6 @@
     "leave": {
         "usesStack": false,
         "effect": "MomsPurse_leave"
-    }
+    },
+    "key": "moms_purse"
 }

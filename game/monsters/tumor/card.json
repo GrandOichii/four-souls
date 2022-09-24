@@ -13,5 +13,6 @@
             "check": "Tumor_trigger_check",
             "effect": "Tumor_trigger"
         }
-    }
+    },
+    "key": "tumor"
 }

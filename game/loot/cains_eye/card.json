@@ -10,5 +10,6 @@
             "check": "CainsEye_trigger_check",
             "effect": "CainsEye_trigger"
         }
-    }
+    },
+    "key": "cains_eye"
 }

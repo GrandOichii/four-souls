@@ -7,5 +7,6 @@
             "check": "TarotCloth_trigger_check",
             "effect": "TarotCloth_trigger"
         }
-    }
+    },
+    "key": "tarot_cloth"
 }

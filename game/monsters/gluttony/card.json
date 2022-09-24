@@ -14,5 +14,6 @@
             "check": "Gluttony_trigger_check",
             "effect": "Gluttony_trigger"
         }
-    }
+    },
+    "key": "gluttony"
 }

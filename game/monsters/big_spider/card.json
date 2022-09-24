@@ -10,5 +10,6 @@
     },
     "death": {
         "effect": "BigSpider_death"
-    }
+    },
+    "key": "big_spider"
 }

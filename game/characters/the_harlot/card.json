@@ -7,5 +7,6 @@
     "script": "script.lua",
     "use": {
         "effect": "TheHarlot_tap"
-    }
+    },
+    "key": "the_harlot"
 }

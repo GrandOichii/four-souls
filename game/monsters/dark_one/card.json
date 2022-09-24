@@ -27,5 +27,6 @@
             "check": "DarkOne_trigger2_check",
             "effect": "DarkOne_trigger2"
         }
-    }
+    },
+    "key": "dark_one"
 }

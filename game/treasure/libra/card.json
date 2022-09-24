@@ -4,9 +4,12 @@
     "script": "script.lua",
     "abilities": [
         {
-            "requires": ["tap"],
+            "requires": [
+                "tap"
+            ],
             "cost": "Libra_cost",
             "effect": "Libra_tap"
         }
-    ]
+    ],
+    "key": "libra"
 }

@@ -8,5 +8,6 @@
             "cost": "ChargedBaby_trigger_cost",
             "effect": "ChargedBaby_trigger"
         }
-    }
+    },
+    "key": "charged_baby"
 }

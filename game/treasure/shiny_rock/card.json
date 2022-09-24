@@ -7,5 +7,6 @@
             "check": "ShinyRock_trigger_check",
             "effect": "ShinyRock_trigger"
         }
-    }
+    },
+    "key": "shiny_rock"
 }

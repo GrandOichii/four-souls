@@ -7,5 +7,6 @@
             "check": "FannyPack_trigger_check",
             "effect": "FannyPack_trigger"
         }
-    }
+    },
+    "key": "fanny_pack"
 }

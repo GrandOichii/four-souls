@@ -16,5 +16,6 @@
     },
     "death": {
         "effect": "CursedMulligan_trigger"
-    }
+    },
+    "key": "cursed_mulligan"
 }

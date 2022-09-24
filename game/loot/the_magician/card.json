@@ -5,5 +5,6 @@
     "use": {
         "effect": "TheMagician_use",
         "cost": "TheMagician_cost"
-    }
+    },
+    "key": "the_magician"
 }

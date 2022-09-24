@@ -8,5 +8,6 @@
     "soulCount": 1,
     "rewards": {
         "effect": "Peep_rewards"
-    }
+    },
+    "key": "peep"
 }

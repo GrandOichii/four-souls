@@ -7,5 +7,6 @@
             "check": "Marked_trigger_check",
             "effect": "Marked_trigger"
         }
-    }
+    },
+    "key": "marked"
 }

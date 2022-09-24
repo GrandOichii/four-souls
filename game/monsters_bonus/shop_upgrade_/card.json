@@ -4,5 +4,6 @@
     "script": "script.lua",
     "use": {
         "effect": "ShopUpgrade_effect"
-    }
+    },
+    "key": "shop_upgrade_"
 }

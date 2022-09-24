@@ -7,5 +7,6 @@
             "check": "GBG_trigger_check",
             "effect": "GBG_trigger"
         }
-    }
+    },
+    "key": "game_breaking_bug"
 }

@@ -15,5 +15,6 @@
             "check": "Abaddon_trigger_check",
             "effect": "Abaddon_trigger"
         }
-    }
+    },
+    "key": "abaddon"
 }

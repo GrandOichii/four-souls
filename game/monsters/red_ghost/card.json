@@ -14,5 +14,6 @@
             "cost": "RedGhost_trigger_cost",
             "effect": "RedGhost_trigger"
         }
-    }
+    },
+    "key": "red_ghost"
 }

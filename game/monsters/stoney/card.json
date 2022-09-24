@@ -22,5 +22,6 @@
             "check": "Stoney_trigger_check",
             "effect": "Stoney_trigger"
         }
-    }
+    },
+    "key": "stoney"
 }

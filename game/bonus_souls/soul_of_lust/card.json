@@ -8,5 +8,6 @@
             "check": "SoulOfLust_trigger_check",
             "effect": "SoulOfLust_trigger"
         }
-    }
+    },
+    "key": "soul_of_lust"
 }

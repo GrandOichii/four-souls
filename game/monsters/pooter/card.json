@@ -7,5 +7,6 @@
     "power": 1,
     "rewards": {
         "effect": "Pooter_rewards"
-    }
+    },
+    "key": "pooter"
 }

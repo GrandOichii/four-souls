@@ -5,5 +5,6 @@
     "use": {
         "cost": "TheDevil_cost",
         "effect": "TheDevil_effect"
-    }
+    },
+    "key": "the_devil"
 }

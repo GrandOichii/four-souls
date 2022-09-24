@@ -1,0 +1,14 @@
+{
+    "name": "Rib of Greed",
+    "key": "rib_of_greed",
+    "text": "Abilities and the death penalty can't make you discard loot cards or lose $.",
+    "use": {
+        "effect": "Common_TrinketEnter"
+    },
+    "enter": {
+        "effect": "RibOfGreed_enter"
+    },
+    "leave": {
+        "effect": "RibOfGreed_leave"
+    }
+}

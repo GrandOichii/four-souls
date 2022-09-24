@@ -10,7 +10,7 @@ end
 function LootCard_trigger_effect(host)
     local owner = getTopOwner(host)
     local me = this(host)
-    local choice = requestSimpleChoice(host, owner.id, 'Return ${'..me.name..'} to your hand?', {'Yes', 'No'})
+    local choice = requestSimpleChoice(host, owner.id, 'Return ${'..me.key..'} to your hand?', {'Yes', 'No'})
     if choice == 'No' then
         return
     end

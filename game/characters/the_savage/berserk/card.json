@@ -3,6 +3,7 @@
     "text": "You may attack an additional time on your turn.\nEach time you kill a monster, gain +1h till the end of turn.",
     "script": "script.lua",
     "eternal": true,
+    "key": "berserk",
 
     "on": {
         "turn_start": {

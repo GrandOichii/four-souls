@@ -11,5 +11,6 @@
     },
     "rewards": {
         "effect": "ChristianBroadcasts_rewards"
-    }
+    },
+    "key": "christian_broadcasts"
 }

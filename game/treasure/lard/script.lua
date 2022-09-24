@@ -22,5 +22,5 @@ end
 function Lard_trigger(host)
     local _ = getDamageEvent(host)
     local owner = getTopOwner(host)
-    Common_Discard(host, owner.id, 1)
+    Common_Discard(host, owner.id, 1, false)
 end

@@ -9,5 +9,6 @@
     "leave": {
         "usesStack": false,
         "effect": "SteamySale_leave"
-    }
+    },
+    "key": "steamy_sale"
 }

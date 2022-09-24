@@ -14,5 +14,6 @@
             "check": "Greed_trigger_check",
             "effect": "Greed_trigger"
         }
-    }
+    },
+    "key": "greed"
 }

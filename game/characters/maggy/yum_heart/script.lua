@@ -28,7 +28,6 @@ function YumHeart_enter(host)
             id = id,
 			func = function (host_, srcType, srcID, tgtType, tgtID, amount, roll)
                 if checkF(tgtType, tgtID) then
-                    -- return CombatDamageLayers._et[CombatDamageLayers:posOf(id)-1].func(host_, srcType, srcID, tgtType, tgtID, amount, roll)
                     return 0
                 end
 				return CombatDamageLayers._et[CombatDamageLayers:posOf(id)-1].func(host_, srcType, srcID, tgtType, tgtID, amount, roll)
@@ -70,10 +69,6 @@ function YumHeart_effect(host)
         return
     end
     CardData[me.id].mids[#CardData[me.id].mids+1] = target.id
-end
-
-function YumHeart_trigger_check(host, me)
-    return Common_OwnersTurn(host, me.id)
 end
 
 function YumHeart_trigger(host)

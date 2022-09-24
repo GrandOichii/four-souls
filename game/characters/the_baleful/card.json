@@ -15,5 +15,6 @@
     "leave": {
         "usesStack": false,
         "effect": "TheBaleful_leave"
-    }
+    },
+    "key": "the_baleful"
 }

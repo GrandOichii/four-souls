@@ -7,5 +7,6 @@
             "cost": "Smelter_cost",
             "effect": "Smelter_smelt"
         }
-    ]
+    ],
+    "key": "smelter"
 }

@@ -13,5 +13,6 @@
             "cost": "BatteryPack_cost",
             "effect": "BatteryPack_recharge"
         }
-    ]
+    ],
+    "key": "battery_pack"
 }

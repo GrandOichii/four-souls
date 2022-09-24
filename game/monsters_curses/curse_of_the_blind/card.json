@@ -19,5 +19,6 @@
             "check": "Common_CurseDeathCheck",
             "effect": "Common_CurseDeathEffect"
         }
-    }
+    },
+    "key": "curse_of_the_blind"
 }

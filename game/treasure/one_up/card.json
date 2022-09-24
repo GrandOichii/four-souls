@@ -9,5 +9,6 @@
     "leave": {
         "usesStack": false,
         "effect": "OneUP_leave"
-    }
+    },
+    "key": "one_up"
 }

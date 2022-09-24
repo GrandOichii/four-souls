@@ -5,5 +5,6 @@
     "use": {
         "effect": "TwoOfSpades_use",
         "cost": "TwoOfSpades_cost"
-    }
+    },
+    "key": "two_of_spades"
 }

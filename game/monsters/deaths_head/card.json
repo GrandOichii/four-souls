@@ -22,5 +22,6 @@
             "check": "DeathsHead_trigger_check",
             "effect": "DeathsHead_trigger"
         }
-    }
+    },
+    "key": "deaths_head"
 }

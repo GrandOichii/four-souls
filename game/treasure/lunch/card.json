@@ -9,5 +9,6 @@
     "leave": {
         "usesStack": false,
         "effect": "Lunch_leave"
-    }
+    },
+    "key": "lunch"
 }

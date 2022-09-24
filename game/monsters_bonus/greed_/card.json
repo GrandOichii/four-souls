@@ -5,5 +5,6 @@
     "use": {
         "cost": "Greed_cost",
         "effect": "Greed_effect"
-    }
+    },
+    "key": "greed_"
 }

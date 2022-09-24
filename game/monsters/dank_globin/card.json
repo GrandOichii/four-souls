@@ -11,5 +11,6 @@
     "death": {
         "cost": "DankGlobin_death_cost",
         "effect": "DankGlobin_death"
-    }
+    },
+    "key": "dank_globin"
 }

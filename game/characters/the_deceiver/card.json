@@ -7,5 +7,6 @@
     "script": "script.lua",
     "use": {
         "effect": "TheDeceiver_tap"
-    }
+    },
+    "key": "the_deceiver"
 }

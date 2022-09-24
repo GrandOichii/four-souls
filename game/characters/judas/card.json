@@ -7,5 +7,6 @@
     "script": "script.lua",
     "use": {
         "effect": "Judas_tap"
-    }
+    },
+    "key": "judas"
 }

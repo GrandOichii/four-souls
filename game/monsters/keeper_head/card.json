@@ -6,7 +6,9 @@
     "roll": 4,
     "power": 1,
     "rewards": {
-        "requires": ["roll"],
+        "requires": [
+            "roll"
+        ],
         "effect": "KeeperHead_rewards"
     },
     "on": {
@@ -14,5 +16,6 @@
             "check": "KeeperHead_trigger_check",
             "effect": "KeeperHead_trigger"
         }
-    }
+    },
+    "key": "keeper_head"
 }

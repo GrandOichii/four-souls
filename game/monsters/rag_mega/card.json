@@ -18,5 +18,6 @@
             "check": "RagMega_trigger_check",
             "effect": "RagMega_trigger"
         }
-    }
+    },
+    "key": "rag_mega"
 }

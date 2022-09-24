@@ -17,5 +17,6 @@
             "cost": "KeepersSack_cost",
             "effect": "KeepersSack_tap"
         }
-    ]
+    ],
+    "key": "keeper_s_sack"
 }

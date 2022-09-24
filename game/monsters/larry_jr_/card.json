@@ -16,5 +16,6 @@
     "leave": {
         "usesStack": false,
         "effect": "LarryJr_leave"
-    }
+    },
+    "key": "larry_jr_"
 }

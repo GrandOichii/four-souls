@@ -7,5 +7,6 @@
     "power": 2,
     "rewards": {
         "effect": "ConjoinedFatty_rewards"
-    }
+    },
+    "key": "conjoined_fatty"
 }

@@ -25,7 +25,7 @@ function XRayVision_tap(host)
         return
     end
     local card = cards[1]
-    local choice = requestSimpleChoice(host, owner.id, 'Put ${'..card.name..'} at the bottom of the '..deckT..' deck?', {'Yes', 'No'})
+    local choice = requestSimpleChoice(host, owner.id, 'Put ${'..card.key..'} at the bottom of the '..deckT..' deck?', {'Yes', 'No'})
     if choice == 'No' then
         return
     end

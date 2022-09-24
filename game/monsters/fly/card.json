@@ -7,5 +7,6 @@
     "power": 1,
     "rewards": {
         "effect": "Fly_rewards"
-    }
+    },
+    "key": "fly"
 }

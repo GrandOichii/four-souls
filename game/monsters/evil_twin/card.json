@@ -14,5 +14,6 @@
             "check": "EvilTwin_trigger_check",
             "effect": "EvilTwin_trigger"
         }
-    }
+    },
+    "key": "evil_twin"
 }

@@ -10,5 +10,6 @@
     },
     "destroyed": {
         "effect": "JudasShadow_leave"
-    }
+    },
+    "key": "judas_shadow"
 }

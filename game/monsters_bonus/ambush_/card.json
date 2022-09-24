@@ -4,5 +4,6 @@
     "script": "script.lua",
     "use": {
         "effect": "Ambush_effect"
-    }
+    },
+    "key": "ambush_"
 }

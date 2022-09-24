@@ -7,5 +7,6 @@
     "text": "{T}: Play an additional loot card this turn.\nStarting item: Blood Lust",
     "use": {
         "effect": "Samson_use"
-    }
+    },
+    "key": "samson"
 }

@@ -4,5 +4,5 @@ end
 
 function CurseOfAmnesia_trigger(host)
     local owner = getTopOwner(host)
-    Common_Discard(host, owner.id, 2)
+    Common_Discard(host, owner.id, 2, false)
 end

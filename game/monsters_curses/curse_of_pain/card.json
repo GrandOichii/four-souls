@@ -15,5 +15,6 @@
             "check": "CurseOfPain_trigger_check",
             "effect": "CurseOfPain_trigger"
         }
-    }
+    },
+    "key": "curse_of_pain"
 }

@@ -16,5 +16,6 @@
     "leave": {
         "usesStack": false,
         "effect": "CarrionQueen_leave"
-    }
+    },
+    "key": "carrion_queen"
 }

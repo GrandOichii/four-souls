@@ -16,5 +16,6 @@
     "leave": {
         "usesStack": false,
         "effect": "MaskOfInfamy_leave"
-    }
+    },
+    "key": "mask_of_infamy"
 }

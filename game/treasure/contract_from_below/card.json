@@ -7,5 +7,6 @@
             "cost": "ContractFromBelow_cost",
             "effect": "ContractFromBelow_effect"
         }
-    ]
+    ],
+    "key": "contract_from_below"
 }

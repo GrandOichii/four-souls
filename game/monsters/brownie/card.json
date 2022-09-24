@@ -26,5 +26,6 @@
             "check": "Brownie_trigger2_check",
             "effect": "Brownie_trigger2"
         }
-    }
+    },
+    "key": "brownie"
 }

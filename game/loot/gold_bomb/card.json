@@ -5,5 +5,6 @@
     "use": {
         "effect": "GoldBomb_use",
         "cost": "GoldBomb_cost"
-    }
+    },
+    "key": "gold_bomb"
 }

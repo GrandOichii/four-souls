@@ -24,5 +24,5 @@ function TheresOptions_peek(host)
     end
     local card = cards[1]
     local owner = getTopOwner(host)
-    requestSimpleChoice(host, owner.id, 'Top card of the treasure deck is ${'..card.name..'}', {'Ok'})
+    requestSimpleChoice(host, owner.id, 'Top card of the treasure deck is ${'..card.key..'}', {'Ok'})
 end

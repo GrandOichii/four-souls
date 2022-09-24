@@ -14,5 +14,6 @@
             "check": "Dople_trigger_check",
             "effect": "Dople_trigger"
         }
-    }
+    },
+    "key": "dople"
 }

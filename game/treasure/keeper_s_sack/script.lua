@@ -13,7 +13,7 @@ function KeepersSack_trigger(host)
         dealDamage(host, PLAYER, owner.id, PLAYER, owner.id, 2)
         return
     end
-    Common_Discard(host, owner.id, 1)
+    Common_Discard(host, owner.id, 1, false)
 end
 
 function KeepersSack_cost(host, info)

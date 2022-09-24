@@ -7,5 +7,6 @@
             "cost": "DonationMachine_cost",
             "effect": "DonationMachine_effect"
         }
-    ]
+    ],
+    "key": "donation_machine"
 }

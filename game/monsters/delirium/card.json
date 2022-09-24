@@ -15,5 +15,6 @@
     "leave": {
         "usesStack": false,
         "effect": "Delirium_leave"
-    }
+    },
+    "key": "delirium"
 }

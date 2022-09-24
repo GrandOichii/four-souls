@@ -4,8 +4,12 @@
     "script": "script.lua",
     "abilities": [
         {
-            "requires": ["tap", "roll"],
+            "requires": [
+                "tap",
+                "roll"
+            ],
             "effect": "HeadOfKrampus_tap"
         }
-    ]
+    ],
+    "key": "head_of_krampus"
 }

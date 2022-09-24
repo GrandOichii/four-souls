@@ -3,7 +3,10 @@
     "text": "Roll:\nGain Xc, where X is 2 times the result.",
     "script": "script.lua",
     "use": {
-        "requires": ["roll"],
+        "requires": [
+            "roll"
+        ],
         "effect": "ChunkOfAmber_use"
-    }
+    },
+    "key": "chunk_of_amber"
 }

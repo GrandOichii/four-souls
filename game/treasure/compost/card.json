@@ -18,8 +18,11 @@
     },
     "abilities": [
         {
-            "requires": ["tap"],
+            "requires": [
+                "tap"
+            ],
             "effect": "Compost_tap"
         }
-    ]
+    ],
+    "key": "compost"
 }

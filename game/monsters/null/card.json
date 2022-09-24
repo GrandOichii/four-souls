@@ -21,5 +21,6 @@
             "usesStack": false,
             "effect": "Null_trigger"
         }
-    }
+    },
+    "key": "null"
 }

@@ -4,5 +4,6 @@
     "script": "script.lua",
     "use": {
         "effect": "TheWorld_use"
-    }
+    },
+    "key": "the_world"
 }

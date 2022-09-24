@@ -3,6 +3,7 @@
     "text": "{T}: Add or subtract 1 from any dice roll.",
     "script": "script.lua",
     "eternal": true,
+    "key": "book_of_belial",
 
     "abilities": [
         {

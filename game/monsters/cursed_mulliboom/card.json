@@ -16,5 +16,6 @@
     },
     "death": {
         "effect": "CursedMulliboom_trigger"
-    }
+    },
+    "key": "cursed_mulliboom"
 }

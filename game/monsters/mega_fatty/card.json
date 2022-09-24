@@ -8,5 +8,6 @@
     "soulCount": 1,
     "rewards": {
         "effect": "MegaFatty_rewards"
-    }
+    },
+    "key": "mega_fatty"
 }

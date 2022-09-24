@@ -6,7 +6,7 @@ function SecretRoom_effect(host)
         dealDamage(host, PLAYER, owner.id, PLAYER, owner.id, 3)
     end
     if roll.value == 2 or roll.value == 3 then
-        Common_Discard(host, owner.id, 2)
+        Common_Discard(host, owner.id, 2, false)
     end
     if roll.value == 4 or roll.value == 5 then
         addCoins(host, owner.id, 7)

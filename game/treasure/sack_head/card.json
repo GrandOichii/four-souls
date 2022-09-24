@@ -4,9 +4,12 @@
     "script": "script.lua",
     "abilities": [
         {
-            "requires": ["tap"],
+            "requires": [
+                "tap"
+            ],
             "cost": "SackHead_cost",
             "effect": "SackHead_tap"
         }
-    ]
+    ],
+    "key": "sack_head"
 }

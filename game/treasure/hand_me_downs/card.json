@@ -4,8 +4,11 @@
     "script": "script.lua",
     "abilities": [
         {
-            "requires": ["tap"],
+            "requires": [
+                "tap"
+            ],
             "effect": "HandMeDowns_tap"
         }
-    ]
+    ],
+    "key": "hand_me_downs"
 }

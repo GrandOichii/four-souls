@@ -7,5 +7,6 @@
     },
     "destroyed": {
         "effect": "Wishbone_leave"
-    }
+    },
+    "key": "wishbone"
 }

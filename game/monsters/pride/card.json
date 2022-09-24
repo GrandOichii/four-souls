@@ -8,5 +8,6 @@
     "soulCount": 1,
     "rewards": {
         "effect": "Pride_rewards"
-    }
+    },
+    "key": "pride"
 }

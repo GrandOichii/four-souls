@@ -13,5 +13,6 @@
             "check": "Roundy_trigger_check",
             "effect": "Roundy_trigger"
         }
-    }
+    },
+    "key": "roundy"
 }

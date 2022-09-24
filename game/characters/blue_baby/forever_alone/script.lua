@@ -43,7 +43,7 @@ function ForeverAlone_tap(host)
     end
     if choice == ForeverAlone_choice3 then
         --  TODO? fizzle if can't discard
-        Common_Discard(host, owner.id, 1)
+        Common_Discard(host, owner.id, 1, false)
         lootCards(host, owner.id, 1)
     end
 

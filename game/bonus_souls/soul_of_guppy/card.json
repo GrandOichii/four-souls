@@ -8,5 +8,6 @@
             "check": "SoulOfGuppy_trigger_check",
             "effect": "SoulOfGuppy_trigger"
         }
-    }
+    },
+    "key": "soul_of_guppy"
 }

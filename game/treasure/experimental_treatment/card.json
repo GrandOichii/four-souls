@@ -5,8 +5,11 @@
     "script": "script.lua",
     "abilities": [
         {
-            "requires": ["roll"],
+            "requires": [
+                "roll"
+            ],
             "effect": "ExperimentalTreatment_inject"
         }
-    ]
+    ],
+    "key": "experimental_treatment"
 }

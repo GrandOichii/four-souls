@@ -7,5 +7,6 @@
             "check": "SuicideKing_trigger_check",
             "effect": "SuicideKing_trigger"
         }
-    }
+    },
+    "key": "suicide_king"
 }

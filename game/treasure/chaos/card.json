@@ -4,8 +4,11 @@
     "script": "script.lua",
     "abilities": [
         {
-            "requires": ["tap"],
+            "requires": [
+                "tap"
+            ],
             "effect": "Chaos_tap"
         }
-    ]
+    ],
+    "key": "chaos"
 }

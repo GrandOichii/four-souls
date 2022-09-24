@@ -9,5 +9,6 @@
     "leave": {
         "usesStack": false,
         "effect": "Shadow_leave"
-    }
+    },
+    "key": "shadow"
 }

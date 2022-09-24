@@ -10,5 +10,6 @@
             "check": "GoldenHorseshoe_trigger_check",
             "effect": "GoldenHorseshoe_trigger"
         }
-    }
+    },
+    "key": "golden_horseshoe"
 }

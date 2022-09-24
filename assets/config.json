@@ -1,1828 +1,1875 @@
 {
     "cards": {
-        "I Can See Forever!": {
-            "large": "images/i_can_see_forever__large.bmp",
-            "small": "images/i_can_see_forever_.bmp"
-        },
-        "Polyphemus": {
-            "large": "images/polyphemus_large.bmp",
-            "small": "images/polyphemus.bmp"
-        },
-        "Rag Mega": {
-            "large": "images/rag_mega_large.bmp",
-            "small": "images/rag_mega.bmp"
-        },
-        "Null": {
-            "large": "images/null_large.bmp",
-            "small": "images/null.bmp"
-        },
-        "More Options": {
-            "large": "images/more_options_large.bmp",
-            "small": "images/more_options.bmp"
-        },
-        "Daddy Haunt": {
-            "large": "images/daddy_haunt_large.bmp",
-            "small": "images/daddy_haunt.bmp"
-        },
-        "Compost": {
-            "large": "images/compost_large.bmp",
-            "small": "images/compost.bmp"
-        },
-        "Gello": {
-            "large": "images/gello_large.bmp",
-            "small": "images/gello.bmp"
-        },
-        "Bony": {
-            "large": "images/bony_large.bmp",
-            "small": "images/bony.bmp"
-        },
-        "The Harlot": {
-            "large": "images/the_harlot_large.bmp",
-            "small": "images/the_harlot.bmp"
-        },
-        "Mother!": {
-            "large": "images/mother__large.bmp",
-            "small": "images/mother_.bmp"
-        },
-        "Isaac!": {
-            "large": "images/isaac__large.bmp",
-            "small": "images/isaac_.bmp"
-        },
-        "Holy Portal": {
-            "large": "images/holy_portal_large.bmp",
-            "small": "images/holy_portal.bmp"
-        },
-        "Holy Greedling": {
-            "large": "images/holy_greedling_large.bmp",
-            "small": "images/holy_greedling.bmp"
-        },
-        "Holy Psy Horf": {
-            "large": "images/holy_psy_horf_large.bmp",
-            "small": "images/holy_psy_horf.bmp"
-        },
-        "Holy Brain": {
-            "large": "images/holy_brain_large.bmp",
-            "small": "images/holy_brain.bmp"
-        },
-        "Holy Mulligan": {
-            "large": "images/holy_mulligan_large.bmp",
-            "small": "images/holy_mulligan.bmp"
-        },
-        "Holy Bony": {
-            "large": "images/holy_bony_large.bmp",
-            "small": "images/holy_bony.bmp"
-        },
-        "Blastoclyst": {
-            "large": "images/blastoclyst_large.bmp",
-            "small": "images/blastoclyst.bmp"
-        },
-        "Gurdlings": {
-            "large": "images/gurdlings_large.bmp",
-            "small": "images/gurdlings.bmp"
-        },
-        "Flaming Hopper": {
-            "large": "images/flaming_hopper_large.bmp",
-            "small": "images/flaming_hopper.bmp"
-        },
-        "Fistula": {
-            "large": "images/fistula_large.bmp",
-            "small": "images/fistula.bmp"
-        },
-        "Brownie": {
-            "large": "images/brownie_large.bmp",
-            "small": "images/brownie.bmp"
-        },
-        "Baby Plum": {
-            "large": "images/baby_plum_large.bmp",
-            "small": "images/baby_plum.bmp"
-        },
-        "Begotten": {
-            "large": "images/begotten_large.bmp",
-            "small": "images/begotten.bmp"
-        },
-        "Sucker": {
-            "large": "images/sucker_large.bmp",
-            "small": "images/sucker.bmp"
-        },
-        "Swarmer": {
-            "large": "images/swarmer_large.bmp",
-            "small": "images/swarmer.bmp"
-        },
-        "Tumor": {
-            "large": "images/tumor_large.bmp",
-            "small": "images/tumor.bmp"
-        },
-        "The Fallen": {
-            "large": "images/the_fallen_large.bmp",
-            "small": "images/the_fallen.bmp"
-        },
-        "Roundy": {
-            "large": "images/roundy_large.bmp",
-            "small": "images/roundy.bmp"
-        },
-        "Red Ghost": {
-            "large": "images/red_ghost_large.bmp",
-            "small": "images/red_ghost.bmp"
-        },
-        "Peeping Fatty": {
-            "large": "images/peeping_fatty_large.bmp",
-            "small": "images/peeping_fatty.bmp"
-        },
-        "Clog": {
-            "large": "images/clog_large.bmp",
-            "small": "images/clog.bmp"
-        },
-        "\"Christian Broadcasts\"": {
-            "large": "images/_christian_broadcasts__large.bmp",
-            "small": "images/_christian_broadcasts_.bmp"
-        },
-        "Cursed Dople": {
-            "large": "images/cursed_dople_large.bmp",
-            "small": "images/cursed_dople.bmp"
-        },
-        "Cursed Mulliboom": {
-            "large": "images/cursed_mulliboom_large.bmp",
-            "small": "images/cursed_mulliboom.bmp"
-        },
-        "Cursed Mulligan": {
-            "large": "images/cursed_mulligan_large.bmp",
-            "small": "images/cursed_mulligan.bmp"
-        },
-        "Cursed Tumor": {
-            "large": "images/cursed_tumor_large.bmp",
-            "small": "images/cursed_tumor.bmp"
-        },
-        "Corny": {
-            "large": "images/corny_large.bmp",
-            "small": "images/corny.bmp"
-        },
-        "Charmed Greedling": {
-            "large": "images/charmed_greedling_large.bmp",
-            "small": "images/charmed_greedling.bmp"
-        },
-        "XVIII. The Moon": {
-            "large": "images/xviii__the_moon_large.bmp",
-            "small": "images/xviii__the_moon.bmp"
-        },
-        "IX. The Hermit": {
-            "large": "images/ix__the_hermit_large.bmp",
-            "small": "images/ix__the_hermit.bmp"
-        },
-        "IV. The Emperor": {
-            "large": "images/iv__the_emperor_large.bmp",
-            "small": "images/iv__the_emperor.bmp"
-        },
-        "The Blue Map": {
-            "large": "images/the_blue_map_large.bmp",
-            "small": "images/the_blue_map.bmp"
-        },
-        "The Map": {
-            "large": "images/the_map_large.bmp",
-            "small": "images/the_map.bmp"
-        },
-        "The Compass": {
-            "large": "images/the_compass_large.bmp",
-            "small": "images/the_compass.bmp"
-        },
-        "Spelunker Hat": {
-            "large": "images/spelunker_hat_large.bmp",
-            "small": "images/spelunker_hat.bmp"
-        },
-        "Short Fuse": {
-            "large": "images/short_fuse_large.bmp",
-            "small": "images/short_fuse.bmp"
-        },
-        "Purple Heart": {
-            "large": "images/purple_heart_large.bmp",
-            "small": "images/purple_heart.bmp"
-        },
-        "Golden Horseshoe": {
-            "large": "images/golden_horseshoe_large.bmp",
-            "small": "images/golden_horseshoe.bmp"
-        },
-        "Ansuz": {
-            "large": "images/ansuz_large.bmp",
-            "small": "images/ansuz.bmp"
-        },
-        "Algiz": {
-            "large": "images/algiz_large.bmp",
-            "small": "images/algiz.bmp"
-        },
-        "Divorce Papers": {
-            "large": "images/divorce_papers_large.bmp",
-            "small": "images/divorce_papers.bmp"
-        },
-        "Berkano": {
-            "large": "images/berkano_large.bmp",
-            "small": "images/berkano.bmp"
-        },
-        "Lilith": {
-            "large": "images/lilith_large.bmp",
-            "small": "images/lilith.bmp"
-        },
-        "Lil Chest": {
-            "large": "images/lil_chest_large.bmp",
-            "small": "images/lil_chest.bmp"
-        },
-        "Incubus": {
-            "large": "images/incubus_large.bmp",
-            "small": "images/incubus.bmp"
-        },
-        "Hallowed Ground": {
-            "large": "images/hallowed_ground_large.bmp",
-            "small": "images/hallowed_ground.bmp"
-        },
-        "Eve": {
-            "large": "images/eve_large.bmp",
-            "small": "images/eve.bmp"
-        },
-        "The Curse": {
-            "large": "images/the_curse_large.bmp",
-            "small": "images/the_curse.bmp"
-        },
-        "Widow": {
-            "large": "images/widow_large.bmp",
-            "small": "images/widow.bmp"
-        },
-        "Bum Friend": {
-            "large": "images/bum_friend_large.bmp",
-            "small": "images/bum_friend.bmp"
-        },
-        "The Cage": {
-            "large": "images/the_cage_large.bmp",
-            "small": "images/the_cage.bmp"
-        },
-        "Nerve Ending": {
-            "large": "images/nerve_ending_large.bmp",
-            "small": "images/nerve_ending.bmp"
-        },
-        "Mama Gurdy": {
-            "large": "images/mama_gurdy_large.bmp",
-            "small": "images/mama_gurdy.bmp"
-        },
-        "Hush": {
-            "large": "images/hush_large.bmp",
-            "small": "images/hush.bmp"
-        },
-        "Charger": {
-            "large": "images/charger_large.bmp",
-            "small": "images/charger.bmp"
-        },
-        "Curse of Pain": {
-            "large": "images/curse_of_pain_large.bmp",
-            "small": "images/curse_of_pain.bmp"
-        },
-        "Curse of Amnesia": {
-            "large": "images/curse_of_amnesia_large.bmp",
-            "small": "images/curse_of_amnesia.bmp"
-        },
-        "Curse of Empathy": {
-            "large": "images/curse_of_empathy_large.bmp",
-            "small": "images/curse_of_empathy.bmp"
-        },
-        "Curse of Greed": {
-            "large": "images/curse_of_greed_large.bmp",
-            "small": "images/curse_of_greed.bmp"
-        },
-        "Curse of Impulse": {
-            "large": "images/curse_of_impulse_large.bmp",
-            "small": "images/curse_of_impulse.bmp"
-        },
-        "Curse of Loss": {
-            "large": "images/curse_of_loss_large.bmp",
-            "small": "images/curse_of_loss.bmp"
-        },
-        "Curse of the Blind": {
-            "large": "images/curse_of_the_blind_large.bmp",
-            "small": "images/curse_of_the_blind.bmp"
-        },
-        "Curse of the Hollow": {
-            "large": "images/curse_of_the_hollow_large.bmp",
-            "small": "images/curse_of_the_hollow.bmp"
-        },
-        "Curse of the Hunted": {
-            "large": "images/curse_of_the_hunted_large.bmp",
-            "small": "images/curse_of_the_hunted.bmp"
-        },
-        "Dressing Table": {
-            "large": "images/dressing_table_large.bmp",
-            "small": "images/dressing_table.bmp"
-        },
-        "Trap Door!": {
-            "large": "images/trap_door__large.bmp",
-            "small": "images/trap_door_.bmp"
-        },
-        "TNT Barrel": {
-            "large": "images/tnt_barrel_large.bmp",
-            "small": "images/tnt_barrel.bmp"
-        },
-        "Greed!": {
-            "large": "images/greed__large.bmp",
-            "small": "images/greed_.bmp"
-        },
-        "Betrayal!": {
-            "large": "images/betrayal__large.bmp",
-            "small": "images/betrayal_.bmp"
-        },
-        "XL Floor!": {
-            "large": "images/xl_floor__large.bmp",
-            "small": "images/xl_floor_.bmp"
-        },
-        "Spiked Chest": {
-            "large": "images/spiked_chest_large.bmp",
-            "small": "images/spiked_chest.bmp"
-        },
-        "Shop Upgrade!": {
-            "large": "images/shop_upgrade__large.bmp",
-            "small": "images/shop_upgrade_.bmp"
-        },
-        "Secret Room!": {
-            "large": "images/secret_room__large.bmp",
-            "small": "images/secret_room_.bmp"
-        },
-        "Mega Troll Bomb!": {
-            "large": "images/mega_troll_bomb__large.bmp",
-            "small": "images/mega_troll_bomb_.bmp"
-        },
-        "I am Error!": {
-            "large": "images/i_am_error__large.bmp",
-            "small": "images/i_am_error_.bmp"
-        },
-        "Holy Chest": {
-            "large": "images/holy_chest_large.bmp",
-            "small": "images/holy_chest.bmp"
-        },
-        "Head Trauma": {
-            "large": "images/head_trauma_large.bmp",
-            "small": "images/head_trauma.bmp"
-        },
-        "Double Treasure!": {
-            "large": "images/double_treasure__large.bmp",
-            "small": "images/double_treasure_.bmp"
-        },
-        "Chest": {
-            "large": "images/chest_large.bmp",
-            "small": "images/chest.bmp"
-        },
-        "Dark Chest": {
-            "large": "images/dark_chest_large.bmp",
-            "small": "images/dark_chest.bmp"
-        },
-        "Angel Room": {
-            "large": "images/angel_room_large.bmp",
-            "small": "images/angel_room.bmp"
-        },
-        "Ambush!": {
-            "large": "images/ambush__large.bmp",
-            "small": "images/ambush_.bmp"
-        },
-        "Troll Bombs": {
-            "large": "images/troll_bombs_large.bmp",
-            "small": "images/troll_bombs.bmp"
-        },
-        "Gold Chest": {
-            "large": "images/gold_chest_large.bmp",
-            "small": "images/gold_chest.bmp"
-        },
-        "Friendly Sack": {
-            "large": "images/friendly_sack_large.bmp",
-            "small": "images/friendly_sack.bmp"
-        },
-        "Eden's Soul": {
-            "large": "images/eden_s_soul_large.bmp",
-            "small": "images/eden_s_soul.bmp"
-        },
-        "Cain": {
-            "large": "images/cain_large.bmp",
-            "small": "images/cain.bmp"
-        },
-        "Sleight of Hand": {
-            "large": "images/sleight_of_hand_large.bmp",
-            "small": "images/sleight_of_hand.bmp"
-        },
-        "Eden": {
-            "large": "images/eden_large.bmp",
-            "small": "images/eden.bmp"
-        },
-        "Strawberry": {
-            "large": "images/strawberry_large.bmp",
-            "small": "images/strawberry.bmp"
-        },
-        "Soul of Guppy": {
-            "large": "images/soul_of_guppy_large.bmp",
-            "small": "images/soul_of_guppy.bmp"
-        },
-        "Soul of Wrath": {
-            "large": "images/soul_of_wrath_large.bmp",
-            "small": "images/soul_of_wrath.bmp"
-        },
-        "Soul of Lust": {
-            "large": "images/soul_of_lust_large.bmp",
-            "small": "images/soul_of_lust.bmp"
-        },
-        "Soul of Gluttony": {
-            "large": "images/soul_of_gluttony_large.bmp",
-            "small": "images/soul_of_gluttony.bmp"
-        },
-        "Soul of Greed": {
-            "large": "images/soul_of_greed_large.bmp",
-            "small": "images/soul_of_greed.bmp"
-        },
-        "Soul of Sloth": {
-            "large": "images/soul_of_sloth_large.bmp",
-            "small": "images/soul_of_sloth.bmp"
-        },
-        "Forget Me Now": {
-            "large": "images/forget_me_now_large.bmp",
-            "small": "images/forget_me_now.bmp"
-        },
-        "Finger!": {
-            "large": "images/finger__large.bmp",
-            "small": "images/finger_.bmp"
-        },
-        "Dad's Ring": {
-            "large": "images/dad_s_ring_large.bmp",
-            "small": "images/dad_s_ring.bmp"
-        },
-        "Judas' Shadow": {
-            "large": "images/judas__shadow_large.bmp",
-            "small": "images/judas__shadow.bmp"
-        },
-        "Handicapped Placard": {
-            "large": "images/handicapped_placard_large.bmp",
-            "small": "images/handicapped_placard.bmp"
-        },
-        "Maggy": {
-            "large": "images/maggy_large.bmp",
-            "small": "images/maggy.bmp"
-        },
-        "Yum Heart": {
-            "large": "images/yum_heart_large.bmp",
-            "small": "images/yum_heart.bmp"
-        },
-        "Apollyon": {
-            "large": "images/apollyon_large.bmp",
-            "small": "images/apollyon.bmp"
-        },
-        "Void": {
-            "large": "images/void_large.bmp",
-            "small": "images/void.bmp"
-        },
-        "The Broken": {
-            "large": "images/the_broken_large.bmp",
-            "small": "images/the_broken.bmp"
-        },
-        "Spindown Dice": {
-            "large": "images/spindown_dice_large.bmp",
-            "small": "images/spindown_dice.bmp"
-        },
-        "XV. The Devil": {
-            "large": "images/xv__the_devil_large.bmp",
-            "small": "images/xv__the_devil.bmp"
-        },
-        "Flip": {
-            "large": "images/flip_large.bmp",
-            "small": "images/flip.bmp"
-        },
-        "The Enigma": {
-            "large": "images/the_enigma_large.bmp",
-            "small": "images/the_enigma.bmp"
-        },
-        "amginE ehT": {
-            "large": "images/amgine_eht_large.bmp",
-            "small": "images/amgine_eht.bmp"
-        },
-        "R Key": {
-            "large": "images/r_key_large.bmp",
-            "small": "images/r_key.bmp"
-        },
-        "Sticky Nickel": {
-            "large": "images/sticky_nickel_large.bmp",
-            "small": "images/sticky_nickel.bmp"
-        },
-        "Eternal D6": {
-            "large": "images/eternal_d6_large.bmp",
-            "small": "images/eternal_d6.bmp"
-        },
-        "Loot Card": {
-            "large": "images/loot_card_large.bmp",
-            "small": "images/loot_card.bmp"
-        },
-        "Pay to Play": {
-            "large": "images/pay_to_play_large.bmp",
-            "small": "images/pay_to_play.bmp"
-        },
-        "The Baleful": {
-            "large": "images/the_baleful_large.bmp",
-            "small": "images/the_baleful.bmp"
-        },
-        "Soulbond": {
-            "large": "images/soulbond_large.bmp",
-            "small": "images/soulbond.bmp"
-        },
-        "Mom's Ring": {
-            "large": "images/mom_s_ring_large.bmp",
-            "small": "images/mom_s_ring.bmp"
-        },
-        "Keeper's Sack": {
-            "large": "images/keeper_s_sack_large.bmp",
-            "small": "images/keeper_s_sack.bmp"
-        },
-        "The Benighted": {
-            "large": "images/the_benighted_large.bmp",
-            "small": "images/the_benighted.bmp"
-        },
-        "Hemoptysis": {
-            "large": "images/hemoptysis_large.bmp",
-            "small": "images/hemoptysis.bmp"
-        },
-        "Donation Machine": {
-            "large": "images/donation_machine_large.bmp",
-            "small": "images/donation_machine.bmp"
-        },
-        "The Bone": {
-            "large": "images/the_bone_large.bmp",
-            "small": "images/the_bone.bmp"
-        },
-        "The Forgotten": {
-            "large": "images/the_forgotten_large.bmp",
-            "small": "images/the_forgotten.bmp"
-        },
-        "Fetal Haunt": {
-            "large": "images/fetal_haunt_large.bmp",
-            "small": "images/fetal_haunt.bmp"
-        },
-        "Donation Machice": {
-            "large": "images/donation_machine_large.bmp",
-            "small": "images/donation_machine.bmp"
-        },
-        "Mom's Shovel": {
-            "large": "images/mom_s_shovel_large.bmp",
-            "small": "images/mom_s_shovel.bmp"
-        },
-        "Magic Skin": {
-            "large": "images/magic_skin_large.bmp",
-            "small": "images/magic_skin.bmp"
-        },
-        "Keeper's Penny": {
-            "large": "images/keeper_s_penny_large.bmp",
-            "small": "images/keeper_s_penny.bmp"
-        },
-        "Contract From Below": {
-            "large": "images/contract_from_below_large.bmp",
-            "small": "images/contract_from_below.bmp"
-        },
-        "Decoy": {
-            "large": "images/decoy_large.bmp",
-            "small": "images/decoy.bmp"
-        },
-        "Dead Bird": {
-            "large": "images/dead_bird_large.bmp",
-            "small": "images/dead_bird.bmp"
-        },
-        "Cursed Soul": {
-            "large": "images/cursed_soul_large.bmp",
-            "small": "images/cursed_soul.bmp"
-        },
-        "Baby Haunt": {
-            "large": "images/baby_haunt_large.bmp",
-            "small": "images/baby_haunt.bmp"
-        },
-        "Head of the Keeper": {
-            "large": "images/head_of_the_keeper_large.bmp",
-            "small": "images/head_of_the_keeper.bmp"
-        },
-        "Plan C": {
-            "large": "images/plan_c_large.bmp",
-            "small": "images/plan_c.bmp"
-        },
-        "Cheese Grater": {
-            "large": "images/cheese_grater_large.bmp",
-            "small": "images/cheese_grater.bmp"
-        },
-        "Chaos Card": {
-            "large": "images/chaos_card_large.bmp",
-            "small": "images/chaos_card.bmp"
-        },
-        "X-Ray Vision": {
-            "large": "images/x_ray_vision_large.bmp",
-            "small": "images/x_ray_vision.bmp"
-        },
-        "Telepathy for Dummies": {
-            "large": "images/telepathy_for_dummies_large.bmp",
-            "small": "images/telepathy_for_dummies.bmp"
-        },
-        "Consolation Prize": {
-            "large": "images/consolation_prize_large.bmp",
-            "small": "images/consolation_prize.bmp"
-        },
-        "Guppy's Head": {
-            "large": "images/guppy_s_head_large.bmp",
-            "small": "images/guppy_s_head.bmp"
-        },
-        "Tarot Cloth": {
-            "large": "images/tarot_cloth_large.bmp",
-            "small": "images/tarot_cloth.bmp"
-        },
-        "XX. Judgement": {
-            "large": "images/xx__judgement_large.bmp",
-            "small": "images/xx__judgement.bmp"
-        },
-        "Hand-Me-Downs": {
-            "large": "images/hand_me_downs_large.bmp",
-            "small": "images/hand_me_downs.bmp"
-        },
-        "Chaos": {
-            "large": "images/chaos_large.bmp",
-            "small": "images/chaos.bmp"
-        },
-        "Cain's Eye": {
-            "large": "images/cain_s_eye_large.bmp",
-            "small": "images/cain_s_eye.bmp"
-        },
-        "Boomerang": {
-            "large": "images/boomerang_large.bmp",
-            "small": "images/boomerang.bmp"
-        },
-        "Joker": {
-            "large": "images/joker_large.bmp",
-            "small": "images/joker.bmp"
-        },
-        "Lodestone": {
-            "large": "images/lodestone_large.bmp",
-            "small": "images/lodestone.bmp"
-        },
-        "Lemon Mishap": {
-            "large": "images/lemon_mishap_large.bmp",
-            "small": "images/lemon_mishap.bmp"
-        },
-        "Marked": {
-            "large": "images/marked_large.bmp",
-            "small": "images/marked.bmp"
-        },
-        "Mini Mush": {
-            "large": "images/mini_mush_large.bmp",
-            "small": "images/mini_mush.bmp"
-        },
-        "Lucky Foot": {
-            "large": "images/lucky_foot_large.bmp",
-            "small": "images/lucky_foot.bmp"
-        },
-        "Champion Belt": {
-            "large": "images/champion_belt_large.bmp",
-            "small": "images/champion_belt.bmp"
-        },
-        "Curved Horn": {
-            "large": "images/curved_horn_large.bmp",
-            "small": "images/curved_horn.bmp"
-        },
-        "Car Battery": {
-            "large": "images/car_battery_large.bmp",
-            "small": "images/car_battery.bmp"
-        },
-        "Blood Lust": {
-            "large": "images/blood_lust_large.bmp",
-            "small": "images/blood_lust.bmp"
-        },
-        "Infestation": {
-            "large": "images/infestation_large.bmp",
-            "small": "images/infestation.bmp"
-        },
-        "Seraphim": {
-            "large": "images/seraphim_large.bmp",
-            "small": "images/seraphim.bmp"
-        },
-        "Sumptorium": {
-            "large": "images/sumptorium_large.bmp",
-            "small": "images/sumptorium.bmp"
-        },
-        "The Curdled": {
-            "large": "images/the_curdled_large.bmp",
-            "small": "images/the_curdled.bmp"
-        },
-        "Placenta": {
-            "large": "images/placenta_large.bmp",
-            "small": "images/placenta.bmp"
-        },
-        "Abel": {
-            "large": "images/abel_large.bmp",
-            "small": "images/abel.bmp"
-        },
-        "Fire Mind": {
-            "large": "images/fire_mind_large.bmp",
-            "small": "images/fire_mind.bmp"
-        },
-        "The Wiz": {
-            "large": "images/the_wiz_large.bmp",
-            "small": "images/the_wiz.bmp"
-        },
-        "Diogenes' Pot": {
-            "large": "images/diogenes__pot_large.bmp",
-            "small": "images/diogenes__pot.bmp"
-        },
-        "Ball of Bandages": {
-            "large": "images/ball_of_bandages_large.bmp",
-            "small": "images/ball_of_bandages.bmp"
-        },
-        "Halo of Flies": {
-            "large": "images/halo_of_flies_large.bmp",
-            "small": "images/halo_of_flies.bmp"
-        },
-        "Infamy": {
-            "large": "images/infamy_large.bmp",
-            "small": "images/infamy.bmp"
-        },
-        "Shiny Rock": {
-            "large": "images/shiny_rock_large.bmp",
-            "small": "images/shiny_rock.bmp"
-        },
-        "Soy Milk": {
-            "large": "images/soy_milk_large.bmp",
-            "small": "images/soy_milk.bmp"
-        },
-        "XII. The Hanged Man": {
-            "large": "images/xii__the_hanged_man_large.bmp",
-            "small": "images/xii__the_hanged_man.bmp"
-        },
-        "Keeper's Bargain": {
-            "large": "images/keeper_s_bargain_large.bmp",
-            "small": "images/keeper_s_bargain.bmp"
-        },
-        "The Miser": {
-            "large": "images/the_miser_large.bmp",
-            "small": "images/the_miser.bmp"
-        },
-        "Forever Alone": {
-            "large": "images/forever_alone_large.bmp",
-            "small": "images/forever_alone.bmp"
-        },
-        "Death's Head": {
-            "large": "images/death_s_head_large.bmp",
-            "small": "images/death_s_head.bmp"
-        },
-        "Newgrounds Tank": {
-            "large": "images/newgrounds_tank_large.bmp",
-            "small": "images/newgrounds_tank.bmp"
-        },
-        "There's Options": {
-            "large": "images/there_s_options_large.bmp",
-            "small": "images/there_s_options.bmp"
-        },
-        "Rock Bottom": {
-            "large": "images/rock_bottom_large.bmp",
-            "small": "images/rock_bottom.bmp"
-        },
-        "Epic Fetus": {
-            "large": "images/epic_fetus_large.bmp",
-            "small": "images/epic_fetus.bmp"
-        },
-        "XXI. The World": {
-            "large": "images/xxi__the_world_large.bmp",
-            "small": "images/xxi__the_world.bmp"
-        },
-        "Bible Thump!": {
-            "large": "images/bible_thump__large.bmp",
-            "small": "images/bible_thump_.bmp"
-        },
-        "Chocolate Milk": {
-            "large": "images/chocolate_milk_large.bmp",
-            "small": "images/chocolate_milk.bmp"
-        },
-        "20/20": {
-            "large": "images/20_20_large.bmp",
-            "small": "images/20_20.bmp"
-        },
-        "Birthday Cake": {
-            "large": "images/birthday_cake_large.bmp",
-            "small": "images/birthday_cake.bmp"
-        },
-        "Crystal Ball": {
-            "large": "images/crystal_ball_large.bmp",
-            "small": "images/crystal_ball.bmp"
-        },
-        "Wishbone": {
-            "large": "images/wishbone_large.bmp",
-            "small": "images/wishbone.bmp"
-        },
-        "Playdough Cookie": {
-            "large": "images/playdough_cookie_large.bmp",
-            "small": "images/playdough_cookie.bmp"
-        },
-        "Callus": {
-            "large": "images/callus_large.bmp",
-            "small": "images/callus.bmp"
-        },
-        "Battery Pack": {
-            "large": "images/battery_pack_large.bmp",
-            "small": "images/battery_pack.bmp"
-        },
-        "Blue Baby": {
-            "large": "images/blue_baby_large.bmp",
-            "small": "images/blue_baby.bmp"
-        },
-        "Two of Clubs": {
-            "large": "images/two_of_clubs_large.bmp",
-            "small": "images/two_of_clubs.bmp"
-        },
-        "Polydactyly": {
-            "large": "images/polydactyly_large.bmp",
-            "small": "images/polydactyly.bmp"
-        },
-        "Ultra Flesh Kid!": {
-            "large": "images/ultra_flesh_kid__large.bmp",
-            "small": "images/ultra_flesh_kid_.bmp"
-        },
-        "Cancer": {
-            "large": "images/cancer_large.bmp",
-            "small": "images/cancer.bmp"
-        },
-        "Battery Bum": {
-            "large": "images/battery_bum_large.bmp",
-            "small": "images/battery_bum.bmp"
-        },
-        "Tick": {
-            "large": "images/tick_large.bmp",
-            "small": "images/tick.bmp"
-        },
-        "Belly Button": {
-            "large": "images/belly_button_large.bmp",
-            "small": "images/belly_button.bmp"
-        },
-        "Damocles": {
-            "large": "images/damocles_large.bmp",
-            "small": "images/damocles.bmp"
-        },
-        "1-UP": {
-            "large": "images/one_up_large.bmp",
-            "small": "images/one_up.bmp"
-        },
-        "Bag Lunch": {
-            "large": "images/bag_lunch_large.bmp",
-            "small": "images/bag_lunch.bmp"
-        },
-        "The Habit": {
-            "large": "images/the_habit_large.bmp",
-            "small": "images/the_habit.bmp"
-        },
-        "Experimental Treatment": {
-            "large": "images/experimental_treatment_large.bmp",
-            "small": "images/experimental_treatment.bmp"
-        },
-        "Dry Baby": {
-            "large": "images/dry_baby_large.bmp",
-            "small": "images/dry_baby.bmp"
-        },
-        "Jar of Flies": {
-            "large": "images/jar_of_flies_large.bmp",
-            "small": "images/jar_of_flies.bmp"
-        },
-        "Monstro's Tooth": {
-            "large": "images/monstro_s_tooth_large.bmp",
-            "small": "images/monstro_s_tooth.bmp"
-        },
-        "Pageant Boy": {
-            "large": "images/pageant_boy_large.bmp",
-            "small": "images/pageant_boy.bmp"
-        },
-        "The Crowdfunder": {
-            "large": "images/the_crowdfunder_large.bmp",
-            "small": "images/the_crowdfunder.bmp"
-        },
-        "Sacrificial Dagger": {
-            "large": "images/sacrificial_dagger_large.bmp",
-            "small": "images/sacrificial_dagger.bmp"
-        },
-        "Meat!": {
-            "large": "images/meat__large.bmp",
-            "small": "images/meat_.bmp"
-        },
-        "Mama Mega": {
-            "large": "images/mama_mega_large.bmp",
-            "small": "images/mama_mega.bmp"
-        },
-        "Libra": {
-            "large": "images/libra_large.bmp",
-            "small": "images/libra.bmp"
-        },
-        "Empty Vessel": {
-            "large": "images/empty_vessel_large.bmp",
-            "small": "images/empty_vessel.bmp"
-        },
-        "Dead Eye": {
-            "large": "images/dead_eye_large.bmp",
-            "small": "images/dead_eye.bmp"
-        },
-        "Synthoil": {
-            "large": "images/synthoil_large.bmp",
-            "small": "images/synthoil.bmp"
-        },
-        "Tony": {
-            "large": "images/tony_large.bmp",
-            "small": "images/tony.bmp"
-        },
-        "The Dauntless": {
-            "large": "images/the_dauntless_large.bmp",
-            "small": "images/the_dauntless.bmp"
-        },
-        "Hypercoagulation": {
-            "large": "images/hypercoagulation_large.bmp",
-            "small": "images/hypercoagulation.bmp"
-        },
-        "The Empty": {
-            "large": "images/the_empty_large.bmp",
-            "small": "images/the_empty.bmp"
-        },
-        "Abyss": {
-            "large": "images/abyss_large.bmp",
-            "small": "images/abyss.bmp"
-        },
-        "Crooked Penny": {
-            "large": "images/crooked_penny_large.bmp",
-            "small": "images/crooked_penny.bmp"
-        },
-        "Library Card": {
-            "large": "images/library_card_large.bmp",
-            "small": "images/library_card.bmp"
-        },
-        "Mr. Boom": {
-            "large": "images/mr__boom_large.bmp",
-            "small": "images/mr__boom.bmp"
-        },
-        "Sack Head": {
-            "large": "images/sack_head_large.bmp",
-            "small": "images/sack_head.bmp"
-        },
-        "2 cents!": {
-            "large": "images/2_cents__large.bmp",
-            "small": "images/2_cents_.bmp"
-        },
-        "3 cents!": {
-            "large": "images/3_cents__large.bmp",
-            "small": "images/3_cents_.bmp"
-        },
-        "4 cents!": {
-            "large": "images/4_cents__large.bmp",
-            "small": "images/4_cents_.bmp"
-        },
-        "9 Volt": {
-            "large": "images/9_volt_large.bmp",
-            "small": "images/9_volt.bmp"
-        },
-        "A Dime!!": {
-            "large": "images/a_dime___large.bmp",
-            "small": "images/a_dime__.bmp"
-        },
-        "A nickel!": {
-            "large": "images/a_nickel__large.bmp",
-            "small": "images/a_nickel_.bmp"
-        },
-        "A penny!": {
-            "large": "images/a_penny__large.bmp",
-            "small": "images/a_penny_.bmp"
-        },
-        "A sack": {
+        "a_sack": {
             "large": "images/a_sack_large.bmp",
             "small": "images/a_sack.bmp"
         },
-        "AAA Battery": {
+        "aaa_battery": {
             "large": "images/aaa_battery_large.bmp",
             "small": "images/aaa_battery.bmp"
         },
-        "Abaddon": {
+        "abaddon": {
             "large": "images/abaddon_large.bmp",
             "small": "images/abaddon.bmp"
         },
-        "Ace of Diamonds": {
+        "abel": {
+            "large": "images/abel_large.bmp",
+            "small": "images/abel.bmp"
+        },
+        "ace_of_diamonds": {
             "large": "images/ace_of_diamonds_large.bmp",
             "small": "images/ace_of_diamonds.bmp"
         },
-        "Athame": {
+        "algiz": {
+            "large": "images/algiz_large.bmp",
+            "small": "images/algiz.bmp"
+        },
+        "ambush_": {
+            "large": "images/ambush__large.bmp",
+            "small": "images/ambush_.bmp"
+        },
+        "amgine_eht": {
+            "large": "images/amgine_eht_large.bmp",
+            "small": "images/amgine_eht.bmp"
+        },
+        "angel_room": {
+            "large": "images/angel_room_large.bmp",
+            "small": "images/angel_room.bmp"
+        },
+        "ansuz": {
+            "large": "images/ansuz_large.bmp",
+            "small": "images/ansuz.bmp"
+        },
+        "apollyon": {
+            "large": "images/apollyon_large.bmp",
+            "small": "images/apollyon.bmp"
+        },
+        "athame": {
             "large": "images/athame_large.bmp",
             "small": "images/athame.bmp"
         },
-        "Azazel": {
+        "azazel": {
             "large": "images/azazel_large.bmp",
             "small": "images/azazel.bmp"
         },
-        "Bag of Crafting": {
-            "large": "images/bag_of_crafting_large.bmp",
-            "small": "images/bag_of_crafting.bmp"
+        "baby_haunt": {
+            "large": "images/baby_haunt_large.bmp",
+            "small": "images/baby_haunt.bmp"
         },
-        "Bag-o-trash": {
-            "large": "images/bag-o-trash_large.bmp",
-            "small": "images/bag-o-trash.bmp"
+        "baby_plum": {
+            "large": "images/baby_plum_large.bmp",
+            "small": "images/baby_plum.bmp"
         },
-        "Berserk": {
-            "large": "images/berserk_large.bmp",
-            "small": "images/berserk.bmp"
+        "bag_lunch": {
+            "large": "images/bag_lunch_large.bmp",
+            "small": "images/bag_lunch.bmp"
         },
-        "Bethany": {
+        "ball_of_bandages": {
+            "large": "images/ball_of_bandages_large.bmp",
+            "small": "images/ball_of_bandages.bmp"
+        },
+        "battery_bum": {
+            "large": "images/battery_bum_large.bmp",
+            "small": "images/battery_bum.bmp"
+        },
+        "battery_pack": {
+            "large": "images/battery_pack_large.bmp",
+            "small": "images/battery_pack.bmp"
+        },
+        "begotten": {
+            "large": "images/begotten_large.bmp",
+            "small": "images/begotten.bmp"
+        },
+        "belly_button": {
+            "large": "images/belly_button_large.bmp",
+            "small": "images/belly_button.bmp"
+        },
+        "berkano": {
+            "large": "images/berkano_large.bmp",
+            "small": "images/berkano.bmp"
+        },
+        "bethany": {
             "large": "images/bethany_large.bmp",
             "small": "images/bethany.bmp"
         },
-        "Big Spider": {
+        "betrayal_": {
+            "large": "images/betrayal__large.bmp",
+            "small": "images/betrayal_.bmp"
+        },
+        "bible_thump": {
+            "large": "images/bible_thump__large.bmp",
+            "small": "images/bible_thump_.bmp"
+        },
+        "big_spider": {
             "large": "images/big_spider_large.bmp",
             "small": "images/big_spider.bmp"
         },
-        "Black Bony": {
+        "birthday_cake": {
+            "large": "images/birthday_cake_large.bmp",
+            "small": "images/birthday_cake.bmp"
+        },
+        "black_bony": {
             "large": "images/black_bony_large.bmp",
             "small": "images/black_bony.bmp"
         },
-        "Black Rune": {
-            "large": "images/black_rune_large.bmp",
-            "small": "images/black_rune.bmp"
-        },
-        "Blank Rune": {
-            "large": "images/blank_rune_large.bmp",
-            "small": "images/blank_rune.bmp"
-        },
-        "Bloody penny": {
-            "large": "images/bloody_penny_large.bmp",
-            "small": "images/bloody_penny.bmp"
-        },
-        "Bob's Brain": {
-            "large": "images/bobs_brain_large.bmp",
-            "small": "images/bobs_brain.bmp"
-        },
-        "Bomb!": {
-            "large": "images/bomb__large.bmp",
-            "small": "images/bomb_.bmp"
-        },
-        "Book of Belial": {
-            "large": "images/book_of_belial_large.bmp",
-            "small": "images/book_of_belial.bmp"
-        },
-        "Book of Sin": {
-            "large": "images/book_of_sin_large.bmp",
-            "small": "images/book_of_sin.bmp"
-        },
-        "Book of Virtues": {
-            "large": "images/book_of_virtues_large.bmp",
-            "small": "images/book_of_virtues.bmp"
-        },
-        "Boom Fly": {
-            "large": "images/boom_fly_large.bmp",
-            "small": "images/boom_fly.bmp"
-        },
-        "Breakfast": {
-            "large": "images/breakfast_large.bmp",
-            "small": "images/breakfast.bmp"
-        },
-        "Bum-Bo": {
-            "large": "images/bum_bo_large.bmp",
-            "small": "images/bum_bo.bmp"
-        },
-        "Cambion Conception": {
-            "large": "images/cambion_conception_large.bmp",
-            "small": "images/cambion_conception.bmp"
-        },
-        "Carrion Queen": {
-            "large": "images/carrion_queen_large.bmp",
-            "small": "images/carrion_queen.bmp"
-        },
-        "Ceremonial Blade": {
-            "large": "images/ceremonial_blade_large.bmp",
-            "small": "images/ceremonial_blade.bmp"
-        },
-        "Charged Baby": {
-            "large": "images/charged_baby_large.bmp",
-            "small": "images/charged_baby.bmp"
-        },
-        "Charged Penny": {
-            "large": "images/charged_penny_large.bmp",
-            "small": "images/charged_penny.bmp"
-        },
-        "Chub": {
-            "large": "images/chub_large.bmp",
-            "small": "images/chub.bmp"
-        },
-        "Chunk of Amber": {
-            "large": "images/chunk_of_amber_large.bmp",
-            "small": "images/chunk_of_amber.bmp"
-        },
-        "Clotty": {
-            "large": "images/clotty_large.bmp",
-            "small": "images/clotty.bmp"
-        },
-        "Cod Worm": {
-            "large": "images/cod_worm_large.bmp",
-            "small": "images/cod_worm.bmp"
-        },
-        "Conjoined Fatty": {
-            "large": "images/conjoined_fatty_large.bmp",
-            "small": "images/conjoined_fatty.bmp"
-        },
-        "Conquest": {
-            "large": "images/conquest_large.bmp",
-            "small": "images/conquest.bmp"
-        },
-        "Counterfeit Penny": {
-            "large": "images/counterfeit_penny_large.bmp",
-            "small": "images/counterfeit_penny.bmp"
-        },
-        "Curse of the Tower": {
-            "large": "images/curse_of_the_tower_large.bmp",
-            "small": "images/curse_of_the_tower.bmp"
-        },
-        "Cursed Fatty": {
-            "large": "images/cursed_fatty_large.bmp",
-            "small": "images/cursed_fatty.bmp"
-        },
-        "Cursed Gaper": {
-            "large": "images/cursed_gaper_large.bmp",
-            "small": "images/cursed_gaper.bmp"
-        },
-        "Cursed Horf": {
-            "large": "images/cursed_horf_large.bmp",
-            "small": "images/cursed_horf.bmp"
-        },
-        "Cursed Keeper Head": {
-            "large": "images/cursed_keeper_head_large.bmp",
-            "small": "images/cursed_keeper_head.bmp"
-        },
-        "Cursed Mom's Hand": {
-            "large": "images/cursed_mom_s_hand_large.bmp",
-            "small": "images/cursed_mom_s_hand.bmp"
-        },
-        "Cursed Psy Horf": {
-            "large": "images/cursed_psy_horf_large.bmp",
-            "small": "images/cursed_psy_horf.bmp"
-        },
-        "Dad's Lost Coin": {
-            "large": "images/dad_s_lost_coin_large.bmp",
-            "small": "images/dad_s_lost_coin.bmp"
-        },
-        "Daddy Long Legs": {
-            "large": "images/daddy_long_legs_large.bmp",
-            "small": "images/daddy_long_legs.bmp"
-        },
-        "Daddy's Long Legs": {
-            "large": "images/daddy_s_long_legs_large.bmp",
-            "small": "images/daddy_s_long_legs.bmp"
-        },
-        "Dank Globin": {
-            "large": "images/dank_globin_large.bmp",
-            "small": "images/dank_globin.bmp"
-        },
-        "Dark Arts": {
-            "large": "images/dark_arts_large.bmp",
-            "small": "images/dark_arts.bmp"
-        },
-        "Dark Bum": {
-            "large": "images/dark_bum_large.bmp",
-            "small": "images/dark_bum.bmp"
-        },
-        "Dark Judas": {
-            "large": "images/dark_judas_large.bmp",
-            "small": "images/dark_judas.bmp"
-        },
-        "Dark One": {
-            "large": "images/dark_one_large.bmp",
-            "small": "images/dark_one.bmp"
-        },
-        "Death": {
-            "large": "images/death_large.bmp",
-            "small": "images/death.bmp"
-        },
-        "Delirium": {
-            "large": "images/delirium_large.bmp",
-            "small": "images/delirium.bmp"
-        },
-        "Demon Form": {
-            "large": "images/demon_form_large.bmp",
-            "small": "images/demon_form.bmp"
-        },
-        "Dinga": {
-            "large": "images/dinga_large.bmp",
-            "small": "images/dinga.bmp"
-        },
-        "Dinner": {
-            "large": "images/dinner_large.bmp",
-            "small": "images/dinner.bmp"
-        },
-        "Dip": {
-            "large": "images/dip_large.bmp",
-            "small": "images/dip.bmp"
-        },
-        "Dople": {
-            "large": "images/dople_large.bmp",
-            "small": "images/dople.bmp"
-        },
-        "Eden's Blessing": {
-            "large": "images/eden_s_blessing_large.bmp",
-            "small": "images/eden_s_blessing.bmp"
-        },
-        "Envy": {
-            "large": "images/envy_large.bmp",
-            "small": "images/envy.bmp"
-        },
-        "Euthanasia": {
-            "large": "images/euthanasia_large.bmp",
-            "small": "images/euthanasia.bmp"
-        },
-        "Evil Twin": {
-            "large": "images/evil_twin_large.bmp",
-            "small": "images/evil_twin.bmp"
-        },
-        "Eye of Greed": {
-            "large": "images/eye_of_greed_large.bmp",
-            "small": "images/eye_of_greed.bmp"
-        },
-        "Famine": {
-            "large": "images/famine_large.bmp",
-            "small": "images/famine.bmp"
-        },
-        "Fanny Pack": {
-            "large": "images/fanny_pack_large.bmp",
-            "small": "images/fanny_pack.bmp"
-        },
-        "Fat Bat": {
-            "large": "images/fat_bat_large.bmp",
-            "small": "images/fat_bat.bmp"
-        },
-        "Fatty": {
-            "large": "images/fatty_large.bmp",
-            "small": "images/fatty.bmp"
-        },
-        "Fly": {
-            "large": "images/fly_large.bmp",
-            "small": "images/fly.bmp"
-        },
-        "Game Breaking Bug!": {
-            "large": "images/game_breaking_bug_large.bmp",
-            "small": "images/game_breaking_bug.bmp"
-        },
-        "Gemini": {
-            "large": "images/gemini_large.bmp",
-            "small": "images/gemini.bmp"
-        },
-        "Gimpy": {
-            "large": "images/gimpy_large.bmp",
-            "small": "images/gimpy.bmp"
-        },
-        "Glass Cannon": {
-            "large": "images/glass_cannon_large.bmp",
-            "small": "images/glass_cannon.bmp"
-        },
-        "Gluttony": {
-            "large": "images/gluttony_large.bmp",
-            "small": "images/gluttony.bmp"
-        },
-        "Goat Head": {
-            "large": "images/goat_head_large.bmp",
-            "small": "images/goat_head.bmp"
-        },
-        "Godhead": {
-            "large": "images/godhead_large.bmp",
-            "small": "images/godhead.bmp"
-        },
-        "Gold Bomb!!": {
-            "large": "images/gold_bomb_large.bmp",
-            "small": "images/gold_bomb.bmp"
-        },
-        "Golden Razor": {
-            "large": "images/golden_razor_large.bmp",
-            "small": "images/golden_razor.bmp"
-        },
-        "Greed": {
-            "large": "images/greed_large.bmp",
-            "small": "images/greed.bmp"
-        },
-        "Greed's Gullet": {
-            "large": "images/greeds_gullet_large.bmp",
-            "small": "images/greeds_gullet.bmp"
-        },
-        "Greedling": {
-            "large": "images/greedling_large.bmp",
-            "small": "images/greedling.bmp"
-        },
-        "Guppy": {
-            "large": "images/guppy_large.bmp",
-            "small": "images/guppy.bmp"
-        },
-        "Guppy's Hairball": {
-            "large": "images/guppy_s_hairball_large.bmp",
-            "small": "images/guppy_s_hairball.bmp"
-        },
-        "Guppy's Paw": {
-            "large": "images/guppy_s_paw_large.bmp",
-            "small": "images/guppy_s_paw.bmp"
-        },
-        "Guppy's Tail": {
-            "large": "images/guppy_s_tail_large.bmp",
-            "small": "images/guppy_s_tail.bmp"
-        },
-        "Gurdy": {
-            "large": "images/gurdy_large.bmp",
-            "small": "images/gurdy.bmp"
-        },
-        "Gurdy Jr.": {
-            "large": "images/gurdy_jr__large.bmp",
-            "small": "images/gurdy_jr_.bmp"
-        },
-        "Hanger": {
-            "large": "images/hanger_large.bmp",
-            "small": "images/hanger.bmp"
-        },
-        "Head of Krampus": {
-            "large": "images/head_of_krampus_large.bmp",
-            "small": "images/head_of_krampus.bmp"
-        },
-        "Holy Dinga": {
-            "large": "images/holy_dinga_large.bmp",
-            "small": "images/holy_dinga.bmp"
-        },
-        "Holy Dip": {
-            "large": "images/holy_dip_large.bmp",
-            "small": "images/holy_dip.bmp"
-        },
-        "Holy Keeper Head": {
-            "large": "images/holy_keeper_head_large.bmp",
-            "small": "images/holy_keeper_head.bmp"
-        },
-        "Holy Mom's Eye": {
-            "large": "images/holy_mom_s_eye_large.bmp",
-            "small": "images/holy_mom_s_eye.bmp"
-        },
-        "Holy Squirt": {
-            "large": "images/holy_squirt_large.bmp",
-            "small": "images/holy_squirt.bmp"
-        },
-        "Hopper": {
-            "large": "images/hopper_large.bmp",
-            "small": "images/hopper.bmp"
-        },
-        "Horf": {
-            "large": "images/horf_large.bmp",
-            "small": "images/horf.bmp"
-        },
-        "Hourglass": {
-            "large": "images/hourglass_large.bmp",
-            "small": "images/hourglass.bmp"
-        },
-        "I. The Magician": {
-            "large": "images/i__the_magician_large.bmp",
-            "small": "images/i__the_magician.bmp"
-        },
-        "II. The High Priestess": {
-            "large": "images/ii__the_high_priestess_large.bmp",
-            "small": "images/ii__the_high_priestess.bmp"
-        },
-        "Ipecac": {
-            "large": "images/ipecac_large.bmp",
-            "small": "images/ipecac.bmp"
-        },
-        "Isaac": {
-            "large": "images/isaac_large.bmp",
-            "small": "images/isaac.bmp"
-        },
-        "Jawbone": {
-            "large": "images/jawbone_large.bmp",
-            "small": "images/jawbone.bmp"
-        },
-        "Jera": {
-            "large": "images/jera_large.bmp",
-            "small": "images/jera.bmp"
-        },
-        "Jester": {
-            "large": "images/jester_large.bmp",
-            "small": "images/jester.bmp"
-        },
-        "Judas": {
-            "large": "images/judas_large.bmp",
-            "small": "images/judas.bmp"
-        },
-        "Keeper": {
-            "large": "images/keeper_large.bmp",
-            "small": "images/keeper.bmp"
-        },
-        "Keeper Head": {
-            "large": "images/keeper_head_large.bmp",
-            "small": "images/keeper_head.bmp"
-        },
-        "Lard": {
-            "large": "images/lard_large.bmp",
-            "small": "images/lard.bmp"
-        },
-        "Larry Jr.": {
-            "large": "images/larry_jr__large.bmp",
-            "small": "images/larry_jr_.bmp"
-        },
-        "Lazarus": {
-            "large": "images/lazarus_large.bmp",
-            "small": "images/lazarus.bmp"
-        },
-        "Lazarus' Rags": {
-            "large": "images/lazarus__rags_large.bmp",
-            "small": "images/lazarus__rags.bmp"
-        },
-        "Leaper": {
-            "large": "images/leaper_large.bmp",
-            "small": "images/leaper.bmp"
-        },
-        "Leech": {
-            "large": "images/leech_large.bmp",
-            "small": "images/leech.bmp"
-        },
-        "Lemegeton": {
-            "large": "images/lemegeton_large.bmp",
-            "small": "images/lemegeton.bmp"
-        },
-        "Lil Battery": {
-            "large": "images/lil_battery_large.bmp",
-            "small": "images/lil_battery.bmp"
-        },
-        "Little Horn": {
-            "large": "images/little_horn_large.bmp",
-            "small": "images/little_horn.bmp"
-        },
-        "Lord of the Pit": {
-            "large": "images/lord_of_the_pit_large.bmp",
-            "small": "images/lord_of_the_pit.bmp"
-        },
-        "Lost Soul": {
-            "large": "images/lost_soul_large.bmp",
-            "small": "images/lost_soul.bmp"
-        },
-        "Lunch": {
-            "large": "images/lunch_large.bmp",
-            "small": "images/lunch.bmp"
-        },
-        "Lust": {
-            "large": "images/lust_large.bmp",
-            "small": "images/lust.bmp"
-        },
-        "Mask Of Infamy": {
-            "large": "images/mask_of_infamy_large.bmp",
-            "small": "images/mask_of_infamy.bmp"
-        },
-        "Mega Battery": {
-            "large": "images/mega_battery_large.bmp",
-            "small": "images/mega_battery.bmp"
-        },
-        "Mega Bomb!": {
-            "large": "images/mega_bomb__large.bmp",
-            "small": "images/mega_bomb_.bmp"
-        },
-        "Mega Fatty": {
-            "large": "images/mega_fatty_large.bmp",
-            "small": "images/mega_fatty.bmp"
-        },
-        "Mom!": {
-            "large": "images/mom__large.bmp",
-            "small": "images/mom_.bmp"
-        },
-        "Mom's Box": {
-            "large": "images/mom_s_box_large.bmp",
-            "small": "images/mom_s_box.bmp"
-        },
-        "Mom's Coin Purse": {
-            "large": "images/mom_s_coin_purse_large.bmp",
-            "small": "images/mom_s_coin_purse.bmp"
-        },
-        "Mom's Purse": {
-            "large": "images/mom_s_purse_large.bmp",
-            "small": "images/mom_s_purse.bmp"
-        },
-        "Mom's Razor": {
-            "large": "images/mom_s_razor_large.bmp",
-            "small": "images/mom_s_razor.bmp"
-        },
-        "Mom's Dead Hand": {
-            "large": "images/mom_s_dead_hand_large.bmp",
-            "small": "images/mom_s_dead_hand.bmp"
-        },
-        "Mom's Eye": {
-            "large": "images/mom_s_eye_large.bmp",
-            "small": "images/mom_s_eye.bmp"
-        },
-        "Mom's Hand": {
-            "large": "images/mom_s_hand_large.bmp",
-            "small": "images/mom_s_hand.bmp"
-        },
-        "Monstro": {
-            "large": "images/monstro_large.bmp",
-            "small": "images/monstro.bmp"
-        },
-        "Mulliboom": {
-            "large": "images/mulliboom_large.bmp",
-            "small": "images/mulliboom.bmp"
-        },
-        "Mulligan": {
-            "large": "images/mulligan_large.bmp",
-            "small": "images/mulligan.bmp"
-        },
-        "Mystery Sack": {
-            "large": "images/mystery_sack_large.bmp",
-            "small": "images/mystery_sack.bmp"
-        },
-        "Pale Fatty": {
-            "large": "images/pale_fatty_large.bmp",
-            "small": "images/pale_fatty.bmp"
-        },
-        "Pandora's Box": {
-            "large": "images/pandoras_box_large.bmp",
-            "small": "images/pandoras_box.bmp"
-        },
-        "Peep": {
-            "large": "images/peep_large.bmp",
-            "small": "images/peep.bmp"
-        },
-        "Perthro": {
-            "large": "images/perthro_large.bmp",
-            "small": "images/perthro.bmp"
-        },
-        "Pestilence": {
-            "large": "images/pestilence_large.bmp",
-            "small": "images/pestilence.bmp"
-        },
-        "Pills! (Black)": {
+        "black_pills": {
             "large": "images/pills_black_large.bmp",
             "small": "images/pills_black.bmp"
         },
-        "Pills! (Red)": {
-            "large": "images/pills__(red)_large.bmp",
-            "small": "images/pills__(red).bmp"
+        "black_rune": {
+            "large": "images/black_rune_large.bmp",
+            "small": "images/black_rune.bmp"
         },
-        "Pills! (Yellow)": {
-            "large": "images/pills__(yellow)_large.bmp",
-            "small": "images/pills__(yellow).bmp"
+        "blank_rune": {
+            "large": "images/blank_rune_large.bmp",
+            "small": "images/blank_rune.bmp"
         },
-        "Pin": {
-            "large": "images/pin_large.bmp",
-            "small": "images/pin.bmp"
+        "blastoclyst": {
+            "large": "images/blastoclyst_large.bmp",
+            "small": "images/blastoclyst.bmp"
         },
-        "Pooter": {
-            "large": "images/pooter_large.bmp",
-            "small": "images/pooter.bmp"
+        "bloody_penny": {
+            "large": "images/bloody_penny_large.bmp",
+            "small": "images/bloody_penny.bmp"
         },
-        "Portable Slot Machine": {
-            "large": "images/portable_slot_machine_large.bmp",
-            "small": "images/portable_slot_machine.bmp"
+        "blue_baby": {
+            "large": "images/blue_baby_large.bmp",
+            "small": "images/blue_baby.bmp"
         },
-        "Portal": {
-            "large": "images/portal_large.bmp",
-            "small": "images/portal.bmp"
+        "bobs_brain": {
+            "large": "images/bobs_brain_large.bmp",
+            "small": "images/bobs_brain.bmp"
         },
-        "Potato Peeler": {
-            "large": "images/potato_peeler_large.bmp",
-            "small": "images/potato_peeler.bmp"
+        "boil": {
+            "large": "images/boil_large.bmp",
+            "small": "images/boil.bmp"
         },
-        "Pride": {
-            "large": "images/pride_large.bmp",
-            "small": "images/pride.bmp"
+        "bomb": {
+            "large": "images/bomb__large.bmp",
+            "small": "images/bomb_.bmp"
         },
-        "Psy Horf": {
-            "large": "images/psy_horf_large.bmp",
-            "small": "images/psy_horf.bmp"
+        "bony": {
+            "large": "images/bony_large.bmp",
+            "small": "images/bony.bmp"
         },
-        "Rag Man": {
-            "large": "images/rag_man_large.bmp",
-            "small": "images/rag_man.bmp"
+        "book_of_sin": {
+            "large": "images/book_of_sin_large.bmp",
+            "small": "images/book_of_sin.bmp"
         },
-        "Rage Creep": {
-            "large": "images/rage_creep_large.bmp",
-            "small": "images/rage_creep.bmp"
+        "boom_fly": {
+            "large": "images/boom_fly_large.bmp",
+            "small": "images/boom_fly.bmp"
         },
-        "Rainbow Baby": {
-            "large": "images/rainbow_baby_large.bmp",
-            "small": "images/rainbow_baby.bmp"
+        "boomerang": {
+            "large": "images/boomerang_large.bmp",
+            "small": "images/boomerang.bmp"
         },
-        "Razor Blade": {
-            "large": "images/razor_blade_large.bmp",
-            "small": "images/razor_blade.bmp"
+        "boxing_glove": {
+            "large": "images/polyphemus_large.bmp",
+            "small": "images/polyphemus.bmp"
         },
-        "Red Host": {
-            "large": "images/red_host_large.bmp",
-            "small": "images/red_host.bmp"
+        "brain": {
+            "large": "images/brain_large.bmp",
+            "small": "images/brain.bmp"
         },
-        "Ring Of Flies": {
-            "large": "images/ring_of_flies_large.bmp",
-            "small": "images/ring_of_flies.bmp"
+        "breakfast": {
+            "large": "images/breakfast_large.bmp",
+            "small": "images/breakfast.bmp"
         },
-        "Sack of Pennies": {
-            "large": "images/sack_of_pennies_large.bmp",
-            "small": "images/sack_of_pennies.bmp"
+        "brownie": {
+            "large": "images/brownie_large.bmp",
+            "small": "images/brownie.bmp"
         },
-        "Sacred Heart": {
-            "large": "images/sacred_heart_large.bmp",
-            "small": "images/sacred_heart.bmp"
+        "bum_friend": {
+            "large": "images/bum_friend_large.bmp",
+            "small": "images/bum_friend.bmp"
         },
-        "Samson": {
-            "large": "images/samson_large.bmp",
-            "small": "images/samson.bmp"
+        "bumbo": {
+            "large": "images/bum_bo_large.bmp",
+            "small": "images/bum_bo.bmp"
         },
-        "Satan!": {
-            "large": "images/satan__large.bmp",
-            "small": "images/satan_.bmp"
-        },
-        "Scolex": {
-            "large": "images/scolex_large.bmp",
-            "small": "images/scolex.bmp"
-        },
-        "Shadow": {
-            "large": "images/shadow_large.bmp",
-            "small": "images/shadow.bmp"
-        },
-        "Sloth": {
-            "large": "images/sloth_large.bmp",
-            "small": "images/sloth.bmp"
-        },
-        "Smelter": {
-            "large": "images/smelter_large.bmp",
-            "small": "images/smelter.bmp"
-        },
-        "Soul Heart": {
-            "large": "images/soul_heart_large.bmp",
-            "small": "images/soul_heart.bmp"
-        },
-        "Spider": {
-            "large": "images/spider_large.bmp",
-            "small": "images/spider.bmp"
-        },
-        "Spoon Bender": {
-            "large": "images/spoon_bender_large.bmp",
-            "small": "images/spoon_bender.bmp"
-        },
-        "Squirt": {
-            "large": "images/squirt_large.bmp",
-            "small": "images/squirt.bmp"
-        },
-        "Starter Deck": {
-            "large": "images/starter_deck_large.bmp",
-            "small": "images/starter_deck.bmp"
-        },
-        "Steamy Sale!": {
-            "large": "images/steamy_sale__large.bmp",
-            "small": "images/steamy_sale_.bmp"
-        },
-        "Stoney": {
-            "large": "images/stoney_large.bmp",
-            "small": "images/stoney.bmp"
-        },
-        "Succubus": {
-            "large": "images/succubus_large.bmp",
-            "small": "images/succubus.bmp"
-        },
-        "Suicide King": {
-            "large": "images/suicide_king_large.bmp",
-            "small": "images/suicide_king.bmp"
-        },
-        "Swallowed Penny": {
-            "large": "images/swallowed_penny_large.bmp",
-            "small": "images/swallowed_penny.bmp"
-        },
-        "Tech X": {
-            "large": "images/tech_x_large.bmp",
-            "small": "images/tech_x.bmp"
-        },
-        "The Battery": {
-            "large": "images/the_battery_large.bmp",
-            "small": "images/the_battery.bmp"
-        },
-        "The Bloat": {
-            "large": "images/the_bloat_large.bmp",
-            "small": "images/the_bloat.bmp"
-        },
-        "The Butter Bean": {
+        "butter_bean": {
             "large": "images/the_butter_bean_large.bmp",
             "small": "images/the_butter_bean.bmp"
         },
-        "The Chest": {
-            "large": "images/the_chest_large.bmp",
-            "small": "images/the_chest.bmp"
+        "cain": {
+            "large": "images/cain_large.bmp",
+            "small": "images/cain.bmp"
         },
-        "The D100": {
+        "cains_eye": {
+            "large": "images/cain_s_eye_large.bmp",
+            "small": "images/cain_s_eye.bmp"
+        },
+        "callus": {
+            "large": "images/callus_large.bmp",
+            "small": "images/callus.bmp"
+        },
+        "cambion_conception": {
+            "large": "images/cambion_conception_large.bmp",
+            "small": "images/cambion_conception.bmp"
+        },
+        "cancer": {
+            "large": "images/cancer_large.bmp",
+            "small": "images/cancer.bmp"
+        },
+        "car_battery": {
+            "large": "images/car_battery_large.bmp",
+            "small": "images/car_battery.bmp"
+        },
+        "carrion_queen": {
+            "large": "images/carrion_queen_large.bmp",
+            "small": "images/carrion_queen.bmp"
+        },
+        "champion_belt": {
+            "large": "images/champion_belt_large.bmp",
+            "small": "images/champion_belt.bmp"
+        },
+        "chaos": {
+            "large": "images/chaos_large.bmp",
+            "small": "images/chaos.bmp"
+        },
+        "chaos_card": {
+            "large": "images/chaos_card_large.bmp",
+            "small": "images/chaos_card.bmp"
+        },
+        "charged_baby": {
+            "large": "images/charged_baby_large.bmp",
+            "small": "images/charged_baby.bmp"
+        },
+        "charged_penny": {
+            "large": "images/charged_penny_large.bmp",
+            "small": "images/charged_penny.bmp"
+        },
+        "charger": {
+            "large": "images/charger_large.bmp",
+            "small": "images/charger.bmp"
+        },
+        "charmed_greedling": {
+            "large": "images/charmed_greedling_large.bmp",
+            "small": "images/charmed_greedling.bmp"
+        },
+        "cheese_grater": {
+            "large": "images/cheese_grater_large.bmp",
+            "small": "images/cheese_grater.bmp"
+        },
+        "chest": {
+            "large": "images/chest_large.bmp",
+            "small": "images/chest.bmp"
+        },
+        "chocolate_milk": {
+            "large": "images/chocolate_milk_large.bmp",
+            "small": "images/chocolate_milk.bmp"
+        },
+        "christian_broadcasts": {
+            "large": "images/_christian_broadcasts__large.bmp",
+            "small": "images/_christian_broadcasts_.bmp"
+        },
+        "chub": {
+            "large": "images/chub_large.bmp",
+            "small": "images/chub.bmp"
+        },
+        "chunk_of_amber": {
+            "large": "images/chunk_of_amber_large.bmp",
+            "small": "images/chunk_of_amber.bmp"
+        },
+        "clog": {
+            "large": "images/clog_large.bmp",
+            "small": "images/clog.bmp"
+        },
+        "clotty": {
+            "large": "images/clotty_large.bmp",
+            "small": "images/clotty.bmp"
+        },
+        "cod_worm": {
+            "large": "images/cod_worm_large.bmp",
+            "small": "images/cod_worm.bmp"
+        },
+        "compost": {
+            "large": "images/compost_large.bmp",
+            "small": "images/compost.bmp"
+        },
+        "conjoined_fatty": {
+            "large": "images/conjoined_fatty_large.bmp",
+            "small": "images/conjoined_fatty.bmp"
+        },
+        "conquest": {
+            "large": "images/conquest_large.bmp",
+            "small": "images/conquest.bmp"
+        },
+        "consolation_prize": {
+            "large": "images/consolation_prize_large.bmp",
+            "small": "images/consolation_prize.bmp"
+        },
+        "contract_from_below": {
+            "large": "images/contract_from_below_large.bmp",
+            "small": "images/contract_from_below.bmp"
+        },
+        "corny": {
+            "large": "images/corny_large.bmp",
+            "small": "images/corny.bmp"
+        },
+        "counterfeit_penny": {
+            "large": "images/counterfeit_penny_large.bmp",
+            "small": "images/counterfeit_penny.bmp"
+        },
+        "crooked_penny": {
+            "large": "images/crooked_penny_large.bmp",
+            "small": "images/crooked_penny.bmp"
+        },
+        "crystal_ball": {
+            "large": "images/crystal_ball_large.bmp",
+            "small": "images/crystal_ball.bmp"
+        },
+        "curse_of_amnesia": {
+            "large": "images/curse_of_amnesia_large.bmp",
+            "small": "images/curse_of_amnesia.bmp"
+        },
+        "curse_of_empathy": {
+            "large": "images/curse_of_empathy_large.bmp",
+            "small": "images/curse_of_empathy.bmp"
+        },
+        "curse_of_greed": {
+            "large": "images/curse_of_greed_large.bmp",
+            "small": "images/curse_of_greed.bmp"
+        },
+        "curse_of_impulse": {
+            "large": "images/curse_of_impulse_large.bmp",
+            "small": "images/curse_of_impulse.bmp"
+        },
+        "curse_of_loss": {
+            "large": "images/curse_of_loss_large.bmp",
+            "small": "images/curse_of_loss.bmp"
+        },
+        "curse_of_pain": {
+            "large": "images/curse_of_pain_large.bmp",
+            "small": "images/curse_of_pain.bmp"
+        },
+        "curse_of_the_blind": {
+            "large": "images/curse_of_the_blind_large.bmp",
+            "small": "images/curse_of_the_blind.bmp"
+        },
+        "curse_of_the_hollow": {
+            "large": "images/curse_of_the_hollow_large.bmp",
+            "small": "images/curse_of_the_hollow.bmp"
+        },
+        "curse_of_the_hunted": {
+            "large": "images/curse_of_the_hunted_large.bmp",
+            "small": "images/curse_of_the_hunted.bmp"
+        },
+        "curse_of_the_tower": {
+            "large": "images/curse_of_the_tower_large.bmp",
+            "small": "images/curse_of_the_tower.bmp"
+        },
+        "cursed_dople": {
+            "large": "images/cursed_dople_large.bmp",
+            "small": "images/cursed_dople.bmp"
+        },
+        "cursed_fatty": {
+            "large": "images/cursed_fatty_large.bmp",
+            "small": "images/cursed_fatty.bmp"
+        },
+        "cursed_gaper": {
+            "large": "images/cursed_gaper_large.bmp",
+            "small": "images/cursed_gaper.bmp"
+        },
+        "cursed_globin": {
+            "large": "images/cursed_globin_large.bmp",
+            "small": "images/cursed_globin.bmp"
+        },
+        "cursed_horf": {
+            "large": "images/cursed_horf_large.bmp",
+            "small": "images/cursed_horf.bmp"
+        },
+        "cursed_keeper_head": {
+            "large": "images/cursed_keeper_head_large.bmp",
+            "small": "images/cursed_keeper_head.bmp"
+        },
+        "cursed_mom_s_hand": {
+            "large": "images/cursed_mom_s_hand_large.bmp",
+            "small": "images/cursed_mom_s_hand.bmp"
+        },
+        "cursed_mulliboom": {
+            "large": "images/cursed_mulliboom_large.bmp",
+            "small": "images/cursed_mulliboom.bmp"
+        },
+        "cursed_mulligan": {
+            "large": "images/cursed_mulligan_large.bmp",
+            "small": "images/cursed_mulligan.bmp"
+        },
+        "cursed_psy_horf": {
+            "large": "images/cursed_psy_horf_large.bmp",
+            "small": "images/cursed_psy_horf.bmp"
+        },
+        "cursed_soul": {
+            "large": "images/cursed_soul_large.bmp",
+            "small": "images/cursed_soul.bmp"
+        },
+        "cursed_tumor": {
+            "large": "images/cursed_tumor_large.bmp",
+            "small": "images/cursed_tumor.bmp"
+        },
+        "curved_horn": {
+            "large": "images/curved_horn_large.bmp",
+            "small": "images/curved_horn.bmp"
+        },
+        "d100": {
             "large": "images/the_d100_large.bmp",
             "small": "images/the_d100.bmp"
         },
-        "The D20": {
+        "d20": {
             "large": "images/the_d20_large.bmp",
             "small": "images/the_d20.bmp"
         },
-        "The D4": {
+        "d4": {
             "large": "images/d4_large.bmp",
             "small": "images/d4.bmp"
         },
-        "The D6": {
-            "large": "images/the_d6_large.bmp",
-            "small": "images/the_d6.bmp"
+        "dad_s_ring": {
+            "large": "images/dad_s_ring_large.bmp",
+            "small": "images/dad_s_ring.bmp"
         },
-        "The Deceiver": {
-            "large": "images/the_deceiver_large.bmp",
-            "small": "images/the_deceiver.bmp"
+        "daddy_haunt": {
+            "large": "images/daddy_haunt_large.bmp",
+            "small": "images/daddy_haunt.bmp"
         },
-        "The Haunt": {
-            "large": "images/the_haunt_large.bmp",
-            "small": "images/the_haunt.bmp"
+        "daddy_long_legs": {
+            "large": "images/daddy_long_legs_large.bmp",
+            "small": "images/daddy_long_legs.bmp"
         },
-        "The Hoarder": {
-            "large": "images/the_hoarder_large.bmp",
-            "small": "images/the_hoarder.bmp"
+        "daddys_long_legs": {
+            "large": "images/daddy_s_long_legs_large.bmp",
+            "small": "images/daddy_s_long_legs.bmp"
         },
-        "The Keeper": {
-            "large": "images/the_keeper_large.bmp",
-            "small": "images/the_keeper.bmp"
+        "dads_lost_coin": {
+            "large": "images/dad_s_lost_coin_large.bmp",
+            "small": "images/dad_s_lost_coin.bmp"
         },
-        "The Lamb": {
-            "large": "images/the_lamb_large.bmp",
-            "small": "images/the_lamb.bmp"
+        "damocles": {
+            "large": "images/damocles_large.bmp",
+            "small": "images/damocles.bmp"
         },
-        "The Left Hand": {
-            "large": "images/the_left_hand_large.bmp",
-            "small": "images/the_left_hand.bmp"
+        "dank_globin": {
+            "large": "images/dank_globin_large.bmp",
+            "small": "images/dank_globin.bmp"
         },
-        "The Midas Touch": {
-            "large": "images/midas_touch_large.bmp",
-            "small": "images/midas_touch.bmp"
+        "dark_bum": {
+            "large": "images/dark_bum_large.bmp",
+            "small": "images/dark_bum.bmp"
         },
-        "The Missing Page": {
-            "large": "images/the_missing_page_large.bmp",
-            "small": "images/the_missing_page.bmp"
+        "dark_chest": {
+            "large": "images/dark_chest_large.bmp",
+            "small": "images/dark_chest.bmp"
         },
-        "The Polaroid": {
-            "large": "images/the_polaroid_large.bmp",
-            "small": "images/the_polaroid.bmp"
+        "dark_judas": {
+            "large": "images/dark_judas_large.bmp",
+            "small": "images/dark_judas.bmp"
         },
-        "The Relic": {
-            "large": "images/the_relic_large.bmp",
-            "small": "images/the_relic.bmp"
+        "dark_one": {
+            "large": "images/dark_one_large.bmp",
+            "small": "images/dark_one.bmp"
         },
-        "The Savage": {
-            "large": "images/the_savage_large.bmp",
-            "small": "images/the_savage.bmp"
+        "dead_bird": {
+            "large": "images/dead_bird_large.bmp",
+            "small": "images/dead_bird.bmp"
         },
-        "The Zealot": {
-            "large": "images/the_zealot_large.bmp",
-            "small": "images/the_zealot.bmp"
+        "dead_eye": {
+            "large": "images/dead_eye_large.bmp",
+            "small": "images/dead_eye.bmp"
         },
-        "The poop": {
-            "large": "images/the_poop_large.bmp",
-            "small": "images/the_poop.bmp"
+        "death": {
+            "large": "images/death_large.bmp",
+            "small": "images/death.bmp"
         },
-        "Trite": {
-            "large": "images/trite_large.bmp",
-            "small": "images/trite.bmp"
+        "deaths_head": {
+            "large": "images/death_s_head_large.bmp",
+            "small": "images/death_s_head.bmp"
         },
-        "Two of Diamonds": {
-            "large": "images/two_of_diamonds_large.bmp",
-            "small": "images/two_of_diamonds.bmp"
+        "decoy": {
+            "large": "images/decoy_large.bmp",
+            "small": "images/decoy.bmp"
         },
-        "Two of Spades": {
-            "large": "images/two_of_spades_large.bmp",
-            "small": "images/two_of_spades.bmp"
+        "delirium": {
+            "large": "images/delirium_large.bmp",
+            "small": "images/delirium.bmp"
         },
-        "VI. The Lovers": {
-            "large": "images/vi__the_lovers_large.bmp",
-            "small": "images/vi__the_lovers.bmp"
+        "demon_form": {
+            "large": "images/demon_form_large.bmp",
+            "small": "images/demon_form.bmp"
         },
-        "VII. The Chariot": {
-            "large": "images/vii__the_chariot_large.bmp",
-            "small": "images/vii__the_chariot.bmp"
+        "dime": {
+            "large": "images/a_dime___large.bmp",
+            "small": "images/a_dime__.bmp"
         },
-        "VIII. Justice": {
+        "dinga": {
+            "large": "images/dinga_large.bmp",
+            "small": "images/dinga.bmp"
+        },
+        "dinner": {
+            "large": "images/dinner_large.bmp",
+            "small": "images/dinner.bmp"
+        },
+        "diogenes_pot": {
+            "large": "images/diogenes__pot_large.bmp",
+            "small": "images/diogenes__pot.bmp"
+        },
+        "dip": {
+            "large": "images/dip_large.bmp",
+            "small": "images/dip.bmp"
+        },
+        "divorce_papers": {
+            "large": "images/divorce_papers_large.bmp",
+            "small": "images/divorce_papers.bmp"
+        },
+        "donation_machine": {
+            "large": "images/donation_machine_large.bmp",
+            "small": "images/donation_machine.bmp"
+        },
+        "dople": {
+            "large": "images/dople_large.bmp",
+            "small": "images/dople.bmp"
+        },
+        "double_treasure_": {
+            "large": "images/double_treasure__large.bmp",
+            "small": "images/double_treasure_.bmp"
+        },
+        "dressing_table": {
+            "large": "images/dressing_table_large.bmp",
+            "small": "images/dressing_table.bmp"
+        },
+        "dry_baby": {
+            "large": "images/dry_baby_large.bmp",
+            "small": "images/dry_baby.bmp"
+        },
+        "eden": {
+            "large": "images/eden_large.bmp",
+            "small": "images/eden.bmp"
+        },
+        "edens_blessing": {
+            "large": "images/eden_s_blessing_large.bmp",
+            "small": "images/eden_s_blessing.bmp"
+        },
+        "edens_soul": {
+            "large": "images/eden_s_soul_large.bmp",
+            "small": "images/eden_s_soul.bmp"
+        },
+        "ehwaz": {
+            "large": "images/ehwaz_large.bmp",
+            "small": "images/ehwaz.bmp"
+        },
+        "empty_vessel": {
+            "large": "images/empty_vessel_large.bmp",
+            "small": "images/empty_vessel.bmp"
+        },
+        "envy": {
+            "large": "images/envy_large.bmp",
+            "small": "images/envy.bmp"
+        },
+        "epic_fetus": {
+            "large": "images/epic_fetus_large.bmp",
+            "small": "images/epic_fetus.bmp"
+        },
+        "eternal_d6": {
+            "large": "images/eternal_d6_large.bmp",
+            "small": "images/eternal_d6.bmp"
+        },
+        "euthanasia": {
+            "large": "images/euthanasia_large.bmp",
+            "small": "images/euthanasia.bmp"
+        },
+        "eve": {
+            "large": "images/eve_large.bmp",
+            "small": "images/eve.bmp"
+        },
+        "evil_twin": {
+            "large": "images/evil_twin_large.bmp",
+            "small": "images/evil_twin.bmp"
+        },
+        "experimental_treatment": {
+            "large": "images/experimental_treatment_large.bmp",
+            "small": "images/experimental_treatment.bmp"
+        },
+        "eye_of_greed": {
+            "large": "images/eye_of_greed_large.bmp",
+            "small": "images/eye_of_greed.bmp"
+        },
+        "famine": {
+            "large": "images/famine_large.bmp",
+            "small": "images/famine.bmp"
+        },
+        "fanny_pack": {
+            "large": "images/fanny_pack_large.bmp",
+            "small": "images/fanny_pack.bmp"
+        },
+        "fat_bat": {
+            "large": "images/fat_bat_large.bmp",
+            "small": "images/fat_bat.bmp"
+        },
+        "fatty": {
+            "large": "images/fatty_large.bmp",
+            "small": "images/fatty.bmp"
+        },
+        "fetal_haunt": {
+            "large": "images/fetal_haunt_large.bmp",
+            "small": "images/fetal_haunt.bmp"
+        },
+        "finger": {
+            "large": "images/finger__large.bmp",
+            "small": "images/finger_.bmp"
+        },
+        "fire_mind": {
+            "large": "images/fire_mind_large.bmp",
+            "small": "images/fire_mind.bmp"
+        },
+        "fistula": {
+            "large": "images/fistula_large.bmp",
+            "small": "images/fistula.bmp"
+        },
+        "flaming_hopper": {
+            "large": "images/flaming_hopper_large.bmp",
+            "small": "images/flaming_hopper.bmp"
+        },
+        "fly": {
+            "large": "images/fly_large.bmp",
+            "small": "images/fly.bmp"
+        },
+        "forget_me_now": {
+            "large": "images/forget_me_now_large.bmp",
+            "small": "images/forget_me_now.bmp"
+        },
+        "four_cents": {
+            "large": "images/4_cents__large.bmp",
+            "small": "images/4_cents_.bmp"
+        },
+        "friendly_sack": {
+            "large": "images/friendly_sack_large.bmp",
+            "small": "images/friendly_sack.bmp"
+        },
+        "game_breaking_bug": {
+            "large": "images/game_breaking_bug_large.bmp",
+            "small": "images/game_breaking_bug.bmp"
+        },
+        "gemini": {
+            "large": "images/gemini_large.bmp",
+            "small": "images/gemini.bmp"
+        },
+        "glass_cannon": {
+            "large": "images/glass_cannon_large.bmp",
+            "small": "images/glass_cannon.bmp"
+        },
+        "globin": {
+            "large": "images/globin_large.bmp",
+            "small": "images/globin.bmp"
+        },
+        "gluttony": {
+            "large": "images/gluttony_large.bmp",
+            "small": "images/gluttony.bmp"
+        },
+        "goat_head": {
+            "large": "images/goat_head_large.bmp",
+            "small": "images/goat_head.bmp"
+        },
+        "godhead": {
+            "large": "images/godhead_large.bmp",
+            "small": "images/godhead.bmp"
+        },
+        "gold_bomb": {
+            "large": "images/gold_bomb_large.bmp",
+            "small": "images/gold_bomb.bmp"
+        },
+        "gold_chest": {
+            "large": "images/gold_chest_large.bmp",
+            "small": "images/gold_chest.bmp"
+        },
+        "golden_horseshoe": {
+            "large": "images/golden_horseshoe_large.bmp",
+            "small": "images/golden_horseshoe.bmp"
+        },
+        "golden_razor": {
+            "large": "images/golden_razor_large.bmp",
+            "small": "images/golden_razor.bmp"
+        },
+        "greed": {
+            "large": "images/greed_large.bmp",
+            "small": "images/greed.bmp"
+        },
+        "greed_": {
+            "large": "images/greed__large.bmp",
+            "small": "images/greed_.bmp"
+        },
+        "greedling": {
+            "large": "images/greedling_large.bmp",
+            "small": "images/greedling.bmp"
+        },
+        "greeds_gullet": {
+            "large": "images/greeds_gullet_large.bmp",
+            "small": "images/greeds_gullet.bmp"
+        },
+        "guppy": {
+            "large": "images/guppy_large.bmp",
+            "small": "images/guppy.bmp"
+        },
+        "guppys_hairball": {
+            "large": "images/guppy_s_hairball_large.bmp",
+            "small": "images/guppy_s_hairball.bmp"
+        },
+        "guppys_head": {
+            "large": "images/guppy_s_head_large.bmp",
+            "small": "images/guppy_s_head.bmp"
+        },
+        "guppys_paw": {
+            "large": "images/guppy_s_paw_large.bmp",
+            "small": "images/guppy_s_paw.bmp"
+        },
+        "guppys_tail": {
+            "large": "images/guppy_s_tail_large.bmp",
+            "small": "images/guppy_s_tail.bmp"
+        },
+        "gurdlings": {
+            "large": "images/gurdlings_large.bmp",
+            "small": "images/gurdlings.bmp"
+        },
+        "gurdy": {
+            "large": "images/gurdy_large.bmp",
+            "small": "images/gurdy.bmp"
+        },
+        "gurdy_jr": {
+            "large": "images/gurdy_jr__large.bmp",
+            "small": "images/gurdy_jr_.bmp"
+        },
+        "hallowed_ground": {
+            "large": "images/hallowed_ground_large.bmp",
+            "small": "images/hallowed_ground.bmp"
+        },
+        "halo_of_flies": {
+            "large": "images/halo_of_flies_large.bmp",
+            "small": "images/halo_of_flies.bmp"
+        },
+        "hand_me_downs": {
+            "large": "images/hand_me_downs_large.bmp",
+            "small": "images/hand_me_downs.bmp"
+        },
+        "handicapped_placard": {
+            "large": "images/handicapped_placard_large.bmp",
+            "small": "images/handicapped_placard.bmp"
+        },
+        "hanger": {
+            "large": "images/hanger_large.bmp",
+            "small": "images/hanger.bmp"
+        },
+        "head_of_krampus": {
+            "large": "images/head_of_krampus_large.bmp",
+            "small": "images/head_of_krampus.bmp"
+        },
+        "head_of_the_keeper": {
+            "large": "images/head_of_the_keeper_large.bmp",
+            "small": "images/head_of_the_keeper.bmp"
+        },
+        "head_trauma": {
+            "large": "images/head_trauma_large.bmp",
+            "small": "images/head_trauma.bmp"
+        },
+        "holy_bony": {
+            "large": "images/holy_bony_large.bmp",
+            "small": "images/holy_bony.bmp"
+        },
+        "holy_brain": {
+            "large": "images/holy_brain_large.bmp",
+            "small": "images/holy_brain.bmp"
+        },
+        "holy_chest": {
+            "large": "images/holy_chest_large.bmp",
+            "small": "images/holy_chest.bmp"
+        },
+        "holy_dinga": {
+            "large": "images/holy_dinga_large.bmp",
+            "small": "images/holy_dinga.bmp"
+        },
+        "holy_dip": {
+            "large": "images/holy_dip_large.bmp",
+            "small": "images/holy_dip.bmp"
+        },
+        "holy_greedling": {
+            "large": "images/holy_greedling_large.bmp",
+            "small": "images/holy_greedling.bmp"
+        },
+        "holy_keeper_head": {
+            "large": "images/holy_keeper_head_large.bmp",
+            "small": "images/holy_keeper_head.bmp"
+        },
+        "holy_mom_s_eye": {
+            "large": "images/holy_mom_s_eye_large.bmp",
+            "small": "images/holy_mom_s_eye.bmp"
+        },
+        "holy_mulligan": {
+            "large": "images/holy_mulligan_large.bmp",
+            "small": "images/holy_mulligan.bmp"
+        },
+        "holy_portal": {
+            "large": "images/holy_portal_large.bmp",
+            "small": "images/holy_portal.bmp"
+        },
+        "holy_psy_horf": {
+            "large": "images/holy_psy_horf_large.bmp",
+            "small": "images/holy_psy_horf.bmp"
+        },
+        "holy_squirt": {
+            "large": "images/holy_squirt_large.bmp",
+            "small": "images/holy_squirt.bmp"
+        },
+        "hopper": {
+            "large": "images/hopper_large.bmp",
+            "small": "images/hopper.bmp"
+        },
+        "horf": {
+            "large": "images/horf_large.bmp",
+            "small": "images/horf.bmp"
+        },
+        "hourglass": {
+            "large": "images/hourglass_large.bmp",
+            "small": "images/hourglass.bmp"
+        },
+        "hush": {
+            "large": "images/hush_large.bmp",
+            "small": "images/hush.bmp"
+        },
+        "i_am_error_": {
+            "large": "images/i_am_error__large.bmp",
+            "small": "images/i_am_error_.bmp"
+        },
+        "i_can_see_forever_": {
+            "large": "images/i_can_see_forever__large.bmp",
+            "small": "images/i_can_see_forever_.bmp"
+        },
+        "imp": {
+            "large": "images/imp_large.bmp",
+            "small": "images/imp.bmp"
+        },
+        "infamy": {
+            "large": "images/infamy_large.bmp",
+            "small": "images/infamy.bmp"
+        },
+        "ipecac": {
+            "large": "images/ipecac_large.bmp",
+            "small": "images/ipecac.bmp"
+        },
+        "isaac": {
+            "large": "images/isaac_large.bmp",
+            "small": "images/isaac.bmp"
+        },
+        "isaac_": {
+            "large": "images/isaac__large.bmp",
+            "small": "images/isaac_.bmp"
+        },
+        "jar_of_flies": {
+            "large": "images/jar_of_flies_large.bmp",
+            "small": "images/jar_of_flies.bmp"
+        },
+        "jawbone": {
+            "large": "images/jawbone_large.bmp",
+            "small": "images/jawbone.bmp"
+        },
+        "jera": {
+            "large": "images/jera_large.bmp",
+            "small": "images/jera.bmp"
+        },
+        "jester": {
+            "large": "images/jester_large.bmp",
+            "small": "images/jester.bmp"
+        },
+        "joker": {
+            "large": "images/joker_large.bmp",
+            "small": "images/joker.bmp"
+        },
+        "judas": {
+            "large": "images/judas_large.bmp",
+            "small": "images/judas.bmp"
+        },
+        "judas_shadow": {
+            "large": "images/judas__shadow_large.bmp",
+            "small": "images/judas__shadow.bmp"
+        },
+        "judgement": {
+            "large": "images/xx__judgement_large.bmp",
+            "small": "images/xx__judgement.bmp"
+        },
+        "justice": {
             "large": "images/viii__justice_large.bmp",
             "small": "images/viii__justice.bmp"
         },
-        "War": {
-            "large": "images/war_large.bmp",
-            "small": "images/war.bmp"
+        "keeper": {
+            "large": "images/the_keeper_large.bmp",
+            "small": "images/the_keeper.bmp"
         },
-        "Whore of Babylon": {
-            "large": "images/whore_of_babylon_large.bmp",
-            "small": "images/whore_of_babylon.bmp"
+        "keeper_head": {
+            "large": "images/keeper_head_large.bmp",
+            "small": "images/keeper_head.bmp"
         },
-        "Wizoob": {
-            "large": "images/wizoob_large.bmp",
-            "small": "images/wizoob.bmp"
+        "keeper_s_penny": {
+            "large": "images/keeper_s_penny_large.bmp",
+            "small": "images/keeper_s_penny.bmp"
         },
-        "Wooden Nickel": {
-            "large": "images/wooden_nickel_large.bmp",
-            "small": "images/wooden_nickel.bmp"
+        "keeper_s_sack": {
+            "large": "images/keeper_s_sack_large.bmp",
+            "small": "images/keeper_s_sack.bmp"
         },
-        "Wrath": {
-            "large": "images/wrath_large.bmp",
-            "small": "images/wrath.bmp"
+        "lard": {
+            "large": "images/lard_large.bmp",
+            "small": "images/lard.bmp"
         },
-        "X. Wheel of Fortune": {
-            "large": "images/x__wheel_of_fortune_large.bmp",
-            "small": "images/x__wheel_of_fortune.bmp"
+        "larry_jr_": {
+            "large": "images/larry_jr__large.bmp",
+            "small": "images/larry_jr_.bmp"
         },
-        "XI. Strength": {
+        "lazarus": {
+            "large": "images/lazarus_large.bmp",
+            "small": "images/lazarus.bmp"
+        },
+        "leaper": {
+            "large": "images/leaper_large.bmp",
+            "small": "images/leaper.bmp"
+        },
+        "leech": {
+            "large": "images/leech_large.bmp",
+            "small": "images/leech.bmp"
+        },
+        "lemon_mishap": {
+            "large": "images/lemon_mishap_large.bmp",
+            "small": "images/lemon_mishap.bmp"
+        },
+        "libra": {
+            "large": "images/libra_large.bmp",
+            "small": "images/libra.bmp"
+        },
+        "library_card": {
+            "large": "images/library_card_large.bmp",
+            "small": "images/library_card.bmp"
+        },
+        "lil_battery": {
+            "large": "images/lil_battery_large.bmp",
+            "small": "images/lil_battery.bmp"
+        },
+        "lil_chest": {
+            "large": "images/lil_chest_large.bmp",
+            "small": "images/lil_chest.bmp"
+        },
+        "lilith": {
+            "large": "images/lilith_large.bmp",
+            "small": "images/lilith.bmp"
+        },
+        "little_horn": {
+            "large": "images/little_horn_large.bmp",
+            "small": "images/little_horn.bmp"
+        },
+        "lodestone": {
+            "large": "images/lodestone_large.bmp",
+            "small": "images/lodestone.bmp"
+        },
+        "loot_card": {
+            "large": "images/loot_card_large.bmp",
+            "small": "images/loot_card.bmp"
+        },
+        "lost_soul": {
+            "large": "images/lost_soul_large.bmp",
+            "small": "images/lost_soul.bmp"
+        },
+        "lucky_foot": {
+            "large": "images/lucky_foot_large.bmp",
+            "small": "images/lucky_foot.bmp"
+        },
+        "lunch": {
+            "large": "images/lunch_large.bmp",
+            "small": "images/lunch.bmp"
+        },
+        "lust": {
+            "large": "images/lust_large.bmp",
+            "small": "images/lust.bmp"
+        },
+        "maggy": {
+            "large": "images/maggy_large.bmp",
+            "small": "images/maggy.bmp"
+        },
+        "magic_skin": {
+            "large": "images/magic_skin_large.bmp",
+            "small": "images/magic_skin.bmp"
+        },
+        "restock": {
+            "large": "images/restock_large.bmp",
+            "small": "images/restock.bmp"
+        },
+        "mom_s_bra": {
+            "large": "images/mom_s_bra_large.bmp",
+            "small": "images/mom_s_bra.bmp"
+        },
+        "hitops": {
+            "large": "images/hitops_large.bmp",
+            "small": "images/hitops.bmp"
+        },
+        "rib_of_greed": {
+            "large": "images/rib_of_greed_large.bmp",
+            "small": "images/rib_of_greed.bmp"
+        },
+        "mama_gurdy": {
+            "large": "images/mama_gurdy_large.bmp",
+            "small": "images/mama_gurdy.bmp"
+        },
+        "spider_mod": {
+            "large": "images/spider_mod_large.bmp",
+            "small": "images/spider_mod.bmp"
+        },
+        "mama_haunt": {
+            "large": "images/mama_haunt_large.bmp",
+            "small": "images/mama_haunt.bmp"
+        },
+        "swarm_of_flies": {
+            "large": "images/swarm_of_flies_large.bmp",
+            "small": "images/swarm_of_flies.bmp"
+        },
+        "mama_mega": {
+            "large": "images/mama_mega_large.bmp",
+            "small": "images/mama_mega.bmp"
+        },
+        "marked": {
+            "large": "images/marked_large.bmp",
+            "small": "images/marked.bmp"
+        },
+        "mask_of_infamy": {
+            "large": "images/mask_of_infamy_large.bmp",
+            "small": "images/mask_of_infamy.bmp"
+        },
+        "meat": {
+            "large": "images/meat__large.bmp",
+            "small": "images/meat_.bmp"
+        },
+        "mega_battery": {
+            "large": "images/mega_battery_large.bmp",
+            "small": "images/mega_battery.bmp"
+        },
+        "mega_bomb": {
+            "large": "images/mega_bomb__large.bmp",
+            "small": "images/mega_bomb_.bmp"
+        },
+        "mega_fatty": {
+            "large": "images/mega_fatty_large.bmp",
+            "small": "images/mega_fatty.bmp"
+        },
+        "mega_troll_bomb_": {
+            "large": "images/mega_troll_bomb__large.bmp",
+            "small": "images/mega_troll_bomb_.bmp"
+        },
+        "midas_touch": {
+            "large": "images/midas_touch_large.bmp",
+            "small": "images/midas_touch.bmp"
+        },
+        "mini_mush": {
+            "large": "images/mini_mush_large.bmp",
+            "small": "images/mini_mush.bmp"
+        },
+        "missing_page": {
+            "large": "images/the_missing_page_large.bmp",
+            "small": "images/the_missing_page.bmp"
+        },
+        "mom_": {
+            "large": "images/mom__large.bmp",
+            "small": "images/mom_.bmp"
+        },
+        "mom_s_dead_hand": {
+            "large": "images/mom_s_dead_hand_large.bmp",
+            "small": "images/mom_s_dead_hand.bmp"
+        },
+        "mom_s_eye": {
+            "large": "images/mom_s_eye_large.bmp",
+            "small": "images/mom_s_eye.bmp"
+        },
+        "mom_s_hand": {
+            "large": "images/mom_s_hand_large.bmp",
+            "small": "images/mom_s_hand.bmp"
+        },
+        "mom_s_ring": {
+            "large": "images/mom_s_ring_large.bmp",
+            "small": "images/mom_s_ring.bmp"
+        },
+        "mom_s_shovel": {
+            "large": "images/mom_s_shovel_large.bmp",
+            "small": "images/mom_s_shovel.bmp"
+        },
+        "moms_box": {
+            "large": "images/mom_s_box_large.bmp",
+            "small": "images/mom_s_box.bmp"
+        },
+        "moms_coin_purse": {
+            "large": "images/mom_s_coin_purse_large.bmp",
+            "small": "images/mom_s_coin_purse.bmp"
+        },
+        "moms_purse": {
+            "large": "images/mom_s_purse_large.bmp",
+            "small": "images/mom_s_purse.bmp"
+        },
+        "moms_razor": {
+            "large": "images/mom_s_razor_large.bmp",
+            "small": "images/mom_s_razor.bmp"
+        },
+        "monstro": {
+            "large": "images/monstro_large.bmp",
+            "small": "images/monstro.bmp"
+        },
+        "monstro_ii": {
+            "large": "images/monstro_ii_large.bmp",
+            "small": "images/monstro_ii.bmp"
+        },
+        "monstros_tooth": {
+            "large": "images/monstro_s_tooth_large.bmp",
+            "small": "images/monstro_s_tooth.bmp"
+        },
+        "more_options": {
+            "large": "images/more_options_large.bmp",
+            "small": "images/more_options.bmp"
+        },
+        "mother_": {
+            "large": "images/mother__large.bmp",
+            "small": "images/mother_.bmp"
+        },
+        "mr_boom": {
+            "large": "images/mr__boom_large.bmp",
+            "small": "images/mr__boom.bmp"
+        },
+        "mulliboom": {
+            "large": "images/mulliboom_large.bmp",
+            "small": "images/mulliboom.bmp"
+        },
+        "mulligan": {
+            "large": "images/mulligan_large.bmp",
+            "small": "images/mulligan.bmp"
+        },
+        "mystery_sack": {
+            "large": "images/mystery_sack_large.bmp",
+            "small": "images/mystery_sack.bmp"
+        },
+        "nerve_ending": {
+            "large": "images/nerve_ending_large.bmp",
+            "small": "images/nerve_ending.bmp"
+        },
+        "newgrounds_tank": {
+            "large": "images/newgrounds_tank_large.bmp",
+            "small": "images/newgrounds_tank.bmp"
+        },
+        "nickel": {
+            "large": "images/a_nickel__large.bmp",
+            "small": "images/a_nickel_.bmp"
+        },
+        "nine_volt": {
+            "large": "images/9_volt_large.bmp",
+            "small": "images/9_volt.bmp"
+        },
+        "null": {
+            "large": "images/null_large.bmp",
+            "small": "images/null.bmp"
+        },
+        "one_cent": {
+            "large": "images/a_penny__large.bmp",
+            "small": "images/a_penny_.bmp"
+        },
+        "one_up": {
+            "large": "images/one_up_large.bmp",
+            "small": "images/one_up.bmp"
+        },
+        "p_h_d_": {
+            "large": "images/p_h_d__large.bmp",
+            "small": "images/p_h_d_.bmp"
+        },
+        "pageant_boy": {
+            "large": "images/pageant_boy_large.bmp",
+            "small": "images/pageant_boy.bmp"
+        },
+        "pale_fatty": {
+            "large": "images/pale_fatty_large.bmp",
+            "small": "images/pale_fatty.bmp"
+        },
+        "pandoras_box": {
+            "large": "images/pandoras_box_large.bmp",
+            "small": "images/pandoras_box.bmp"
+        },
+        "pay_to_play": {
+            "large": "images/pay_to_play_large.bmp",
+            "small": "images/pay_to_play.bmp"
+        },
+        "peep": {
+            "large": "images/peep_large.bmp",
+            "small": "images/peep.bmp"
+        },
+        "peeping_fatty": {
+            "large": "images/peeping_fatty_large.bmp",
+            "small": "images/peeping_fatty.bmp"
+        },
+        "perthro": {
+            "large": "images/perthro_large.bmp",
+            "small": "images/perthro.bmp"
+        },
+        "pestilence": {
+            "large": "images/pestilence_large.bmp",
+            "small": "images/pestilence.bmp"
+        },
+        "pin": {
+            "large": "images/pin_large.bmp",
+            "small": "images/pin.bmp"
+        },
+        "placenta": {
+            "large": "images/placenta_large.bmp",
+            "small": "images/placenta.bmp"
+        },
+        "plan_c": {
+            "large": "images/plan_c_large.bmp",
+            "small": "images/plan_c.bmp"
+        },
+        "playdough_cookie": {
+            "large": "images/playdough_cookie_large.bmp",
+            "small": "images/playdough_cookie.bmp"
+        },
+        "polydactyly": {
+            "large": "images/polydactyly_large.bmp",
+            "small": "images/polydactyly.bmp"
+        },
+        "polyphemus": {
+            "large": "images/polyphemus_large.bmp",
+            "small": "images/polyphemus.bmp"
+        },
+        "pooter": {
+            "large": "images/pooter_large.bmp",
+            "small": "images/pooter.bmp"
+        },
+        "portable_slot_machine": {
+            "large": "images/portable_slot_machine_large.bmp",
+            "small": "images/portable_slot_machine.bmp"
+        },
+        "portal": {
+            "large": "images/portal_large.bmp",
+            "small": "images/portal.bmp"
+        },
+        "potato_peeler": {
+            "large": "images/potato_peeler_large.bmp",
+            "small": "images/potato_peeler.bmp"
+        },
+        "pride": {
+            "large": "images/pride_large.bmp",
+            "small": "images/pride.bmp"
+        },
+        "psy_horf": {
+            "large": "images/psy_horf_large.bmp",
+            "small": "images/psy_horf.bmp"
+        },
+        "purple_heart": {
+            "large": "images/purple_heart_large.bmp",
+            "small": "images/purple_heart.bmp"
+        },
+        "r_key": {
+            "large": "images/r_key_large.bmp",
+            "small": "images/r_key.bmp"
+        },
+        "rag_man": {
+            "large": "images/rag_man_large.bmp",
+            "small": "images/rag_man.bmp"
+        },
+        "rag_mega": {
+            "large": "images/rag_mega_large.bmp",
+            "small": "images/rag_mega.bmp"
+        },
+        "rage_creep": {
+            "large": "images/rage_creep_large.bmp",
+            "small": "images/rage_creep.bmp"
+        },
+        "rainbow_baby": {
+            "large": "images/rainbow_baby_large.bmp",
+            "small": "images/rainbow_baby.bmp"
+        },
+        "razor_blade": {
+            "large": "images/razor_blade_large.bmp",
+            "small": "images/razor_blade.bmp"
+        },
+        "red_ghost": {
+            "large": "images/red_ghost_large.bmp",
+            "small": "images/red_ghost.bmp"
+        },
+        "red_host": {
+            "large": "images/red_host_large.bmp",
+            "small": "images/red_host.bmp"
+        },
+        "red_pills": {
+            "large": "images/pills__(red)_large.bmp",
+            "small": "images/pills__(red).bmp"
+        },
+        "ring_of_flies": {
+            "large": "images/ring_of_flies_large.bmp",
+            "small": "images/ring_of_flies.bmp"
+        },
+        "rock_bottom": {
+            "large": "images/rock_bottom_large.bmp",
+            "small": "images/rock_bottom.bmp"
+        },
+        "roundy": {
+            "large": "images/roundy_large.bmp",
+            "small": "images/roundy.bmp"
+        },
+        "sack_head": {
+            "large": "images/sack_head_large.bmp",
+            "small": "images/sack_head.bmp"
+        },
+        "sack_of_pennies": {
+            "large": "images/sack_of_pennies_large.bmp",
+            "small": "images/sack_of_pennies.bmp"
+        },
+        "sacred_heart": {
+            "large": "images/sacred_heart_large.bmp",
+            "small": "images/sacred_heart.bmp"
+        },
+        "sacrificial_dagger": {
+            "large": "images/sacrificial_dagger_large.bmp",
+            "small": "images/sacrificial_dagger.bmp"
+        },
+        "samson": {
+            "large": "images/samson_large.bmp",
+            "small": "images/samson.bmp"
+        },
+        "satan_": {
+            "large": "images/satan__large.bmp",
+            "small": "images/satan_.bmp"
+        },
+        "scolex": {
+            "large": "images/scolex_large.bmp",
+            "small": "images/scolex.bmp"
+        },
+        "secret_room_": {
+            "large": "images/secret_room__large.bmp",
+            "small": "images/secret_room_.bmp"
+        },
+        "seraphim": {
+            "large": "images/seraphim_large.bmp",
+            "small": "images/seraphim.bmp"
+        },
+        "shadow": {
+            "large": "images/shadow_large.bmp",
+            "small": "images/shadow.bmp"
+        },
+        "shiny_rock": {
+            "large": "images/shiny_rock_large.bmp",
+            "small": "images/shiny_rock.bmp"
+        },
+        "shop_upgrade_": {
+            "large": "images/shop_upgrade__large.bmp",
+            "small": "images/shop_upgrade_.bmp"
+        },
+        "short_fuse": {
+            "large": "images/short_fuse_large.bmp",
+            "small": "images/short_fuse.bmp"
+        },
+        "sloth": {
+            "large": "images/sloth_large.bmp",
+            "small": "images/sloth.bmp"
+        },
+        "smart_fly": {
+            "large": "images/smart_fly_large.bmp",
+            "small": "images/smart_fly.bmp"
+        },
+        "smelter": {
+            "large": "images/smelter_large.bmp",
+            "small": "images/smelter.bmp"
+        },
+        "soul_heart": {
+            "large": "images/soul_heart_large.bmp",
+            "small": "images/soul_heart.bmp"
+        },
+        "soul_of_gluttony": {
+            "large": "images/soul_of_gluttony_large.bmp",
+            "small": "images/soul_of_gluttony.bmp"
+        },
+        "soul_of_greed": {
+            "large": "images/soul_of_greed_large.bmp",
+            "small": "images/soul_of_greed.bmp"
+        },
+        "soul_of_guppy": {
+            "large": "images/soul_of_guppy_large.bmp",
+            "small": "images/soul_of_guppy.bmp"
+        },
+        "soul_of_lust": {
+            "large": "images/soul_of_lust_large.bmp",
+            "small": "images/soul_of_lust.bmp"
+        },
+        "soul_of_sloth": {
+            "large": "images/soul_of_sloth_large.bmp",
+            "small": "images/soul_of_sloth.bmp"
+        },
+        "soul_of_wrath": {
+            "large": "images/soul_of_wrath_large.bmp",
+            "small": "images/soul_of_wrath.bmp"
+        },
+        "soy_milk": {
+            "large": "images/soy_milk_large.bmp",
+            "small": "images/soy_milk.bmp"
+        },
+        "spelunker_hat": {
+            "large": "images/spelunker_hat_large.bmp",
+            "small": "images/spelunker_hat.bmp"
+        },
+        "spider": {
+            "large": "images/spider_large.bmp",
+            "small": "images/spider.bmp"
+        },
+        "spiked_chest": {
+            "large": "images/spiked_chest_large.bmp",
+            "small": "images/spiked_chest.bmp"
+        },
+        "spoon_bender": {
+            "large": "images/spoon_bender_large.bmp",
+            "small": "images/spoon_bender.bmp"
+        },
+        "squirt": {
+            "large": "images/squirt_large.bmp",
+            "small": "images/squirt.bmp"
+        },
+        "starter_deck": {
+            "large": "images/starter_deck_large.bmp",
+            "small": "images/starter_deck.bmp"
+        },
+        "steamy_sale": {
+            "large": "images/steamy_sale__large.bmp",
+            "small": "images/steamy_sale_.bmp"
+        },
+        "sticky_nickel": {
+            "large": "images/sticky_nickel_large.bmp",
+            "small": "images/sticky_nickel.bmp"
+        },
+        "stoney": {
+            "large": "images/stoney_large.bmp",
+            "small": "images/stoney.bmp"
+        },
+        "strawberry": {
+            "large": "images/strawberry_large.bmp",
+            "small": "images/strawberry.bmp"
+        },
+        "strength": {
             "large": "images/xi__strength_large.bmp",
             "small": "images/xi__strength.bmp"
         },
-        "XIII. Death": {
-            "large": "images/xiii__death_large.bmp",
-            "small": "images/xiii__death.bmp"
+        "succubus": {
+            "large": "images/succubus_large.bmp",
+            "small": "images/succubus.bmp"
         },
-        "XIX. The Sun": {
+        "sucker": {
+            "large": "images/sucker_large.bmp",
+            "small": "images/sucker.bmp"
+        },
+        "suicide_king": {
+            "large": "images/suicide_king_large.bmp",
+            "small": "images/suicide_king.bmp"
+        },
+        "swallowed_penny": {
+            "large": "images/swallowed_penny_large.bmp",
+            "small": "images/swallowed_penny.bmp"
+        },
+        "swarmer": {
+            "large": "images/swarmer_large.bmp",
+            "small": "images/swarmer.bmp"
+        },
+        "synthoil": {
+            "large": "images/synthoil_large.bmp",
+            "small": "images/synthoil.bmp"
+        },
+        "tarot_cloth": {
+            "large": "images/tarot_cloth_large.bmp",
+            "small": "images/tarot_cloth.bmp"
+        },
+        "tech_x": {
+            "large": "images/tech_x_large.bmp",
+            "small": "images/tech_x.bmp"
+        },
+        "telepathy_for_dummies": {
+            "large": "images/telepathy_for_dummies_large.bmp",
+            "small": "images/telepathy_for_dummies.bmp"
+        },
+        "the_baleful": {
+            "large": "images/the_baleful_large.bmp",
+            "small": "images/the_baleful.bmp"
+        },
+        "the_battery": {
+            "large": "images/the_battery_large.bmp",
+            "small": "images/the_battery.bmp"
+        },
+        "the_benighted": {
+            "large": "images/the_benighted_large.bmp",
+            "small": "images/the_benighted.bmp"
+        },
+        "the_bloat": {
+            "large": "images/the_bloat_large.bmp",
+            "small": "images/the_bloat.bmp"
+        },
+        "the_blue_map": {
+            "large": "images/the_blue_map_large.bmp",
+            "small": "images/the_blue_map.bmp"
+        },
+        "the_broken": {
+            "large": "images/the_broken_large.bmp",
+            "small": "images/the_broken.bmp"
+        },
+        "the_cage": {
+            "large": "images/the_cage_large.bmp",
+            "small": "images/the_cage.bmp"
+        },
+        "the_chariot": {
+            "large": "images/vii__the_chariot_large.bmp",
+            "small": "images/vii__the_chariot.bmp"
+        },
+        "the_chest": {
+            "large": "images/the_chest_large.bmp",
+            "small": "images/the_chest.bmp"
+        },
+        "the_compass": {
+            "large": "images/the_compass_large.bmp",
+            "small": "images/the_compass.bmp"
+        },
+        "the_crowdfunder": {
+            "large": "images/the_crowdfunder_large.bmp",
+            "small": "images/the_crowdfunder.bmp"
+        },
+        "the_curdled": {
+            "large": "images/the_curdled_large.bmp",
+            "small": "images/the_curdled.bmp"
+        },
+        "the_dauntless": {
+            "large": "images/the_dauntless_large.bmp",
+            "small": "images/the_dauntless.bmp"
+        },
+        "the_deceiver": {
+            "large": "images/the_deceiver_large.bmp",
+            "small": "images/the_deceiver.bmp"
+        },
+        "the_devil": {
+            "large": "images/xv__the_devil_large.bmp",
+            "small": "images/xv__the_devil.bmp"
+        },
+        "the_emperor": {
+            "large": "images/iv__the_emperor_large.bmp",
+            "small": "images/iv__the_emperor.bmp"
+        },
+        "the_empty": {
+            "large": "images/the_empty_large.bmp",
+            "small": "images/the_empty.bmp"
+        },
+        "the_enigma": {
+            "large": "images/the_enigma_large.bmp",
+            "small": "images/the_enigma.bmp"
+        },
+        "the_fallen": {
+            "large": "images/the_fallen_large.bmp",
+            "small": "images/the_fallen.bmp"
+        },
+        "the_forgotten": {
+            "large": "images/the_forgotten_large.bmp",
+            "small": "images/the_forgotten.bmp"
+        },
+        "the_habit": {
+            "large": "images/the_habit_large.bmp",
+            "small": "images/the_habit.bmp"
+        },
+        "the_hanged_man": {
+            "large": "images/xii__the_hanged_man_large.bmp",
+            "small": "images/xii__the_hanged_man.bmp"
+        },
+        "the_haunt": {
+            "large": "images/the_haunt_large.bmp",
+            "small": "images/the_haunt.bmp"
+        },
+        "the_hermit": {
+            "large": "images/ix__the_hermit_large.bmp",
+            "small": "images/ix__the_hermit.bmp"
+        },
+        "the_high_priestess": {
+            "large": "images/ii__the_high_priestess_large.bmp",
+            "small": "images/ii__the_high_priestess.bmp"
+        },
+        "the_hoarder": {
+            "large": "images/the_hoarder_large.bmp",
+            "small": "images/the_hoarder.bmp"
+        },
+        "the_lamb": {
+            "large": "images/the_lamb_large.bmp",
+            "small": "images/the_lamb.bmp"
+        },
+        "the_left_hand": {
+            "large": "images/the_left_hand_large.bmp",
+            "small": "images/the_left_hand.bmp"
+        },
+        "the_lovers": {
+            "large": "images/vi__the_lovers_large.bmp",
+            "small": "images/vi__the_lovers.bmp"
+        },
+        "the_magician": {
+            "large": "images/i__the_magician_large.bmp",
+            "small": "images/i__the_magician.bmp"
+        },
+        "the_map": {
+            "large": "images/the_map_large.bmp",
+            "small": "images/the_map.bmp"
+        },
+        "the_miser": {
+            "large": "images/the_miser_large.bmp",
+            "small": "images/the_miser.bmp"
+        },
+        "the_moon": {
+            "large": "images/xviii__the_moon_large.bmp",
+            "small": "images/xviii__the_moon.bmp"
+        },
+        "the_polaroid": {
+            "large": "images/the_polaroid_large.bmp",
+            "small": "images/the_polaroid.bmp"
+        },
+        "the_poop": {
+            "large": "images/the_poop_large.bmp",
+            "small": "images/the_poop.bmp"
+        },
+        "the_relic": {
+            "large": "images/the_relic_large.bmp",
+            "small": "images/the_relic.bmp"
+        },
+        "the_savage": {
+            "large": "images/the_savage_large.bmp",
+            "small": "images/the_savage.bmp"
+        },
+        "the_stars": {
+            "large": "images/xvii__the_stars_large.bmp",
+            "small": "images/xvii__the_stars.bmp"
+        },
+        "the_sun": {
             "large": "images/xix__the_sun_large.bmp",
             "small": "images/xix__the_sun.bmp"
         },
-        "XVII. The Stars": {
-            "large": "images/xvii__the_stars_large.bmp",
-            "small": "images/xvii__the_stars.bmp"
+        "the_wiz": {
+            "large": "images/the_wiz_large.bmp",
+            "small": "images/the_wiz.bmp"
+        },
+        "the_world": {
+            "large": "images/xxi__the_world_large.bmp",
+            "small": "images/xxi__the_world.bmp"
+        },
+        "the_zealot": {
+            "large": "images/the_zealot_large.bmp",
+            "small": "images/the_zealot.bmp"
+        },
+        "there_s_options": {
+            "large": "images/there_s_options_large.bmp",
+            "small": "images/there_s_options.bmp"
+        },
+        "three_cents": {
+            "large": "images/3_cents__large.bmp",
+            "small": "images/3_cents_.bmp"
+        },
+        "tick": {
+            "large": "images/tick_large.bmp",
+            "small": "images/tick.bmp"
+        },
+        "tnt_barrel": {
+            "large": "images/tnt_barrel_large.bmp",
+            "small": "images/tnt_barrel.bmp"
+        },
+        "tony": {
+            "large": "images/tony_large.bmp",
+            "small": "images/tony.bmp"
+        },
+        "trap_door_": {
+            "large": "images/trap_door__large.bmp",
+            "small": "images/trap_door_.bmp"
+        },
+        "trite": {
+            "large": "images/trite_large.bmp",
+            "small": "images/trite.bmp"
+        },
+        "troll_bombs": {
+            "large": "images/troll_bombs_large.bmp",
+            "small": "images/troll_bombs.bmp"
+        },
+        "tumor": {
+            "large": "images/tumor_large.bmp",
+            "small": "images/tumor.bmp"
+        },
+        "two_cents": {
+            "large": "images/2_cents__large.bmp",
+            "small": "images/2_cents_.bmp"
+        },
+        "two_of_clubs": {
+            "large": "images/two_of_clubs_large.bmp",
+            "small": "images/two_of_clubs.bmp"
+        },
+        "two_of_diamonds": {
+            "large": "images/two_of_diamonds_large.bmp",
+            "small": "images/two_of_diamonds.bmp"
+        },
+        "two_of_spades": {
+            "large": "images/two_of_spades_large.bmp",
+            "small": "images/two_of_spades.bmp"
+        },
+        "ultra_flesh_kid": {
+            "large": "images/ultra_flesh_kid__large.bmp",
+            "small": "images/ultra_flesh_kid_.bmp"
+        },
+        "war": {
+            "large": "images/war_large.bmp",
+            "small": "images/war.bmp"
+        },
+        "wheel_of_fortune": {
+            "large": "images/x__wheel_of_fortune_large.bmp",
+            "small": "images/x__wheel_of_fortune.bmp"
+        },
+        "whore_of_babylon": {
+            "large": "images/whore_of_babylon_large.bmp",
+            "small": "images/whore_of_babylon.bmp"
+        },
+        "widow": {
+            "large": "images/widow_large.bmp",
+            "small": "images/widow.bmp"
+        },
+        "wishbone": {
+            "large": "images/wishbone_large.bmp",
+            "small": "images/wishbone.bmp"
+        },
+        "wizoob": {
+            "large": "images/wizoob_large.bmp",
+            "small": "images/wizoob.bmp"
+        },
+        "wrath": {
+            "large": "images/wrath_large.bmp",
+            "small": "images/wrath.bmp"
+        },
+        "x_ray_vision": {
+            "large": "images/x_ray_vision_large.bmp",
+            "small": "images/x_ray_vision.bmp"
+        },
+        "xl_floor_": {
+            "large": "images/xl_floor__large.bmp",
+            "small": "images/xl_floor_.bmp"
+        },
+        "yellow_pills": {
+            "large": "images/pills__(yellow)_large.bmp",
+            "small": "images/pills__(yellow).bmp"
+        },"void": {
+            "small": "images/void.bmp",
+            "large": "images/void_large.bmp"
+        },
+        "lord_of_the_pit": {
+            "small": "images/lord_of_the_pit.bmp",
+            "large": "images/lord_of_the_pit_large.bmp"
+        },
+        "book_of_virtues": {
+            "small": "images/book_of_virtues.bmp",
+            "large": "images/book_of_virtues_large.bmp"
+        },
+        "bagotrash": {
+            "small": "images/bag-o-trash.bmp",
+            "large": "images/bag-o-trash_large.bmp"
+        },
+        "sleightofhand": {
+            "small": "images/sleight_of_hand.bmp",
+            "large": "images/sleight_of_hand_large.bmp"
+        },
+        "dark_arts": {
+            "small": "images/dark_arts.bmp",
+            "large": "images/dark_arts_large.bmp"
+        },
+        "the_curse": {
+            "small": "images/the_curse.bmp",
+            "large": "images/the_curse_large.bmp"
+        },
+        "infestation": {
+            "small": "images/infestation.bmp",
+            "large": "images/infestation_large.bmp"
+        },
+        "the_d6": {
+            "small": "images/the_d6.bmp",
+            "large": "images/the_d6_large.bmp"
+        },
+        "book_of_belial": {
+            "small": "images/book_of_belial.bmp",
+            "large": "images/book_of_belial_large.bmp"
+        },
+        "wooden_nickel": {
+            "small": "images/wooden_nickel.bmp",
+            "large": "images/wooden_nickel_large.bmp"
+        },
+        "lazarus_rags": {
+            "small": "images/lazarus__rags.bmp",
+            "large": "images/lazarus__rags_large.bmp"
+        },
+        "incubus": {
+            "small": "images/incubus.bmp",
+            "large": "images/incubus_large.bmp"
+        },
+        "yum_heart": {
+            "small": "images/yum_heart.bmp",
+            "large": "images/yum_heart_large.bmp"
+        },
+        "blood_lust": {
+            "small": "images/blood_lust.bmp",
+            "large": "images/blood_lust_large.bmp"
+        },
+        "soulbond": {
+            "small": "images/soulbond.bmp",
+            "large": "images/soulbond_large.bmp"
+        },
+        "hemoptysis": {
+            "small": "images/hemoptysis.bmp",
+            "large": "images/hemoptysis_large.bmp"
+        },
+        "spindown_dice": {
+            "small": "images/spindown_dice.bmp",
+            "large": "images/spindown_dice_large.bmp"
+        },
+        "sumptorium": {
+            "small": "images/sumptorium.bmp",
+            "large": "images/sumptorium_large.bmp"
+        },
+        "hypercoagulation": {
+            "small": "images/hypercoagulation.bmp",
+            "large": "images/hypercoagulation_large.bmp"
+        },
+        "ceremonial_blade": {
+            "small": "images/ceremonial_blade.bmp",
+            "large": "images/ceremonial_blade_large.bmp"
+        },
+        "abyss": {
+            "small": "images/abyss.bmp",
+            "large": "images/abyss_large.bmp"
+        },
+        "flip": {
+            "small": "images/flip.bmp",
+            "large": "images/flip_large.bmp"
+        },
+        "the_bone": {
+            "small": "images/the_bone.bmp",
+            "large": "images/the_bone_large.bmp"
+        },
+        "the_harlot": {
+            "small": "images/the_harlot.bmp",
+            "large": "images/the_harlot_large.bmp"
+        },
+        "gello": {
+            "small": "images/gello.bmp",
+            "large": "images/gello_large.bmp"
+        },
+        "bag_of_crafting": {
+            "small": "images/bag_of_crafting.bmp",
+            "large": "images/bag_of_crafting_large.bmp"
+        },
+        "keeper_s_bargain": {
+            "small": "images/keeper_s_bargain.bmp",
+            "large": "images/keeper_s_bargain_large.bmp"
+        },
+        "berserk": {
+            "small": "images/berserk.bmp",
+            "large": "images/berserk_large.bmp"
+        },
+        "lemegeton": {
+            "small": "images/lemegeton.bmp",
+            "large": "images/lemegeton_large.bmp"
+        },
+        "gimpy": {
+            "small": "images/gimpy.bmp",
+            "large": "images/gimpy_large.bmp"
         }
     },
     "font": "font.ttf",

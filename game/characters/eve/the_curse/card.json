@@ -3,6 +3,8 @@
     "text": "At the start of your turn, put the top card of a deck into discard.\n{T}: Put the top card of a discard on top of it's deck.",
     "script": "script.lua",
     "eternal": true,
+    "key": "the_curse",
+
     "on": {
         "turn_start": {
             "check": "TheCurse_trigger_check",

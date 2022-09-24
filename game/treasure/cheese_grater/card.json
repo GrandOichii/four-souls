@@ -7,5 +7,6 @@
             "check": "CheeseGrater_trigger_check",
             "effect": "CheeseGrater_trigger"
         }
-    }
+    },
+    "key": "cheese_grater"
 }

@@ -8,5 +8,6 @@
     "soulCount": 1,
     "rewards": {
         "effect": "TheCage_rewards"
-    }
+    },
+    "key": "the_cage"
 }

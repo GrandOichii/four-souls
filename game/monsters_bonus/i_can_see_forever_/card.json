@@ -4,5 +4,6 @@
     "script": "script.lua",
     "use": {
         "effect": "ICanSeeForever_effect"
-    }
+    },
+    "key": "i_can_see_forever_"
 }

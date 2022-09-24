@@ -6,7 +6,9 @@
     "roll": 4,
     "power": 1,
     "rewards": {
-        "requires": ["roll"],
+        "requires": [
+            "roll"
+        ],
         "effect": "CursedTumor_rewards"
     },
     "on": {
@@ -14,5 +16,6 @@
             "check": "CursedTumor_trigger_check",
             "effect": "CursedTumor_trigger"
         }
-    }
+    },
+    "key": "cursed_tumor"
 }

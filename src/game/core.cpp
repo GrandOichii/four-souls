@@ -29,13 +29,24 @@ void Game::loadMonsterCards(string dir) {
     for (const auto& jj : mcards.items()) {
         string tdir = fs::join(dir, jj.value());
         auto jjj = fs::readJS(fs::join(tdir, CARD_INFO_FILE));
-        this->_monsterCards.push_back(new MonsterCard(tdir, jjj));
+        try {
+            this->_monsterCards.push_back(new MonsterCard(tdir, jjj));
+        } catch (std::exception& ex) {
+            std::cerr << "Failed loading card from " << tdir << std::endl;
+            throw ex;
+        }
+
     }
     auto bcards = jcards["bonus"];
     for (const auto& jj : bcards.items()) {
         string tdir = fs::join(dir, jj.value());
         auto jjj = fs::readJS(fs::join(tdir, CARD_INFO_FILE));
-        this->_bonusMonsterCards.push_back(new ScriptCard(tdir, jjj, CardTypes::BonusMonster));
+        try {
+            this->_bonusMonsterCards.push_back(new ScriptCard(tdir, jjj, CardTypes::BonusMonster));
+        } catch (std::exception& ex) {
+            std::cerr << "Failed loading card from " << tdir << std::endl;
+            throw ex;
+        }
     }
     // for (const auto& c : _monsterCards)
     //     c->print("");
@@ -46,8 +57,14 @@ void Game::loadBonusSouls(string dir) {
     for (const auto& el : j.items()) {
         string tdir = fs::join(dir, el.value()); 
         auto jj = fs::readJS(fs::join(tdir, CARD_INFO_FILE));
-        auto card = new ScriptCard(tdir, jj, CardTypes::BonusSoul);
-        _bonusSouls.push_back(card);
+        try {
+            auto card = new ScriptCard(tdir, jj, CardTypes::BonusSoul);
+            _bonusSouls.push_back(card);
+        } catch (std::exception& ex) {
+            std::cerr << "Failed loading card from " << tdir << std::endl;
+            throw ex;
+        }
+
     }
 }
 
@@ -57,9 +74,15 @@ void Game::loadLootCards(string dir) {
     for (const auto& jj : jcards.items()) {
         string tdir = fs::join(dir, jj.key());
         auto jjj = fs::readJS(fs::join(tdir, CARD_INFO_FILE));
-        auto card = new ScriptCard(tdir, jjj, CardTypes::Loot);
-        this->_lootCards.push_back(card);
-        this->_lootDeckTemplate.push_back(std::make_pair(card, jj.value()));
+        try {
+            auto card = new ScriptCard(tdir, jjj, CardTypes::Loot);
+            this->_lootCards.push_back(card);
+            this->_lootDeckTemplate.push_back(std::make_pair(card, jj.value()));
+        } catch (std::exception& ex) {
+            std::cerr << "Failed loading card from " << tdir << std::endl;
+            throw ex;
+        }
+
     }
 }
 
@@ -69,7 +92,12 @@ void Game::loadTreasureCards(string dir) {
     for (const auto& jj : jcards.items()) {
         string tdir = fs::join(dir, jj.value());
         auto jjj = fs::readJS(fs::join(tdir, CARD_INFO_FILE));
-        this->_treasureCards.push_back(new ScriptCard(tdir, jjj, CardTypes::Treasure));
+        try {
+            this->_treasureCards.push_back(new ScriptCard(tdir, jjj, CardTypes::Treasure));
+        } catch (std::exception& ex) {
+            std::cerr << "Failed loading card from " << tdir << std::endl;
+            throw ex;
+        }
     }
     // for (const auto& c : _treasureCards)
     //     c->print("");
@@ -80,8 +108,14 @@ void Game::loadCharacterCards(string dir) {
     for (const auto& el : j.items()) {
         string tdir = fs::join(dir, el.value()); 
         auto jj = fs::readJS(fs::join(tdir, CARD_INFO_FILE));
-        auto character = new CharacterCard(tdir, jj);
-        _characterCards.push_back(character);
+        try {
+            auto character = new CharacterCard(tdir, jj);
+            _characterCards.push_back(character);
+        } catch (std::exception& ex) {
+            std::cerr << "Failed loading card from " << tdir << std::endl;
+            throw ex;
+        }
+
     }
 }
 

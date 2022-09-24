@@ -1,0 +1,21 @@
+{
+    "name": "Globin",
+    "text": "When this reaches 1h, the active player rolls-\n1-4: This takes 1 damage.\n5-6: This heals 2h.\nRewards: Loot 3",
+    "script": "script.lua",
+    "health": 4,
+    "roll": 4,
+    "power": 1,
+    "rewards": {
+        "effect": "Globin_rewards"
+    },
+    "on": {
+        "damage": {
+            "requires": [
+                "roll"
+            ],
+            "check": "Globin_trigger_check",
+            "effect": "Globin_trigger"
+        }
+    },
+    "key": "globin"
+}

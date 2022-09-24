@@ -10,5 +10,6 @@
     },
     "death": {
         "effect": "PeepingFatty_rewards"
-    }
+    },
+    "key": "peeping_fatty"
 }

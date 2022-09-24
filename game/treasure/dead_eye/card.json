@@ -7,5 +7,6 @@
             "check": "DeadEye_trigger_check",
             "effect": "DeadEye_trigger"
         }
-    }
+    },
+    "key": "dead_eye"
 }

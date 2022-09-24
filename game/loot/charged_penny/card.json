@@ -4,5 +4,6 @@
     "script": "script.lua",
     "use": {
         "effect": "ChargedPenny_use"
-    }
+    },
+    "key": "charged_penny"
 }

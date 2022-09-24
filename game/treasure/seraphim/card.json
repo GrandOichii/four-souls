@@ -16,5 +16,6 @@
             "check": "Seraphim_trigger2_check",
             "effect": "Seraphim_trigger2"
         }
-    }
+    },
+    "key": "seraphim"
 }

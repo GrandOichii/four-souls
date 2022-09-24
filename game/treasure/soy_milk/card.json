@@ -15,5 +15,6 @@
             "check": "SoyMilk_trigger_check",
             "effect": "SoyMilk_trigger"
         }
-    }
+    },
+    "key": "soy_milk"
 }

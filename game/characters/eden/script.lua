@@ -42,7 +42,7 @@ function Eden_game_start(host)
         if not IsBadEdenCard(tc.name) then
             count = count + 1
             cards[#cards+1] = tc
-            choices[#choices+1] = count..'- ${'..tc.name..'}'
+            choices[#choices+1] = count..'- ${'..tc.key..'}'
         end
         putFromTopToBottom(host, TREASURE_DECK, 1)
     end

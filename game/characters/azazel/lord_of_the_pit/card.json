@@ -3,6 +3,7 @@
     "text": "{T}: Cancel any attack on a monster, that player may attack again this turn.",
     "script": "script.lua",
     "eternal": true,
+    "key": "lord_of_the_pit",
     "abilities": [
         {
             "requires": ["tap"],

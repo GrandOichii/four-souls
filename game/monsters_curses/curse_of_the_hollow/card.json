@@ -15,5 +15,6 @@
             "check": "CurseOfTheHollow_trigger_check",
             "effect": "CurseOfTheHollow_trigger"
         }
-    }
+    },
+    "key": "curse_of_the_hollow"
 }

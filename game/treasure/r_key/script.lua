@@ -18,7 +18,7 @@ function RKey_effect(host)
         end
         -- discard hand
         for _, card in ipairs(player.hand) do
-            discardLoot(host, player.id, card.id)
+            discardLoot(host, player.id, card.id, false)
         end
         lootCards(host, player.id, 3)
     end

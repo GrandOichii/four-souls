@@ -16,5 +16,6 @@
             "cost": "TheWiz_trigger_cost",
             "effect": "TheWiz_trigger"
         }
-    }
+    },
+    "key": "the_wiz"
 }

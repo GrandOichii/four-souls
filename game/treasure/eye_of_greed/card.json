@@ -7,5 +7,6 @@
             "check": "EyeOfGreed_trigger_check",
             "effect": "EyeOfGreed_trigger"
         }
-    }
+    },
+    "key": "eye_of_greed"
 }

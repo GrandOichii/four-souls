@@ -1,0 +1,21 @@
+{
+    "name": "Boxing Glove",
+    "text": "{T}: Put a monster not being attacked on the bottom of the monster deck.\nEach time a monster dies, recharge this.",
+    "script": "script.lua",
+    "abilties": [
+        {
+            "requires": [
+                "tap"
+            ],
+            "cost": "BoxingGlove_cost",
+            "effect": "BoxingGlove_tap"
+        }
+    ],
+    "on": {
+        "death": {
+            "check": "BoxingGlove_trigger_check",
+            "effect": "BoxingGlove_trigger"
+        }
+    },
+    "key": "boxing_glove"
+}

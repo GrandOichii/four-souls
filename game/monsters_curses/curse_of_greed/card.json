@@ -15,5 +15,6 @@
             "check": "CurseOfGreed_trigger_check",
             "effect": "CurseOfGreed_trigger"
         }
-    }
+    },
+    "key": "curse_of_greed"
 }

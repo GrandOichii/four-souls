@@ -9,5 +9,6 @@
     "leave": {
         "usesStack": false,
         "effect": "BallOfBandages_leave"
-    }
+    },
+    "key": "ball_of_bandages"
 }

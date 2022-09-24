@@ -1,0 +1,13 @@
+{
+    "name": "Spider Mod",
+    "key": "spider_mod",
+    "text": "Each time a player rolls a 5, you may put a monster not being attacked into discard and replace it with the top card of the monster deck.",
+    "script": "script.lua",
+    "on": {
+        "roll": {
+            "check": "SpiderMod_trigger_check",
+            "cost": "SpiderMod_trigger_cost",
+            "effect": "SpiderMod_trigger"
+        }
+    }
+}

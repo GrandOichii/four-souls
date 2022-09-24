@@ -4,5 +4,6 @@
     "script": "script.lua",
     "use": {
         "effect": "HeadTrauma_effect"
-    }
+    },
+    "key": "head_trauma"
 }

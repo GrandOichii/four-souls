@@ -27,7 +27,7 @@ function DaddyLongLegs_leave(host)
 end
 
 function DaddyLongLegs_trigger1_check(host, me)
-	return Common_MonsterWithID(host, me.id).isBeingAttacked and Common_LastRoll(host, me).value == 1
+    return Common_AttackingPlayerRolled(host, me, 1)
 end
 
 function DaddyLongLegs_trigger1(host)

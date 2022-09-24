@@ -7,5 +7,6 @@
             "check": "GoatHead_trigger_check",
             "effect": "GoatHead_trigger"
         }
-    }
+    },
+    "key": "goat_head"
 }

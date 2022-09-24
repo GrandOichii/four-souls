@@ -10,5 +10,6 @@
     },
     "death": {
         "effect": "PsyHorf_death"
-    }
+    },
+    "key": "psy_horf"
 }

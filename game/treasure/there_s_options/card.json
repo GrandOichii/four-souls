@@ -19,5 +19,6 @@
             "cost": "TheresOptions_cost",
             "effect": "TheresOptions_peek"
         }
-    ]
+    ],
+    "key": "there_s_options"
 }

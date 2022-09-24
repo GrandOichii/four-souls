@@ -4,5 +4,6 @@
     "script": "script.lua",
     "use": {
         "effect": "Jera_use"
-    }
+    },
+    "key": "jera"
 }

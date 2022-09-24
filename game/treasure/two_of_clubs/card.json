@@ -12,7 +12,9 @@
     },
     "abilities": [
         {
-            "requires": ["tap"],
+            "requires": [
+                "tap"
+            ],
             "cost": "TwoOfClubs_cost",
             "effect": "TwoOfClubs_tap"
         }
@@ -23,5 +25,6 @@
             "check": "TwoOfClubs_trigger_check",
             "effect": "TwoOfClubs_trigger"
         }
-    }
+    },
+    "key": "two_of_clubs"
 }

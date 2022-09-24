@@ -7,5 +7,6 @@
             "check": "EdensBlessing_trigger_check",
             "effect": "EdensBlessing_trigger"
         }
-    }
+    },
+    "key": "edens_blessing"
 }

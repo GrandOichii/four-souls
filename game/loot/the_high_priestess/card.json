@@ -3,8 +3,11 @@
     "text": "Choose a player or monster, then roll:\nDeal damage to them equal to the number result.",
     "script": "script.lua",
     "use": {
-        "requires": ["roll"],
+        "requires": [
+            "roll"
+        ],
         "cost": "TheHighPriestess_cost",
         "effect": "TheHighPriestess_use"
-    }
+    },
+    "key": "the_high_priestess"
 }

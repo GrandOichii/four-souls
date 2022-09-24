@@ -3,6 +3,8 @@
     "text": "($) Discard a loot card:\nPut a counter on this.\n($) Remove 4 counters from this:\nGain +1 treasure.",
     "script": "script.lua",
     "eternal": true,
+    "key": "bag_of_crafting",
+
     "abilities": [
         {
             "text": "Put a counter on this.",

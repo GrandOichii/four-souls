@@ -4,9 +4,13 @@
     "script": "script.lua",
     "abilities": [
         {
-            "requires": ["tap", "roll"],
+            "requires": [
+                "tap",
+                "roll"
+            ],
             "cost": "GlassCannon_cost",
             "effect": "GlassCannon_tap"
         }
-    ]
+    ],
+    "key": "glass_cannon"
 }

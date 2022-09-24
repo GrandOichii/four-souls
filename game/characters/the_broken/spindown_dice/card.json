@@ -3,6 +3,8 @@
     "text": "{T}: Destroy an item. If it was controlled by a player, they may steal an item from the shop.\nAt the end of your turn, roll- 4-6: Recharge this.",
     "script": "script.lua",
     "eternal": true,
+    "key": "spindown_dice",
+
     "abilities": [
         {
             "requires": ["tap"],

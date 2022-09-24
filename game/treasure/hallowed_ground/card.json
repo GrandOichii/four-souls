@@ -13,5 +13,6 @@
             "cost": "HallowedGround_cost",
             "effect": "HallowedGround_effect"
         }
-    ]
+    ],
+    "key": "hallowed_ground"
 }

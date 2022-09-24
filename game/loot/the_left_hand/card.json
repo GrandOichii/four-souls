@@ -10,5 +10,6 @@
             "check": "TheLeftHand_trigger_check",
             "effect": "TheLeftHand_trigger"
         }
-    }
+    },
+    "key": "the_left_hand"
 }

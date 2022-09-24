@@ -15,5 +15,6 @@
             "cost": "Isaac_trigger_cost",
             "effect": "Isaac_trigger"
         }
-    }
+    },
+    "key": "isaac_"
 }

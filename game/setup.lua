@@ -396,7 +396,6 @@ function Common_Haunt_trigger(host)
     moveToBoard(host, target.id, me.id)
 end
 
-
 function Common_AttackingPlayerRolled(host, me, amount)
     local lr = Common_LastRoll(host, me)
     local flag = lr.value == amount and lr.isCombatRoll
@@ -634,7 +633,7 @@ function Common_SoulCount(player)
     return result
 end
 
-function Common_Discard(host, ownerID, amount)
+function Common_Discard(host, ownerID, amount, isCost)
     --  TODO? keep the fizzling of ability if player doesn't have enough cards in hand
     local player = Common_PlayerWithID(host, ownerID)
     if #player.hand < amount then
@@ -653,9 +652,33 @@ function Common_Discard(host, ownerID, amount)
         cardIDs = requestCardsInHand(host, ownerID, ownerID, message, amount)
     end
     for _, cid in ipairs(cardIDs) do
-        discardLoot(host, ownerID, cid)
+        discardLoot(host, ownerID, cid, isCost)
     end
     return true
+end
+
+-- discard loot layers
+DiscardLootLayers = Layers:Create()
+
+DiscardLootLayers:push({
+    id = 1,
+    func = discardLoot
+})
+
+discardLoot = function (host, ownerID, cid, isCost)
+    return DiscardLootLayers:top().func(host, ownerID, cid, isCost)
+end
+
+-- common discard layers
+Common_DiscardLayers = Layers:Create()
+
+Common_DiscardLayers:push({
+    id = 1,
+    func = Common_Discard
+})
+
+Common_Discard = function (host, ownerID, amount, isCost)
+    return Common_DiscardLayers:top().func(host, ownerID, amount, isCost)
 end
 
 function Common_RollStackSize(host)
@@ -830,7 +853,7 @@ end
 function Common_FormCardChoices(cards)
     local result = {}
     for i, card in ipairs(cards) do
-        result[#result+1] = i..'- ${'..card.name..'}'
+        result[#result+1] = i..'- ${'..card.key..'}'
     end
     return result
 end

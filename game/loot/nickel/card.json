@@ -4,5 +4,6 @@
     "script": "script.lua",
     "use": {
         "effect": "ANickel_use"
-    }
+    },
+    "key": "nickel"
 }

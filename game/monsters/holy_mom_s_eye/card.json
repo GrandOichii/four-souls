@@ -13,5 +13,6 @@
             "check": "HolyMomsEye_trigger_check",
             "effect": "HolyMomsEye_trigger"
         }
-    }
+    },
+    "key": "holy_mom_s_eye"
 }

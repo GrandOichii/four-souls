@@ -8,5 +8,6 @@
             "cost": "MonstrosToorh_trigger_cost",
             "effect": "MonstrosTooth_trigger"
         }
-    }
+    },
+    "key": "monstros_tooth"
 }

@@ -7,5 +7,6 @@
             "check": "DadsLostCoin_trigger_check",
             "effect": "DadsLostCoin_trigger"
         }
-    }
+    },
+    "key": "dads_lost_coin"
 }

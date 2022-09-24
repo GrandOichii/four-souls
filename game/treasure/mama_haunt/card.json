@@ -1,0 +1,21 @@
+{
+    "name": "Mama Haunt",
+    "key": "mama_haunt",
+    "text": "Your character doesn't recharge during your recharge step.\nWhen you die, before paying penalties, give this to another player.",
+    "script": "script.lua",
+    "enter": {
+        "usesStack": false,
+        "effect": "MamaHaunt_enter"
+    },
+    "leave": {
+        "usesStack": false,
+        "effect": "MamaHaunt_leave"
+    },
+    "on": {
+        "death": {
+            "check": "Common_Haunt_trigger_check",
+            "cost": "Common_Haunt_trigger_cost",
+            "effect": "Common_Haunt_trigger"
+        }
+    }
+}

@@ -15,5 +15,6 @@
     "leave": {
         "usesStack": false,
         "effect": "Hopper_leave"
-    }
+    },
+    "key": "hopper"
 }

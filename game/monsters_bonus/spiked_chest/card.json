@@ -3,7 +3,10 @@
     "text": "Roll-\n1-2: Take 1 damage.\n3-4: Take 1 damage. Loot 1.\n5-6: Take 1 damage. Gain +1 treasure.",
     "script": "script.lua",
     "use": {
-        "requires": ["roll"],
+        "requires": [
+            "roll"
+        ],
         "effect": "SpikedChest_effect"
-    }
+    },
+    "key": "spiked_chest"
 }

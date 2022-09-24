@@ -7,5 +7,6 @@
             "check": "Euthanasia_trigger_check",
             "effect": "Euthanasia_trigger"
         }
-    }
+    },
+    "key": "euthanasia"
 }

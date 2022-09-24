@@ -15,5 +15,6 @@
             "check": "DiogenesPot_trigger_check",
             "effect": "DiogenesPot_trigger"
         }
-    }
+    },
+    "key": "diogenes_pot"
 }

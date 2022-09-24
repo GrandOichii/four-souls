@@ -10,5 +10,6 @@
             "check": "BloodyPenny_trigger_check",
             "effect": "BloodyPenny_trigger"
         }
-    }
+    },
+    "key": "bloody_penny"
 }

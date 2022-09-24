@@ -4,9 +4,12 @@
     "script": "script.lua",
     "abilities": [
         {
-            "requires": ["tap"],
+            "requires": [
+                "tap"
+            ],
             "cost": "GuppysPaw_cost",
             "effect": "GuppysPaw_tap"
         }
-    ]
+    ],
+    "key": "guppys_paw"
 }

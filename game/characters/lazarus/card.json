@@ -7,5 +7,6 @@
     "script": "script.lua",
     "use": {
         "effect": "Lazarus_tap"
-    }
+    },
+    "key": "lazarus"
 }

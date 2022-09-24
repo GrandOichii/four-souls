@@ -3,7 +3,10 @@
     "text": "Roll:\n1-2: Deal 1 damage toa player.\n3-4: Deal 1 damage to a monster.\n5-6: Take 1 damage.",
     "script": "script.lua",
     "use": {
-        "requires": ["roll"],
+        "requires": [
+            "roll"
+        ],
         "effect": "BlackPills_use"
-    }
+    },
+    "key": "black_pills"
 }

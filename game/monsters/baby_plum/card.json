@@ -7,14 +7,19 @@
     "power": 1,
     "soulCount": 1,
     "rewards": {
-        "requires": ["roll"],
+        "requires": [
+            "roll"
+        ],
         "effect": "BabyPlum_rewards"
     },
     "on": {
         "damage": {
-            "requires": ["roll"],
+            "requires": [
+                "roll"
+            ],
             "check": "BabyPlum_trigger_check",
             "effect": "BabyPlum_trigger"
         }
-    }
+    },
+    "key": "baby_plum"
 }

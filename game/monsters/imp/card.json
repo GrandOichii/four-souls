@@ -1,0 +1,33 @@
+{
+    "name": "Imp",
+    "text": "Each time the attacking player rolls an attack roll of 3, this gains +1d till end of turn.\nRewards: roll- loot X.",
+    "script": "script.lua",
+    "health": 3,
+    "roll": 5,
+    "power": 1,
+    "rewards": {
+        "requires": [
+            "roll"
+        ],
+        "effect": "Imp_rewards"
+    },
+    "on": {
+        "roll": {
+            "check": "Imp_trigger1_check",
+            "effect": "Imp_trigger1"
+        },
+        "turn_end": {
+            "usesStack": false,
+            "effect": "Imp_trigger2"
+        }
+    },
+    "enter": {
+        "usesStack": false,
+        "effect": "Imp_enter"
+    },
+    "leave": {
+        "usesStack": false,
+        "effect": "Imp_leave"
+    },
+    "key": "imp"
+}

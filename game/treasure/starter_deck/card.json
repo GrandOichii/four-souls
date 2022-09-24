@@ -7,5 +7,6 @@
             "check": "StarterDeck_trigger_check",
             "effect": "StarterDeck_trigger"
         }
-    }
+    },
+    "key": "starter_deck"
 }

@@ -10,7 +10,7 @@ end
 function HolyBony_trigger_cost(host, info)
     local me = this(host)
     local ownerID = CardData[me.id].lastRoll.ownerID
-    local choice = requestSimpleChoice(host, ownerID, 'Use ability of ${'..me.name..'}?', {'Yes', 'No'})
+    local choice = requestSimpleChoice(host, ownerID, 'Use ability of ${'..me.key..'}?', {'Yes', 'No'})
     if choice == 'No' then
         --  TODO figure out if still uses stack
         return true

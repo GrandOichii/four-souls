@@ -8,5 +8,6 @@
     "power": 2,
     "rewards": {
         "effect": "Hush_rewards"
-    }
+    },
+    "key": "hush"
 }

@@ -8,5 +8,6 @@
             "check": "SoulOfGreed_trigger_check",
             "effect": "SoulOfGreed_trigger"
         }
-    }
+    },
+    "key": "soul_of_greed"
 }

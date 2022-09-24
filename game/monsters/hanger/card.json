@@ -10,5 +10,6 @@
     },
     "death": {
         "effect": "Hanger_death"
-    }
+    },
+    "key": "hanger"
 }

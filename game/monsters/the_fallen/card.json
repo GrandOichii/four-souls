@@ -11,5 +11,6 @@
     },
     "death": {
         "effect": "TheFallen_death"
-    }
+    },
+    "key": "the_fallen"
 }

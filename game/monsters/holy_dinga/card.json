@@ -6,7 +6,9 @@
     "roll": 3,
     "power": 1,
     "rewards": {
-        "requires": ["roll"],
+        "requires": [
+            "roll"
+        ],
         "effect": "HolyDinga_rewards"
     },
     "on": {
@@ -14,5 +16,6 @@
             "check": "HolyDinga_trigger_check",
             "effect": "HolyDinga_trigger"
         }
-    }
+    },
+    "key": "holy_dinga"
 }

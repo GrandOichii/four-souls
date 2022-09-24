@@ -3,6 +3,7 @@
     "text": "{T}: Choose one- Discard your hand, then loot equal to the number of cards discarded.\nPut a monster not being attacked or a shop item into discard.",
     "script": "script.lua",
     "eternal": true,
+    "key": "void",
     "abilities": [
         {
             "requires": ["tap"],

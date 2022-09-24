@@ -13,5 +13,6 @@
             "cost": "SacDagger_cost",
             "effect": "SacDagger_activate"
         }
-    ]
+    ],
+    "key": "sacrificial_dagger"
 }

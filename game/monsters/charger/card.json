@@ -7,5 +7,6 @@
     "power": 1,
     "rewards": {
         "effect": "Charger_rewards"
-    }
+    },
+    "key": "charger"
 }

@@ -8,7 +8,9 @@
     },
     "abilities": [
         {
-            "requires": ["tap"],
+            "requires": [
+                "tap"
+            ],
             "effect": "LemonMishap_tap"
         }
     ],
@@ -22,5 +24,6 @@
             "check": "LemonMishap_trigger2_check",
             "effect": "LemonMishap_trigger2"
         }
-    }
+    },
+    "key": "lemon_mishap"
 }

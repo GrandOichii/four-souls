@@ -4,5 +4,6 @@
     "script": "script.lua",
     "use": {
         "effect": "AceOfDiamonds_use"
-    }
+    },
+    "key": "ace_of_diamonds"
 }

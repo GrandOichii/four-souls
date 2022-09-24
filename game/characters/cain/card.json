@@ -11,5 +11,6 @@
     "game_start": {
         "usesStack": false,
         "effect": "Cain_game_start"
-    }
+    },
+    "key": "cain"
 }

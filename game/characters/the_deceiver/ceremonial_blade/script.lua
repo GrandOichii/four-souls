@@ -7,7 +7,7 @@ end
 function CeremonialBlade_trigger1(host)
     local owner = getTopOwner(host)
     lootCards(host, owner.id, 1)
-    Common_Discard(host, owner.id, 1)
+    Common_Discard(host, owner.id, 1, false)
 end
 
 function CeremonialBlade_trigger2_check(host, me)

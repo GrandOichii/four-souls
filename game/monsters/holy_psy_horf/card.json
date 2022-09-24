@@ -12,5 +12,6 @@
         "turn_end": {
             "effect": "HolyPsyHorf_trigger"
         }
-    }
+    },
+    "key": "holy_psy_horf"
 }

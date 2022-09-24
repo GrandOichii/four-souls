@@ -25,12 +25,14 @@ class Card {
 protected:
     string _name;
     string _text;
+    string _key;
     int _soulCount = 0;
     CardTypes _type;
 public:
     Card(string dir, json j, CardTypes type);
     string name();
     string text();
+    string key();
     int soulCount();
     CardTypes type();
     virtual void print(string prefix);
@@ -152,7 +154,8 @@ public:
 };
 
 struct CardState {
-    string cardName;
+    string name;
+    string key;
     bool active;
     int id;
     int counters;

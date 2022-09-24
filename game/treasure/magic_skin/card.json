@@ -4,7 +4,9 @@
     "script": "script.lua",
     "abilities": [
         {
-            "requires": ["tap"],
+            "requires": [
+                "tap"
+            ],
             "cost": "MagicSkin_cost",
             "effect": "MagicSkin_effect"
         }
@@ -12,8 +14,11 @@
     "on": {
         "turn_start": {
             "check": "MagicSkin_trigger_check",
-            "requires": ["roll"],
+            "requires": [
+                "roll"
+            ],
             "effect": "MagicSkin_trigger"
         }
-    }
+    },
+    "key": "magic_skin"
 }

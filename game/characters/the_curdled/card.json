@@ -7,5 +7,6 @@
     "text": "{T}: Play an additional loot card this turn.\nStarting item: Sumptorium",
     "use": {
         "effect": "TheCurdled_use"
-    }
+    },
+    "key": "the_curdled"
 }

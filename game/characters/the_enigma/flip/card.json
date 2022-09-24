@@ -3,6 +3,8 @@
     "eternal": true,
     "text": "Each time you die, after paying penalties, flip your character card if able, then recharge it. Discard your hand and loot 3.",
     "script": "script.lua",
+    "key": "flip",
+
     "on": {
         "after_death": {
             "check": "Flip_trigger_check",

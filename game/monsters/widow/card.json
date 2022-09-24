@@ -8,5 +8,6 @@
     "power": 1,
     "rewards": {
         "effect": "Widow_rewards"
-    }
+    },
+    "key": "widow"
 }

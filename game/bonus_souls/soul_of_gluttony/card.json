@@ -8,5 +8,6 @@
             "check": "SoulOfGluttony_trigger_check",
             "effect": "SoulOfGluttony_trigger"
         }
-    }
+    },
+    "key": "soul_of_gluttony"
 }

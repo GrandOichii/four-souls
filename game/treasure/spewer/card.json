@@ -7,5 +7,6 @@
             "cost": "Spewer_cost",
             "effect": "Spewer_eat"
         }
-    ]
+    ],
+    "key": "spewer"
 }

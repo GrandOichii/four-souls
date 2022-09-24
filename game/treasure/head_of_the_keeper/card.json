@@ -11,5 +11,6 @@
             "check": "HeadOfTheKeeper_trigger2_check",
             "effect": "HeadOfTheKeeper_trigger2"
         }
-    }
+    },
+    "key": "head_of_the_keeper"
 }

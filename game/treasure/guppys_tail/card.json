@@ -15,5 +15,6 @@
             "check": "GuppysTail_trigger_check",
             "effect": "GuppysTail_trigger"
         }
-    }
+    },
+    "key": "guppys_tail"
 }

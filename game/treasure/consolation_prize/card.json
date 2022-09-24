@@ -7,5 +7,6 @@
             "check": "ConsolationPrize_trigger_check",
             "effect": "ConsolationPrize_trigger"
         }
-    }
+    },
+    "key": "consolation_prize"
 }

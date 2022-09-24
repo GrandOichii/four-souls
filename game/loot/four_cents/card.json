@@ -4,5 +4,6 @@
     "script": "script.lua",
     "use": {
         "effect": "FourCents_use"
-    }
+    },
+    "key": "four_cents"
 }

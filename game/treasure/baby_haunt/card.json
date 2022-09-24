@@ -16,5 +16,6 @@
             "cost": "Common_Haunt_trigger_cost",
             "effect": "Common_Haunt_trigger"
         }
-    }
+    },
+    "key": "baby_haunt"
 }

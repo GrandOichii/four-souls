@@ -6,5 +6,6 @@
     "destroyed": {
         "usesStack": false,
         "effect": "TheChest_leave"
-    }
+    },
+    "key": "the_chest"
 }

@@ -14,5 +14,6 @@
             "check": "RageCreep_trigger_check",
             "effect": "RageCreep_trigger"
         }
-    }
+    },
+    "key": "rage_creep"
 }

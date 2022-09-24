@@ -5,8 +5,11 @@
     "on": {
         "turn_start": {
             "check": "DarkBum_trigger_check",
-            "requires": ["roll"],
+            "requires": [
+                "roll"
+            ],
             "effect": "DarkBum_trigger"
         }
-    }
+    },
+    "key": "dark_bum"
 }

@@ -8,7 +8,7 @@ function TheHangedMan_use(host)
         local cards = topCardsOf(host, deck, 1)
         if #cards ~= 0 then
             local card = cards[1]
-            local choice = requestSimpleChoice(host, owner.id, 'Put ${'..card.name..'} on the bottom of the '..deck..' deck?', {'Yes', 'No'})
+            local choice = requestSimpleChoice(host, owner.id, 'Put ${'..card.key..'} on the bottom of the '..deck..' deck?', {'Yes', 'No'})
             if choice == 'Yes' then
                 putFromTopToBottom(host, deck, 1)
             end

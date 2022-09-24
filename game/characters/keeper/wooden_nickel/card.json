@@ -3,6 +3,7 @@
     "text": "{T}, choose a player, then roll:\nThat player gains c equal to the dice roll.",
     "script": "script.lua",
     "eternal": true,
+    "key": "wooden_nickel",
 
     "abilities": [
         {

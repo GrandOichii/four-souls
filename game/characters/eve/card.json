@@ -7,5 +7,6 @@
     "script": "script.lua",
     "use": {
         "effect": "Eve_tap"
-    }
+    },
+    "key": "eve"
 }

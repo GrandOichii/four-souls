@@ -7,5 +7,6 @@
     "power": 1,
     "rewards": {
         "effect": "Trite_rewards"
-    }
+    },
+    "key": "trite"
 }

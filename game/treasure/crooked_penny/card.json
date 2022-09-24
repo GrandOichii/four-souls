@@ -4,9 +4,13 @@
     "script": "script.lua",
     "abilities": [
         {
-            "requires": ["tap", "roll"],
+            "requires": [
+                "tap",
+                "roll"
+            ],
             "cost": "CrookedPenny_cost",
             "effect": "CrookedPenny_tap"
         }
-    ]
+    ],
+    "key": "crooked_penny"
 }

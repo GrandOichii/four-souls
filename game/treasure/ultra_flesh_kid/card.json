@@ -12,5 +12,6 @@
             "check": "UltraFleshKid_trigger2_check",
             "effect": "UltraFleshKid_trigger2"
         }
-    }
+    },
+    "key": "ultra_flesh_kid"
 }

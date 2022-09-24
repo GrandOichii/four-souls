@@ -3,6 +3,7 @@
     "text": "{T}: Force a player to reroll any dice roll.",
     "script": "script.lua",
     "eternal": true,
+    "key": "the_d6",
 
     "abilities": [
         {

@@ -15,5 +15,6 @@
             "check": "Damocles_trigger_check",
             "effect": "Damocles_trigger"
         }
-    }
+    },
+    "key": "damocles"
 }

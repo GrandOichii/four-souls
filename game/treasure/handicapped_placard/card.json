@@ -9,5 +9,6 @@
     "leave": {
         "usesStack": false,
         "effect": "HandicappedPlacard_leave"
-    }
+    },
+    "key": "handicapped_placard"
 }

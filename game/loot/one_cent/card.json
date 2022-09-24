@@ -4,5 +4,6 @@
     "script": "script.lua",
     "use": {
         "effect": "APenny_use"
-    }
+    },
+    "key": "one_cent"
 }

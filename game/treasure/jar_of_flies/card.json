@@ -10,9 +10,12 @@
     },
     "abilities": [
         {
-            "requires": ["tap"],
+            "requires": [
+                "tap"
+            ],
             "cost": "JarOfFlies_cost",
             "effect": "JarOfFlies_tap"
         }
-    ]
+    ],
+    "key": "jar_of_flies"
 }

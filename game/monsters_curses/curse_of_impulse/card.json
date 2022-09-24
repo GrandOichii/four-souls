@@ -15,5 +15,6 @@
             "check": "CurseOfImpulse_trigger_check",
             "effect": "CurseOfImpulse_trigger"
         }
-    }
+    },
+    "key": "curse_of_impulse"
 }

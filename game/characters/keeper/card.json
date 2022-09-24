@@ -7,5 +7,6 @@
     "script": "script.lua",
     "use": {
         "effect": "Keeper_tap"
-    }
+    },
+    "key": "keeper"
 }

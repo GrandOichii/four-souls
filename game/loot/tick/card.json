@@ -11,5 +11,6 @@
             "check": "Tick_trigger_check",
             "effect": "Tick_trigger"
         }
-    }
+    },
+    "key": "tick"
 }

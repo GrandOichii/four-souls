@@ -7,6 +7,7 @@
 Card::Card(string dir, json j, CardTypes type) : 
     _name(j["name"]),
     _text(j["text"]),
+    _key(j["key"]),
     _type(type)
 {
     if (j.contains("soulCount")) _soulCount = j["soulCount"];
@@ -14,6 +15,8 @@ Card::Card(string dir, json j, CardTypes type) :
 
 string Card::name() { return _name; }
 string Card::text() { return _text; }
+string Card::key() { return _key; }
+
 int Card::soulCount() { return _soulCount; }
 CardTypes Card::type() { return _type; }
 
@@ -279,7 +282,6 @@ CardWrapper::CardWrapper(ScriptCard* card, int id) :
 bool CardWrapper::isEternal() { return _isEternal; }
 void CardWrapper::setIsEternal(bool value) { _isEternal = value; }
 
-
 ScriptCard* CardWrapper::card() { return _showAlt ? _card->alt() : _card; }
 int CardWrapper::id() { return _id; }
 void CardWrapper::recharge() { _tapped = false; }
@@ -291,6 +293,7 @@ void CardWrapper::setOwner(Player* owner) { _owner = owner; }
 void CardWrapper::pushTable(lua_State* L) {
     lua_newtable(L);
     l_pushtablestring(L, "name", _card->name().c_str());
+    l_pushtablestring(L, "key", _card->key().c_str());
     l_pushtablenumber(L, "id", (float)this->_id);
     l_pushtablenumber(L, "soulCount", (float)_card->soulCount());
     auto ownerID = -1;
@@ -307,7 +310,8 @@ void CardWrapper::pushTable(lua_State* L) {
 CardState CardWrapper::getState() {
     CardState result;
     auto fCard = card();
-    result.cardName = fCard->name();
+    result.name = fCard->name();
+    result.key = fCard->key();
     result.active = !_tapped;
     result.id = _id;
     result.soulCount = fCard->soulCount();
@@ -322,13 +326,13 @@ CardState CardWrapper::getState() {
 
 CardState emptyCardState() {
     CardState result;
-    result.cardName = "--no-card--";
+    result.key = "--no-card--";
     return result;
 }
 
 void CardState::pushTable(lua_State* L) const {
     lua_newtable(L);
-    l_pushtablestring(L, "name", cardName);
+    l_pushtablestring(L, "name", name);
 }
 
 void CardWrapper::addCounters(int amount) { _counters += amount; }

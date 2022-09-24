@@ -3,6 +3,7 @@
     "text": "{T}: Add +1d to a player or monster till the end of turn.\n - Eternal -",
     "script": "script.lua",
     "eternal": true,
+    "key": "blood_lust",
 
     "enter": {
         "usesStack": false,

@@ -4,7 +4,7 @@ end
 
 function SpelunkerHat_trigger_cost(host, info)
     local me = this(host)
-    local choice = requestSimpleChoice(host, info.ownerID, 'Use effect of ${'..me.name..'}?', {'Yes', 'No'})
+    local choice = requestSimpleChoice(host, info.ownerID, 'Use effect of ${'..me.key..'}?', {'Yes', 'No'})
     if choice == 'No' then
         return false
     end

@@ -7,5 +7,6 @@
     "script": "script.lua",
     "use": {
         "effect": "TheForgotten_tap"
-    }
+    },
+    "key": "the_forgotten"
 }

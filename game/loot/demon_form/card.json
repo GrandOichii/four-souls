@@ -4,5 +4,6 @@
     "script": "script.lua",
     "use": {
         "effect": "DemonForm_use"
-    }
+    },
+    "key": "demon_form"
 }

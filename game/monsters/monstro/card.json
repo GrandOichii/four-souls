@@ -8,5 +8,6 @@
     "soulCount": 1,
     "rewards": {
         "effect": "Monstro_rewards"
-    }
+    },
+    "key": "monstro"
 }

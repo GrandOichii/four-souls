@@ -7,5 +7,6 @@
     "power": 1,
     "rewards": {
         "effect": "CursedMomsHand_rewards"
-    }
+    },
+    "key": "cursed_mom_s_hand"
 }

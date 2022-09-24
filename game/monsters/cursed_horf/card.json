@@ -13,5 +13,6 @@
             "check": "CursedHorf_trigger_check",
             "effect": "CursedHorf_trigger"
         }
-    }
+    },
+    "key": "cursed_horf"
 }

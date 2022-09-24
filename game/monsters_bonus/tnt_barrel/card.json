@@ -3,8 +3,11 @@
     "text": "Choose a player or monster, then roll-\n1-4: You and that player or monster each take 2 damage.\n5-6: That player or monster takes 4 damage.",
     "script": "script.lua",
     "use": {
-        "requires": ["roll"],
+        "requires": [
+            "roll"
+        ],
         "cost": "TNTBarrel_cost",
         "effect": "TNTBarrel_effect"
-    }
+    },
+    "key": "tnt_barrel"
 }

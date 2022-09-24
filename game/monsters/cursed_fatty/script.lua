@@ -10,5 +10,5 @@ end
 
 function CursedFatty_trigger(host)
 	local roll = CardData[this(host).id].lastRoll
-	Common_Discard(host, roll.ownerID, 1)
+	Common_Discard(host, roll.ownerID, 1, false)
 end

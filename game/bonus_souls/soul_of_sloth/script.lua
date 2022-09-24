@@ -27,7 +27,7 @@ function SoulOfSloth_trigger_cost(host, info)
         pushTarget(host, ids[1], PLAYER)
         return true
     end
-    local choice, _ = requestChoice(host, owner.id, 'Choose a player to gain ${'..me.name..'}', PLAYER, ids)
+    local choice, _ = requestChoice(host, owner.id, 'Choose a player to gain ${'..me.key..'}', PLAYER, ids)
     pushTarget(host, choice, PLAYER)
     return true
 end

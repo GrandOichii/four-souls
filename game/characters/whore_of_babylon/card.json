@@ -7,5 +7,6 @@
     "script": "script.lua",
     "use": {
         "effect": "WOB_tap"
-    }
+    },
+    "key": "whore_of_babylon"
 }

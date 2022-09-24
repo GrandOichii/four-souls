@@ -3,6 +3,7 @@
     "text": "At the start of your turn, put a counter on this.\nYou have +1h for each counter on this.\nAt the end of your turn, if this has 3+ counters, remove all of them and loot 3.",
     "script": "script.lua",
     "eternal": true,
+    "key": "hypercoagulation",
 
     "enter": {
         "usesStack": false,

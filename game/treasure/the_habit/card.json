@@ -7,5 +7,6 @@
             "check": "TheHabit_trigger_check",
             "effect": "TheHabit_trigger"
         }
-    }
+    },
+    "key": "the_habit"
 }

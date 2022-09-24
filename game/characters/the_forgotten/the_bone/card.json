@@ -4,6 +4,8 @@
     "script": "script.lua",
     "soulCount": 1,
     "eternal": true,
+    "key": "the_bone",
+
     "abilities": [
         {
             "requires": ["tap"],

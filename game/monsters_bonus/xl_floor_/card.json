@@ -4,5 +4,6 @@
     "script": "script.lua",
     "use": {
         "effect": "XLFloor_effect"
-    }
+    },
+    "key": "xl_floor_"
 }

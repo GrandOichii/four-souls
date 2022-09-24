@@ -11,5 +11,6 @@
     "death": {
         "cost": "Greedling_death_cost",
         "effect": "Greedling_death"
-    }
+    },
+    "key": "greedling"
 }

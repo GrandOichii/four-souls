@@ -9,5 +9,6 @@
     "leave": {
         "usesStack": false,
         "effect": "Placenta_leave"
-    }
+    },
+    "key": "placenta"
 }

@@ -7,5 +7,6 @@
             "check": "NineVolt_trigger_check",
             "effect": "NineVolt_trigger"
         }
-    }
+    },
+    "key": "nine_volt"
 }

@@ -11,5 +11,6 @@
             "check": "RockBottom_trigger_check",
             "effect": "RockBottom_trigger"
         }
-    }
+    },
+    "key": "rock_bottom"
 }

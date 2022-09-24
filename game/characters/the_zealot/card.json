@@ -7,5 +7,6 @@
     "script": "script.lua",
     "use": {
         "effect": "TheZealot_tap"
-    }
+    },
+    "key": "the_zealot"
 }

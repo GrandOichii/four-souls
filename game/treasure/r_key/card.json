@@ -8,8 +8,11 @@
     },
     "abilities": [
         {
-            "requires": ["tap"],
+            "requires": [
+                "tap"
+            ],
             "effect": "RKey_effect"
         }
-    ]
+    ],
+    "key": "r_key"
 }

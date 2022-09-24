@@ -15,5 +15,6 @@
             "check": "EmptyVessel_trigger_check",
             "effect": "EmptyVessel_trigger"
         }
-    }
+    },
+    "key": "empty_vessel"
 }

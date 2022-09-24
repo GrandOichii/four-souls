@@ -11,5 +11,6 @@
             "check": "MoreOptions_trigger_check",
             "effect": "MoreOptions_trigger"
         }
-    }
+    },
+    "key": "more_options"
 }

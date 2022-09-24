@@ -9,5 +9,6 @@
             "cost": "SoulOfSloth_trigger_cost",
             "effect": "SoulOfSloth_trigger"
         }
-    }
+    },
+    "key": "soul_of_sloth"
 }

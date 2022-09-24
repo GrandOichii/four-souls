@@ -7,5 +7,6 @@
     "power": 1,
     "rewards": {
         "effect": "RingOfFlies_rewards"
-    }
+    },
+    "key": "ring_of_flies"
 }

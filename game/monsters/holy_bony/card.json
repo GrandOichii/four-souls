@@ -14,5 +14,6 @@
             "cost": "HolyBony_trigger_cost",
             "effect": "HolyBony_trigger"
         }
-    }
+    },
+    "key": "holy_bony"
 }

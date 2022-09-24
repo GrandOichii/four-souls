@@ -4,5 +4,6 @@
     "script": "script.lua",
     "use": {
         "effect": "DressingTable_effect"
-    }
+    },
+    "key": "dressing_table"
 }

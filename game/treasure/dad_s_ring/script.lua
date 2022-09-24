@@ -1,3 +1,5 @@
+--  TODO currently no way to know who declared the attack
+
 function DadsRing_enter(host)
     local me = this(host)
     local id = MonsterRollLayers:top().id + 1

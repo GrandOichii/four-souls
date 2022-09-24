@@ -9,5 +9,6 @@
     "leave": {
         "usesStack": false,
         "effect": "Infamy_leave"
-    }
+    },
+    "key": "infamy"
 }

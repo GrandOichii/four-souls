@@ -31,6 +31,7 @@ function RagMega_death_cost(host, info)
     CardData[me.id] = {
         amount = amount
     }
+    return true
 end
 
 function RagMega_death(host)
@@ -49,7 +50,7 @@ function RagMega_trigger(host)
     local cPlayer = getCurrentPlayer(host)
     for _, player in ipairs(getPlayers(host)) do
         if cPlayer.id ~= player.id then
-            Common_Discard(host, player.id, 1)
+            Common_Discard(host, player.id, 1, false)
         end
     end
 end

@@ -9,5 +9,6 @@
     "leave": {
         "usesStack": false,
         "effect": "FireMind_leave"
-    }
+    },
+    "key": "fire_mind"
 }

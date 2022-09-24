@@ -5,8 +5,11 @@
     "on": {
         "attack": {
             "check": "BobsBrain_trigger_check",
-            "requires": ["roll"],
+            "requires": [
+                "roll"
+            ],
             "effect": "BobsBrain_trigger"
         }
-    }
+    },
+    "key": "bobs_brain"
 }

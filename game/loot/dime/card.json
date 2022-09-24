@@ -4,5 +4,6 @@
     "script": "script.lua",
     "use": {
         "effect": "Dime_use"
-    }
+    },
+    "key": "dime"
 }

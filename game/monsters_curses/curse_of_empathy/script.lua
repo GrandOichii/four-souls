@@ -8,7 +8,7 @@ end
 
 function CurseOfEmpathy_trigger(host)
     local owner = getTopOwner(host)
-    Common_Discard(host, owner.id, 1)
+    Common_Discard(host, owner.id, 1, false)
     local amount = math.min(1, owner.coins)
     subCoins(host, owner.id, amount)
 end

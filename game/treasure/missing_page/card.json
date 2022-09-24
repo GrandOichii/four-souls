@@ -7,5 +7,6 @@
             "check": "MissingPage_trigger_check",
             "effect": "MissingPage_trigger"
         }
-    }
+    },
+    "key": "missing_page"
 }

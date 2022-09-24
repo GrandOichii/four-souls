@@ -3,7 +3,10 @@
     "text": "Roll: 1-2: +1a till the end of turn.\n3-4: +1h till the end of turn.\n5-6: Take 1 damage.",
     "script": "script.lua",
     "use": {
-        "requires": ["roll"],
+        "requires": [
+            "roll"
+        ],
         "effect": "RedPills_use"
-    }
+    },
+    "key": "red_pills"
 }

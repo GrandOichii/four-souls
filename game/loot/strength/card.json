@@ -5,5 +5,6 @@
     "use": {
         "effect": "Strength_use",
         "cost": "Strength_cost"
-    }
+    },
+    "key": "strength"
 }

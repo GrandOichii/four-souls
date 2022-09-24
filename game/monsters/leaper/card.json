@@ -15,5 +15,6 @@
     "leave": {
         "usesStack": false,
         "effect": "Leaper_leave"
-    }
+    },
+    "key": "leaper"
 }

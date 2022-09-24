@@ -15,5 +15,6 @@
             "check": "ChocolateMilk_trigger_check",
             "effect": "ChocolateMilk_trigger"
         }
-    }
+    },
+    "key": "chocolate_milk"
 }

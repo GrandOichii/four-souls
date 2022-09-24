@@ -10,5 +10,6 @@
     },
     "death": {
         "effect": "Sucker_death"
-    }
+    },
+    "key": "sucker"
 }

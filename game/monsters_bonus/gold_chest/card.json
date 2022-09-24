@@ -3,7 +3,10 @@
     "text": "Roll-\n1-2: Gain +1 treasure.\n3-4: Loot 1.\n5-6: Loot 2.",
     "script": "script.lua",
     "use": {
-        "requires": ["roll"],
+        "requires": [
+            "roll"
+        ],
         "effect": "GoldChest_effect"
-    }
+    },
+    "key": "gold_chest"
 }

@@ -4,8 +4,11 @@
     "script": "script.lua",
     "abilities": [
         {
-            "requires": ["tap"],
+            "requires": [
+                "tap"
+            ],
             "effect": "ForgetMeNow_effect"
         }
-    ]
+    ],
+    "key": "forget_me_now"
 }

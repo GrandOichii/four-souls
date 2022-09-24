@@ -12,7 +12,7 @@ function SackHead_tap(host)
         return
     end
     local card = cards[1]
-    local choice = requestSimpleChoice(host, owner.id, 'Put ${'..card.name..'} on the bottom of the '..deckType..' deck?', {'Yes', 'No'})
+    local choice = requestSimpleChoice(host, owner.id, 'Put ${'..card.key..'} on the bottom of the '..deckType..' deck?', {'Yes', 'No'})
     if choice == 'No' then
         return
     end

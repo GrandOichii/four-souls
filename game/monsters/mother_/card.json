@@ -26,5 +26,6 @@
             "usesStack": false,
             "effect": "Mother_trigger2"
         }
-    }
+    },
+    "key": "mother_"
 }

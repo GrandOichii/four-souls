@@ -7,5 +7,6 @@
             "check": "CambionConception_trigger_check",
             "effect": "CambionConception_trigger"
         }
-    }
+    },
+    "key": "cambion_conception"
 }

@@ -7,5 +7,6 @@
     "power": 2,
     "rewards": {
         "effect": "Leech_rewards"
-    }
+    },
+    "key": "leech"
 }

@@ -3,6 +3,7 @@
     "text": "($) Pay 3$: Play an additional loot card this turn.\n($) Pay 4$: Loot 1.\n($) Pay 6$: Deal 1 damage to a monster of a player.",
     "script": "script.lua",
     "eternal": true,
+    "key": "bagotrash",
 
     "abilities": [
         {

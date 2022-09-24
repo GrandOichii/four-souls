@@ -7,5 +7,6 @@
     "script": "script.lua",
     "use": {
         "effect": "TheMiser_tap"
-    }
+    },
+    "key": "the_miser"
 }

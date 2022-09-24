@@ -9,5 +9,6 @@
     "leave": {
         "usesStack": false,
         "effect": "Tony_leave"
-    }
+    },
+    "key": "tony"
 }

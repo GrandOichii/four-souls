@@ -5,7 +5,9 @@
     "on": {
         "turn_start": {
             "check": "TelepathyForDummies_trigger1_check",
-            "requires": ["roll"],
+            "requires": [
+                "roll"
+            ],
             "effect": "TelepathyForDummies_trigger1"
         },
         "roll": {
@@ -17,5 +19,6 @@
             "check": "TelepathyForDummies_trigger3_check",
             "effect": "TelepathyForDummies_trigger3"
         }
-    }
+    },
+    "key": "telepathy_for_dummies"
 }

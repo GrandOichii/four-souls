@@ -1,0 +1,18 @@
+{
+    "name": "Boil",
+    "text": "Each time this deals damage, it heals 1h.\nRewards: 3$",
+    "script": "script.lua",
+    "health": 3,
+    "roll": 4,
+    "power": 1,
+    "rewards": {
+        "effect": "Boil_rewards"
+    },
+    "on": {
+        "damage": {
+            "check": "Boil_trigger_check",
+            "effect": "Boil_trigger"
+        }
+    },
+    "key": "boil"
+}

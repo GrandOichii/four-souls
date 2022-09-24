@@ -10,5 +10,6 @@
     },
     "death": {
         "effect": "Mulliboom_death"
-    }
+    },
+    "key": "mulliboom"
 }

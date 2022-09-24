@@ -7,5 +7,6 @@
             "check": "DaddysLongLegs_trigger_check",
             "effect": "DaddysLongLegs_trigger"
         }
-    }
+    },
+    "key": "daddys_long_legs"
 }

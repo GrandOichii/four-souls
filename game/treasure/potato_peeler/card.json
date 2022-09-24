@@ -4,8 +4,11 @@
     "script": "script.lua",
     "abilities": [
         {
-            "requires": ["tap"],
+            "requires": [
+                "tap"
+            ],
             "effect": "PotatoPeeler_tap"
         }
-    ]
+    ],
+    "key": "potato_peeler"
 }

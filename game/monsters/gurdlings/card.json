@@ -10,11 +10,12 @@
         "effect": "Gurdlings_rewards"
     },
     "enter": {
-        "usesStack": false, 
+        "usesStack": false,
         "effect": "Gurdlings_enter"
     },
     "leave": {
-        "usesStack": false, 
+        "usesStack": false,
         "effect": "Gurdlings_leave"
-    }
+    },
+    "key": "gurdlings"
 }

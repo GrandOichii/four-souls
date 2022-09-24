@@ -12,5 +12,6 @@
     "leave": {
         "usesStack": false,
         "effect": "Callus_leave"
-    }
+    },
+    "key": "callus"
 }

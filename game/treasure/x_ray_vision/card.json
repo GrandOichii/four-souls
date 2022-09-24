@@ -4,7 +4,9 @@
     "script": "script.lua",
     "abilities": [
         {
-            "requires": ["tap"],
+            "requires": [
+                "tap"
+            ],
             "cost": "XRayVision_cost",
             "effect": "XRayVision_tap"
         }
@@ -14,5 +16,6 @@
             "check": "XRayVision_trigger_check",
             "effect": "XRayVision_trigger"
         }
-    }
+    },
+    "key": "x_ray_vision"
 }

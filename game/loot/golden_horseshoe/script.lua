@@ -9,7 +9,7 @@ function GoldenHorseshoe_trigger(host)
     end
     local card = cards[1]
     local owner = getTopOwner(host)
-    local choice = requestSimpleChoice(host, owner.id, 'Put ${'..card.name..'} on the bottom of the loot deck?', {'Yes', 'No'})
+    local choice = requestSimpleChoice(host, owner.id, 'Put ${'..card.key..'} on the bottom of the loot deck?', {'Yes', 'No'})
     if choice == 'No' then
         return
     end

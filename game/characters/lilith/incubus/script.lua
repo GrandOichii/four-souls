@@ -19,13 +19,13 @@ function Incubus_effect1(host)
         return
     end
     local cards = requestCardsInHand(host, owner.id, player.id, 'Choose a card to swap', 1)
-    local oCard = cards[1]
+    local oCardID = cards[1]
     cards = requestCardsInHand(host, owner.id, owner.id, 'Choose a card to swap', 1)
-    local card = cards[1]
-    removeFromEverywhere(host, oCard.id)
-    removeFromEverywhere(host, card.id)
-    moveToHand(host, owner.id, oCard.id)
-    moveToHand(host, player.id, card.id)
+    local cardID = cards[1]
+    removeFromEverywhere(host, oCardID)
+    removeFromEverywhere(host, cardID)
+    moveToHand(host, owner.id, oCardID)
+    moveToHand(host, player.id, cardID)
 end
 
 function Incubus_effect2(host)

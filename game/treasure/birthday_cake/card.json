@@ -7,5 +7,6 @@
             "check": "BirthdayCake_trigger_check",
             "effect": "BirthdayCake_trigger"
         }
-    }
+    },
+    "key": "birthday_cake"
 }

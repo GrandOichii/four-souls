@@ -11,5 +11,6 @@
     "death": {
         "cost": "Wizoob_death_cost",
         "effect": "Wizoob_death"
-    }
+    },
+    "key": "wizoob"
 }

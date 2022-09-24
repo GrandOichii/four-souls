@@ -1,0 +1,21 @@
+{
+    "name": "Monstro II",
+    "text": "Each time this deals combat damage, the active player rolls-\n1-3: Deal 1 damage to the player to your right.\n4-6: Deal 1 damage to the player to your left.\nRewards: +1 treasure.",
+    "script": "script.lua",
+    "health": 5,
+    "roll": 4,
+    "power": 1,
+    "rewards": {
+        "effect": "MonstroII_rewards"
+    },
+    "on": {
+        "damage": {
+            "requires": [
+                "roll"
+            ],
+            "check": "MonstroII_trigger_check",
+            "effect": "MonstroII_trigger"
+        }
+    },
+    "key": "monstro_ii"
+}

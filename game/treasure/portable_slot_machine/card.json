@@ -4,9 +4,12 @@
     "script": "script.lua",
     "abilities": [
         {
-            "requires": ["roll"],
+            "requires": [
+                "roll"
+            ],
             "cost": "PortableSlotMachine_cost",
             "effect": "PortableSlotMachine_play"
         }
-    ]
+    ],
+    "key": "portable_slot_machine"
 }

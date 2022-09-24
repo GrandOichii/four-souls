@@ -7,5 +7,6 @@
     "script": "script.lua",
     "use": {
         "effect": "Guppy_tap"
-    }
+    },
+    "key": "guppy"
 }

@@ -3,6 +3,7 @@
     "text": "Whenever you die, after paying penalties:\nGain 1 treasure",
     "script": "script.lua",
     "eternal": true,
+    "key": "lazarus_rags",
 
     "on": {
         "after_death": {

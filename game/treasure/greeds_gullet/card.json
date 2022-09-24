@@ -7,5 +7,6 @@
             "check": "GreedsGullet_trigger_check",
             "effect": "GreedsGullet_trigger"
         }
-    }
+    },
+    "key": "greeds_gullet"
 }

@@ -4,5 +4,6 @@
     "script": "script.lua",
     "use": {
         "effect": "TrollBombs_effect"
-    }
+    },
+    "key": "troll_bombs"
 }

@@ -9,5 +9,6 @@
     "leave": {
         "usesStack": false,
         "effect": "HaloOfFlies_leave"
-    }
+    },
+    "key": "halo_of_flies"
 }

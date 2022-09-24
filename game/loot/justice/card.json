@@ -5,5 +5,6 @@
     "use": {
         "effect": "Justice_use",
         "cost": "Justice_cost"
-    }
+    },
+    "key": "justice"
 }

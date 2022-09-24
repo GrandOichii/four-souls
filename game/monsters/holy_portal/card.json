@@ -16,5 +16,6 @@
     },
     "death": {
         "effect": "HolyPortal_trigger"
-    }
+    },
+    "key": "holy_portal"
 }

@@ -5,7 +5,7 @@ end
 function CurseOfTheHollow_trigger(host)
     local owner = getTopOwner(host)
     local amount = Common_SoulCount(owner)
-    Common_Discard(host, owner.id, amount)
+    Common_Discard(host, owner.id, amount, false)
     amount = math.min(amount, owner.coins)
     subCoins(host, owner.id, amount)
 end

@@ -6,8 +6,13 @@
         "usesStack": false,
         "effect": "EdensSoul_enter"
     },
-    "abilities": [{
-        "requires": ["tap"],
-        "effect": "EdensSoul_tap"
-    }]
+    "abilities": [
+        {
+            "requires": [
+                "tap"
+            ],
+            "effect": "EdensSoul_tap"
+        }
+    ],
+    "key": "edens_soul"
 }

@@ -22,7 +22,7 @@ function Gimpy_effect(host)
     end
     if choice == choice3 then
         lootCards(host, owner.id, 1)
-        Common_Discard(host, owner.id, 1)
+        Common_Discard(host, owner.id, 1, false)
         return
     end
 end

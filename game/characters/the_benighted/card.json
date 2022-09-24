@@ -7,5 +7,6 @@
     "script": "script.lua",
     "use": {
         "effect": "TheBenighted_tap"
-    }
+    },
+    "key": "the_benighted"
 }

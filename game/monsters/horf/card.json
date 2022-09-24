@@ -15,5 +15,6 @@
     "leave": {
         "usesStack": false,
         "effect": "Horf_leave"
-    }
+    },
+    "key": "horf"
 }

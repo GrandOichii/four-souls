@@ -6,7 +6,9 @@
     "roll": 3,
     "power": 1,
     "rewards": {
-        "requires": ["roll"],
+        "requires": [
+            "roll"
+        ],
         "effect": "HolyGreedling_rewards"
     },
     "on": {
@@ -17,5 +19,6 @@
     },
     "death": {
         "effect": "HolyGreedling_trigger"
-    }
+    },
+    "key": "holy_greedling"
 }

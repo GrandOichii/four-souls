@@ -9,5 +9,6 @@
     "leave": {
         "usesStack": false,
         "effect": "Breakfast_leave"
-    }
+    },
+    "key": "breakfast"
 }

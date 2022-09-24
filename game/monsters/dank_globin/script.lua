@@ -11,5 +11,5 @@ end
 
 function DankGlobin_death(host)
 	local target = popTarget(host)
-	Common_Discard(host, target.id, 2)
+	Common_Discard(host, target.id, 2, false)
 end

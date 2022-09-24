@@ -26,5 +26,6 @@
             "check": "Fistula_trigger2_check",
             "effect": "Fistula_trigger2"
         }
-    }
+    },
+    "key": "fistula"
 }

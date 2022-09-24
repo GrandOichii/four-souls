@@ -9,6 +9,9 @@
     "rewards": {
         "effect": "Mom_rewards"
     },
+    "death": {
+        "effect": "Mom_death"
+    },
     "enter": {
         "usesStack": false,
         "effect": "Mom_enter"
@@ -16,5 +19,6 @@
     "leave": {
         "usesStack": false,
         "effect": "Mom_leave"
-    }
+    },
+    "key": "mom_"
 }

@@ -4,8 +4,11 @@
     "script": "script.lua",
     "abilities": [
         {
-            "requires": ["tap"],
+            "requires": [
+                "tap"
+            ],
             "effect": "MamaMega_tap"
         }
-    ]
+    ],
+    "key": "mama_mega"
 }

@@ -25,5 +25,6 @@
             "usesStack": false,
             "effect": "Bony_trigger2"
         }
-    }
+    },
+    "key": "bony"
 }

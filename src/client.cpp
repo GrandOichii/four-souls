@@ -18,7 +18,9 @@ using Client = client_interface<PollType>;
 
 struct MessageMember {
     string message;
+
     bool isCard;
+    string cardRefName;
 };
 
 
@@ -54,6 +56,8 @@ private:
     bool _yield = false;
     bool _skipStack = false;
     int _lastTurnCounter = -1;
+
+    std::map<string, string> _keyNameMap;
 public:
     ClientWrapper(string host, string title, string assetsPath, bool fullscreen) :
         Window(title, assetsPath, fullscreen),
@@ -71,8 +75,8 @@ public:
         auto spaceTex = _assets->getMessage(" ", SDL_Color{0, 0, 0, 0}, fontSize);
         auto spaceWidth = getSize(spaceTex).first;
         SDL_DestroyTexture(spaceTex);
-        for (const auto& member : message) {
-            auto tex = _assets->getMessage(member.message, member.isCard ? cardColor : textColor, fontSize);
+        for (const auto& member : message) {            
+            auto tex = _assets->getMessage(member.isCard ? member.cardRefName : member.message, member.isCard ? cardColor : textColor, fontSize);
             auto size = getSize(tex);
             int w = size.first;
             int h = size.second;
@@ -85,6 +89,7 @@ public:
             auto s = SDL_GetMouseState(&mx, &my);
             if (!(mx >= xx && my >= y && mx <= xx + w && my <= h + y)) continue;
             tex = this->_assets->getCard(member.message, CardSize::LARGE);
+            //  TODO fix message members
             size = getSize(tex);
             this->drawTexture(tex, _stackX - size.first, 0);
         }
@@ -134,6 +139,11 @@ public:
         _simpleChoiceTextures.clear();
     }
 
+    string cardName(string key) {
+        if (!_keyNameMap.count(key)) throw std::runtime_error("no name for card with key " + key);
+        return _keyNameMap[key];
+    }
+
     std::vector<MessageMember> parseMessage(string text) {
         std::vector<MessageMember> result;
         auto words_begin = std::sregex_iterator(text.begin(), text.end(), CARD_NAME_REGEX);
@@ -146,6 +156,7 @@ public:
             mem.isCard = false;
             if (match.str(1).size()) {
                 mem.message = match.str(1);
+                mem.cardRefName = cardName(match.str(1));
                 mem.isCard = true;
             }
             result.push_back(mem);
@@ -331,9 +342,14 @@ public:
                 if (msg.header.id == PollType::Setup) {
                     _myID = j["id"];
                     // for (const auto& [key, value] : j["cards"].items()){
-                    //     _assets->createCard(value["name"], value["text"]);
+                        // _assets->createCard(value["name"], value["text"]);
                     // }
                     // load all cards
+                    // create key name map
+                    for (const auto& [key, value] : j["cards"].items()){
+                        _keyNameMap[value["key"]] = value["name"];
+                        // _assets->createCard(value["name"], value["text"]);
+                    }
                     continue;
                 }
                 _state = MatchState(j);
@@ -469,7 +485,7 @@ public:
                 return string("buy_treasure ") + std::to_string(i);
             }
         }
-        throw std::runtime_error("can't decide index of treasure " + card.cardName + " (id: " + std::to_string(card.id) + ")");
+        throw std::runtime_error("can't decide index of treasure " + card.name + " (id: " + std::to_string(card.id) + ")");
     }
 
     string attackMonsterReply(CardState& card) {
@@ -478,7 +494,7 @@ public:
                 return string("attack ") + std::to_string(i);
             }
         }
-        throw std::runtime_error("can't decide index of monster " + card.cardName + " (id: " + std::to_string(card.id) + ")");
+        throw std::runtime_error("can't decide index of monster " + card.name + " (id: " + std::to_string(card.id) + ")");
     }
 
     string activateCardReply(CardState& card) {
@@ -555,7 +571,7 @@ public:
         message<PollType> reply;
         switch (card.zone) {
         case Zones::Unknown:
-            throw std::runtime_error("Card " + card.cardName + " [" + std::to_string(card.id) + "] has unknown zone");
+            throw std::runtime_error("Card " + card.name + " [" + std::to_string(card.id) + "] has unknown zone");
             return;
         case Zones::Hand:
             reply << "play_loot " + std::to_string(card.id);

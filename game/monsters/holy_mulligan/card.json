@@ -10,5 +10,6 @@
     },
     "death": {
         "effect": "HolyMulligan_death"
-    }
+    },
+    "key": "holy_mulligan"
 }

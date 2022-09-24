@@ -17,7 +17,6 @@ end
 function MonstrosTooth_trigger(host)
     local target = popTarget(host)
     local player = Common_PlayerWithID(host, target.id)
-    print(player.name)
     local ids = {}
     for _, card in ipairs(player.board) do
         if not card.isEternal then

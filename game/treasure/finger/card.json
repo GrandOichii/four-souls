@@ -8,5 +8,6 @@
             "cost": "Finger_trigger_cost",
             "effect": "Finger_trigger"
         }
-    }
+    },
+    "key": "finger"
 }

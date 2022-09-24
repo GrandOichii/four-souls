@@ -15,5 +15,6 @@
             "check": "CurseOfAmnesia_trigger_check",
             "effect": "CurseOfAmnesia_trigger"
         }
-    }
+    },
+    "key": "curse_of_amnesia"
 }

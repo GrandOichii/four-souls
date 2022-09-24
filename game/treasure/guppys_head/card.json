@@ -4,9 +4,12 @@
     "script": "script.lua",
     "abilities": [
         {
-            "requires": ["tap"],
+            "requires": [
+                "tap"
+            ],
             "cost": "GuppysHead_cost",
             "effect": "GuppysHead_tap"
         }
-    ]
+    ],
+    "key": "guppys_head"
 }

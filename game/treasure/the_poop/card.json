@@ -13,5 +13,6 @@
             "cost": "ThePoop_cost",
             "effect": "ThePoop_activate"
         }
-    ]
+    ],
+    "key": "the_poop"
 }

@@ -15,11 +15,11 @@ function BlackRune_use(host)
         if not chosen then
             return
         end
-        Common_RerollItem(host, choice) 
+        Common_RerollItem(host, choice)
         return
     end
     for _, card in ipairs(owner.hand) do
-        discardLoot(host, owner.id, card.id)
+        discardLoot(host, owner.id, card.id, false)
     end
     lootCards(host, owner.id, 3)
 

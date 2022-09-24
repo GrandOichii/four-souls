@@ -21,5 +21,6 @@
             "check": "Lodestone_trigger2_check",
             "effect": "Lodestone_trigger2"
         }
-    }
+    },
+    "key": "lodestone"
 }

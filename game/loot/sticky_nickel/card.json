@@ -3,7 +3,10 @@
     "text": "Roll- \n1-3: Give this to the player to your left.\n4-6: Gain 6$.",
     "script": "script.lua",
     "use": {
-        "requires": ["roll"],
+        "requires": [
+            "roll"
+        ],
         "effect": "StickyNickel_use"
-    }
+    },
+    "key": "sticky_nickel"
 }

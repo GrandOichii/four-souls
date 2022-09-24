@@ -7,5 +7,6 @@
     "script": "script.lua",
     "use": {
         "effect": "Hoarder_tap"
-    }
+    },
+    "key": "the_hoarder"
 }

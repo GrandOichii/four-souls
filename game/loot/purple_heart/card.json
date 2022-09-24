@@ -10,5 +10,6 @@
             "check": "PurpleHeart_trigger_check",
             "effect": "PurpleHeart_trigger"
         }
-    }
+    },
+    "key": "purple_heart"
 }

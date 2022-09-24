@@ -11,5 +11,6 @@
             "check": "CurseOfEmpathy_trigger_check",
             "effect": "CurseOfEmpathy_trigger"
         }
-    }
+    },
+    "key": "curse_of_empathy"
 }

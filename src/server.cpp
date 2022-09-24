@@ -72,6 +72,7 @@ protected:
 static nlohmann::json cardToJson(Card* card) {
     auto result = nlohmann::json::object();
     result["name"] = card->name();
+    result["key"] = card->key();
     result["text"] = card->text();
     return result;
 }
@@ -319,20 +320,20 @@ int main(int argc, char* argv[]) {
             for (const auto& [n, v] : value.items()) actions.push(v);
             pcount++;
             if (pcount == 1) {
-                match->addPlayer(new ObservingScriptedPlayer(
-                    name,
-                    match->getRandomAvailableCharacter(),
-                    match->newCardID(),
-                    actions,
-                    allCards
-                ));
-                
-                // match->addPlayer(new ScriptedPlayer(
+                // match->addPlayer(new ObservingScriptedPlayer(
                 //     name,
                 //     match->getRandomAvailableCharacter(),
                 //     match->newCardID(),
-                //     actions
+                //     actions,
+                //     allCards
                 // ));
+                
+                match->addPlayer(new ScriptedPlayer(
+                    name,
+                    match->getRandomAvailableCharacter(),
+                    match->newCardID(),
+                    actions
+                ));
                 continue;
             }
             // match->addPlayer(new BotPlayer(

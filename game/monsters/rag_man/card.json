@@ -8,5 +8,6 @@
     "soulCount": 1,
     "rewards": {
         "effect": "RagMan_rewards"
-    }
+    },
+    "key": "rag_man"
 }

@@ -14,5 +14,6 @@
             "check": "Scolex_trigger_check",
             "effect": "Scolex_trigger"
         }
-    }
+    },
+    "key": "scolex"
 }

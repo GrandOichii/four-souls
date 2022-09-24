@@ -16,6 +16,8 @@
     -- bonus monster cards don't work exactly like the rules say - refilling
 
 - implement:
+    -- change how declaring attacks works
+    -- change how monster data is managed
     -- bartering: a special button, when pressed will present a choice to the player: select the player to barter with, select coin count, type in text with the favor. the receiving player can accept or decline, the returning message will contain a accepted(bool) and response(string)
     -- fix the record error
     -- move from name-based indexing to key indexing
@@ -35,6 +37,39 @@
     -- change choice cards to store player's choice in CardData, dont forget to log the player's choice for other players
     -- figure out how to implement canceling effects
     -- add multiple cube of meat cards
+
+-- implementation issues:
+    - Box!, Gold Key, The Duke of Flies - requires adding silent listener effects without any owners
+    - Charmed * - don't know if their ability uses the stack
+    - Gutted Fatty - have to implement attack button and their respectable effects
+    - Host Hat, Lollypop - requires pushEffect function
+    - Knight - don't know the correct way to implement
+    - Remote Detonator, Emergency Meeting! - implement voting (with sussy amogus in mind)
+    - Rib of Greed - figure out how to distinct from paying and abilities
+    - Soul of Envy - add emitting soul_gain effects
+    - The Dead Cat - add another effect, that describes the state of the card on creation
+    - Ultra Pride, Monster Manual - add editing of attack pools (correctly!)
+    - Whipper, Ring of the Snake - currently no way to know who declares an attack
+    - Holy Mantle - death prevention, cancelling everything
+    - Sibling Rivalry - ...
+    - IBS - cancelling of abilities
+    - Dead Weight - cancelling triggered abilties
+    - Classic Roller - rolling multiple dice
+    - Ball of Tumors, Bum-Bo! - leveling of cards
+    - Strange Marble - weird loot play
+    - The Real Left Hand - editing card values
+    - Possession - using other players' abilities
+    - Is You - copying card abilities
+    - Bow and Arrow, * Proglottid - custom counters
+    - Rusty Spoon - putting cards under the card
+    - Pop Pop!, Blank Card - copying loot cards on stack
+    - Trinity Shield - effect to narrow
+    - Diplopia - copying passive items
+    - Modeling Clay - copying items fully
+    - Placebo - copying abilities on stack
+    - The Shovel - targeting card in discard
+    - Skeleton Key -= 
+    CAN: headless horseman, parabite, pink eye, polycephalus, red candle, round worm
 
 - bonus:
     -- add animations

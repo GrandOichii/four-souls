@@ -30,3 +30,7 @@ function Mom_leave(host)
 
     CombatDamageLayers:remove(CardData[me.id].ipID)
 end
+
+function Mom_death(host)
+    expandActiveMonsters(host, 1)
+end

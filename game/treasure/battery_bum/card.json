@@ -7,5 +7,6 @@
             "cost": "BatteryBum_cost",
             "effect": "BatteryBum_pay"
         }
-    ]
+    ],
+    "key": "battery_bum"
 }

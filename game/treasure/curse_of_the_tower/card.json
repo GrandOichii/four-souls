@@ -5,8 +5,11 @@
     "on": {
         "damage": {
             "check": "CurseOfTheTower_trigger_check",
-            "requires": ["roll"],
+            "requires": [
+                "roll"
+            ],
             "effect": "CurseOfTheTower_trigger"
         }
-    }
+    },
+    "key": "curse_of_the_tower"
 }

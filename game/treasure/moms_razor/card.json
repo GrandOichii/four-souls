@@ -7,5 +7,6 @@
             "check": "MomsRazor_trigger_check",
             "effect": "MomsRazor_trigger"
         }
-    }
+    },
+    "key": "moms_razor"
 }

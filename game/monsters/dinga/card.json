@@ -18,7 +18,10 @@
         "effect": "Dinga_death"
     },
     "rewards": {
-        "requires": ["roll"],
+        "requires": [
+            "roll"
+        ],
         "effect": "Dinga_rewards"
-    }
+    },
+    "key": "dinga"
 }

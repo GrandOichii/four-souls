@@ -10,5 +10,6 @@
     },
     "death": {
         "effect": "Corny_death"
-    }
+    },
+    "key": "corny"
 }

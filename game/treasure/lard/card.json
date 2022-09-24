@@ -15,5 +15,6 @@
             "check": "Lard_trigger_check",
             "effect": "Lard_trigger"
         }
-    }
+    },
+    "key": "lard"
 }

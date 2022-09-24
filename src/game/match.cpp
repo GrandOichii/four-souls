@@ -14,7 +14,8 @@ static EffectState effectFromJson(json j) {
 
 static CardState cardFromJson(json j) {
     CardState result;
-    result.cardName = j["cardName"];
+    result.name = j["name"];
+    result.key = j["key"];
     result.active = j["active"];
     result.id = j["id"];
     result.counters = j["counters"];
@@ -123,7 +124,8 @@ static json effectToJson(const EffectState& effect) {
 
 static json cardToJson(const CardState& card) {
     json result;
-    result["cardName"] = card.cardName;
+    result["name"] = card.name;
+    result["key"] = card.key;
     result["active"] = card.active;
     result["id"] = card.id;
     result["counters"] = card.counters;
@@ -1077,13 +1079,15 @@ int Match::wrap_getAttack(lua_State* L) {
 }
 
 int Match::wrap_discardLoot(lua_State* L) {
-    stackSizeIs(L, 3);
+    stackSizeIs(L, 4);
     auto match = getTopMatch(L, 1);
     auto pid = getTopNumber(L, 2);
     Player* player = match->playerWithID(pid);
     auto cid = getTopNumber(L, 3);
+    auto isCost = getTopBool(L, 4); // just decoration for layering
     auto card = player->takeCard(cid);
     match->_lootDiscard.push_back(card);
+    card->setOwner(nullptr);
     return 0;
 }
 
@@ -1675,13 +1679,16 @@ int Match::wrap_destroyCard(lua_State* L) {
 int Match::wrap_incAdditionalCoins(lua_State* L) {
     stackSizeIs(L, 2);
     auto match = getTopMatch(L, 1);
-    if (!lua_isnumber(L, 2)) {
-        lua_err(L);
-        exit(1);
-    }
-    auto pid = (int)lua_tonumber(L, 2);
+    auto pid = getTopNumber(L, 2);
     Player* player = match->playerWithID(pid);
     player->incAdditionalCoins();
+    return 0;
+}
+
+int Match::wrap_rechargeActivePlayer(lua_State* L) {
+    stackSizeIs(L, 1);
+    auto match = getTopMatch(L, 1);
+    match->_activePlayer->recharge();
     return 0;
 }
 
@@ -1824,6 +1831,27 @@ int Match::wrap_topCardsOf(lua_State* L) {
     pushCards(result, L);
     return 1;
 }
+
+int Match::wrap_placeInMonsterPile(lua_State *L) {
+    stackSizeIs(L, 3);
+    auto match = getTopMatch(L, 1);
+    auto pileI = getTopNumber(L, 2);
+    auto cid = getTopNumber(L, 3);
+    if (pileI >= match->_monsters.size()) throw std::runtime_error("pileI is greater than the amount of monster piles (" + std::to_string(pileI) + ")");
+    if (match->_monsters[pileI].size()) {
+        auto mcard = (MonsterCard*)match->_monsters[pileI].back()->card();
+        mcard->deleteData();
+    }
+    auto cardW = match->cardWithID(cid);
+    match->_monsters[pileI].push_back(cardW);
+    auto mC = (MonsterCard*)cardW->card();
+    mC->createData(match->L, match, cardW->id());
+    auto data = mC->data();
+    match->_monsterDataArr[pileI] = data;
+    mC->enterEffect().pushMe(match, cardW, match->_activePlayer, MONSTER_ENTER_TYPE);
+    return 0;
+}
+
 
 int Match::wrap_setCurrentPlayer(lua_State* L) {
     stackSizeIs(L, 2);
@@ -2198,6 +2226,8 @@ void Match::setupLua(string setupScript) {
     luaL_openlibs(L);
     // connect functions
     lua_register(L, "healPlayer", wrap_healPlayer);
+    lua_register(L, "_rechargeActivePlayer", wrap_rechargeActivePlayer);
+    lua_register(L, "placeInMonsterPile", wrap_placeInMonsterPile);
     lua_register(L, "healMonster", wrap_healMonster);
     lua_register(L, "incSkipCounter", wrap_incSkipCounter);
     lua_register(L, "getDiscard", wrap_getDiscard);
@@ -2342,7 +2372,7 @@ void Match::setupLua(string setupScript) {
     "\n            end"
     "\n            local cardIDs = requestCardsInHand(host, ownerID, ownerID, message, amount)"
     "\n            for _, cid in ipairs(cardIDs) do"
-    "\n                discardLoot(host, ownerID, cid)"
+    "\n                discardLoot(host, ownerID, cid, false)"
     "\n            end"
     "\n        end"    
     "\n    end"
@@ -2388,7 +2418,7 @@ void Match::setupLua(string setupScript) {
     "\n    if amount <= 0 then return end"
     "\n    local cardIDs = requestCardsInHand(host, player.id, player.id, 'Discard to hand size ('..amount..')', amount)"
     "\n    for _, cid in ipairs(cardIDs) do"
-    "\n        discardLoot(host, player.id, cid)"
+    "\n        discardLoot(host, player.id, cid, false)"
     "\n    end"
     "\nend");
     std::cout << "Loading setup script" << std::endl;
@@ -2642,6 +2672,7 @@ void Match::turn() {
     this->_activePlayer->resetPurchaseCount();
 
     // recharge all of the items and character card of the active player
+    execFunc("_rechargeActivePlayer");
     this->_activePlayer->recharge();
 
     // apply all <start of turn> triggers, then resolve stack

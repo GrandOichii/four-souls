@@ -4,8 +4,11 @@
     "script": "script.lua",
     "abilities": [
         {
-            "requires": ["tap"],
+            "requires": [
+                "tap"
+            ],
             "effect": "BumFriend_effect"
         }
-    ]
+    ],
+    "key": "bum_friend"
 }

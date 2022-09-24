@@ -10,5 +10,6 @@
     },
     "death": {
         "effect": "Mulligan_death"
-    }
+    },
+    "key": "mulligan"
 }

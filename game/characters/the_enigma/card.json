@@ -16,9 +16,11 @@
             "attack": 2,
             "text": "{T}: Play an additional loot card this turn.",
             "script": "script.lua",
+            "key": "amgine_eht",
             "use": {
                 "effect": "TheEnigma_tap"
             }
         }
-    }
+    },
+    "key": "the_enigma"
 }

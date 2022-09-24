@@ -4,5 +4,6 @@
     "script": "script.lua",
     "use": {
         "effect": "ASack_use"
-    }
+    },
+    "key": "a_sack"
 }

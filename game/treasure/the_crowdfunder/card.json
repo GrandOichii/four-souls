@@ -5,8 +5,11 @@
     "abilities": [
         {
             "cost": "TheCrowdfunder_cost",
-            "requires": ["roll"],
+            "requires": [
+                "roll"
+            ],
             "effect": "TheCrowdfunder_fund"
         }
-    ]
+    ],
+    "key": "the_crowdfunder"
 }

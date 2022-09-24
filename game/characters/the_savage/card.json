@@ -7,5 +7,6 @@
     "script": "script.lua",
     "use": {
         "effect": "TheSavage_tap"
-    }
+    },
+    "key": "the_savage"
 }

@@ -5,8 +5,11 @@
     "on": {
         "death": {
             "check": "LilChest_trigger_check",
-            "requires": ["roll"],
+            "requires": [
+                "roll"
+            ],
             "effect": "LilChest_trigger"
         }
-    }
+    },
+    "key": "lil_chest"
 }

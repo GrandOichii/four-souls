@@ -3,6 +3,8 @@
     "text": "{T}: Look at the top 5 cards of a deck. Put them back in any order.",
     "script": "script.lua",
     "eternal": true,
+    "key": "sleight_of_hand",
+
     "abilities": [
         {
             "requires": ["tap"],

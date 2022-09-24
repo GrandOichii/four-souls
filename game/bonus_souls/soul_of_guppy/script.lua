@@ -8,6 +8,7 @@ local GUPPY_ITEMS = {
     'The Dead Cat',
 }
 
+--  TODO change to card decorators
 local function IsGuppyItem(item)
     for _, name in ipairs(GUPPY_ITEMS) do
         if name == item.name then

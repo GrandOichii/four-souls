@@ -8,8 +8,11 @@
     "on": {
         "turn_end": {
             "check": "AAABattery_trigger_check",
-            "requires": ["roll"],
+            "requires": [
+                "roll"
+            ],
             "effect": "AAABattery_trigger"
         }
-    }
+    },
+    "key": "aaa_battery"
 }

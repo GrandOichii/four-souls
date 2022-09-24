@@ -15,5 +15,6 @@
             "cost": "Satan_trigger_cost",
             "effect": "Satan_trigger"
         }
-    }
+    },
+    "key": "satan_"
 }

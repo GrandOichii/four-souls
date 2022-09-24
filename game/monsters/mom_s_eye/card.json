@@ -11,5 +11,6 @@
     "death": {
         "cost": "MomsEye_death_cost",
         "effect": "MomsEye_death"
-    }
+    },
+    "key": "mom_s_eye"
 }

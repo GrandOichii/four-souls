@@ -13,5 +13,6 @@
             "check": "LootCard_trigger_check",
             "effect": "LootCard_trigger_effect"
         }
-    }
+    },
+    "key": "loot_card"
 }

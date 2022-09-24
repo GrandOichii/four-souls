@@ -15,5 +15,6 @@
     "leave": {
         "usesStack": false,
         "effect": "FlamingHopper_leave"
-    }
+    },
+    "key": "flaming_hopper"
 }

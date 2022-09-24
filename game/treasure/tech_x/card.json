@@ -5,7 +5,9 @@
     "abilities": [
         {
             "text": "Put a counter on this.",
-            "requires": ["tap"],
+            "requires": [
+                "tap"
+            ],
             "effect": "TechX_ability1"
         },
         {
@@ -13,5 +15,6 @@
             "cost": "TechX_cost2",
             "effect": "TechX_ability2"
         }
-    ]
+    ],
+    "key": "tech_x"
 }

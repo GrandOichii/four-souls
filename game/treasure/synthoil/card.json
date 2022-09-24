@@ -7,5 +7,6 @@
             "check": "Synthoil_trigger_check",
             "effect": "Synthoil_trigger"
         }
-    }
+    },
+    "key": "synthoil"
 }

@@ -8,5 +8,12 @@
     "soulCount": 1,
     "rewards": {
         "effect": "Chub_rewards"
-    }
+    },
+    "on": {
+        "roll": {
+            "check": "Chub_trigger_check",
+            "effect": "Chub_trigger"
+        }
+    },
+    "key": "chub"
 }

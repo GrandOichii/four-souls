@@ -5,8 +5,12 @@
     "script": "script.lua",
     "abilities": [
         {
-            "requires": ["tap", "roll"],
+            "requires": [
+                "tap",
+                "roll"
+            ],
             "effect": "PandorasBox_tap"
         }
-    ]
+    ],
+    "key": "pandoras_box"
 }

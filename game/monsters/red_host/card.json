@@ -7,5 +7,6 @@
     "power": 2,
     "rewards": {
         "effect": "RedHost_rewards"
-    }
+    },
+    "key": "red_host"
 }

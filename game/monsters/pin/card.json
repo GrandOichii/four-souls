@@ -16,5 +16,6 @@
     "leave": {
         "usesStack": false,
         "effect": "Pin_leave"
-    }
+    },
+    "key": "pin"
 }

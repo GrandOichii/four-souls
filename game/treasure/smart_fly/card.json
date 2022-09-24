@@ -1,0 +1,21 @@
+{
+    "name": "Smart Fly",
+    "text": "{T}: Loot at the top card of a deck. You may put it into discard or back on top.\nEach time you take damage, you may recharge this.",
+    "script": "script.lua",
+    "abilties": [
+        {
+            "requires": [
+                "tap"
+            ],
+            "cost": "SmartFly_cost",
+            "effect": "SmartFly_tap"
+        }
+    ],
+    "on": {
+        "damage": {
+            "check": "SmartFly_trigger_check",
+            "effect": "SmartFly_trigger"
+        }
+    },
+    "key": "smart_fly"
+}

@@ -7,5 +7,6 @@
             "cost": "Athame_cost",
             "effect": "Athame_force"
         }
-    ]
+    ],
+    "key": "athame"
 }

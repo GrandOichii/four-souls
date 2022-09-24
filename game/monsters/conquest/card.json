@@ -11,5 +11,6 @@
     },
     "death": {
         "effect": "Conquest_death"
-    }
+    },
+    "key": "conquest"
 }

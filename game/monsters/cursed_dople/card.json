@@ -12,7 +12,10 @@
         }
     },
     "rewards": {
-        "requires": ["roll"],
+        "requires": [
+            "roll"
+        ],
         "effect": "CursedDople_rewards"
-    }
+    },
+    "key": "cursed_dople"
 }

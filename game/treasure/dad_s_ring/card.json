@@ -12,7 +12,9 @@
     },
     "on": {
         "attack": {
-            "requires": ["roll"],
+            "requires": [
+                "roll"
+            ],
             "check": "DadsRing_trigger1_check",
             "effect": "DadsRing_trigger1"
         },
@@ -20,5 +22,6 @@
             "usesStack": false,
             "effect": "DadsRing_trigger2"
         }
-    }
+    },
+    "key": "dad_s_ring"
 }

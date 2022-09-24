@@ -235,7 +235,7 @@ public:
     }
 
     void drawCard(const CardState& card, int x, int y) {
-        this->drawTexture(this->_assets->getCard(card.cardName), x, y, card.active ? 0 : 90);
+        this->drawTexture(this->_assets->getCard(card.name), x, y, card.active ? 0 : 90);
         auto tex = _assets->getMessage("["+std::to_string(card.id)+"]", SDL_Color{255, 0, 255, 0}, 24);
         drawTexture(tex, x + 2, y + 2);
         SDL_DestroyTexture(tex);
@@ -246,8 +246,8 @@ public:
         }
     }
 
-    void drawCard(string cardName, bool active, int x, int y) {
-        this->drawTexture(this->_assets->getCard(cardName), x, y, active ? 0 : 90);
+    void drawCard(string cardKey, bool active, int x, int y) {
+        this->drawTexture(this->_assets->getCard(cardKey), x, y, active ? 0 : 90);
     }
 
     void drawCardBack(string cardType, bool active, int x, int y) {
@@ -314,7 +314,7 @@ public:
         for (int i = 0; i < state.monsters.size(); i++) {
 
             auto card = state.monsters[i];
-            this->drawTexture(this->_assets->getCard(card.cardName),_monsterDiscardX + 20, y, -90);
+            this->drawTexture(this->_assets->getCard(card.name),_monsterDiscardX + 20, y, -90);
 
             auto data = state.monsterDataArr[i];
             auto health = data.health;
@@ -356,7 +356,7 @@ public:
         // draw shop
         auto y = _treasureDeckY - _cardSize.second;
         for (const auto& card : state.shop) {
-            this->drawTexture(this->_assets->getCard(card.cardName),_treasureDiscardX + 20, y, -90);
+            this->drawTexture(this->_assets->getCard(card.name),_treasureDiscardX + 20, y, -90);
             // auto tex = this->_assets->getCard(name);
             // this->drawTexture(tex, _treasureDiscardX + 20, y, -90);
             y -= _cardSize.first + 3;

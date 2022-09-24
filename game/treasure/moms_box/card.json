@@ -7,5 +7,6 @@
             "check": "MomsBox_trigger_check",
             "effect": "MomsBox_trigger"
         }
-    }
+    },
+    "key": "moms_box"
 }

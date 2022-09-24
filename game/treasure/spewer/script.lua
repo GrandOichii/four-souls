@@ -22,7 +22,7 @@ function Spewer_cost(host, cardInfo)
     for i = 1, rollAmount do
         Common_Roll(host, owner.id)
     end
-    discardLoot(host, ownerID, cardIDs[1])
+    discardLoot(host, ownerID, cardIDs[1], false)
     CardData[me.id] = {
         rollAmount = rollAmount
     }

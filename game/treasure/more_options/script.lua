@@ -22,7 +22,7 @@ function MoreOptions_trigger(host)
     end
     local choices = {}
     for _, card in ipairs(cards) do
-        choices[#choices+1] = '${'..card.name..'}'
+        choices[#choices+1] = '${'..card.key..'}'
     end
     requestSimpleChoice(host, owner.id, 'Top cards of the treasure deck (click any to continue)', choices)
 end

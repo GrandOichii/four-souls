@@ -26,5 +26,6 @@
             "check": "Polydactyly_trigger3_check",
             "effect": "Polydactyly_trigger3"
         }
-    }
+    },
+    "key": "polydactyly"
 }

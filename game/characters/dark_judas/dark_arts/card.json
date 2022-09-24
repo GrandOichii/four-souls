@@ -3,6 +3,7 @@
     "text": "When anyone rolls a 6, gain 3c.\nEach time another player dies, loot 2.",
     "script": "script.lua",
     "eternal": true,
+    "key": "dark_arts",
 
     "on": {
         "post_roll": {

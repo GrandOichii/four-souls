@@ -13,5 +13,6 @@
             "check": "HolyDip_trigger_check",
             "effect": "HolyDip_trigger"
         }
-    }
+    },
+    "key": "holy_dip"
 }

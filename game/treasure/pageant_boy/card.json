@@ -4,8 +4,11 @@
     "script": "script.lua",
     "abilities": [
         {
-            "requires": ["roll"],
+            "requires": [
+                "roll"
+            ],
             "effect": "PageantBoy_tap"
         }
-    ]
+    ],
+    "key": "pageant_boy"
 }

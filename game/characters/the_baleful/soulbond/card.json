@@ -3,6 +3,8 @@
     "text": "",
     "script": "script.lua",
     "eternal": true,
+    "key": "soulbond",
+
     "enter": {
         "usesStack": false,
         "effect": "Soulbond_enter"

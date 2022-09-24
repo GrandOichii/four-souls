@@ -8,5 +8,6 @@
             "cost": "Hourglass_trigger_cost",
             "effect": "Hourglass_trigger"
         }
-    }
+    },
+    "key": "hourglass"
 }

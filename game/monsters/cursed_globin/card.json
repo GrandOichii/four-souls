@@ -1,0 +1,21 @@
+{
+    "name": "Cursed Globin",
+    "text": "Each time a player rolls a 3, each monster heals 2h.\nRewards: roll- loot X.",
+    "script": "script.lua",
+    "health": 3,
+    "roll": 4,
+    "power": 1,
+    "rewards": {
+        "requires": [
+            "roll"
+        ],
+        "effect": "CursedGlobin_rewards"
+    },
+    "on": {
+        "roll": {
+            "check": "CursedGlobin_trigger_check",
+            "effect": "CursedGlobin_trigger"
+        }
+    },
+    "key": "cursed_globin"
+}

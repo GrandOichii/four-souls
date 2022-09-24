@@ -12,5 +12,6 @@
     "death": {
         "cost": "Death_death_cost",
         "effect": "Death_death"
-    }
+    },
+    "key": "death"
 }

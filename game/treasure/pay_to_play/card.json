@@ -7,5 +7,6 @@
             "cost": "PayToPlay_cost",
             "effect": "PayToPlay_effect"
         }
-    ]
+    ],
+    "key": "pay_to_play"
 }

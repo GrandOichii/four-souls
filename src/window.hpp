@@ -155,9 +155,9 @@ public:
         }
     }
 
-    void createCard(string name, string text) {
-        if (!_textureMap.count(name)) _textureMap[name] = std::make_pair(nullptr, nullptr);
-        auto pair = _textureMap[name];
+    void createCard(string key, string text) {
+        if (!_textureMap.count(key)) _textureMap[key] = std::make_pair(nullptr, nullptr);
+        auto pair = _textureMap[key];
         if (!pair.first) {
             auto small = SDL_CreateTexture(_ren, SDL_PIXELFORMAT_RGBA8888, SDL_TEXTUREACCESS_TARGET, 87, 121);
             SDL_Rect r;
@@ -168,14 +168,14 @@ public:
             SDL_SetRenderTarget(_ren, small);
             SDL_SetRenderDrawColor(_ren, 169, 169, 169, 0);
             SDL_RenderFillRect(_ren, &r);
-            auto top = getMessage(name, SDL_Color{0, 255, 0, 0}, 24);
+            auto top = getMessage(key, SDL_Color{0, 255, 0, 0}, 24);
             auto size = getSize(top);
             r.w = size.first;
             r.h = size.second;
             SDL_RenderCopy(_ren, top, NULL, &r);
             SDL_DestroyTexture(top);
             SDL_RenderPresent(_ren);
-            _textureMap[name].first = small;
+            _textureMap[key].first = small;
         }
         if (!pair.second) {
             // 437 610
@@ -189,7 +189,7 @@ public:
             SDL_SetRenderDrawColor(_ren, 169, 169, 169, 0);
             SDL_RenderFillRect(_ren, &r);
 
-            auto top = getMessage(name, SDL_Color{0, 255, 0, 0}, 24);
+            auto top = getMessage(key, SDL_Color{0, 255, 0, 0}, 24);
             auto size = getSize(top);
             r.w = size.first;
             r.h = size.second;
@@ -215,7 +215,7 @@ public:
                 SDL_RenderPresent(_ren);
             }
 
-            _textureMap[name].second = large;
+            _textureMap[key].second = large;
         }
         SDL_SetRenderTarget(_ren, NULL);
     }
@@ -227,9 +227,9 @@ public:
         this->_cardBacks[cardType] = tex;
     }
 
-    SDL_Texture* getCard(string cardName, CardSize size) {
-        if (!_textureMap.count(cardName)) throw std::runtime_error("no image for card " + cardName);
-        auto pair = _textureMap[cardName];
+    SDL_Texture* getCard(string cardKey, CardSize size) {
+        if (!_textureMap.count(cardKey)) throw std::runtime_error("no image for card " + cardKey);
+        auto pair = _textureMap[cardKey];
         switch(size) {
         case CardSize::SMALL:
             return pair.first;
@@ -472,7 +472,7 @@ public:
         int monstersX = _monsterDiscardX + 10;
         for (int i = 0; i < state.monsters.size(); i++) {
             auto card = state.monsters[i];
-            if (card.cardName != "--no-card--") {
+            if (card.key != "--no-card--") {
                 this->drawCard(card, -90, monstersX, y);
                 auto x = monstersX + _assets->cardSize().second + 10;
                 auto data = state.monsterDataArr[i];
@@ -529,7 +529,7 @@ public:
         // draw shop
         auto y = _treasureDeckY - _cardSize.second;
         for (auto& card : state.shop) {
-            if (card.cardName != "--no-card--")
+            if (card.key != "--no-card--")
                 this->drawCard(card, -90, _treasureDiscardX + 20, y);
 
             y -= _cardSize.first + 3;
@@ -692,10 +692,6 @@ public:
         this->drawPlayerName(pboard, x, y);
     }
 
-    // virtual void drawSoulCard(const CardState& card, int x, int y) {
-    //     this->drawTexture(_assets->getCard(card.cardName, CardSize::SMALL), x, y, 0);
-    // }
-
     virtual std::pair<int, int> drawPlayerName(PlayerBoardState& pboard, int x, int y) {
         SDL_Texture* nameTex = _assets->getMessage(pboard.name, SDL_Color{0, 255, 255, 0}, 24);
         auto size = getSize(nameTex);
@@ -748,8 +744,8 @@ public:
     }
 
     virtual void drawCard(CardState& card, int angle, int x, int y, Rect * bBox = nullptr, bool activatable = true) {
-        if (card.cardName == "--no-card--") return;
-        auto cardTex = this->_assets->getCard(card.cardName, CardSize::SMALL);
+        if (card.key == "--no-card--") return;
+        auto cardTex = this->_assets->getCard(card.key, CardSize::SMALL);
         _cardLocs[card.id] = std::make_pair(x + 10, y + 10);
         this->drawTexture(cardTex, x, y, angle);
         auto tex = _assets->getMessage("[" + std::to_string(card.id) + "]", SDL_Color{ 255, 0, 255, 0 }, 24);
@@ -768,7 +764,7 @@ public:
         if (mx >= x && my >= y && mx <= x + w && my <= h+ y) {
             SDL_PumpEvents();
             if (_keys[SDL_SCANCODE_LSHIFT]) {
-                auto tex = this->_assets->getCard(card.cardName, CardSize::LARGE);
+                auto tex = this->_assets->getCard(card.key, CardSize::LARGE);
                 auto size = getSize(tex);
                 this->drawTexture(tex, _stackX - size.first, 0);
             }

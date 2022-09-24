@@ -4,9 +4,12 @@
     "script": "script.lua",
     "abilities": [
         {
-            "requires": ["tap"],
+            "requires": [
+                "tap"
+            ],
             "cost": "D20_cost",
             "effect": "D20_tap"
         }
-    ]
+    ],
+    "key": "d20"
 }

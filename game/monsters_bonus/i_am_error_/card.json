@@ -3,7 +3,10 @@
     "text": "Roll-\n1-2: You must make an additional attack on the monster deck.\n3-4: Loot 3.\n5-6: Gain +1 treasure.",
     "script": "script.lua",
     "use": {
-        "requires": ["roll"],
+        "requires": [
+            "roll"
+        ],
         "effect": "IAmError_effect"
-    }
+    },
+    "key": "i_am_error_"
 }

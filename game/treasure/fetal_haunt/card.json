@@ -13,5 +13,6 @@
             "cost": "Common_Haunt_trigger_cost",
             "effect": "Common_Haunt_trigger"
         }
-    }
+    },
+    "key": "fetal_haunt"
 }

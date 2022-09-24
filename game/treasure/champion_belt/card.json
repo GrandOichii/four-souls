@@ -26,5 +26,6 @@
             "check": "ChampionBelt_trigger3_check",
             "effect": "ChampionBelt_trigger3"
         }
-    }
+    },
+    "key": "champion_belt"
 }

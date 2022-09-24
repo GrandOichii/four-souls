@@ -7,5 +7,6 @@
             "cost": "GoldenRazor_cost",
             "effect": "GoldenRazor_tap"
         }
-    ]
+    ],
+    "key": "golden_razor"
 }

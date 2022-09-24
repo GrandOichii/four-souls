@@ -7,5 +7,6 @@
     "power": 1,
     "rewards": {
         "effect": "FatBat_rewards"
-    }
+    },
+    "key": "fat_bat"
 }

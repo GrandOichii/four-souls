@@ -9,5 +9,6 @@
     "leave": {
         "usesStack": false,
         "effect": "NewgroundsTank_leave"
-    }
+    },
+    "key": "newgrounds_tank"
 }

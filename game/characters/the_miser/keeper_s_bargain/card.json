@@ -3,6 +3,7 @@
     "text": "{T}: Each other player may choose to gain 1$. Gain 1$, then 1$ for each player who did.\nShop items you purchase cost 3$ less.",
     "script": "script.lua",
     "eternal": true,
+    "key": "keeper_s_bargain",
 
     "enter": {
         "usesStack": false,

@@ -11,5 +11,6 @@
     "death": {
         "cost": "MomsDeadHand_death_cost",
         "effect": "MomsDeadHand_death"
-    }
+    },
+    "key": "mom_s_dead_hand"
 }

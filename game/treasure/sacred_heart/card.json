@@ -7,5 +7,6 @@
             "check": "SacredHeart_trigger_check",
             "effect": "SacredHeart_trigger"
         }
-    }
+    },
+    "key": "sacred_heart"
 }

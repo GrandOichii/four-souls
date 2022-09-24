@@ -14,5 +14,6 @@
             "check": "TheBloat_trigger_check",
             "effect": "TheBloat_trigger"
         }
-    }
+    },
+    "key": "the_bloat"
 }

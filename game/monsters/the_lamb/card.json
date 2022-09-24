@@ -12,5 +12,6 @@
     "death": {
         "cost": "TheLamb_death_cost",
         "effect": "TheLamb_death"
-    }
+    },
+    "key": "the_lamb"
 }

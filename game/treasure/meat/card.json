@@ -7,5 +7,6 @@
             "check": "Meat_trigger_check",
             "effect": "Meat_trigger"
         }
-    }
+    },
+    "key": "meat"
 }

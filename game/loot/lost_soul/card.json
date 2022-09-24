@@ -9,5 +9,6 @@
     "enter": {
         "usesStack": false,
         "effect": "LostSoul_enter"
-    }
+    },
+    "key": "lost_soul"
 }

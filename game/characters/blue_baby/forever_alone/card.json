@@ -3,6 +3,7 @@
     "text": "{T}: Choose one:\n- Steal 1c from a player.\nLook at the top card of any deck.\n- Discard a loot card, then draw a loot card.\nWhen you take damage, recharge this.",
     "script": "script.lua",
     "eternal": true,
+    "key": "forever_alone",
 
     "abilities": [
         {

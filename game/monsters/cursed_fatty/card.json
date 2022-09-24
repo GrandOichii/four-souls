@@ -13,5 +13,6 @@
             "check": "CursedFatty_trigger_check",
             "effect": "CursedFatty_trigger"
         }
-    }
+    },
+    "key": "cursed_fatty"
 }

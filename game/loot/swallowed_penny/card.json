@@ -10,5 +10,6 @@
             "check": "SwallowedPenny_trigger_check",
             "effect": "SwallowedPenny_trigger"
         }
-    }
+    },
+    "key": "swallowed_penny"
 }

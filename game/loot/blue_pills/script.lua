@@ -11,6 +11,6 @@ function BluePills_use(host, me)
         lootCards(host, owner.id, 3)
         return
     end
-    Common_Discard(host, owner.id, 1)
+    Common_Discard(host, owner.id, 1, false)
 
 end

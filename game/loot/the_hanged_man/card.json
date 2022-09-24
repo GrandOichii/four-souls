@@ -4,5 +4,6 @@
     "script": "script.lua",
     "use": {
         "effect": "TheHangedMan_use"
-    }
+    },
+    "key": "the_hanged_man"
 }

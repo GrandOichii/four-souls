@@ -8,5 +8,6 @@
             "check": "SoulOfWrath_trigger_check",
             "effect": "SoulOfWrath_trigger"
         }
-    }
+    },
+    "key": "soul_of_wrath"
 }

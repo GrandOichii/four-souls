@@ -6,10 +6,13 @@
     "roll": 4,
     "power": 1,
     "rewards": {
-        "requires": ["roll"],
+        "requires": [
+            "roll"
+        ],
         "effect": "BlackBony_rewards"
     },
     "death": {
         "effect": "BlackBony_death"
-    }
+    },
+    "key": "black_bony"
 }

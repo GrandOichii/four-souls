@@ -4,9 +4,12 @@
     "script": "script.lua",
     "abilities": [
         {
-            "requires": ["tap"],
+            "requires": [
+                "tap"
+            ],
             "cost": "RainbowBaby_cost",
             "effect": "RainbowBaby_tap"
         }
-    ]
+    ],
+    "key": "rainbow_baby"
 }

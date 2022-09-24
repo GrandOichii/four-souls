@@ -10,5 +10,6 @@
             "check": "Cancer_trigger_check",
             "effect": "Cancer_trigger"
         }
-    }
+    },
+    "key": "cancer"
 }

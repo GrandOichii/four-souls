@@ -2,7 +2,7 @@ function Void_effect0(host)
     local owner = getTopOwner(host)
     local cCount = #owner.hand
     for _, card in ipairs(owner.hand) do
-    discardLoot(host, owner.id, card.id)
+    discardLoot(host, owner.id, card.id, false)
     end
     owner = Common_PlayerWithID(host, owner.id)
     lootCards(host, owner.id, cCount - #owner.hand)

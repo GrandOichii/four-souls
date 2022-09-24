@@ -7,5 +7,6 @@
     "script": "script.lua",
     "use": {
         "effect": "Isaac_tap"
-    }
+    },
+    "key": "isaac"
 }

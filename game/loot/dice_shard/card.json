@@ -5,5 +5,6 @@
     "use": {
         "effect": "DiceShard_use",
         "cost": "DiceShard_cost"
-    }
+    },
+    "key": "dice_shard"
 }

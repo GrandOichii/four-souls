@@ -27,5 +27,6 @@
             "check": "War_trigger2_check",
             "effect": "War_trigger2"
         }
-    }
+    },
+    "key": "war"
 }

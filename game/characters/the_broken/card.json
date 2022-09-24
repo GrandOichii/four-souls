@@ -7,5 +7,6 @@
     "script": "script.lua",
     "use": {
         "effect": "TheBroken_tap"
-    }
+    },
+    "key": "the_broken"
 }

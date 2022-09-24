@@ -8,5 +8,6 @@
     "destroyed": {
         "cost": "ShortFuse_cost",
         "effect": "ShortFuse_effect"
-    }
+    },
+    "key": "short_fuse"
 }

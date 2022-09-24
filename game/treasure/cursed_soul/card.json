@@ -13,5 +13,6 @@
             "cost": "CursedSoul_trigger2_cost",
             "effect": "CursedSoul_trigger2"
         }
-    }
+    },
+    "key": "cursed_soul"
 }

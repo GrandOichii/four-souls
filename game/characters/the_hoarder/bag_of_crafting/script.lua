@@ -1,5 +1,5 @@
 function BagOfCrafting_cost1(host, info)
-    return Common_Discard(host, info.ownerID, 1)
+    return Common_Discard(host, info.ownerID, 1, true)
 end
 
 function BagOfCrafting_effect1(host)

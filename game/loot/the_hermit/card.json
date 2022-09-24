@@ -4,5 +4,6 @@
     "script": "script.lua",
     "use": {
         "effect": "TheHermit_effect"
-    }
+    },
+    "key": "the_hermit"
 }

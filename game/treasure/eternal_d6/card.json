@@ -4,7 +4,9 @@
     "script": "script.lua",
     "abilities": [
         {
-            "requires": ["tap"],
+            "requires": [
+                "tap"
+            ],
             "text": "Put a counter on this.",
             "effect": "EternalD6_effect1"
         },
@@ -15,7 +17,7 @@
         }
     ],
     "on": {
-        "turn_end":  {
+        "turn_end": {
             "usesStack": false,
             "check": "EternalD6_trigger1_check",
             "effect": "EternalD6_trigger1"
@@ -28,5 +30,6 @@
     "enter": {
         "usesStack": false,
         "effect": "EternalD6_enter"
-    }
+    },
+    "key": "eternal_d6"
 }

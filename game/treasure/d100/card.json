@@ -5,7 +5,11 @@
     "abilities": [
         {
             "effect": "D100_tap",
-            "requires": ["roll", "tap"]
+            "requires": [
+                "roll",
+                "tap"
+            ]
         }
-    ]
+    ],
+    "key": "d100"
 }

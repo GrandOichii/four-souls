@@ -7,7 +7,10 @@
     "power": 2,
     "soulCount": 1,
     "rewards": {
-        "requires": ["roll"],
+        "requires": [
+            "roll"
+        ],
         "effect": "MamaGurdy_rewards"
-    }
+    },
+    "key": "mama_gurdy"
 }

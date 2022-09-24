@@ -10,5 +10,6 @@
     },
     "death": {
         "effect": "Swarmer_death"
-    }
+    },
+    "key": "swarmer"
 }

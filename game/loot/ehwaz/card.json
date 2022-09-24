@@ -1,0 +1,9 @@
+{
+    "name": "Ehwaz",
+    "text": "Put each monster not being attacked into discard and replace each with the top card of the monster deck.",
+    "script": "script.lua",
+    "use": {
+        "effect": "Ehwaz_use"
+    },
+    "key": "ehwaz"
+}

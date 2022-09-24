@@ -10,5 +10,6 @@
     },
     "death": {
         "effect": "Portal_death"
-    }
+    },
+    "key": "portal"
 }

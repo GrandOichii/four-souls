@@ -11,5 +11,6 @@
     },
     "death": {
         "effect": "Sloth_death"
-    }
+    },
+    "key": "sloth"
 }

@@ -7,5 +7,6 @@
             "check": "DeadBird_trigger_check",
             "effect": "DeadBird_trigger"
         }
-    }
+    },
+    "key": "dead_bird"
 }

@@ -24,5 +24,6 @@
             "check": "CurvedHorn_trigger2_check",
             "effect": "CurvedHorn_trigger2"
         }
-    }
+    },
+    "key": "curved_horn"
 }

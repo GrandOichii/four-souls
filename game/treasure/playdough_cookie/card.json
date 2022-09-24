@@ -7,5 +7,6 @@
             "check": "PlaydoughCookie_trigger_check",
             "effect": "PlaydoughCookie_trigger"
         }
-    }
+    },
+    "key": "playdough_cookie"
 }

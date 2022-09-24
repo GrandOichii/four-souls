@@ -11,5 +11,5 @@ end
 function Scolex_trigger(host)
     local me = this(host)
     local pid = CardData[me.id].damageEvent.targetID
-    Common_Discard(host, pid, 1)
+    Common_Discard(host, pid, 1, false)
 end

@@ -13,5 +13,6 @@
             "check": "HolySquirt_trigger_check",
             "effect": "HolySquirt_trigger"
         }
-    }
+    },
+    "key": "holy_squirt"
 }

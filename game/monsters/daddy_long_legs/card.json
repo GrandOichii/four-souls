@@ -26,5 +26,6 @@
             "usesStack": false,
             "effect": "DaddyLongLegs_trigger2"
         }
-    }
+    },
+    "key": "daddy_long_legs"
 }

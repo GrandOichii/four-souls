@@ -13,5 +13,6 @@
             "check": "CursedPsyHorf_trigger_check",
             "effect": "CursedPsyHorf_trigger"
         }
-    }
+    },
+    "key": "cursed_psy_horf"
 }

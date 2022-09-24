@@ -7,5 +7,6 @@
     "text": "{T}: Play an additional loot card this turn.\nStarting item: Forever Alone",
     "use": {
         "effect": "BlueBaby_use"
-    }
+    },
+    "key": "blue_baby"
 }

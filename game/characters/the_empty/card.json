@@ -7,5 +7,6 @@
     "script": "script.lua",
     "use": {
         "effect": "TheEmpty_tap"
-    }
+    },
+    "key": "the_empty"
 }

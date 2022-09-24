@@ -4,8 +4,12 @@
     "script": "script.lua",
     "abilities": [
         {
-            "requires": ["tap", "roll"],
+            "requires": [
+                "tap",
+                "roll"
+            ],
             "effect": "TheButterBean_tap"
         }
-    ]
+    ],
+    "key": "butter_bean"
 }

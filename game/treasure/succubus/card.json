@@ -7,5 +7,6 @@
             "cost": "Succubus_cost",
             "effect": "Succubus_succ"
         }
-    ]
+    ],
+    "key": "succubus"
 }

@@ -4,9 +4,12 @@
     "script": "script.lua",
     "abilities": [
         {
-            "requires": ["tap"],
+            "requires": [
+                "tap"
+            ],
             "cost": "Decoy_cost",
             "effect": "Decoy_tap"
         }
-    ]
+    ],
+    "key": "decoy"
 }

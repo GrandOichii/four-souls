@@ -1,0 +1,12 @@
+{
+    "name": "P.H.D.",
+    "text": "You may add 1 or subtract 1 from any of your non-attack rolls.",
+    "script": "script.lua",
+    "on": {
+        "roll": {
+            "check": "PHD_trigger_check",
+            "effect": "PHD_trigger"
+        }
+    },
+    "key": "p_h_d_"
+}

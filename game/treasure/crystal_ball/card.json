@@ -14,8 +14,11 @@
     },
     "abilities": [
         {
-            "requires": ["tap"],
+            "requires": [
+                "tap"
+            ],
             "effect": "CrystalBall_tap"
         }
-    ]
+    ],
+    "key": "crystal_ball"
 }

@@ -4,8 +4,11 @@
     "script": "script.lua",
     "abilities": [
         {
-            "requires": ["tap"],
+            "requires": [
+                "tap"
+            ],
             "effect": "PlanC_tap"
         }
-    ]
+    ],
+    "key": "plan_c"
 }

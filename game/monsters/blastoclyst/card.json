@@ -11,5 +11,6 @@
     },
     "death": {
         "effect": "Blastoclyst_death"
-    }
+    },
+    "key": "blastoclyst"
 }

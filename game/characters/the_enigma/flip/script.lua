@@ -11,7 +11,7 @@ function Flip_trigger(host)
         healPlayer(host, owner.id, 0)
     end
     for _, card in ipairs(owner.hand) do
-        discardLoot(host, owner.id, card.id)
+        discardLoot(host, owner.id, card.id, false)
     end
     lootCards(host, owner.id, 3)
 end

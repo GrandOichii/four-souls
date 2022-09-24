@@ -16,5 +16,6 @@
             "check": "BellyButton_trigger2_check",
             "effect": "BellyButton_trigger2"
         }
-    }
+    },
+    "key": "belly_button"
 }
