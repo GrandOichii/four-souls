@@ -14,7 +14,7 @@ function Globin_trigger(host)
     local me = this(host)
     local roll = popRollStack(host)
     if roll.value < 5 then
-        dealDamage(host, MONSTER, me.id, MONSTER, me.id, 1)
+        dealDamage(host, NO_SOURCE, NO_SOURCE_ID, MONSTER, me.id, 1)
         return
     end
     healMonster(host, me.id, 2)

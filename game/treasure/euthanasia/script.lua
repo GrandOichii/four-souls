@@ -41,15 +41,13 @@ function Euthanasia_trigger_check(host, me)
 end
 
 function Euthanasia_trigger(host)
-    print('TRIGGERED')
     local me = this(host)
     local monsters = getActiveMonsters(host)
-    for _, monster in ipairs(monsters) do
+    for _, monster in pairs(monsters) do
         if monster.isBeingAttacked then
             CardData[me.id] = {}
             killEntity(host, MONSTER, monster.id)
             return
         end
     end
-    print('FAILED TO FIND ATTACKED MONSTER')
 end

@@ -35,7 +35,7 @@ end
 
 function Stoney_trigger(host)
     local me = this(host)
-    for _, monster in ipairs(getActiveMonsters(host)) do
+    for _, monster in pairs(getActiveMonsters(host)) do
         if monster.id == me.id then
             killEntity(host, MONSTER, me.id)
         end

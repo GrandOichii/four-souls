@@ -16,5 +16,5 @@ function RedGhost_trigger(host)
     --  TODO who deals the damage?
     local target = popTarget(host)
     local player = getCurrentPlayer(host)
-    dealDamage(host, PLAYER, player.id, PLAYER, target.id, 1)
+    dealDamage(host, NO_SOURCE, NO_SOURCE_ID, PLAYER, target.id, 1)
 end

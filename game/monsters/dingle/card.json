@@ -1,0 +1,21 @@
+{
+    "name": "Dingle",
+    "key": "dingle",
+    "text": "Each time the active player deals damage to this, they roll-\n1-2: They take 1 damage.\n3-4: Each player takes 1 damage.\n5-6: This takes 1 damage.\nRewards: 6$, 1 soul.",
+    "script": "script.lua",
+    "soulCount": 1,
+    "health": 3,
+    "roll": 3,
+    "power": 1,
+    "rewards": {
+        "effect": "Dingle_rewards"
+    },
+    "on": {
+        "damage": {
+            "requires": ["roll"],
+            "check": "Dingle_trigger_check",
+            "effect": "Dingle_trigger"
+        }
+    }
+
+}

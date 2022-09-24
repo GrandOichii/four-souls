@@ -39,7 +39,7 @@ function DadsRing_trigger1(host)
     if roll.value < 4 then
         return
     end
-    for _, card in ipairs(getActiveMonsters(host)) do
+    for _, card in pairs(getActiveMonsters(host)) do
         if card.isBeingAttacked then
             if CardData[me.id].mids[card.id] == nil then
                 CardData[me.id].mids[card.id] = 0

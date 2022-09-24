@@ -22,7 +22,7 @@ function SoyMilk_trigger(host)
     local owner = getTopOwner(host)
     local dEvent = getDamageEvent(host)
     local monsters = getActiveMonsters(host)
-    for _, monster in ipairs(monsters) do
+    for _, monster in pairs(monsters) do
         if monster.id ~= dEvent.targetID then
             dealDamage(host, PLAYER, owner.id, MONSTER, monster.id, 1)
         end

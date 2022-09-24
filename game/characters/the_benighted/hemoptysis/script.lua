@@ -56,7 +56,7 @@ function Hemoptysis_cost2(host, info)
         return false
     end
     local mids = {}
-    for _, monster in ipairs(getActiveMonsters(host)) do
+    for _, monster in pairs(getActiveMonsters(host)) do
         mids[#mids+1] = monster.id
     end
     local removeM = function (mid)

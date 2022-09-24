@@ -69,6 +69,8 @@ const string SOUL_TARGET = "soul";
 
 const string PLAYER_TYPE = "player";
 const string MONSTER_TYPE = "monster";
+const string NO_SOURCE = "no_source";
+const int NO_SOURCE_ID = -1;
 const string CARD_TYPE = "card";
 
 const string RESPONSE_CANCEL = "$CANCEL";

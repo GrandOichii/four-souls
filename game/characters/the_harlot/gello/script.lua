@@ -2,7 +2,7 @@ function Gello_cost(host, info)
     local ownerID = info.ownerID
     local monsters = getActiveMonsters(host)
     local ids = {}
-    for _, monster in ipairs(monsters) do
+    for _, monster in pairs(monsters) do
         if monster.isBeingAttacked then
             ids[#ids+1] = monster.id
         end
@@ -16,7 +16,7 @@ function Gello_cost(host, info)
     end
     pushTarget(host, tid, MONSTER)
     ids = {}
-    for _, monster in ipairs(monsters) do
+    for _, monster in pairs(monsters) do
         if monster.id ~= tid then
             ids[#ids+1] = monster.id
         end

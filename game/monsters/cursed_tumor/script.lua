@@ -11,6 +11,6 @@ end
 function CursedTumor_trigger(host)
     local me = this(host)
     for _, player in ipairs(getPlayers(host)) do
-        dealDamage(host, MONSTER, me.id, PLAYER, player.id, 1)
+        dealDamage(host, NO_SOURCE, NO_SOURCE_ID, PLAYER, player.id, 1)
     end
 end

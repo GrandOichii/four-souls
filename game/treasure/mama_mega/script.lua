@@ -15,8 +15,9 @@ function MamaMega_tap(host)
             elType = PLAYER
         }
     }
+    --  TODO might not work with reworking of getActiveMonsters
     for _, tt in ipairs(t) do
-        for _, element in ipairs(tt.collection) do
+        for _, element in pairs(tt.collection) do
             dealDamage(host, PLAYER, owner.id, tt.elType, element.id, 3)
         end
     end

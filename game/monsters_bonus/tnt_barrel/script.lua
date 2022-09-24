@@ -10,8 +10,8 @@ function TNTBarrel_effect(host)
     local amount = 4
     if roll.value < 5 then
         amount = 2
-        dealDamage(host, PLAYER, owner.id, target.type, target.id, amount)
+        dealDamage(host, NO_SOURCE, NO_SOURCE_ID, target.type, target.id, amount)
     end
-    dealDamage(host, PLAYER, owner.id, target.type, target.id, amount)
+    dealDamage(host, NO_SOURCE, NO_SOURCE_ID, target.type, target.id, amount)
     Common_BonusMonsterTail(host, me.id)
 end

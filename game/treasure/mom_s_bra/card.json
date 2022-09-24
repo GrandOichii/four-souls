@@ -1,0 +1,27 @@
+{
+    "name": "Mom's Bra",
+    "key": "mom_s_bra",
+    "text": "{T}: Choose a monster or player. The next instance of damage they would take this turn is reduced to 1.",
+    "script": "script.lua",
+    "enter": {
+        "usesStack": false,
+        "effect": "MomsBra_enter"
+    },
+    "leave": {
+        "usesStack": false,
+        "effect": "MomsBra_leave"
+    },
+    "on": {
+        "turn_end": {
+            "usesStack": false,
+            "effect": "MomsBra_trigger"
+        }
+    },
+    "abilities": [
+        {
+            "requires": ["tap"],
+            "cost": "MomsBra_cost",
+            "effect": "MomsBra_effect"
+        }
+    ]
+}

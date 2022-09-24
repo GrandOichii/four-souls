@@ -1,0 +1,12 @@
+{
+    "name": "Restock",
+    "key": "restock",
+    "text": "At the start of your turn, you may put any number of shop items into discard.",
+    "script": "script.lua",
+    "on": {
+        "turn_start": {
+            "check": "Restock_trigger_check",
+            "effect": "Restock_trigger"
+        }
+    }
+}

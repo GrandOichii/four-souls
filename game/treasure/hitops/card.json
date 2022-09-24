@@ -1,0 +1,21 @@
+{
+    "name": "Hitops",
+    "key": "hitops",
+    "text": "You take no combat damage on attack rolls of 4 or 5.\nAt the start of each other player's turn, you may offer to high-five them. If they accept, they take no combat damage on attack rolls of 4 or 5 till end of turn.",
+    "script": "script.lua",
+    "enter": {
+        "usesStack": false,
+        "effect": "Hitops_enter"
+    },
+    "leave": {
+        "usesStack": false,
+        "effect": "Hitops_leave"
+    },
+    "on": {
+        "turn_start": {
+            "check": "Hitops_trigger_check",
+            "cost": "Hitops_trigger_cost",
+            "effect": "Hitops_trigger"
+        }
+    }
+}

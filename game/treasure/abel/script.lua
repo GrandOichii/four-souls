@@ -12,7 +12,7 @@ function Abel_trigger(host)
     if choice == 'Monster' then
         local monsters = getActiveMonsters(host)
         local ids = {}
-        for _, monster in ipairs(monsters) do
+        for _, monster in pairs(monsters) do
             if monster.id ~= dEvent.targetID or dEvent.targetType ~= MONSTER then
                 ids[#ids+1] = monster.id
             end

@@ -22,7 +22,7 @@ end
 function LemonMishap_trigger1(host)
     local owner = getTopOwner(host)
     local monsters = getActiveMonsters(host)
-    for _, monster in ipairs(monsters) do
+    for _, monster in pairs(monsters) do
         dealDamage(host, PLAYER, owner.id, MONSTER, monster.id, 1)
     end
 end

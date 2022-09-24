@@ -311,8 +311,8 @@ CardData = {}
 function Common_ChooseMonster(host, ownerID)
     local monsters = getActiveMonsters(host)
     local ids = {}
-    for i, p in ipairs(monsters) do
-        ids[i] = p["id"]
+    for _, monster in pairs(monsters) do
+        ids[#ids+1] = monster.id
     end
     local choiceId, _ = requestChoice(host, ownerID, "Choose a monster", MONSTER, ids)
     return Common_MonsterWithID(host, choiceId)
@@ -457,7 +457,7 @@ end
 
 function Common_IsCombat(host)
     local monsters = getActiveMonsters(host)
-    for _, monster in ipairs(monsters) do
+    for _, monster in pairs(monsters) do
         if monster.isBeingAttacked then
             return true
         end
@@ -860,7 +860,7 @@ end
 
 function Common_IncAttackCount(host, ownerID, required)
     local newPool = {-1}
-    for i, _ in ipairs(getActiveMonsters(host)) do
+    for i, _ in pairs(getActiveMonsters(host)) do
         newPool[#newPool+1] = i-1
     end
     addAttackOpportunity(host, ownerID, required, false, newPool)
@@ -1085,7 +1085,7 @@ end
 function Common_TargetMonster(host, ownerID)
     local monsters = getActiveMonsters(host)
     local ids = {}
-    for i, p in ipairs(monsters) do
+    for i, p in pairs(monsters) do
         ids[i] = p.id
     end
     local choiceId, payed = requestChoice(host, ownerID, "Choose a monster", MONSTER, ids)
@@ -1097,7 +1097,7 @@ end
 function Common_TargetNonAttackedMonster(host, ownerID)
     local monsters = getActiveMonsters(host)
     local ids = {}
-    for _, card in ipairs(monsters) do
+    for _, card in pairs(monsters) do
         if not card.isBeingAttacked then
             ids[#ids+1] = card.id
         end
@@ -1110,7 +1110,7 @@ end
 
 function Common_MonsterWithID(host, mid)
     local monsters = getActiveMonsters(host)
-    for _, monster in ipairs(monsters) do
+    for _, monster in pairs(monsters) do
         if mid == monster.id then
             return monster, true
         end

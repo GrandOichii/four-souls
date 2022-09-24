@@ -10,7 +10,6 @@ end
 
 function BabyPlum_trigger(host)
     --  TODO who deals the damage
-    local me = this(host)
     local roll = popRollStack(host)
     local player = getCurrentPlayer(host)
     local players = getPlayers(host)
@@ -33,5 +32,5 @@ function BabyPlum_trigger(host)
             pI = #players
         end
     end
-    dealDamage(host, MONSTER, me.id, PLAYER, players[pI].id, 1)
+    dealDamage(host, NO_SOURCE, NO_SOURCE_ID, PLAYER, players[pI].id, 1)
 end

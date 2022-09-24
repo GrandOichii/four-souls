@@ -2,6 +2,7 @@
     "name": "Rib of Greed",
     "key": "rib_of_greed",
     "text": "Abilities and the death penalty can't make you discard loot cards or lose $.",
+    "script": "script.lua",
     "use": {
         "effect": "Common_TrinketEnter"
     },

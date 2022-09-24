@@ -988,6 +988,10 @@
             "large": "images/maggy_large.bmp",
             "small": "images/maggy.bmp"
         },
+        "dingle": {
+            "large": "images/dingle_large.bmp",
+            "small": "images/dingle.bmp"
+        },
         "magic_skin": {
             "large": "images/magic_skin_large.bmp",
             "small": "images/magic_skin.bmp"

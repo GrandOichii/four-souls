@@ -9,7 +9,7 @@ function CursedGlobin_trigger_check(host, me)
 end
 
 function CursedGlobin_trigger(host)
-    for _, monster in ipairs(getActiveMonsters(host)) do
+    for _, monster in pairs(getActiveMonsters(host)) do
         healMonster(host, monster.id, 2)
     end
 end

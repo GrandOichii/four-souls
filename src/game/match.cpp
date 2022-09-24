@@ -1585,7 +1585,6 @@ int Match::wrap_activateRoll(lua_State* L) {
     if (match->_turnEnd) return 0;
     if (match->_lastMonsterIndex == -2) return 0;
     if (!match->_monsters[match->_lastMonsterIndex].size()) return 0;
-    std::cout << match->_lastMonsterIndex << "\t" << match->_monsters[match->_lastMonsterIndex].size() << "\t" << (match->_monsterDataArr[match->_lastMonsterIndex] ? "UES" : "NO") << std::endl;
     auto monsterW = match->_monsters[match->_lastMonsterIndex].back();
     auto monsterData = match->_monsterDataArr[match->_lastMonsterIndex];
     if (!monsterData->isBeingAttacked()) return 0;
@@ -2129,11 +2128,12 @@ int Match::wrap_getActiveMonsters(lua_State* L) {
     stackSizeIs(L, 1);
     auto match = getTopMatch(L, 1);
     auto size = match->_monsters.size();
-    lua_createtable(L, size, 0);
+    lua_newtable(L);
     int mi = 0;
     for (int i = 0; i < size; i++) {
         auto data = match->_monsterDataArr[i];
         if (!data) continue;
+        if (!match->_monsters[i].size()) continue;
         lua_pushnumber(L, ++mi);
         match->_monsters[i].back()->pushTable(L);
         l_pushtablenumber(L, "health", data->health());
@@ -2350,6 +2350,8 @@ void Match::setupLua(string setupScript) {
     "\nSTACK = \'" + STACK_MEMBER_TARGET + "\'"
     "\nPLAYER = \'" + PLAYER_TARGET + "\'"
     "\nMONSTER = \'" + MONSTER_TARGET + "\'"
+    "\nNO_SOURCE = \'" + NO_SOURCE + "\'"
+    "\nNO_SOURCE_ID = " + std::to_string(NO_SOURCE_ID) + ""
     "\nSOUL = \'" + SOUL_TARGET + "\'"
     "\nROLL = \'" + ROLL_TYPE + "\'"
     "\nPOST_ROLL = \'" + POST_ROLL_TYPE + "\'"

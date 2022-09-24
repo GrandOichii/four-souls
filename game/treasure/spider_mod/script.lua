@@ -15,7 +15,7 @@ end
 function SpiderMod_trigger(host)
     local target = popTarget(host)
     local piles = getMonsterPiles(host)
-    for pileI, pile in ipairs(piles) do
+    for pileI, pile in pairs(piles) do
         if #pile ~= 0 then
             local card = pile[#pile]
             if card.id == target.id then

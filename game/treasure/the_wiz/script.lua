@@ -36,7 +36,7 @@ function TheWiz_trigger_cost(host, cardInfo)
     if choice == 'Monster' then
         local monsters = getActiveMonsters(host)
         local ids = {}
-        for _, monster in ipairs(monsters) do
+        for _, monster in pairs(monsters) do
             if monster.id ~= damageEvent.targetID or damageEvent.targetType ~= MONSTER then
                 ids[#ids+1] = monster.id
             end
