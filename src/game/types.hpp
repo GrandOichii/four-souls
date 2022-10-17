@@ -3,6 +3,14 @@
 #include <string>
 #include <iostream>
 
+extern "C" {
+
+#include <lua.h>
+#include <lauxlib.h>
+#include <lualib.h>
+
+}
+
 #include "../util.hpp"
 
 using std::string;
@@ -133,6 +141,8 @@ struct Effect {
     bool hasRequirement(string req);
     EffectState getState() const;
     virtual StackEffect* pushMe(Match* match, CardWrapper* cardW, Player* owner, string type);
+
+    virtual void pushTable(lua_State* L);
 };
 
 struct Trigger : public Effect {
@@ -141,4 +151,6 @@ struct Trigger : public Effect {
     Trigger();
     Trigger(json j);
     StackEffect* pushMe(Match* match, CardWrapper* cardW, Player* owner, string type) override;
+
+    void pushTable(lua_State* L) override;
 };

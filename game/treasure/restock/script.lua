@@ -11,6 +11,7 @@ function Restock_trigger(host)
         local choice = requestSimpleChoice(host, owner.id, 'Discard ${'..card.key..'}?', {'Yes', 'No'})
         if choice == 'Yes' then
             activated = true
+            removeFromEverywhere(host, card.id)
             discardMe(host, card.id)
         end
     end

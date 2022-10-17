@@ -150,5 +150,6 @@ std::vector<Card*> Game::getAllCards() {
     for (const auto& c : _lootCards) result.push_back(c);
     for (const auto& c : _treasureCards) result.push_back(c);
     for (const auto& c : _monsterCards) result.push_back(c);
+    for (const auto& c : _bonusSouls) result.push_back(c);
     return result;
 }

@@ -48,6 +48,8 @@ private:
     std::map<string, Trigger> _triggerMap;
     std::vector<Effect> _abilities;
 
+    std::vector<Effect> _custom;
+
     Effect _enterEffect;
     Effect _leaveEffect;
     Effect _destroyedEffect;

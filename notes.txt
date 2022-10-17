@@ -14,27 +14,24 @@
     -- shiny rock don't work
     -- shiny rock + more options
     -- bonus monster cards don't work exactly like the rules say - refilling
+    -- text can't render $ in $?
 
 - implement:
-    -- change how declaring attacks works
-    -- change how monster data is managed
+    -- change how declaring attacks works (add attack button)
+    -- change how monster data is managed (tie it to the CardWrapper)
     -- bartering: a special button, when pressed will present a choice to the player: select the player to barter with, select coin count, type in text with the favor. the receiving player can accept or decline, the returning message will contain a accepted(bool) and response(string)
-    -- fix the record error
-    -- move from name-based indexing to key indexing
     -- addListener(host, <owner id>, <card id>, <on what>, <check func name>, <cost func name>, <effect func name>, <uses stack>), returns listener id
     -- removeListener(host, <listener id>)
     -- add effect ordering
-    -- add card ordering
-    -- change how guppy's hairball works
+    -- add card ordering (in hand)
+    -- change how guppy's hairball works (push effect on deal damage layers)
     -- add custom counters (egg counters mostly)
-    -- remove killing players multiple times per turn
+    -- remove killing players multiple times per turn (fixed?)
     -- add game logs (perhaps in a different window)
-    -- better card zoom ( perhaps in a different window )
-    -- add attacking top of monster deck
-    -- add bonus effects to the monster deck
+    -- better card zoom (perhaps in a different window)
     -- if a player gains +1 treasure due to rewards, and the card has a monster death trigger, the card is triggered immediately - decide whether to keep or not
     -- add rooms
-    -- change choice cards to store player's choice in CardData, dont forget to log the player's choice for other players
+    -- change choice cards to store player's choice in CardData, don't forget to log the player's choice for other players
     -- figure out how to implement canceling effects
     -- add multiple cube of meat cards
 

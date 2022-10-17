@@ -70,6 +70,12 @@ ScriptCard::ScriptCard(string dir, json j, CardTypes type) :
             throw std::runtime_error("can't create alt card for type " + type);
         }
     }
+    if (j.contains("custom")) {
+        auto cj = j["custom"];
+        for (const auto& aj : cj.items()) {
+            _custom.push_back(Effect(aj.value()));
+        }
+    }
 }
 
 ScriptCard::~ScriptCard() {

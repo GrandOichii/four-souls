@@ -165,8 +165,8 @@
             "small": "images/boomerang.bmp"
         },
         "boxing_glove": {
-            "large": "images/polyphemus_large.bmp",
-            "small": "images/polyphemus.bmp"
+            "large": "images/boxing_glove_large.bmp",
+            "small": "images/boxing_glove.bmp"
         },
         "brain": {
             "large": "images/brain_large.bmp",
@@ -416,6 +416,10 @@
             "large": "images/the_d100_large.bmp",
             "small": "images/the_d100.bmp"
         },
+        "20_20": {
+            "large": "images/20_20_large.bmp",
+            "small": "images/20_20.bmp"
+        },
         "d20": {
             "large": "images/the_d20_large.bmp",
             "small": "images/the_d20.bmp"
@@ -479,6 +483,10 @@
         "death": {
             "large": "images/death_large.bmp",
             "small": "images/death.bmp"
+        },
+        "death_l": {
+            "large": "images/xiii__death_large.bmp",
+            "small": "images/xiii__death.bmp"
         },
         "deaths_head": {
             "large": "images/death_s_head_large.bmp",

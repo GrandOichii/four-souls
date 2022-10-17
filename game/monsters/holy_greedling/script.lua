@@ -10,7 +10,7 @@ end
 
 function HolyGreedling_trigger(host)
     local player = getCurrentPlayer(host)
-    local choice = requestSimpleChoice(host, player.id, 'Gain 3$?', {'Yes', 'No'})
+    local choice = requestSimpleChoice(host, player.id, 'Gain 3$ ?', {'Yes', 'No'})
     if choice == 'No' then
         return
     end

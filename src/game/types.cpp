@@ -93,6 +93,27 @@ StackEffect* Effect::pushMe(Match* match, CardWrapper* cardW, Player* owner, str
     return p;
 }
 
+void Effect::pushTable(lua_State* L) {
+    lua_newtable(L);
+    if (!funcName.size()) return;
+    l_pushtablestring(L, "cost", costFuncName);
+    l_pushtablestring(L, "effect", funcName);
+    l_pushtablestring(L, "text", funcName);
+    l_pushtableboolean(L, "usesStack", usesStack);
+    auto size = requirements.size();
+    lua_createtable(L, size, 0);
+    for (int i = 0; i < size; i++) {
+        lua_pushnumber(L, i+1);
+        lua_pushstring(L, requirements[i].c_str());
+        lua_settable(L, -3);
+    }
+}
+
 StackEffect* Trigger::pushMe(Match* match, CardWrapper* cardW, Player* owner, string type) {
     return Effect::pushMe(match, cardW, owner, type);
+}
+
+void Trigger::pushTable(lua_State* L) {
+    Trigger::pushTable(L);
+    l_pushtablestring(L, "check", checkFuncName);
 }
