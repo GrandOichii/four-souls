@@ -1390,18 +1390,18 @@ int Match::wrap_deferEOT(lua_State *L) {
     auto match = getTopMatch(L, 1);
     auto cardID = getTopNumber(L, 2);
     auto funcName = getTopString(L, 3);
-    auto isTrigger = getTopBool(L, 4);
+    auto usesStack = getTopBool(L, 4);
     auto w = match->cardWithID(cardID);
     auto owner = w->owner();
-    std::stack<StackEffect*>& collection = match->_eotDeferredTriggers;
-    if (!isTrigger)
-        collection = match->_eotDefers;
+    std::stack<StackEffect*>* collection = &match->_eotDeferredTriggers;
+    if (!usesStack)
+        collection = &match->_eotDefers;
     auto effect = new StackEffect();;
     effect->funcName = funcName;
     effect->cardW = w;
     effect->player = owner;
     effect->type = TRIGGER_TYPE;
-    collection.push(effect);
+    collection->push(effect);
     return 0;
 }
 
@@ -2178,6 +2178,7 @@ Player* Match::playerWithID(int id) {
 
 void Match::pushEOTDeferredTriggers() {
     while (!_eotDeferredTriggers.empty()) {
+        std::cout << "PUSHING " << _eotDeferredTriggers.top()->funcName << std::endl;
         this->pushToStack(_eotDeferredTriggers.top());
         _eotDeferredTriggers.pop();
     }
@@ -2189,11 +2190,13 @@ Player* Match::getCurrentPlayer() { return _activePlayer; }
 void Match::execEOTDefers() {
     while (!_eotDefers.empty()) {
         auto& e = _eotDefers.top();
+        std::cout << "EXECUTING EOT DEFER " << e->funcName << std::endl;
         this->pushToStack(e);
         auto it = _stack.end() - 1;
         this->execFunc(e->funcName);
         _stack.erase(it);
         _eotDefers.pop();
+        std::cout << "CLEARED " << e->funcName << std::endl;
     }
 }
 
@@ -2436,7 +2439,7 @@ void Match::lua_err(lua_State *L) {
 void Match::execScript(string script) {
     int r = luaL_dostring(L, script.c_str());
     if (r != LUA_OK) {
-        std::cout<<script<<std::endl;
+        std::cout << script << std::endl;
         lua_err(this->L);
         throw std::runtime_error("failed to load script");
     }
@@ -3154,7 +3157,6 @@ void Match::killPlayer(int id) {
 }
 
 void Match::saveResponse(string playerName, string response) {
-    // std::cout << "SAVING " << response << " FOR " << playerName << std::endl;
     _record["actions"][playerName].push_back(response);
     std::ofstream out(_recordPath);
     out << _record.dump(4);
@@ -3163,8 +3165,4 @@ void Match::saveResponse(string playerName, string response) {
 
 void Match::saveResponse(string playerName, int response) {
     saveResponse(playerName, std::to_string(response));
-    // _record["actions"][playerName].push_back(std::to_string(response));
-    // std::ofstream out(_recordPath);
-    // out << _record.dump(4);
-    // out.close();
 }

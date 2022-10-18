@@ -203,9 +203,7 @@ end
 
 function Common_TempIncMaxLife(host, cardID, targetID, amount)
     local id = Common_IncMaxLife(host, targetID, amount)
-    -- print('NEW ID TO REMOVE: '..id)
     Common_PushEOT(host, Common_DecMaxLife, cardID, targetID, id)
-    -- print('EOT SIZE: '..#EOTStack._et)
 end
 
 -- attack

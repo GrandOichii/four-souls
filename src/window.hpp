@@ -766,10 +766,6 @@ public:
             w = h;
             h = t;
         }
-        // if (!bBox) {
-        //     bBox = &box;
-        // }
-        // std::cout << bBox->y << "\t" << bBox->x << "\t" << bBox->w << "\t" << bBox->h << std::endl;
         if (mx >= x && my >= y && mx <= x + w && my <= y + h) {
             SDL_PumpEvents();
             if (_keys[SDL_SCANCODE_LSHIFT]) {
