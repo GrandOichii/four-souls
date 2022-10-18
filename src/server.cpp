@@ -250,7 +250,7 @@ public:
     {
         _win = new Window("player replay", "assets", false);
         for (const auto& card : cards)
-            _win->assets()->createCard(card->name(), card->text());
+            _win->assets()->createCard(card->key(), card->text());
     }
 
     ~ObservingScriptedPlayer() {

@@ -38,7 +38,7 @@ function ForeverAlone_tap(host)
             return false
         end
         local card = cards[1]
-        requestSimpleChoice(host, owner.id, 'Top card of '..dc..' deck is: ${'..card.name..'}', {'Ok'})
+        requestSimpleChoice(host, owner.id, 'Top card of '..dc..' deck is: ${'..card.key..'}', {'Ok'})
         return
     end
     if choice == ForeverAlone_choice3 then

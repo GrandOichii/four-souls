@@ -501,9 +501,7 @@ void Match::addToLootDiscard(CardWrapper* wrapper) {
 }
 
 CardWrapper* Match::cardWithID(int id) {
-    // std::cout << "wrappers: " << _allWrappers.size() << std::endl;
     for (const auto& w : _allWrappers) {
-        // std::cout << w->card()->name() << " -> " << w->id() << std::endl;
         if (w->id() == id)
             return w;
     }
@@ -789,7 +787,6 @@ int Match::wrap_getOwner(lua_State *L) {
     auto w = match->cardWithID(cid);
     if (!w->owner()) {
         std::cout << "CARD " << w->card()->name() << " DOESN'T HAVE AN OWNER\n";
-        // std::cout << "FIX ME ALREADY" << std::endl;
         lua_pushnil(L);
         return 1;
     }
@@ -1021,7 +1018,6 @@ int Match::wrap_requestChoice(lua_State* L) {
     auto state = match->getState();
     match->updateAllPlayers(state);
     auto response = player->promptResponse(state, text, choiceType, choices);
-    std::cout << "LAST " << match->_stack.back()->funcName << std::endl;
     match->log("\t" + player->name() + ": " + response + " (response)");
     match->saveResponse(player->name(), response);
     if (response == RESPONSE_CANCEL) {
@@ -1203,7 +1199,6 @@ int Match::wrap_addSoulCard(lua_State* L) {
     Player* player = match->playerWithID(pid);
     auto card = match->cardWithID(cid);
     player->addSoulCard(card);
-    // std::cout << "ADDED SOUL CARD " << card->card()->name() << " TO PLAYER " << player->name() << std::endl;
     if (player->soulCount() >= match->_soulsToWin) {
         match->_winner = player;
         match->updateAllPlayersEndMatch();
@@ -1368,7 +1363,6 @@ int Match::wrap_buyItem(lua_State* L) {
     player->payPricePerTreasure();
     match->addCardToBoard(w, player);
     match->log("Player " + player->name() + " bought " + w->card()->name());
-    // std::cout << "Player " + player->name() + " bought " + w->card()->name() << std::endl;;
     return 0;
 }
 
@@ -1425,10 +1419,7 @@ int Match::wrap_refillMonsters(lua_State* L) {
             newM = match->_monsterDeck.back();
             match->_monsterDeck.pop_back();
             if (newM->card()->type() != CardTypes::Monster) {
-                // std::cout << "BONUS MONSTER " << newM->card()->name() << std::endl;
                 newM->card()->useEffect().pushMe(match, newM, match->_activePlayer, BONUS_MONSTER_TYPE);
-                // match->_monsters[i].pop_back();
-                // match->_monsterDataArr[i] = nullptr;
                 continue;
             } else match->_monsters[i].push_back(newM);
         } else {
@@ -1803,7 +1794,6 @@ int Match::wrap_killEntity(lua_State* L) {
     }
     if (type == MONSTER_TYPE) {
         for (const auto& pile : match->_monsters) {
-            // std::cout << "\t" << pile.back()->id() << "  " << pile.back()->card()->name() << std::endl;
             if (pile.size() && pile.back()->id() != id) continue;
             match->killMonster(pile.back());
             return 0;
@@ -2080,7 +2070,7 @@ int Match::wrap_attackMonster(lua_State* L) {
             card->card()->useEffect().pushMe(match, card, match->_activePlayer, BONUS_MONSTER_TYPE);
             return 0;
         }
-        auto response = std::stoi(match->_activePlayer->promptResponse(state, "Choose monster pile to cover with ${" + card->card()->name() + "}", MONSTER_TYPE, choices));
+        auto response = std::stoi(match->_activePlayer->promptResponse(state, "Choose monster pile to cover with ${" + card->card()->key() + "}", MONSTER_TYPE, choices));
         match->saveResponse(match->_activePlayer->name(), response);                
         for (int i = 0; i < match->_monsters.size(); i++) {
             if (match->_monsters[i].back()->id() == response) {

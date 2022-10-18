@@ -15,6 +15,7 @@
     -- shiny rock + more options
     -- bonus monster cards don't work exactly like the rules say - refilling
     -- text can't render $ in $?
+    -- monster death triggers death trigger of monster behind it in it's pile
 
 - implement:
     -- change how declaring attacks works (add attack button)
